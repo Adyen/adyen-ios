@@ -18,6 +18,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     private var checkout: AdvancedCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
+    private var latestApplePayAmount = ConfigurationConstants.current.amount
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
@@ -34,6 +35,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal func start() {
         startLoading()
+        latestApplePayAmount = ConfigurationConstants.current.amount
 
         Task {
             do {
@@ -71,52 +73,49 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                     }
                 }
                 .onSelectShippingContact { contact, summaryItems in
-                    var items = summaryItems
-                    if let last = items.last {
-                        items = items.dropLast()
-                        let cityLabel = contact.postalAddress?.city ?? "Somewhere"
-                        items.append(.init(
-                            label: "Shipping \(cityLabel)",
-                            amount: NSDecimalNumber(value: 5.0)
-                        ))
-                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
-                    }
+                    let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appending: [
+                            .init(
+                                label: "Shipping \(cityLabel)",
+                                amount: NSDecimalNumber(value: 5.0)
+                            )
+                        ]
+                    )
+                    self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                 }
                 .onSelectShippingMethod { shippingMethod, summaryItems in
-                    var items = summaryItems
-                    if let last = items.last {
-                        items = items.dropLast()
-                        items.append(shippingMethod)
-                        items.append(.init(
-                            label: last.label,
-                            amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)
-                        ))
-                    }
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appending: [shippingMethod]
+                    )
+                    self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
                 }
                 .onChangeCouponCode { _, summaryItems in
-                    var items = summaryItems
-                    if let last = items.last {
-                        items = items.dropLast()
-                        // make sure your backend's amount and apple pay sheet amount are the same
-                        items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
-                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
-                    }
+                    // make sure your backend's amount and apple pay sheet amount are the same
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appending: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))]
+                    )
+                    self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                 }
                 .onSelectPaymentMethod { paymentMethod, summaryItems in
                     // Example: Add a processing fee based on card type
-                    var items = summaryItems
-                    if let last = items.last {
-                        items = items.dropLast()
-                        let cardType = paymentMethod.displayName ?? "Card"
-                        items.append(.init(
-                            label: "Processing Fee (\(cardType))",
-                            amount: NSDecimalNumber(value: 1.0)
-                        ))
-                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 1.0)))
-                    }
+                    let cardType = paymentMethod.displayName ?? "Card"
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appending: [
+                            .init(
+                                label: "Processing Fee (\(cardType))",
+                                amount: NSDecimalNumber(value: 1.0)
+                            )
+                        ]
+                    )
+                    self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
                 }
         }
@@ -152,7 +151,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
         do {
-            let request = PaymentsRequest(data: data)
+            // Charge the total the shopper approved on the Apple Pay sheet.
+            let request = PaymentsRequest(data: data, amount: latestApplePayAmount)
             let response = try await asyncApiClient.performAsync(request)
             if let action = response.action {
                 return .action(action)
@@ -211,6 +211,35 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     @objc private func cancelPressed() {
         presenter?.dismiss(completion: nil)
+    }
+
+    private func updatedSummaryItems(
+        from summaryItems: [PKPaymentSummaryItem],
+        appending appendedItems: [PKPaymentSummaryItem]
+    ) -> [PKPaymentSummaryItem] {
+        guard let total = summaryItems.last else {
+            return summaryItems
+        }
+
+        let updatedTotal = appendedItems.reduce(total.amount) { $0.adding($1.amount) }
+        return Array(summaryItems.dropLast()) + appendedItems + [PKPaymentSummaryItem(label: total.label, amount: updatedTotal)]
+    }
+
+    private func updateLatestApplePayAmount(using summaryItems: [PKPaymentSummaryItem]) {
+        guard let total = summaryItems.last else {
+            return
+        }
+
+        let currentAmount = ConfigurationConstants.current.amount
+        let updatedValue = AmountFormatter.minorUnitAmount(
+            from: total.amount.decimalValue,
+            currencyCode: currentAmount.currencyCode
+        )
+        latestApplePayAmount = Amount(
+            value: updatedValue,
+            currencyCode: currentAmount.currencyCode,
+            localeIdentifier: currentAmount.localeIdentifier
+        )
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {

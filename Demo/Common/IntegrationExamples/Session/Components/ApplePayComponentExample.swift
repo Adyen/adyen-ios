@@ -75,13 +75,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     let cityLabel = contact.postalAddress?.city ?? "Somewhere"
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [
+                        appending: [
                             .init(
                                 label: "Shipping \(cityLabel)",
                                 amount: NSDecimalNumber(value: 5.0)
                             )
-                        ],
-                        totalAmountDelta: 5.0
+                        ]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
@@ -89,8 +88,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 .onSelectShippingMethod { shippingMethod, summaryItems in
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [shippingMethod],
-                        totalAmountDelta: shippingMethod.amount.doubleValue
+                        appending: [shippingMethod]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
@@ -99,8 +97,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     // make sure your backend's amount and apple pay sheet amount are the same
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))],
-                        totalAmountDelta: -5.0
+                        appending: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
@@ -110,13 +107,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     let cardType = paymentMethod.displayName ?? "Card"
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [
+                        appending: [
                             .init(
                                 label: "Processing Fee (\(cardType))",
                                 amount: NSDecimalNumber(value: 1.0)
                             )
-                        ],
-                        totalAmountDelta: 1.0
+                        ]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
@@ -217,22 +213,14 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     private func updatedSummaryItems(
         from summaryItems: [PKPaymentSummaryItem],
-        appendedItems: [PKPaymentSummaryItem],
-        totalAmountDelta: Double
+        appending appendedItems: [PKPaymentSummaryItem]
     ) -> [PKPaymentSummaryItem] {
         guard let total = summaryItems.last else {
             return summaryItems
         }
 
-        var updatedItems = Array(summaryItems.dropLast())
-        updatedItems.append(contentsOf: appendedItems)
-        updatedItems.append(
-            .init(
-                label: total.label,
-                amount: NSDecimalNumber(value: total.amount.doubleValue + totalAmountDelta)
-            )
-        )
-        return updatedItems
+        let updatedTotal = appendedItems.reduce(total.amount) { $0.adding($1.amount) }
+        return Array(summaryItems.dropLast()) + appendedItems + [PKPaymentSummaryItem(label: total.label, amount: updatedTotal)]
     }
 
     private func updateLatestApplePayAmount(using summaryItems: [PKPaymentSummaryItem]) {
