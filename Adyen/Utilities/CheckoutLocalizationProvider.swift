@@ -78,6 +78,8 @@ extension CheckoutLocalizationKey {
     public static let cardDualBrandSelectorDescription = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandDescription)
     public static let cardSocialSecurityNumber = CheckoutLocalizationKey(name: "cardSocialSecurityNumber")
     public static let cardSocialSecurityNumberInvalid = CheckoutLocalizationKey(name: "cardSocialSecurityNumberInvalid")
+    public static let cardInstallmentsTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsTitle)
+    public static let cardInstallmentsPickerTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerTitle)
 }
 
 // MARK: - Drop-in

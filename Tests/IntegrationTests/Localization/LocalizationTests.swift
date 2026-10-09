@@ -51,6 +51,13 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(parameters.locale, "is-IS")
     }
 
+    func test_localizedString_withEnforcedNonEnglishLocale_shouldFallbackToEnglishForInstallmentsKeys() {
+        // The installment keys ship in en-US only, so enforced non-English locales fall back to English.
+        let parameters = LocalizationParameters(enforcedLocale: "it-IT")
+        XCTAssertEqual(localizedString(.cardInstallmentsTitle, parameters), "Payment plan")
+        XCTAssertEqual(localizedString(.cardInstallmentsPickerTitle, parameters), "Installments")
+    }
+
     func testEnforcedLocalizationOverrides() {
         let parameters = LocalizationParameters(
             enforcedLocale: "is-IS",
@@ -297,6 +304,17 @@ class LocalizationTests: XCTestCase {
         let parameters = LocalizationParameters().withProvider(provider)
 
         XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Custom card number")
+    }
+
+    func test_localizedString_withProvider_shouldReturnInstallmentsValues() {
+        let provider = MockCheckoutLocalizationProvider(values: [
+            .cardInstallmentsTitle: "Custom payment plan",
+            .cardInstallmentsPickerTitle: "Custom installments"
+        ])
+        let parameters = LocalizationParameters().withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cardInstallmentsTitle, parameters), "Custom payment plan")
+        XCTAssertEqual(localizedString(.cardInstallmentsPickerTitle, parameters), "Custom installments")
     }
 
     func test_localizedString_withProviderReturningNil_shouldFallbackToBundleChain() {
