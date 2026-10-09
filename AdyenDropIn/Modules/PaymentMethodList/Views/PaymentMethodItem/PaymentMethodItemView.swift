@@ -37,7 +37,7 @@ internal final class PaymentMethodItemView: UIView {
 
     // MARK: - UI Elements
 
-    private lazy var logoView = AdyenUI.PaymentLogoView(
+    private lazy var logoView = PaymentLogoView(
         size: Layout.iconImageSize,
         imageLoader: imageLoader
     )
