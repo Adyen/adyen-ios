@@ -71,8 +71,8 @@ package extension UISearchBar {
         let size = Constants.backgroundImageSize
         let image = UIGraphicsImageRenderer(size: size).image { context in
             let borderWidth = isEditing ? Constants.focusedBorderWidth : 0
-            let rect = CGRect(origin: .zero, size: size).insetBy(dx: borderWidth, dy: borderWidth)
-            let path = UIBezierPath(roundedRect: rect, cornerRadius: Constants.fieldCornerRadius - borderWidth)
+            let rect = CGRect(origin: .zero, size: size).insetBy(dx: borderWidth / 2, dy: borderWidth / 2)
+            let path = UIBezierPath(roundedRect: rect, cornerRadius: Constants.fieldCornerRadius - borderWidth / 2)
             theme.colors.container.setFill()
             path.fill()
             if borderWidth > 0 {
