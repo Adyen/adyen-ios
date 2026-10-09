@@ -164,14 +164,14 @@ internal extension CheckoutCore {
             if let component {
                 await component.finalizeIfNeeded(success: outcome.isSuccessful)
             }
-            callResultCallback(outcome)
+            triggerResultCallback(for: outcome)
         }
     }
 }
 
 private extension CheckoutCore {
 
-    func callResultCallback(_ outcome: CheckoutOutcome) {
+    func triggerResultCallback(for outcome: CheckoutOutcome) {
         switch outcome {
         case let .completed(resultCode):
             resultCallbacks.handleCompletion(
