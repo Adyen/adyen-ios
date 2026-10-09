@@ -14,7 +14,7 @@ internal extension View {
     /// Applies an `AdyenLabelStyle`, including its fixed line height, to the view.
     ///
     /// SwiftUI has no line-height property, so the line height is emulated with `lineSpacing`
-    /// plus half the extra height as vertical padding, keeping the text vertically centred.
+    /// plus half the extra height as vertical padding, keeping the text vertically centered.
     /// - Parameters:
     ///   - style: The style to apply.
     ///   - color: An optional override for the style's color.
