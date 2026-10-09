@@ -64,7 +64,7 @@ internal struct GenericPaymentMethodView: View {
     // MARK: - Private
 
     private var logoView: some View {
-        PaymentLogoView(
+        PaymentMethodLogoView(
             url: viewModel.paymentMethodLogoURL,
             theme: theme,
             size: Constants.logoSize
