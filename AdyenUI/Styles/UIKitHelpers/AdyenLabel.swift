@@ -54,7 +54,7 @@ package class AdyenLabel: UILabel {
     private func applyLineHeight() {
         guard style?.lineHeight != nil, let text = super.text else { return }
         super.attributedText = applyingLineHeight(
-            to: NSAttributedString(string: text, attributes: [.font: font as Any, .foregroundColor: textColor as Any])
+            to: NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor].compactMapValues { $0 })
         )
     }
 
