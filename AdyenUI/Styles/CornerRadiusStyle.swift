@@ -31,6 +31,8 @@ extension CornerRounding: Equatable {
             return lhsValue == rhsValue
         case let (.percent(lhsValue), .percent(rhsValue)):
             return lhsValue == rhsValue
+        case (.none, .none):
+            return true
         default:
             return false
         }
