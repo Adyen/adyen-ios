@@ -158,6 +158,7 @@
 "adyen.voucher.alternativeReference" = "Alternative Reference";
 "adyen.card.installments.numberOfInstallments" = "Number of installments";
 "adyen.card.installments.oneTime" = "One time payment";
+"adyen.card.installments.title" = "Installments payment";
 "adyen.card.installments.revolving" = "Revolving payment";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ months";
