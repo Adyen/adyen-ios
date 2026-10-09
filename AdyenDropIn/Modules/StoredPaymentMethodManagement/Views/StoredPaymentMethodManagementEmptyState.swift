@@ -14,7 +14,7 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
 
     private enum Constants {
         static let topPadding: CGFloat = 24
-        static let messageSpacing: CGFloat = 4
+        static let messageSpacing: CGFloat = 8
         static let buttonHeight: CGFloat = 52
     }
 
@@ -32,7 +32,7 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
             
             VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
-                    .adyenLabelStyle(theme.elements.labels.bodyEmphasized)
+                    .adyenLabelStyle(theme.elements.labels.title2)
 
                 Text(viewModel.emptyMessage)
                     .adyenLabelStyle(theme.elements.labels.body)

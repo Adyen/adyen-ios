@@ -37,8 +37,6 @@ package class SearchViewController: UIViewController, AdyenObserver {
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
-
-    internal var searchBarEditingStateDidChange: ((Bool) -> Void)?
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
 
@@ -82,7 +80,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var searchBar: UISearchBar = {
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
-            backgroundColor: viewModel.style.backgroundColor,
+            theme: viewModel.theme,
             delegate: self
         )
     }()
@@ -136,6 +134,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         delegate?.viewWillAppear(viewController: self)
+        hideNavigationBarHairline()
         
         if viewModel.shouldShowSearchBar,
            viewModel.shouldFocusSearchBarOnAppearance {
@@ -148,6 +147,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
+    }
+    
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // The search field background is a rendered UIImage; re-bake it on appearance changes.
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection),
+              viewModel.shouldShowSearchBar else { return }
+        searchBar.adyenApplyFieldStyle(
+            theme: viewModel.theme,
+            isEditing: searchBar.isFirstResponder
+        )
     }
     
     private func setupConstraints() {
@@ -273,6 +283,15 @@ package class SearchViewController: UIViewController, AdyenObserver {
         """) }
     }
     
+    private func hideNavigationBarHairline() {
+        let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = viewModel.style.backgroundColor
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+    }
+
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
@@ -280,17 +299,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-
-    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(true)
-    }
-
-    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(false)
-    }
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
+    }
+    
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: true)
+    }
+    
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: false)
     }
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

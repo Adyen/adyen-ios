@@ -20,31 +20,19 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
         #expect(context.sut.title == "\(String.Adyen.securedString)4556")
         #expect(context.sut.paymentMethodLogoURL.absoluteString.contains("visa"))
-        #expect(context.sut.subtitle.string == "Use Visa to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.subtitle == "Use Visa to pay \(Dummy.amount.formatted)")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withMissingAmount_thenProvidesUnformattedPayDescription() {
         let context = makeSUTStoredCardWithCVC(amount: nil)
-        #expect(context.sut.subtitle.string == "Use Visa to pay")
+        #expect(context.sut.subtitle == "Use Visa to pay")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withZeroAmount_thenProvidesSaveDetailsDescription() {
         let context = makeSUTStoredCardWithCVC(amount: Amount(value: 0, currencyCode: "EUR"))
-        #expect(context.sut.subtitle.string == "Use Visa to save details")
-    }
-
-    @Test
-    internal func storedCardSecurityCodeComponent_whenCreated_thenEmphasizesNameAndAmount() {
-        let context = makeSUTStoredCardWithCVC()
-        let subtitle = context.sut.subtitle
-        let bodyFont = context.sut.theme.elements.labels.body.font
-        let emphasizedFont = context.sut.theme.elements.labels.bodyEmphasized.font
-
-        #expect(subtitle.attribute(.font, at: 4, effectiveRange: nil) as? UIFont == emphasizedFont) // "Visa"
-        #expect(subtitle.attribute(.font, at: 10, effectiveRange: nil) as? UIFont == bodyFont) // "to pay"
-        #expect(subtitle.attribute(.font, at: subtitle.length - 1, effectiveRange: nil) as? UIFont == emphasizedFont) // "€10.00"
+        #expect(context.sut.subtitle == "Use Visa to save details")
     }
 
     @Test
@@ -63,7 +51,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
         let context = makeSUT(component: component)
 
         #expect(context.sut.title == "$arjenLandstra")
-        #expect(context.sut.subtitle.string == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.subtitle == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
     }
 
     @Test
