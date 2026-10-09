@@ -329,7 +329,7 @@ public struct LocalizationKey {
     /// Number of installments
     public static let cardInstallmentsNumberOfInstallments = LocalizationKey(key: "adyen.card.installments.numberOfInstallments")
     /// One time payment
-    public static let cardInstallmentsOneTime = LocalizationKey(key: "adyen.card.installments.oneTime")
+    public static let cardInstallmentsOneTime = LocalizationKey(key: "adyen_checkout_card_installments_option_one_time")
     /// Payment plan
     public static let cardInstallmentsTitle = LocalizationKey(key: "adyen_checkout_card_installments_title")
     /// Installments
@@ -337,7 +337,7 @@ public struct LocalizationKey {
     /// Pay the full amount today
     public static let cardInstallmentsOneTimeDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_one_time_description")
     /// Revolving payment
-    public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen.card.installments.revolving")
+    public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen_checkout_card_installments_option_revolving")
     /// %@x %@
     public static let cardInstallmentsMonthsAndPrice = LocalizationKey(key: "adyen.card.installments.monthsAndPrice")
     /// %@ months
@@ -345,15 +345,15 @@ public struct LocalizationKey {
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
     /// %@ Installments
-    public static let cardInstallmentsRegular = LocalizationKey(key: "adyen.card.installments.regular")
+    public static let cardInstallmentsRegular = LocalizationKey(key: "adyen_checkout_card_installments_option_regular")
     /// Split the total cost into monthly payments instead of paying the full amount today.
-    public static let cardInstallmentsPickerDescription = LocalizationKey(key: "adyen.card.installments.picker.description")
+    public static let cardInstallmentsPickerDescription = LocalizationKey(key: "adyen_checkout_card_installments_picker_description")
     /// Predetermined amount each month
-    public static let cardInstallmentsRevolvingDescription = LocalizationKey(key: "adyen.card.installments.revolving.description")
+    public static let cardInstallmentsRevolvingDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_revolving_description")
     /// %@ monthly payments
-    public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen.card.installments.regular.description")
+    public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description")
     /// %@ monthly payments of %@
-    public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen.card.installments.regular.description.withPrice")
+    public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description_with_price")
     /// Bank account holder name
     public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
     /// Bank account number
