@@ -21,7 +21,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     private enum Layout {
         static let searchBarHorizontalInset: CGFloat = 8
-        static let headerBottomSpacing: CGFloat = 8
+        static let headerBottomSpacing: CGFloat = 24
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
