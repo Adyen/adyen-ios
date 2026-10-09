@@ -123,6 +123,9 @@ package final class PaymentLogoView: UIView {
         currentURL = url
 
         imageLoadingTask = imageLoader.load(url: url) { [weak self] image in
+            if image == nil {
+                self?.currentURL = nil
+            }
             self?.setImage(image)
         }
     }
