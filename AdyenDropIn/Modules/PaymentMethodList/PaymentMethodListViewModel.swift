@@ -190,13 +190,19 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private func paymentMethodItem(from paymentMethod: PaymentMethod) -> PaymentMethodItem {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
+        let trailingInfo: DisplayInformation.TrailingInfoType? = switch paymentMethod {
+        case let cardPaymentMethod as CardPaymentMethod where !cardPaymentMethod.brands.isEmpty:
+            .logos(named: cardPaymentMethod.brands.map(\.rawValue), trailingText: nil)
+        default:
+            displayInformation.trailingInfo
+        }
 
         return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
             subtitleStatus: displayInformation.subtitleStatus,
             iconURL: imageURL,
-            trailingInfo: displayInformation.trailingInfo,
+            trailingInfo: trailingInfo,
             logoURLProvider: logoURLProvider,
             accessibilityLabel: displayInformation.accessibilityLabel,
             theme: theme,
