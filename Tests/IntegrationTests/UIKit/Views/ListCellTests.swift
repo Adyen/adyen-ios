@@ -92,18 +92,20 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
     }
 
-    func test_cell_whenHorizontalContentInsetProvided_shouldInsetItemViewAndRestoreMargins() throws {
+    func test_cell_whenHorizontalContentInsetProvided_shouldInsetContentAndRestoreMargins() throws {
         let cell = makeCell(item: makeItem(horizontalContentInset: 14))
-        let itemView: UIView = try XCTUnwrap(cell.findView(by: "itemView"))
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
 
-        XCTAssertEqual(itemView.frame.minX, 14, accuracy: 0.1)
-        XCTAssertEqual(cell.contentView.bounds.maxX - itemView.frame.maxX, 14, accuracy: 0.1)
+        XCTAssertEqual(titleLabel.convert(titleLabel.bounds, to: cell.contentView).minX, 14, accuracy: 0.1)
 
         cell.item = makeItem()
         cell.layoutIfNeeded()
 
-        XCTAssertEqual(itemView.frame.minX, cell.contentView.layoutMargins.left, accuracy: 0.1)
-        XCTAssertEqual(cell.contentView.bounds.maxX - itemView.frame.maxX, cell.contentView.layoutMargins.right, accuracy: 0.1)
+        XCTAssertEqual(
+            titleLabel.convert(titleLabel.bounds, to: cell.contentView).minX,
+            cell.contentView.layoutMargins.left,
+            accuracy: 0.1
+        )
     }
 
     func test_cell_whenTitleEmphasisPrimary_shouldUsePrimaryColorForTitleAndCheckmark() throws {
