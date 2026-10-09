@@ -142,34 +142,28 @@ package final class ListCell: UITableViewCell {
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
-        itemView.preservesSuperviewLayoutMargins = false
-        itemView.layoutMargins = .zero
         
         return itemView
     }()
     
     // MARK: - Layout
     
-    private lazy var layoutMarginsConstraints = [
-        itemView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        itemView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
-    ]
-    
-    private lazy var leadingInsetConstraint = itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
-    private lazy var trailingInsetConstraint = contentView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor)
-    
     private func updateHorizontalInsets() {
-        let inset = item?.horizontalContentInset
-        let insetConstraints = [leadingInsetConstraint, trailingInsetConstraint]
-        insetConstraints.forEach { $0.constant = inset ?? 0 }
+        guard let inset = item?.horizontalContentInset else {
+            itemView.preservesSuperviewLayoutMargins = true
+            itemView.layoutMargins = .zero
+            return
+        }
         
-        NSLayoutConstraint.deactivate(inset == nil ? insetConstraints : layoutMarginsConstraints)
-        NSLayoutConstraint.activate(inset == nil ? layoutMarginsConstraints : insetConstraints)
+        itemView.preservesSuperviewLayoutMargins = false
+        itemView.layoutMargins = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
     }
     
     private func configureConstraints() {
         let constraints = [
             itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
