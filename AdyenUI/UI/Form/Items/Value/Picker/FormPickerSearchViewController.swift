@@ -10,6 +10,7 @@ import UIKit
 private enum FormPickerLayout {
     static let horizontalInset: CGFloat = 16
     static let searchTextFieldToResultsSpacing: CGFloat = 24
+    static let listItemSpacing: CGFloat = 12
     static let listItemTitleSubtitleSpacing: CGFloat = 2
     static let listItemContentInsets = UIEdgeInsets(
         top: 12,
@@ -90,6 +91,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         }
         
         super.init(rootViewController: searchViewController)
+        searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
 
         configureSearchField(in: searchViewController, style: theme.elements.textField)
         
