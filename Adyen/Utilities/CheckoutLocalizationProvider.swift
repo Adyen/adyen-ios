@@ -80,6 +80,7 @@ extension CheckoutLocalizationKey {
     public static let cardSocialSecurityNumberInvalid = CheckoutLocalizationKey(name: "cardSocialSecurityNumberInvalid")
     public static let cardInstallmentsTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsTitle)
     public static let cardInstallmentsPickerTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerTitle)
+    public static let cardInstallmentsOneTimeDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsOneTimeDescription)
 }
 
 // MARK: - Drop-in

@@ -334,6 +334,8 @@ public struct LocalizationKey {
     public static let cardInstallmentsTitle = LocalizationKey(key: "adyen_checkout_card_installments_title")
     /// Installments
     public static let cardInstallmentsPickerTitle = LocalizationKey(key: "adyen_checkout_card_installments_picker_title")
+    /// Pay the full amount today
+    public static let cardInstallmentsOneTimeDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_one_time_description")
     /// Revolving payment
     public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen.card.installments.revolving")
     /// %@x %@
