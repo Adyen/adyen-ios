@@ -69,7 +69,7 @@ package extension UISearchBar {
     
     private static func searchFieldBackground(theme: CheckoutTheme, isEditing: Bool) -> UIImage {
         let size = Constants.backgroundImageSize
-        let image = UIGraphicsImageRenderer(size: size).image { context in
+        let image = UIGraphicsImageRenderer(size: size).image { _ in
             let borderWidth = isEditing ? Constants.focusedBorderWidth : 0
             let rect = CGRect(origin: .zero, size: size).insetBy(dx: borderWidth / 2, dy: borderWidth / 2)
             let path = UIBezierPath(roundedRect: rect, cornerRadius: Constants.fieldCornerRadius - borderWidth / 2)
@@ -80,7 +80,6 @@ package extension UISearchBar {
                 path.lineWidth = borderWidth
                 path.stroke()
             }
-            context.cgContext.addPath(path.cgPath)
         }
         let capInset = Constants.fieldCornerRadius
         return image.resizableImage(withCapInsets: UIEdgeInsets(
