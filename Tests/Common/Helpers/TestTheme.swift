@@ -41,6 +41,7 @@ internal enum TestTheme {
         internal static let highlight: UIColor = .blue
         internal static let buttonBackground: UIColor = .red
         internal static let buttonText: UIColor = .white
+        internal static let text: UIColor = .systemTeal
     }
 
     /// Default corner radius for buttons
@@ -57,7 +58,8 @@ internal enum TestTheme {
             container: Colors.container,
             containerOutline: Colors.containerOutline,
             primary: Colors.primary,
-            highlight: Colors.highlight
+            highlight: Colors.highlight,
+            text: Colors.text
         )
         return CheckoutTheme(colors: colors)
             .primaryButton(
@@ -73,9 +75,9 @@ internal enum TestTheme {
     /// Returns the expected text field style for the distinctive theme
     internal static var expectedTextFieldStyle: TextFieldStyle {
         TextFieldStyle(
-            titleColor: Colors.primary,
+            titleColor: Colors.text,
             titleFont: UIFont.systemFont(ofSize: 17, weight: .semibold),
-            textColor: Colors.primary,
+            textColor: Colors.text,
             textFont: UIFont.systemFont(ofSize: 17, weight: .regular),
             containerColor: Colors.container,
             cornerRadius: textFieldCornerRadius

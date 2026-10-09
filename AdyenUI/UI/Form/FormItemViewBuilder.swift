@@ -47,7 +47,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `ListItemView` from `ListItem`.
     package func build(with item: ListItem) -> ListItemView {
-        let listView = ListItemView()
+        let listView = ListItemView(theme: theme)
         listView.item = item
         return listView
     }

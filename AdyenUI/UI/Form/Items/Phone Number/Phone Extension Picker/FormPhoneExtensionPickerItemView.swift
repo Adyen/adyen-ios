@@ -12,10 +12,6 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
 
     private let theme: CheckoutTheme
     
-    private enum Constants {
-        static let chevronImageName = "chevron_down"
-    }
-    
     private lazy var valueLabel: UILabel = {
         let label = UILabel()
         label.apply(theme.elements.labels.body)
@@ -23,13 +19,8 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
     }()
     
     private lazy var chevronView: UIImageView = {
-        let image = UIImage(
-            named: Constants.chevronImageName,
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        )
-        
-        let chevronView = UIImageView(image: image)
+        let chevronView = UIImageView(image: .adyenChevronDown)
+        chevronView.tintColor = theme.colors.text
         chevronView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return chevronView
     }()

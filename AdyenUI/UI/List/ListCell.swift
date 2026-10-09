@@ -24,16 +24,23 @@ package final class ListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override package func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-            
-        guard let highlightedBackgroundColor = item?.style.highlightedBackgroundColor else {
-            return
+    // MARK: - Theme
+
+    /// The theme to use for styling.
+    ///
+    /// Settable rather than init-only because cells are created by `dequeueReusableCell`.
+    package var theme: CheckoutTheme = .default {
+        didSet {
+            itemView.theme = theme
+            applyTheme()
         }
-        
-        contentView.backgroundColor = highlighted ? highlightedBackgroundColor : item?.style.backgroundColor
     }
-    
+
+    private func applyTheme() {
+        backgroundColor = item.map { $0.isSelected ? theme.colors.container : theme.colors.background }
+        contentView.backgroundColor = .clear
+    }
+
     // MARK: - Item
     
     /// The item displayed in the cell cell.
@@ -41,17 +48,8 @@ package final class ListCell: UITableViewCell {
         didSet {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
-            backgroundColor = item?.style.backgroundColor
-
-            let usesCustomHighlight = item?.style.highlightedBackgroundColor != nil
-            contentView.backgroundColor = usesCustomHighlight ? item?.style.backgroundColor : .clear
-
-            itemView.layoutMargins = item?.style.contentInsets ?? .init(
-                top: 0,
-                left: contentView.layoutMargins.left,
-                bottom: 0,
-                right: contentView.layoutMargins.right
-            )
+            applyTheme()
+            updateHorizontalInsets()
 
             resetAccessoryView()
             
@@ -72,6 +70,8 @@ package final class ListCell: UITableViewCell {
         clipsToBounds = isSelected
         accessibilityMarkAsSelected(isSelected)
     }
+    
+    // MARK: - Internal
     
     /// Indicates if the cell is in an enabled state.
     internal var isEnabled = true {
@@ -138,18 +138,27 @@ package final class ListCell: UITableViewCell {
     }
     
     // MARK: - Item View
-
+    
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
-        itemView.preservesSuperviewLayoutMargins = false
-        itemView.layoutMargins = .zero
         
         return itemView
     }()
     
     // MARK: - Layout
-
+    
+    private func updateHorizontalInsets() {
+        guard let inset = item?.horizontalContentInset else {
+            itemView.preservesSuperviewLayoutMargins = true
+            itemView.layoutMargins = .zero
+            return
+        }
+        
+        itemView.preservesSuperviewLayoutMargins = false
+        itemView.layoutMargins = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
+    }
+    
     private func configureConstraints() {
         let constraints = [
             itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -162,6 +171,7 @@ package final class ListCell: UITableViewCell {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        updateHorizontalInsets()
     }
     
 }

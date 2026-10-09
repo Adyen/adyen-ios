@@ -104,6 +104,7 @@ extension AddressLookupViewController.ViewModel {
         
         .init(
             style: style.search,
+            theme: theme,
             localizationParameters: localizationParameters,
             lookupProvider: lookupProvider,
             presentationHandler: presentationHandler,
