@@ -215,7 +215,7 @@ class SearchViewControllerTests: XCTestCase {
         setupRootViewController(searchViewController)
         searchViewController.view.layoutIfNeeded()
 
-        let expectedMinY = headerView.frame.maxY + 8
+        let expectedMinY = headerView.frame.maxY + 24
 
         XCTAssertEqual(
             searchViewController.resultsListViewController.view.frame.minY,

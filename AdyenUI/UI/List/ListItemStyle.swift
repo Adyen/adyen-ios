@@ -49,6 +49,9 @@ package struct ListItemStyle: ViewStyle {
     /// `nil` uses the cell's default layout margins.
     package var contentInsets: UIEdgeInsets?
 
+    /// Vertical spacing between the title and the subtitle.
+    package var titleSubtitleSpacing: CGFloat = 0
+
     /// Initializes the list item style.
     ///
     /// - Parameter title: The title style.
@@ -72,7 +75,8 @@ extension ListItemStyle: Equatable {
             lhs.subtitle == rhs.subtitle &&
             lhs.image == rhs.image &&
             lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor &&
-            lhs.contentInsets == rhs.contentInsets
+            lhs.contentInsets == rhs.contentInsets &&
+            lhs.titleSubtitleSpacing == rhs.titleSubtitleSpacing
     }
     
 }
