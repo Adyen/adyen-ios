@@ -18,9 +18,9 @@ struct AdyenLabelTests {
         label.apply(style)
         label.text = "Body"
 
-        let paragraphStyle = try #require(paragraphStyle(of: label))
-        #expect(paragraphStyle.minimumLineHeight == 22)
-        #expect(paragraphStyle.maximumLineHeight == 22)
+        let lineStyle = try #require(paragraphStyle(of: label))
+        #expect(lineStyle.minimumLineHeight == 22)
+        #expect(lineStyle.maximumLineHeight == 22)
         #expect(label.text == "Body")
     }
 
