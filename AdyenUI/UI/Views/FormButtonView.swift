@@ -7,7 +7,7 @@
 import SwiftUI
 import UIKit
 
-package struct FormButtonRepresentable: View {
+package struct FormButtonView: View {
 
     package let title: String
     package let style: AdyenButtonStyle
@@ -34,7 +34,7 @@ package struct FormButtonRepresentable: View {
     }
 
     package var body: some View {
-        UIKitFormButton(
+        FormButtonRepresentable(
             title: title,
             style: style,
             showsActivityIndicator: showsActivityIndicator,
@@ -45,7 +45,7 @@ package struct FormButtonRepresentable: View {
     }
 }
 
-private struct UIKitFormButton: UIViewRepresentable {
+private struct FormButtonRepresentable: UIViewRepresentable {
 
     let title: String
     let style: AdyenButtonStyle

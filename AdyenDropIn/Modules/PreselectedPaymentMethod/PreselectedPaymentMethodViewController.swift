@@ -116,7 +116,7 @@ internal struct PreselectedPaymentMethodView: View {
 
     private var buttons: some View {
         VStack(spacing: Constants.buttonsSpacing) {
-            FormButtonRepresentable(
+            FormButtonView(
                 title: viewModel.submitButtonTitle,
                 style: viewModel.theme.elements.buttons.primary,
                 isEnabled: !viewModel.isLoading,
@@ -127,7 +127,7 @@ internal struct PreselectedPaymentMethodView: View {
             .frame(height: Constants.buttonHeight)
 
             if viewModel.showsAllPaymentMethodsButton {
-                FormButtonRepresentable(
+                FormButtonView(
                     title: viewModel.showAllPaymentMethodsButtonTitle,
                     style: viewModel.theme.elements.buttons.secondary,
                     isEnabled: !viewModel.isLoading,
