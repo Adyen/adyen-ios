@@ -18,27 +18,27 @@ internal struct StoredPaymentMethodContentViewModelTests {
     internal func storedCardSecurityCodeComponent_whenCreated_thenProvidesSharedHeaderAndComponentController() {
         let context = makeSUTStoredCardWithCVC()
 
-        #expect(context.sut.title == "\(String.Adyen.securedString)4556")
-        #expect(context.sut.paymentMethodLogoURL.absoluteString.contains("visa"))
-        #expect(context.sut.subtitle.string == "Use Visa to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.header.title == "\(String.Adyen.securedString)4556")
+        #expect(context.sut.header.logoURL.absoluteString.contains("visa"))
+        #expect(String(context.sut.header.subtitle.characters) == "Use Visa to pay \(Dummy.amount.formatted)")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withMissingAmount_thenProvidesUnformattedPayDescription() {
         let context = makeSUTStoredCardWithCVC(amount: nil)
-        #expect(context.sut.subtitle.string == "Use Visa to pay")
+        #expect(String(context.sut.header.subtitle.characters) == "Use Visa to pay")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withZeroAmount_thenProvidesSaveDetailsDescription() {
         let context = makeSUTStoredCardWithCVC(amount: Amount(value: 0, currencyCode: "EUR"))
-        #expect(context.sut.subtitle.string == "Use Visa to save details")
+        #expect(String(context.sut.header.subtitle.characters) == "Use Visa to save details")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_whenCreated_thenEmphasizesNameAndAmount() {
         let context = makeSUTStoredCardWithCVC()
-        let subtitle = context.sut.subtitle
+        let subtitle = NSAttributedString(context.sut.header.subtitle)
         let bodyFont = context.sut.theme.elements.labels.body.font
         let emphasizedFont = context.sut.theme.elements.labels.bodyEmphasized.font
 
@@ -62,8 +62,8 @@ internal struct StoredPaymentMethodContentViewModelTests {
         )
         let context = makeSUT(component: component)
 
-        #expect(context.sut.title == "$arjenLandstra")
-        #expect(context.sut.subtitle.string == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.header.title == "$arjenLandstra")
+        #expect(String(context.sut.header.subtitle.characters) == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
     }
 
     @Test

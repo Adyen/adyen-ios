@@ -52,6 +52,43 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(dropInFlowManager.submitFromCalled)
     }
 
+    /// Verifies that successful submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionSucceeds_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.completePayment(from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that failed submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionFails_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.failPayment(with: Dummy.error, from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that cancelling payment removes the loading state.
+    @Test
+    func loadingViewModel_whenPaymentIsCancelled_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        sut.load()
+        try sut.submitPayment()
+
+        sut.cancel()
+
+        #expect(try !sut.isLoading)
+    }
+
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
     func presentableComponent_submitPayment_triggersPresentation() throws {
         let mockedRouter = PreselectedPaymentMethodRoutingMock()
@@ -166,6 +203,12 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(dropInFlowManagerMock.cancelComponentCalled)
     }
 
+    private func makeGenericComponent() -> PaymentComponentMock {
+        let component = PaymentComponentMock(paymentMethod: PaymentComponentTestData.visa.paymentComponent.paymentMethod)
+        component.shouldCallDelegateOnSubmit = false
+        return component
+    }
+
     // MARK: - Setup of the system under test
 
     /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PaymentComponent
@@ -240,64 +283,64 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         // MARK: - Readable UI accessors
 
+        private var preselectedViewController: PreselectedPaymentMethodViewController {
+            get throws {
+                try #require(viewController as? PreselectedPaymentMethodViewController)
+            }
+        }
+
         func load() {
             viewController.loadViewIfNeeded()
         }
 
         var primaryTitleText: String {
             get throws {
-                let titleLabel = try #require(viewController.view.findView(by: "title") as? UILabel)
-                return try #require(titleLabel.text)
+                try preselectedViewController.viewModel.header.title
             }
         }
 
         var subTitleText: String {
             get throws {
-                let secondaryTitleLabel = try #require(viewController.view.findView(by: "subTitle") as? UILabel)
-                return try #require(secondaryTitleLabel.text)
+                try String(preselectedViewController.viewModel.header.subtitle.characters)
             }
         }
 
         var submitButtonText: String {
             get throws {
-                let button = try submitButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.submitButtonTitle
             }
         }
 
         var showAllPaymentMethodsButtonText: String {
             get throws {
-                let button = try showAllPaymentMethodsButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.showAllPaymentMethodsButtonTitle
             }
         }
 
-        // MARK: - UI elements
-
-        func submitButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "primaryButton") as? FormButton,
-                "Cannot find submitButton - Check if the element exists in the view."
-            )
-        }
-
-        func showAllPaymentMethodsButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "secondaryButton") as? FormButton,
-                "Cannot find showAllPaymentMethodsButton - Check if the element exists in the view."
-            )
+        var isLoading: Bool {
+            get throws {
+                try preselectedViewController.viewModel.isLoading
+            }
         }
 
         // MARK: - User Actions
 
         func submitPayment() throws {
-            let button = try submitButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.submitPayment()
+        }
+
+        func completePayment(from component: PaymentComponent) throws {
+            let details = GenericPaymentDetails(type: component.paymentMethod.type)
+            let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
+            try preselectedViewController.viewModel.didSubmit(data, from: component)
+        }
+
+        func failPayment(with error: Error, from component: PaymentComponent) throws {
+            try preselectedViewController.viewModel.didFail(with: error, from: component)
         }
 
         func showAllPaymentMethods() throws {
-            let button = try showAllPaymentMethodsButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.showAllPaymentMethods()
         }
 
         func cancel() {
@@ -368,8 +411,10 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var expectedSubTitleText: String {
             switch self {
-            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "Use VISA"
-            case .bcmc, .initiableBCMC: "Use Maestro"
+            case .visa: "Use VISA to pay €1.00"
+            case .visaWithoutAmount: "Use VISA to pay"
+            case .visaWithZeroAmount: "Use VISA to save details"
+            case .bcmc, .initiableBCMC: "Use Maestro to pay €1.00"
             }
         }
 

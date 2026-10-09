@@ -6,8 +6,10 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenUI
+import SwiftUI
 import XCTest
 
+@MainActor
 final class FormButtonTests: XCTestCase {
 
     private let style = ButtonStyle(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
@@ -94,6 +96,86 @@ final class FormButtonTests: XCTestCase {
         sut.showsActivityIndicator = false
         XCTAssertFalse(sut.leadingImageView.isHidden, "Leading image should come back after loading")
         XCTAssertTrue(progressView.isHidden, "Progress view should be hidden after loading")
+    }
+
+    /// Verifies that SwiftUI configuration is transferred to the UIKit button.
+    func test_configuration_when_renderingRepresentable_then_updatesFormButton() throws {
+        let (_, _, sut) = try makeRepresentableSUT(
+            title: "Continue",
+            isEnabled: false,
+            showsActivityIndicator: true
+        )
+
+        XCTAssertEqual(sut.title, "Continue")
+        XCTAssertEqual(sut.accessibilityIdentifier, "representableButton")
+        XCTAssertTrue(sut.showsActivityIndicator)
+        XCTAssertFalse(sut.isEnabled)
+    }
+
+    /// Verifies that changing SwiftUI input updates the existing UIKit button.
+    func test_newConfiguration_whenUpdatingRepresentable_thenRefreshesFormButton() throws {
+        let (_, hostingController, sut) = try makeRepresentableSUT()
+
+        hostingController.rootView = makeRepresentable(
+            title: "Updated",
+            isEnabled: false,
+            showsActivityIndicator: false
+        )
+        hostingController.view.setNeedsLayout()
+        hostingController.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.01))
+        let updatedButton: FormButton = try XCTUnwrap(hostingController.view.findView(by: "representableButton"))
+
+        XCTAssertTrue(updatedButton === sut)
+        XCTAssertEqual(updatedButton.title, "Updated")
+        XCTAssertFalse(updatedButton.isEnabled)
+        XCTAssertFalse(updatedButton.showsActivityIndicator)
+    }
+
+    /// Verifies that tapping the UIKit button forwards the action to SwiftUI.
+    func test_formButton_whenTapped_thenForwardsRepresentableAction() throws {
+        var isActionCalled = false
+        let (_, _, sut) = try makeRepresentableSUT(action: { isActionCalled = true })
+
+        sut.sendActions(for: .touchUpInside)
+
+        XCTAssertTrue(isActionCalled)
+    }
+
+    private func makeRepresentableSUT(
+        title: String = "Submit",
+        isEnabled: Bool = true,
+        showsActivityIndicator: Bool = false,
+        action: @escaping () -> Void = {}
+    ) throws -> (UIWindow, UIHostingController<FormButtonView>, FormButton) {
+        let hostingController = UIHostingController(rootView: makeRepresentable(
+            title: title,
+            isEnabled: isEnabled,
+            showsActivityIndicator: showsActivityIndicator,
+            action: action
+        ))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: AdyenUIConstants.submitButtonHeight))
+        window.rootViewController = hostingController
+        window.makeKeyAndVisible()
+        hostingController.view.layoutIfNeeded()
+        let button: FormButton = try XCTUnwrap(hostingController.view.findView(by: "representableButton"))
+        return (window, hostingController, button)
+    }
+
+    private func makeRepresentable(
+        title: String,
+        isEnabled: Bool,
+        showsActivityIndicator: Bool,
+        action: @escaping () -> Void = {}
+    ) -> FormButtonView {
+        FormButtonView(
+            title: title,
+            style: .primary(for: .default),
+            isEnabled: isEnabled,
+            showsActivityIndicator: showsActivityIndicator,
+            accessibilityIdentifier: "representableButton",
+            action: action
+        )
     }
 
     func makeSUT(_ title: String = "Submit") throws -> (FormButton, UIView) {

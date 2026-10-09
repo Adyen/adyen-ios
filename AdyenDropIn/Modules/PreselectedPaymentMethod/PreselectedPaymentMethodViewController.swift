@@ -6,43 +6,25 @@
 
 import Adyen
 import Foundation
+import SwiftUI
 import UIKit
 
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
 
-internal class PreselectedPaymentMethodViewController: UIViewController {
-
-    // MARK: - Constants
+internal final class PreselectedPaymentMethodViewController: UIHostingController<PreselectedPaymentMethodView> {
 
     private enum Constants {
-        static let contentPadding: CGFloat = 24
-        static let distanceBetweenImageAndLabels: CGFloat = 12
-        static let distanceFromButtonsToLabels: CGFloat = 24
-        static let buttonsBottomPadding: CGFloat = 0
-
-        static let secondaryButtonCornerRadius: CGFloat = 14
         static let sheetCornerRadius: CGFloat = 16
-
-        static let labelsSpacing: CGFloat = 8
-        static let buttonsSpacingWithEachOther: CGFloat = 16
+        static let sheetHeight: CGFloat = 500
     }
 
-    // MARK: - Properties
+    internal let viewModel: PreselectedPaymentMethodViewModel
 
-    private let viewModel: PreselectedPaymentMethodViewModelProtocol
-
-    private var theme: CheckoutTheme {
-        viewModel.theme
-    }
-
-    // MARK: - Initializers
-
-    internal init(viewModel: PreselectedPaymentMethodViewModelProtocol) {
+    internal init(viewModel: PreselectedPaymentMethodViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        setupLoadingStateHandler()
+        super.init(rootView: PreselectedPaymentMethodView(viewModel: viewModel))
     }
 
     @available(*, unavailable)
@@ -50,52 +32,22 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View life cycle
-
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        view.backgroundColor = viewModel.theme.colors.background
         setupNavigationItem()
         configurePresentationSheet()
         viewModel.viewDidLoad()
     }
 
-    // MARK: - setup & configurations
-
-    private func setupView() {
-        view.backgroundColor = theme.colors.background
-
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentStackView)
-
-        contentStackView.addArrangedSubview(topContentStackView)
-        contentStackView.addArrangedSubview(buttonsStackView)
-
-        topContentStackView.addArrangedSubview(cardImageView)
-        topContentStackView.addArrangedSubview(labelsStackView)
-
-        labelsStackView.addArrangedSubview(titleLabel)
-        labelsStackView.addArrangedSubview(subtitleLabel)
-
-        buttonsStackView.addArrangedSubview(primaryButton)
-        buttonsStackView.addArrangedSubview(secondaryButton)
-
-        configureConstraints()
-        configureContent()
-    }
-
-    /// Two tasks,
-    /// 1. Avoid swipe down to dismiss.
-    /// 2. to make the screen dynamic sizable.
+    /// Configures a fixed-height sheet that cannot be dismissed by swiping down.
     private func configurePresentationSheet() {
-        // Adding this to avoid swiping down to dimiss the controller.
         isModalInPresentation = true
 
-        // Adding this to make the controller fit its content height.
         if let sheet = sheetPresentationController {
             sheet.detents = [
-                .custom { [weak self] _ in
-                    self?.calculateContentHeight()
+                .custom { _ in
+                    Constants.sheetHeight
                 }
             ]
             sheet.prefersGrabberVisible = false
@@ -103,34 +55,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         }
     }
 
-    private func configureConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.contentPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -Constants.contentPadding * 2)
-        ])
-    }
-
-    private func configureContent() {
-        titleLabel.text = viewModel.titleText
-        subtitleLabel.text = viewModel.subtitleText
-        primaryButton.title = viewModel.submitButtonTitle
-        secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
-        secondaryButton.isHidden = !viewModel.showsAllPaymentMethodsButton
-    }
-
     private func setupNavigationItem() {
-        setupCancelButton()
-    }
-
-    private func setupCancelButton() {
         let cancelButton = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,
@@ -139,140 +64,89 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelButton
     }
 
-    private func setupLoadingStateHandler() {
-        viewModel.onLoadingStateChange = { [weak self] isLoading in
-            self?.updateLoadingState(isLoading)
-        }
-    }
-
-    private func updateLoadingState(_ isLoading: Bool) {
-        primaryButton.showsActivityIndicator = isLoading
-        secondaryButton.isEnabled = !isLoading
-    }
-
-    // MARK: - User Actions
-
     @objc private func cancelTapped() {
         viewModel.cancel()
     }
+}
 
-    @objc private func primaryButtonTapped() {
-        viewModel.submitPayment()
+internal struct PreselectedPaymentMethodView: View {
+
+    private enum Constants {
+        static let contentTopPadding: CGFloat = 24
+        static let contentPadding: CGFloat = 24
+
+        static let labelsToButtonPadding: CGFloat = 16
+
+        static let buttonsSpacing: CGFloat = 16
+        static let buttonsBottomPadding: CGFloat = 16
+        static let buttonHeight: CGFloat = 52
     }
 
-    @objc private func secondaryButtonTapped() {
-        viewModel.showAllPaymentMethods()
-    }
+    @ObservedObject internal var viewModel: PreselectedPaymentMethodViewModel
 
-    // MARK: - Subviews
-
-    /// In order to present the controller to adjust to the height of the content. We calculate the height of the content + the buttons.
-    private func calculateContentHeight() -> CGFloat {
-        view.layoutIfNeeded()
-        let topContentHeight = topContentStackView
-            .systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-            .height
-        let buttonsHeight = buttonsStackView
-            .systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-            .height
-        return topContentHeight
-            + buttonsHeight
-            + Constants.distanceBetweenImageAndLabels
-            + Constants.distanceFromButtonsToLabels
-            + Constants.buttonsBottomPadding
-            + view.safeAreaInsets.top
-    }
-
-    /// Call this when any subview resizes itself.
-    /// That will allow this screen to redraw and then we can compute the dynamic heigh tof the screen.
-    private func invalidateSheetDetent() {
-        sheetPresentationController?.invalidateDetents()
-    }
-
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.showsHorizontalScrollIndicator = false
-        return scrollView
-    }()
-
-    private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = Constants.distanceFromButtonsToLabels
-        return stackView
-    }()
-
-    private lazy var topContentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.distanceBetweenImageAndLabels
-        return stackView
-    }()
-
-    private lazy var cardImageView: CardImageView = {
-        let imageView = CardImageView(item: viewModel.cardImageItem)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.onImageLoaded = { [weak self] in
-            self?.invalidateSheetDetent()
+    internal var body: some View {
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 0) {
+                    topContent
+                        .frame(maxHeight: .infinity)
+                        .padding(.bottom, Constants.labelsToButtonPadding)
+                    buttons
+                }
+                .frame(minHeight: geometry.size.height - Constants.contentTopPadding - Constants.buttonsBottomPadding)
+                .padding(.top, Constants.contentTopPadding)
+                .padding(.horizontal, Constants.contentPadding)
+                .padding(.bottom, Constants.buttonsBottomPadding)
+            }
         }
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardShapedImage")
-        return imageView
-    }()
+        .background(Color(uiColor: viewModel.theme.colors.background))
+        .accessibilityIdentifier(PreselectedPaymentMethodAccessibilityIdentifier.screen)
+    }
 
-    private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.labelsSpacing
-        return stackView
-    }()
+    private var topContent: some View {
+        PaymentMethodContentHeaderView(
+            viewModel: viewModel.header,
+            accessibilityIdentifiers: .init(
+                logo: PreselectedPaymentMethodAccessibilityIdentifier.logo,
+                title: PreselectedPaymentMethodAccessibilityIdentifier.title,
+                subtitle: PreselectedPaymentMethodAccessibilityIdentifier.subtitle
+            )
+        )
+    }
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(theme.elements.labels.title)
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
+    private var buttons: some View {
+        VStack(spacing: Constants.buttonsSpacing) {
+            FormButtonView(
+                title: viewModel.submitButtonTitle,
+                style: viewModel.theme.elements.buttons.primary,
+                isEnabled: !viewModel.isLoading,
+                showsActivityIndicator: viewModel.isLoading,
+                accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.primaryButton,
+                action: viewModel.submitPayment
+            )
+            .frame(height: Constants.buttonHeight)
 
-        return label
-    }()
+            if viewModel.showsAllPaymentMethodsButton {
+                FormButtonView(
+                    title: viewModel.showAllPaymentMethodsButtonTitle,
+                    style: viewModel.theme.elements.buttons.secondary,
+                    isEnabled: !viewModel.isLoading,
+                    showsActivityIndicator: false,
+                    accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.secondaryButton,
+                    action: viewModel.showAllPaymentMethods
+                )
+                .frame(height: Constants.buttonHeight)
+            }
+        }
+    }
+}
 
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(theme.elements.labels.body)
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
-        return label
-    }()
-
-    private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = Constants.buttonsSpacingWithEachOther
-        return stackView
-    }()
-
-    private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
-        return button
-    }()
-
-    private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
-        return button
-    }()
+// swiftlint:disable:next type_name
+internal enum PreselectedPaymentMethodAccessibilityIdentifier {
+    internal static let screen = "preselectedPaymentMethod.screen"
+    internal static let logo = "preselectedPaymentMethod.logo"
+    internal static let title = "preselectedPaymentMethod.title"
+    internal static let subtitle = "preselectedPaymentMethod.subtitle"
+    internal static let primaryButton = "preselectedPaymentMethod.primaryButton"
+    internal static let secondaryButton = "preselectedPaymentMethod.secondaryButton"
 }

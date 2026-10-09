@@ -5,45 +5,16 @@
 //
 
 import Adyen
+import Combine
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
-import UIKit
 
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
 
 @MainActor
-internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
-
-    // To Retrieve what to be displayed
-    var cardImageItem: CardImageItem { get }
-    var titleText: String { get }
-    var subtitleText: String { get }
-
-    var submitButtonTitle: String { get }
-    func submitPayment()
-
-    var showAllPaymentMethodsButtonTitle: String { get }
-    var showsAllPaymentMethodsButton: Bool { get }
-    func showAllPaymentMethods()
-    /// Theming
-    var theme: CheckoutTheme { get }
-
-    /// Loading state
-    var onLoadingStateChange: ((_ isLoading: Bool) -> Void)? { get set }
-
-    // Actions
-    func cancel()
-    func viewDidLoad()
-}
-
-@MainActor
-internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
-
-    private enum Constants {
-        static let cardImageSize = CGSize(width: 80, height: 52)
-    }
+internal final class PreselectedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Properties
 
@@ -60,8 +31,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     /// Callback for when the component is loaded on display.
     internal var onDidLoad: (() -> Void)?
 
-    /// Callback for when the loading state changes.
-    internal var onLoadingStateChange: ((_ isLoading: Bool) -> Void)?
+    @Published internal private(set) var isLoading = false
 
     // MARK: - Initializers
 
@@ -83,31 +53,15 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
     }
 
-    // MARK: - PreselectedPaymentMethodViewModelProtocol
+    // MARK: - Display Properties
 
-    internal var cardImageItem: CardImageItem {
-        let paymentMethod = component.paymentMethod
-        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
-        let imageURL = LogoURLProvider.logoURL(
-            withName: displayInformation.logoName,
-            environment: component.context.apiContext.environment,
-            size: .large
-        )
-        return CardImageItem(
-            imageURL: imageURL,
-            sizeMode: .fixed(Constants.cardImageSize),
+    internal var header: PaymentMethodContentHeaderViewModel {
+        PaymentMethodContentHeaderViewModel(
+            paymentMethod: component.paymentMethod,
+            context: component.context,
+            localizationParameters: localizationParameters,
             theme: theme
         )
-    }
-
-    internal var titleText: String {
-        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
-        return displayInformation.title
-    }
-
-    internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
     }
 
     internal var submitButtonTitle: String {
@@ -157,19 +111,19 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         case .regular, .stored:
             router?.present(component: component)
         case .generic:
-            startLoading(for: component)
+            startLoading()
             component.performSubmit()
         }
     }
 
     // MARK: -
 
-    private func startLoading(for component: PaymentComponent) {
-        onLoadingStateChange?(true)
+    private func startLoading() {
+        isLoading = true
     }
 
     private func stopLoading() {
-        onLoadingStateChange?(false)
+        isLoading = false
     }
 }
 
@@ -181,6 +135,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        stopLoading()
         dropInFlowManager.submit(data, from: component)
     }
     
@@ -188,6 +143,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
+        stopLoading()
         if case ComponentError.cancelled = error {
             cancel()
         } else {
