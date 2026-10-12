@@ -177,6 +177,7 @@ private extension ComponentManager {
             var component = try paymentComponentProvider.buildComponent(for: paymentMethod)
             // TODO: Preserve the order assignment until partial payments have a dedicated design.
             component.order = order
+            component._isDropIn = true
             return component
         } catch {
             // TODO: Store these errors if we need to track them.

@@ -38,6 +38,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
         let paymentMethods: [PaymentMethod] = try [
             XCTUnwrap(AdyenCoder.decode(["type": "blik", "name": "BLIK"]) as BLIKPaymentMethod),
             XCTUnwrap(AdyenCoder.decode(["type": "ach", "name": "ACH Direct Debit"]) as ACHDirectDebitPaymentMethod),
+            XCTUnwrap(AdyenCoder.decode(["type": "directdebit_GB", "name": "BACS Direct Debit"]) as BACSDirectDebitPaymentMethod),
             ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "mc"]),
             GenericPaymentMethod(type: .other("paypal"), name: "PayPal"),
             XCTUnwrap(AdyenCoder.decode(["type": "scheme", "name": "Cards", "brands": ["mc", "visa"]]) as CardPaymentMethod),

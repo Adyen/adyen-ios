@@ -202,8 +202,6 @@ package final class DropInComponent: NSObject,
 //        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
 //        (component as? PreApplePayComponent)?.actionPresentationDelegate = self
-
-        component._isDropIn = true
     }
 }
 
