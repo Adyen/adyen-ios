@@ -17,13 +17,29 @@ package enum AmountAwarePaymentStringsPolicy {
         }
 
         if amount.value == 0 {
-            return localizedString(.submitButtonSaveDetails, localizationParameters)
+            return localizedString(.submitButtonLabelSaveDetails, localizationParameters)
         }
 
         return localizedString(
             .submitButtonFormatted,
             localizationParameters,
             formatted(amount, localizationParameters: localizationParameters)
+        )
+    }
+
+    package static func preselectedPaymentMethodButtonTitle(
+        for paymentMethodName: String,
+        with amount: Amount?,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        if let amount, amount.value == 0 {
+            return localizedString(.submitButtonLabelSaveDetails, localizationParameters)
+        }
+
+        return localizedString(
+            .dropInPreselectedPaymentMethodButtonLabel,
+            localizationParameters,
+            paymentMethodName
         )
     }
 
@@ -36,7 +52,7 @@ package enum AmountAwarePaymentStringsPolicy {
         }
 
         if amount.value == 0 {
-            return localizedString(.submitButtonSaveDetails, localizationParameters)
+            return localizedString(.dropInPaymentMethodListTitleSaveDetails, localizationParameters)
         }
 
         return formatted(amount, localizationParameters: localizationParameters)

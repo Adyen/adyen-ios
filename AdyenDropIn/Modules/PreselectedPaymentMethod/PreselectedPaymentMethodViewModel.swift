@@ -65,7 +65,8 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
     }
 
     internal var submitButtonTitle: String {
-        AmountAwarePaymentStringsPolicy.payButtonTitle(
+        AmountAwarePaymentStringsPolicy.preselectedPaymentMethodButtonTitle(
+            for: component.paymentMethod.name,
             with: component.context.amount,
             localizationParameters: localizationParameters
         )

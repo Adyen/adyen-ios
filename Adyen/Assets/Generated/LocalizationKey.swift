@@ -13,7 +13,7 @@ public struct LocalizationKey {
     /// Pay %@
     public static let submitButtonFormatted = LocalizationKey(key: "adyen.submitButton.formatted")
     /// Save details
-    public static let submitButtonSaveDetails = LocalizationKey(key: "adyen.submitButton.saveDetails")
+    public static let submitButtonLabelSaveDetails = LocalizationKey(key: "adyen_checkout_submit_button_label_save_details")
     /// Cancel
     public static let cancelButton = LocalizationKey(key: "adyen.cancelButton")
     /// OK
@@ -107,15 +107,19 @@ public struct LocalizationKey {
     /// Change Payment Method
     public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
     /// Select your preferred payment option and complete the payment
-    public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.completePayment")
+    public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen_checkout_dropin_payment_method_list_description_complete_payment")
     /// Select your preferred payment option and save your details for future transactions
-    public static let dropInPaymentMethodListDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.saveDetails")
+    public static let dropInPaymentMethodListDescriptionSaveDetails = LocalizationKey(key: "adyen_checkout_dropin_payment_method_list_description_save_details")
+    /// Save details
+    public static let dropInPaymentMethodListTitleSaveDetails = LocalizationKey(key: "adyen_checkout_dropin_payment_method_list_title_save_details")
     /// Use %@ to pay
     public static let dropInStoredPaymentMethodDescription = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description")
     /// Use %@ to pay %@
     public static let dropInStoredPaymentMethodDescriptionWithAmount = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.withAmount")
     /// Use %@ to save details
     public static let dropInStoredPaymentMethodDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.saveDetails")
+    /// Use %@
+    public static let dropInPreselectedPaymentMethodButtonLabel = LocalizationKey(key: "adyen_checkout_dropin_preselected_payment_method_button_label")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
     /// Continue
