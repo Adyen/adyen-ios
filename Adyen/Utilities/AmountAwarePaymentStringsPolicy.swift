@@ -32,7 +32,7 @@ package enum AmountAwarePaymentStringsPolicy {
         with amount: Amount?,
         localizationParameters: LocalizationParameters?
     ) -> String {
-        if let amount, amount.value == 0 {
+        if amount?.value == 0 {
             return localizedString(.submitButtonLabelSaveDetails, localizationParameters)
         }
 
