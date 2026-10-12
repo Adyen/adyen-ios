@@ -70,10 +70,10 @@ package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension>
         super.init(
             preselectedValue: preselectedExtension,
             selectableValues: selectableExtensions,
-            title: localizedString(.telephonePrefix, localizationParameters),
             placeholder: "",
             style: style,
             presenter: presenter,
+            configuration: .init(title: localizedString(.telephonePrefix, localizationParameters)),
             localizationParameters: localizationParameters,
             identifier: identifier
         )

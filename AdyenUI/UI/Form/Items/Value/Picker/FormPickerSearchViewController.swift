@@ -90,6 +90,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             searchViewController.title = configuration.title
         }
         
+        searchViewController.separatesResultsIntoSections = true
+
         super.init(rootViewController: searchViewController)
         searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
 

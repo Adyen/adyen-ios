@@ -1245,6 +1245,100 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(sut.subtitle, "0 monthly payments")
     }
 
+    func test_installmentElement_withAmountDisplayEnabledAndMissingAmount_shouldUseDescriptionWithoutAmount() {
+        let sut = InstallmentElement(
+            kind: .month(.init(
+                monthValue: 2,
+                amount: nil,
+                showAmount: true
+            )),
+            localizationParameters: nil
+        )
+
+        XCTAssertEqual(sut.title, "2 Installments")
+        XCTAssertEqual(sut.subtitle, "2 monthly payments")
+    }
+
+    func test_installmentsSection_withDecodedInvalidMonths_shouldHideEntireSection() throws {
+        let json = """
+        {
+            "card": {
+                "plans": ["regular"],
+                "values": [0, 1]
+            }
+        }
+        """
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = try JSONDecoder().decode(
+            InstallmentConfiguration.self,
+            from: XCTUnwrap(json.data(using: .utf8))
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        let headerTitle = localizedString(.cardInstallmentsTitle, sut.configuration.localizationParameters)
+        let sectionView = try XCTUnwrap(
+            sectionHeaderView(containing: headerTitle, in: sut.cardViewController.view)
+        )
+
+        XCTAssertTrue(sectionView.isHidden)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 1)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsSection_withDecodedRevolvingOnlyOptions_shouldAllowRevolvingPayment() throws {
+        let json = """
+        {
+            "card": {
+                "plans": ["revolving"],
+                "values": []
+            }
+        }
+        """
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = try JSONDecoder().decode(
+            InstallmentConfiguration.self,
+            from: XCTUnwrap(json.data(using: .utf8))
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        let headerTitle = localizedString(.cardInstallmentsTitle, sut.configuration.localizationParameters)
+        let sectionView = try XCTUnwrap(
+            sectionHeaderView(containing: headerTitle, in: sut.cardViewController.view)
+        )
+
+        XCTAssertFalse(sectionView.isHidden)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 2)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+
+        let revolvingOption = try XCTUnwrap(
+            installmentsItem.selectableValues.first { $0.identifier == Installments.Plan.revolving.rawValue }
+        )
+        installmentsItem.value = revolvingOption
+
+        XCTAssertEqual(installmentsItem.formattedValue, "Revolving payment")
+        XCTAssertEqual(installmentsItem.value?.subtitle, "Predetermined amount each month")
+        XCTAssertEqual(
+            sut.cardViewController.installments,
+            Installments(totalMonths: 1, plan: .revolving)
+        )
+    }
+
     func test_installmentsField_withLocalizationProvider_shouldRenderAndroidAlignedOverrides() throws {
         let sectionTitle = "Choose a payment plan"
         let oneTimeTitle = "Pay once"

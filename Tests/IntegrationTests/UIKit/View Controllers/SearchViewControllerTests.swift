@@ -282,7 +282,10 @@ class SearchViewControllerTests: XCTestCase {
     func test_interfaceState_whenShowingResults_shouldShowResultsList() {
         
         // Given
-        let resultItems = [ListItem(title: "Result")]
+        let resultItems = [
+            ListItem(title: "First result"),
+            ListItem(title: "Second result")
+        ]
         
         let viewModel = SearchViewController.ViewModel(
             style: DummyStyle()
@@ -303,6 +306,7 @@ class SearchViewControllerTests: XCTestCase {
         // Then
         XCTAssertTrue(searchViewController.loadingView.isHidden)
         XCTAssertFalse(searchViewController.resultsListViewController.view.isHidden)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.count, 1)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items, resultItems)
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
