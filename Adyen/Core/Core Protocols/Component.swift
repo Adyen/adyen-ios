@@ -12,16 +12,14 @@ public protocol Component: AdyenContextAware {}
 /// Provides convenience functions to `Component` instances.
 extension Component {
 
-    /// Finalizes the payment if there is any, after being processed by payment provider.
-    /// - Parameter success: The status of the payment.
-    /// - Parameter completion: The block to execute after the component finalizes its activity.
-    /// Use of this block is recommended for ApplePayComponent. You may specify nil for this parameter.
-    public func finalizeIfNeeded(with success: Bool, completion: (() -> Void)?) {
+    /// Stops loading, then lets a `FinalizableComponent` show the payment result.
+    /// Returns once the component's UI is gone.
+    /// - Parameter success: Whether the payment succeeded.
+    @MainActor
+    package func finalizeIfNeeded(success: Bool) async {
         stopLoading()
         if let finalizable = self as? FinalizableComponent {
-            finalizable.didFinalize(with: success, completion: completion)
-        } else {
-            completion?()
+            await finalizable.finalize(success: success)
         }
     }
 
@@ -37,14 +35,13 @@ extension Component {
     }
 }
 
-/// A component that needs to be aware of the result of the payment.
-public protocol FinalizableComponent: Component {
+/// A component that shows the payment result in its own UI before the payment ends.
+package protocol FinalizableComponent: Component {
 
-    /// Finalizes payment after being processed by payment provider.
-    /// - Parameter success: The status of the payment.
-    /// - Parameter completion: The block to execute after the component finalizes its activity.
-    /// Use of this block is recommended for ApplePayComponent. You may specify nil for this parameter.
-    func didFinalize(with success: Bool, completion: (() -> Void)?)
+    /// Shows the payment result and returns once the component's UI is gone.
+    /// - Parameter success: Whether the payment succeeded.
+    @MainActor
+    func finalize(success: Bool) async
 }
 
 package extension Component {

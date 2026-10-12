@@ -80,11 +80,33 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.subtitle, "Choose the brand for this payment")
     }
 
+    func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderInstallmentsStrings() throws {
+        let provider = CardComponentLocalizationFlowProviderMock(values: [
+            .cardInstallmentsTitle: "Custom payment plan",
+            .cardInstallmentsPickerTitle: "Custom installments"
+        ])
+
+        var cardConfiguration = CardConfiguration()
+        cardConfiguration.installmentConfiguration = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+        )
+
+        let sut = try makeSUT(
+            configuration: cardConfiguration,
+            globalProvider: provider
+        )
+        setupRootViewController(sut.viewController)
+
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.title, "Custom installments")
+        XCTAssertNotNil(sectionHeaderView(containing: "Custom payment plan", in: sut.cardViewController.view))
+    }
+
     private func makeSUT(
+        configuration: CardConfiguration = .init(),
         globalProvider: (any CheckoutLocalizationProvider)? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) throws -> CardComponent {
-        var cardConfiguration = CardConfiguration()
+        var cardConfiguration = configuration
         cardConfiguration.localizationParameters = localizationParameters
 
         var checkoutConfiguration = makeCheckoutConfiguration(
@@ -129,6 +151,21 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         let items = sut.cardViewController.items
         XCTAssertEqual(items.numberContainerItem.numberItem.title, numberTitle, file: file, line: line)
         XCTAssertEqual(items.securityCodeItem.title, securityCodeTitle, file: file, line: line)
+    }
+
+    private func sectionHeaderView(containing text: String, in view: UIView) -> FormSectionHeaderItemView? {
+        if let sectionView = view as? FormSectionHeaderItemView, containsLabel(withText: text, in: sectionView) {
+            return sectionView
+        }
+        for subview in view.subviews {
+            if let found = sectionHeaderView(containing: text, in: subview) { return found }
+        }
+        return nil
+    }
+
+    private func containsLabel(withText text: String, in view: UIView) -> Bool {
+        if let label = view as? UILabel, label.text == text { return true }
+        return view.subviews.contains { containsLabel(withText: text, in: $0) }
     }
 }
 

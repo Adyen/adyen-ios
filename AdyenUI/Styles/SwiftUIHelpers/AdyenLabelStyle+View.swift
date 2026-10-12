@@ -11,12 +11,12 @@ package extension View {
     /// Applies an `AdyenLabelStyle`, including its fixed line height, to the view.
     ///
     /// SwiftUI has no line-height property, so the line height is emulated with `lineSpacing`
-    /// plus half the extra height as vertical padding, keeping the text vertically centred.
+    /// plus half the extra height as vertical padding, keeping the text vertically centered.
     /// - Parameters:
     ///   - style: The style to apply.
     ///   - color: An optional override for the style's color.
     func adyenLabelStyle(_ style: AdyenLabelStyle, color: UIColor? = nil) -> some View {
-        let extraSpacing = (style.lineHeight ?? style.font.lineHeight) - style.font.lineHeight
+        let extraSpacing = max(0, (style.lineHeight ?? style.font.lineHeight) - style.font.lineHeight)
         return font(Font(style.font))
             .foregroundStyle(Color(uiColor: color ?? style.color))
             .lineSpacing(extraSpacing)

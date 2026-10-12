@@ -81,7 +81,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
             style: style
         )
         isHidden.wrappedValue = true
-        title = localizedString(.cardInstallmentsNumberOfInstallments, localizationParameters)
+        title = localizedString(.cardInstallmentsPickerTitle, localizationParameters)
         updatePickerContent()
     }
 
@@ -94,6 +94,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         // if there is no installment for the current card type then clear picker
         guard !additionalPickerElements.isEmpty else {
             selectableValues = [oneTimePaymentElement.pickerElement]
+            isHidden.wrappedValue = true
             return
         }
         isHidden.wrappedValue = false

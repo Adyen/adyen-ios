@@ -553,7 +553,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
         XCTAssertNotNil(receivedPayment)
 
-        sut.didFinalize(with: true, completion: nil)
+        await sut.finalize(success: true)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -605,7 +605,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertFalse(authorizeCalled, "onAuthorize should not be called when token is empty")
     }
 
-    func test_didFinalize_shouldResolveSheetWithResultAndCallCompletion() async throws {
+    func test_finalize_shouldResolveSheetWithResult() async throws {
         for success in [true, false] {
             sut = try makeComponent(configuration: makeConfiguration())
             submit()
@@ -618,12 +618,10 @@ class ApplePayComponentTest: XCTestCase {
             }
             await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
-            var completionCalled = false
-            sut.didFinalize(with: success) { completionCalled = true }
+            await sut.finalize(success: success)
 
             let result = await resultTask.value
             XCTAssertEqual(result.status, success ? .success : .failure)
-            XCTAssertTrue(completionCalled)
         }
     }
 
@@ -657,7 +655,7 @@ class ApplePayComponentTest: XCTestCase {
         releaseOnAuthorize.fulfill()
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
-        sut.didFinalize(with: true, completion: nil)
+        await sut.finalize(success: true)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -680,7 +678,7 @@ class ApplePayComponentTest: XCTestCase {
         // Give a wrong `didFail` enough time to fire.
         try await Task.sleep(for: .milliseconds(200))
 
-        sut.didFinalize(with: true, completion: nil)
+        await sut.finalize(success: true)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }

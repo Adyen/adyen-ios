@@ -31,10 +31,6 @@ package struct IssuerListComponentConfiguration: CheckoutComponentConfiguration 
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
-    package init(style: ListComponentStyle = .init()) {
-        self.init(style: style, localizationParameters: nil)
-    }
-
     package init(
         style: ListComponentStyle = .init(),
         theme: CheckoutTheme = .default,

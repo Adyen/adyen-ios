@@ -244,6 +244,7 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 - Callback closure typealiases are prefixed with `Checkout` to avoid name collisions: `CheckoutSubmitHandler`, `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`.
+- `FinalizableComponent` and `Component.finalizeIfNeeded(with:completion:)` are no longer public, and `DropInComponent` no longer conforms to `FinalizableComponent`. Checkout ends the payment in the component itself and then reports the result through `onComplete` or `onFailure`.
 
 ### Card component
 
@@ -366,6 +367,21 @@ Set the button's type, style and corner radius with `ApplePayButtonAppearance`. 
 try ApplePayConfiguration(paymentRequest: paymentRequest)
     .buttonAppearance(ApplePayButtonAppearance(buttonType: .buy, buttonStyle: .black, cornerRadius: 8))
 ```
+
+### BACS Direct Debit component
+
+In v5, the BACS Direct Debit component had two screens: the shopper filled in the form, then reviewed their details on a
+confirmation screen before paying.
+
+In v6, the component has a single screen:
+
+- The shopper pays directly from the form. The confirmation screen is removed.
+- To use your own submit button, set `showsSubmitButton(false)` on `CheckoutConfiguration` and call `submit()` on the
+  component when the shopper taps it.
+- Create the component with `checkout.createPaymentComponent(for: .bacsDirectDebit)`.
+- `BACSDirectDebitDetails` has a new `shopperEmail` property containing the email address the shopper entered, and
+  `PaymentComponentData.emailAddress` now returns it. The initializer has a matching `shopperEmail` parameter that
+  defaults to `nil`, so existing code keeps compiling.
 
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.

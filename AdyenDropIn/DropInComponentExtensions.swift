@@ -17,17 +17,6 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-extension DropInComponent: FinalizableComponent {
-
-    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
-            finalizableComponent.didFinalize(with: success, completion: completion)
-        } else {
-            completion?()
-        }
-    }
-}
-
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     package func showConfirmation(for component: PaymentComponent, with order: PartialPaymentOrder?) {

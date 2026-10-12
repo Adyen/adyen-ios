@@ -105,26 +105,11 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.isAccepted
-        let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
-        finalize(success, message)
+        dismissAndShowAlert(result.isAccepted, result.resultCode.rawValue)
     }
 
     private func finish(with error: Error) {
-        let message: String
-        if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-            message = "Cancelled"
-        } else {
-            message = error.localizedDescription
-        }
-        finalize(false, message)
-    }
-
-    private func finalize(_ success: Bool, _ message: String) {
-        issuerListComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self else { return }
-            self.dismissAndShowAlert(success, message)
-        }
+        dismissAndShowAlert(false, error.localizedDescription)
     }
     
     private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {

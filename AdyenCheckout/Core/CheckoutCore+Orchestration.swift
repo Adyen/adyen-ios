@@ -43,6 +43,21 @@ internal enum CheckoutCallbackSource {
     }
 }
 
+/// The final result of a payment attempt.
+internal enum CheckoutOutcome {
+    case completed(CheckoutResultCode)
+    case failed(Error)
+
+    internal var isSuccessful: Bool {
+        switch self {
+        case let .completed(resultCode):
+            resultCode.isSuccessful
+        case .failed:
+            false
+        }
+    }
+}
+
 internal extension CheckoutCore {
 
     func performSubmit(
@@ -103,7 +118,7 @@ internal extension CheckoutCore {
             // TODO: need a result code for advanced non-session action flows.
             return
         }
-        finish(with: resultCode, from: component)
+        finish(.completed(resultCode), from: component)
     }
 
     func handle(submitResult: SubmitResult, source: CheckoutCallbackSource) {
@@ -111,7 +126,7 @@ internal extension CheckoutCore {
         case let .action(action):
             handle(action, source: source)
         case let .completion(resultCode):
-            finish(with: CheckoutResultCode(rawValue: resultCode), from: source.paymentComponent)
+            finish(.completed(CheckoutResultCode(rawValue: resultCode)), from: source.paymentComponent)
         case .retry:
             source.stopLoading()
         // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
@@ -124,46 +139,50 @@ internal extension CheckoutCore {
     func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
         switch additionalDetailsResult {
         case let .completion(resultCode):
-            finish(with: CheckoutResultCode(rawValue: resultCode), from: component)
+            finish(.completed(CheckoutResultCode(rawValue: resultCode)), from: component)
         }
     }
 
     /// Error entry point. Consolidates every error path (onSubmit, onAdditionalDetails,
-    /// component/action/session failures) into a single place so finalization and merchant
-    /// notification stay in lockstep.
+    /// component/action/session failures) into a single place so finalization and the
+    /// result callbacks stay in lockstep.
     func handle(_ error: Error, from component: (any PaymentComponent)?) {
-        finish(with: error, from: component)
+        finish(.failed(error), from: component)
     }
 
-    // TODO: `onComplete` / `onFailure` currently fire synchronously right after finalization,
-    // which for Apple Pay means they fire while PK is still animating its success/failure
-    // result and has not yet dismissed the sheet. If a merchant's callback presents any
-    // UI (alert, navigation, etc.), that presentation wedges UIKit's transition machinery
-    // and the PK sheet never dismisses — same bug the advanced-flow demo hit.
-    //
-    // Proper fix: make `FinalizableComponent.didFinalize` async (or fire its completion
-    // after the sheet has left the window hierarchy) and await it here before invoking
-    // the integrator callbacks. Then every final path below — normal success/failure,
-    // invalid-token in handleDidAuthorize, action-component errors, session errors — is
-    // trivially correct with no per-path special casing.
-    func finish(with resultCode: CheckoutResultCode, from component: (any PaymentComponent)?) {
-        component?.finalizeIfNeeded(with: resultCode.isSuccessful, completion: nil)
+    /// Ends the payment attempt and calls the result callbacks once the component's UI is gone.
+    ///
+    /// The first outcome of an attempt wins: a result or action that arrives later for it is dropped.
+    func finish(_ outcome: CheckoutOutcome, from component: (any PaymentComponent)?) {
+        // Cleared before any suspension, so a submit that arrives while the component
+        // finalizes doesn't trip the assertion in `performSubmit`.
         pendingPaymentComponent = nil
-        resultCallbacks.handleCompletion(
-            resultCode: resultCode,
-            sessionId: session?.state.identifier,
-            sessionResult: session?.state.sessionResult
-        )
-    }
+        submitTask?.cancel()
+        additionalDetailsTask?.cancel()
 
-    func finish(with error: Error, from component: (any PaymentComponent)?) {
-        component?.finalizeIfNeeded(with: false, completion: nil)
-        pendingPaymentComponent = nil
-        resultCallbacks.onFailure?(CheckoutError(error: error))
+        Task {
+            if let component {
+                await component.finalizeIfNeeded(success: outcome.isSuccessful)
+            }
+            callResultCallback(outcome)
+        }
     }
 }
 
 private extension CheckoutCore {
+
+    func callResultCallback(_ outcome: CheckoutOutcome) {
+        switch outcome {
+        case let .completed(resultCode):
+            resultCallbacks.handleCompletion(
+                resultCode: resultCode,
+                sessionId: session?.state.identifier,
+                sessionResult: session?.state.sessionResult
+            )
+        case let .failed(error):
+            resultCallbacks.onFailure?(CheckoutError(error: error))
+        }
+    }
 
     func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
         let handler = callbackHandler
