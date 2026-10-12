@@ -23,32 +23,8 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
-    /// PassKit waits on this for the payment result after the shopper taps Pay.
-    /// `submit(data:)` doesn't return a result, so it arrives later through `finalize(success:)`.
-    internal var paymentResultContinuation: CheckedContinuation<Bool, Never>?
-
-    /// How the sheet ended, from the component's point of view.
-    internal enum SheetOutcome {
-        /// The shopper closed the sheet without paying.
-        case cancelled
-        /// The shopper tapped Pay. The payment result is reported by the Checkout layer.
-        case authorized
-        /// The sheet closed because of an error.
-        case failed(Swift.Error)
-    }
-
-    /// What to report once the sheet is gone. Updated while the sheet is on screen.
-    internal var sheetOutcome = SheetOutcome.cancelled
-
-    /// Runs while the sheet is on screen and keeps the component alive. `finalize(success:)` waits for it.
-    /// `nil` when no sheet is shown.
-    internal var sheetTask: Task<Void, Never>?
-
-    /// `sheetTask` waits on this until the sheet must close. Resumed by `requestSheetClose()`.
-    private var sheetCloseContinuation: CheckedContinuation<Void, Never>?
-
-    /// Set by `requestSheetClose()`, so a close that arrives before `sheetTask` waits isn't lost.
-    private var isSheetCloseRequested = false
+    /// Handles the Apple Pay sheet on screen. `nil` when no sheet is shown.
+    internal private(set) var authorizationHandler: ApplePayAuthorizationHandler?
 
     /// Creates the controller that presents the Apple Pay sheet. A new one is needed for every presentation.
     internal var makeAuthorizationController: (PKPaymentRequest) -> ApplePayAuthorizationControlling = {
@@ -70,6 +46,10 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     package let type: PaymentComponentType = .regular
     package let requiresUserInteraction: Bool = true
+    
+    private var presentationWindow: UIWindow? {
+        viewController.viewIfLoaded?.window ?? UIApplication.shared.adyen.mainKeyWindow
+    }
 
     /// Initializes the component.
     ///
@@ -148,22 +128,13 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         PKPaymentAuthorizationController.canMakePayments(usingNetworks: networks)
     }
 
-    /// Extracts and resumes the continuation, guaranteeing exactly-once delivery
-    /// via MainActor serialization.
-    private func resumeContinuation(success: Bool) {
-        let continuation = paymentResultContinuation
-        paymentResultContinuation = nil
-        continuation?.resume(returning: success)
-    }
-    
     /// Shows the payment result on the Apple Pay sheet and returns once the sheet is dismissed.
     /// Returns right away when no sheet is on screen.
     /// Called by the Checkout layer once the backend payment result is known.
     ///
     /// - Parameter success: `true` if the payment succeeded, `false` otherwise.
     package func finalize(success: Bool) async {
-        resumeContinuation(success: success)
-        await sheetTask?.value
+        await authorizationHandler?.finalize(success: success)
     }
 
     /// Opens the Apple Pay sheet.
@@ -171,48 +142,42 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// Does nothing while the sheet is already on screen.
     /// Reports `ApplePayComponent.Error.invalidPaymentRequest` if the sheet can't be presented.
     package func performSubmit() {
-        guard sheetTask == nil else { return }
+        guard authorizationHandler == nil else { return }
 
-        // An authorization that the shopper dismissed while `onAuthorize` ran can still wait for a result.
-        resumeContinuation(success: false)
-        sheetOutcome = .cancelled
-        isSheetCloseRequested = false
-
-        let controller = makeAuthorizationController(paymentRequest)
-        controller.delegate = self
-        // Set before presenting, so repeated taps are ignored before the sheet appears.
-        sheetTask = Task {
-            await showSheet(using: controller)
-        }
+        let handler = ApplePayAuthorizationHandler(
+            controller: makeAuthorizationController(paymentRequest),
+            configuration: configuration,
+            presentationWindow: presentationWindow,
+            onPresent: { [weak self] in
+                self?.sendDidLoadEvent()
+            },
+            submitPayment: { [weak self] payment in
+                self?.submit(payment)
+            },
+            onEnd: { [weak self] outcome in
+                self?.authorizationHandler = nil
+                self?.report(outcome)
+            }
+        )
+        authorizationHandler = handler
+        handler.start()
     }
 
-    /// Called when PassKit reports that the sheet finished, and when the sheet must close because of an error.
-    internal func requestSheetClose() {
-        isSheetCloseRequested = true
-        sheetCloseContinuation?.resume()
-        sheetCloseContinuation = nil
+    private func submit(_ payment: PKPayment) {
+        let details = ApplePayDetails(
+            paymentMethod: applePayPaymentMethod,
+            token: payment.token.paymentData.base64EncodedString(),
+            network: payment.token.paymentMethod.network?.rawValue ?? "",
+            billingContact: payment.billingContact,
+            shippingContact: payment.shippingContact,
+            shippingMethod: payment.shippingMethod
+        )
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
 
-    /// Presents the sheet, keeps it until `requestSheetClose()` is called, then dismisses it and reports `sheetOutcome`.
-    private func showSheet(using controller: ApplePayAuthorizationControlling) async {
-        guard await controller.present() else {
-            sheetTask = nil
-            delegate?.didFail(with: Error.invalidPaymentRequest, from: self)
-            return
-        }
-        sendDidLoadEvent()
-
-        if !isSheetCloseRequested {
-            await withCheckedContinuation { sheetCloseContinuation = $0 }
-        }
-        await controller.dismiss()
-        sheetTask = nil
-        // PassKit stopped waiting for a result, for example after its timeout.
-        resumeContinuation(success: false)
-
-        // Reported after the task ends, so the `finalize(success:)` it leads to doesn't wait for this task.
-        switch sheetOutcome {
-        case .authorized:
+    private func report(_ outcome: ApplePayAuthorizationHandler.Outcome) {
+        switch outcome {
+        case .submitted:
             break
         case .cancelled:
             delegate?.didFail(with: ComponentError.cancelled, from: self)
