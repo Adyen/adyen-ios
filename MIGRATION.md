@@ -248,8 +248,6 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 
 ### Card component
 
-`CheckoutLocalizationKey` now includes the Android-aligned `cardInstallments*` keys for overriding card installment titles and descriptions.
-
 #### Configuration object
 
 ##### Before (v5)
