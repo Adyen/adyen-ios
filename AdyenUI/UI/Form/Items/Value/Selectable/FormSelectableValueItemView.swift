@@ -90,7 +90,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         let imageView = UIImageView(image: .adyenChevronRight)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Constants.chevronWidth).isActive = true
         imageView.contentMode = .scaleAspectFit
 
         return imageView
@@ -194,4 +194,8 @@ private class ValueLabel: UILabel {
             height: size.height + 3
         )
     }
+}
+
+private enum Constants {
+    static let chevronWidth: CGFloat = 16
 }
