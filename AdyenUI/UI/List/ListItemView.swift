@@ -32,7 +32,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     /// Initializes the list item view.
     package init(
-        theme: CheckoutTheme = .default,
+        theme: CheckoutTheme,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     ) {
         self.theme = theme

@@ -140,7 +140,7 @@ package final class ListCell: UITableViewCell {
     // MARK: - Item View
     
     private lazy var itemView: ListItemView = {
-        let itemView = ListItemView()
+        let itemView = ListItemView(theme: theme)
         itemView.translatesAutoresizingMaskIntoConstraints = false
         
         return itemView
