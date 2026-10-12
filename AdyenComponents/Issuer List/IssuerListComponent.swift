@@ -37,7 +37,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package let requiresUserInteraction: Bool = true
     
     /// Component's configuration.
-    package var configuration: IssuerListComponentConfiguration
+    package var configuration: IssuerListConfiguration
 
     /// The title of the view controller
     private let title: String
@@ -52,7 +52,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package init(
         paymentMethod: IssuerListPaymentMethod,
         context: AdyenContext,
-        configuration: IssuerListComponentConfiguration = .init()
+        configuration: IssuerListConfiguration = .init()
     ) {
         self.issuerListPaymentMethod = paymentMethod
         self.context = context

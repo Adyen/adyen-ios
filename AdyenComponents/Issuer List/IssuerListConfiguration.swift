@@ -11,9 +11,9 @@ import Foundation
 #endif
 
 /// Configuration for Issuer List type components.
-package struct IssuerListComponentConfiguration: CheckoutComponentConfiguration {
+package struct IssuerListConfiguration: CheckoutComponentConfiguration {
 
-    /// `IssuerListComponentConfiguration` is shared across every issuer-based payment method
+    /// `IssuerListConfiguration` is shared across every issuer-based payment method
     /// (iDEAL, EPS, Dotpay and others), so this value is not tied to a specific `PaymentMethodType`.
     /// It is only used as a fallback key when no explicit per-payment-method-type configuration
     /// has been registered.
