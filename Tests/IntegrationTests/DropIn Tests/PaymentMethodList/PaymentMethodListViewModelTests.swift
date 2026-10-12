@@ -195,7 +195,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT(amount: .init(value: 0, currencyCode: "EUR"))
 
         // Then
-        let expected = localizedString(.submitButtonSaveDetails, LocalizationParameters())
+        let expected = localizedString(.dropInPaymentMethodListTitleSaveDetails, LocalizationParameters())
         #expect(sut.headerTitle == expected)
     }
 
