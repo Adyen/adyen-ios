@@ -79,10 +79,8 @@ internal extension CheckoutCore {
                 guard !Task.isCancelled else { return }
                 self?.handle(submitResult: submitResult, source: source)
             } catch CallbackError.beforeSubmitAborted {
-                // catch beforeSubmit abort here and reset the component UI
                 guard !Task.isCancelled else { return }
-                source.stopLoading()
-                self?.pendingPaymentComponent = nil
+                self?.resetAttempt(for: source.paymentComponent)
             } catch {
                 // Ignore if this was a cancellation (task superseded or Checkout torn down).
                 guard !(error is CancellationError), !Task.isCancelled else { return }
@@ -128,7 +126,7 @@ internal extension CheckoutCore {
         case let .completion(resultCode):
             finish(.completed(CheckoutResultCode(rawValue: resultCode)), from: source.paymentComponent)
         case .retry:
-            source.stopLoading()
+            resetAttempt(for: source.paymentComponent)
         // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
         // `errorMessage` in the UI before re-prompting.
         case let .partialPayment(partialPayment):
@@ -170,6 +168,14 @@ internal extension CheckoutCore {
 }
 
 private extension CheckoutCore {
+
+    /// Ends the attempt without a result, so the shopper can submit again.
+    func resetAttempt(for component: any PaymentComponent) {
+        pendingPaymentComponent = nil
+        Task {
+            await component.finalizeIfNeeded(success: false)
+        }
+    }
 
     func triggerResultCallback(for outcome: CheckoutOutcome) {
         switch outcome {
