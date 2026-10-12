@@ -34,7 +34,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
     private let presentationWindow: UIWindow?
     private let onPresent: () -> Void
     private let submitPayment: (PKPayment) -> Void
-    private let onEnd: (Outcome) -> Void
+    private let onFinish: (Outcome) -> Void
 
     private var task: Task<Void, Never>?
     private var pendingOutcome = Outcome.cancelled
@@ -54,14 +54,14 @@ internal final class ApplePayAuthorizationHandler: NSObject {
         presentationWindow: UIWindow?,
         onPresent: @escaping () -> Void,
         submitPayment: @escaping (PKPayment) -> Void,
-        onEnd: @escaping (Outcome) -> Void
+        onFinish: @escaping (Outcome) -> Void
     ) {
         self.controller = controller
         self.configuration = configuration
         self.presentationWindow = presentationWindow
         self.onPresent = onPresent
         self.submitPayment = submitPayment
-        self.onEnd = onEnd
+        self.onFinish = onFinish
         super.init()
         controller.delegate = self
     }
@@ -78,7 +78,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
         await task?.value
     }
 
-    /// Presents the sheet and reports its outcome through `onEnd` once the sheet is dismissed.
+    /// Presents the sheet and reports its outcome through `onFinish` once the sheet is dismissed.
     private func performAuthorization() async {
         let outcome: Outcome
         if await controller.present() {
@@ -90,7 +90,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
         } else {
             outcome = .failed(ApplePayComponent.Error.invalidPaymentRequest)
         }
-        onEnd(outcome)
+        onFinish(outcome)
     }
 
     /// Returns once PassKit reports that the sheet finished.

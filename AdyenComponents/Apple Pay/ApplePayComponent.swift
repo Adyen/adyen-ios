@@ -154,7 +154,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
             submitPayment: { [weak self] payment in
                 self?.submit(payment)
             },
-            onEnd: { [weak self] outcome in
+            onFinish: { [weak self] outcome in
                 self?.authorizationHandler = nil
                 self?.report(outcome)
             }
