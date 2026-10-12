@@ -77,16 +77,15 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         super.init(
             preselectedValue: oneTimePaymentElement,
             selectableValues: [oneTimePaymentElement],
-            title: localizedString(.cardInstallmentsPickerTitle, localizationParameters),
             placeholder: localizedString(.cardInstallmentsOneTimeDescription, localizationParameters),
             style: style,
             presenter: presenter,
-            localizationParameters: localizationParameters,
             configuration: .init(
                 title: localizedString(.cardInstallmentsPickerTitle, localizationParameters),
                 subtitle: localizedString(.cardInstallmentsPickerDescription, localizationParameters),
                 isSearchEnabled: false
-            )
+            ),
+            localizationParameters: localizationParameters
         )
         updateOptionalStatus(isOptional: true)
         isHidden.wrappedValue = true

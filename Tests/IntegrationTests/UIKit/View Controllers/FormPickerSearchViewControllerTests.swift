@@ -396,6 +396,55 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
+    func test_picker_withMultipleOptions_shouldSeparateOptionsIntoSections() throws {
+        let options: [FormPickerElement] = [
+            .init(identifier: "first", title: "First option"),
+            .init(identifier: "second", title: "Second option")
+        ]
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: options
+        )
+        let sections = searchViewController.resultsListViewController.sections
+
+        XCTAssertEqual(sections.count, options.count)
+        XCTAssertEqual(sections.map(\.items.count), [1, 1])
+        XCTAssertEqual(sections.flatMap(\.items).map(\.title), options.map(\.title))
+    }
+
+    func test_picker_withMultipleOptions_shouldSpaceRowsByTwelvePoints() throws {
+        let expectedSpacing: CGFloat = 12
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: [
+                .init(identifier: "first", title: "First option"),
+                .init(identifier: "second", title: "Second option")
+            ]
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+        resultsListViewController.tableView.layoutIfNeeded()
+
+        let tableView = try XCTUnwrap(resultsListViewController.tableView)
+        let firstCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+        )
+        let secondCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))
+        )
+
+        let firstFrame = firstCell.convert(firstCell.bounds, to: tableView)
+        let secondFrame = secondCell.convert(secondCell.bounds, to: tableView)
+
+        XCTAssertEqual(
+            secondFrame.minY - firstFrame.maxY,
+            expectedSpacing,
+            accuracy: 0.5
+        )
+    }
+
     func test_picker_whenResultsRendered_shouldSpaceTitleAndSubtitleByTwoPoints() throws {
         let searchViewController = try makeSearchViewController()
         let resultsListViewController = searchViewController.resultsListViewController

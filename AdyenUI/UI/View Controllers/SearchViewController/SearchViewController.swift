@@ -43,6 +43,10 @@ package class SearchViewController: UIViewController, AdyenObserver {
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style)
 
+    /// Displays each result in its own section when enabled.
+    /// Configure before loading the view.
+    package var separatesResultsIntoSections = false
+
     /// Initializes the search view controller.
     ///
     /// - Parameters:
@@ -225,7 +229,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
             emptyView.searchTerm = searchTerm
             
         case let .showingResults(results):
-            resultsListViewController.reload(newSections: results.map { ListSection(items: [$0]) })
+            let sections = separatesResultsIntoSections
+                ? results.map { ListSection(items: [$0]) }
+                : [ListSection(items: results)]
+
+            resultsListViewController.reload(newSections: sections)
             resultsListViewController.view.isHidden = false
         }
     }
