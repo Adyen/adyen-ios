@@ -301,7 +301,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var subTitleText: String {
             get throws {
-                try String(preselectedViewController.viewModel.header.subtitle.characters)
+                try preselectedViewController.viewModel.header.subtitle
             }
         }
 

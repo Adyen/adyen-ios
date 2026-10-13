@@ -57,7 +57,7 @@ internal struct PaymentMethodContentHeaderView: View {
             viewModel: .init(
                 logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
                 title: "•••• 1111",
-                subtitle: AttributedString("Use Visa to pay €10.00"),
+                subtitle: "Use Visa to pay €10.00",
                 theme: theme
             ),
             accessibilityIdentifiers: .init(

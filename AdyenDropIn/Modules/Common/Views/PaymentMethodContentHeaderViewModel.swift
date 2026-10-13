@@ -14,7 +14,7 @@ internal struct PaymentMethodContentHeaderViewModel {
 
     internal let logoURL: URL
     internal let title: String
-    internal let subtitle: AttributedString
+    internal let subtitle: String
     internal let theme: CheckoutTheme
 
     internal init(
@@ -26,30 +26,22 @@ internal struct PaymentMethodContentHeaderViewModel {
     ) {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let logoURLProvider = logoURLProvider ?? LogoURLProvider(environment: context.apiContext.environment)
-        let attributedSubtitle = AmountAwarePaymentStringsPolicy.storedPaymentMethodAttributedSubtitle(
+        let subtitle = AmountAwarePaymentStringsPolicy.storedPaymentMethodSubtitle(
             for: paymentMethod.name,
             with: context.amount,
-            localizationParameters: localizationParameters,
-            attributes: [
-                .font: theme.elements.labels.body.font,
-                .foregroundColor: theme.elements.labels.body.color
-            ],
-            emphasizedAttributes: [
-                .font: theme.elements.labels.bodyEmphasized.font,
-                .foregroundColor: theme.elements.labels.bodyEmphasized.color
-            ]
+            localizationParameters: localizationParameters
         )
 
         self.logoURL = logoURLProvider.logoURL(withName: displayInformation.logoName, size: .large)
         self.title = displayInformation.title
-        self.subtitle = AttributedString(attributedSubtitle)
+        self.subtitle = subtitle
         self.theme = theme
     }
 
     internal init(
         logoURL: URL,
         title: String,
-        subtitle: AttributedString,
+        subtitle: String,
         theme: CheckoutTheme
     ) {
         self.logoURL = logoURL
