@@ -155,6 +155,9 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
                 self?.submit(payment)
             },
             onFinish: { [weak self] outcome in
+                // Clearing the handler lets `performSubmit()` open a new sheet.
+                // Known edge case: if PassKit closed the sheet on its 30-second timeout, the submitted payment
+                // has no result yet, so the shopper can start a second payment before the first one ends.
                 self?.authorizationHandler = nil
                 self?.report(outcome)
             }
