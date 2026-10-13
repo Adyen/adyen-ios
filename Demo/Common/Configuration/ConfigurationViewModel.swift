@@ -32,7 +32,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowOnboarding: Bool = false
     @Published internal var applePayOnBeforeSubmitMode: ApplePaySettings.OnBeforeSubmitMode = .updateData
     @Published internal var analyticsIsEnabled: Bool = true
-    @Published internal var installmentsEnabled: Bool = false
+    @Published internal var installmentOptionsMode: CardInstallmentOptionsMode = .none
     @Published internal var showInstallmentAmount: Bool = false
 
     @Published internal var selectedTheme: ExampleAppTheme = .defaultTheme
@@ -71,7 +71,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.applePayDidAuthorizeSuccessful = configuration.applePaySettings.didAuthorizeSuccessful
         self.applePayOnBeforeSubmitMode = configuration.applePaySettings.onBeforeSubmitMode
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
-        self.installmentsEnabled = configuration.cardSettings.enableInstallments
+        self.installmentOptionsMode = configuration.cardSettings.resolvedInstallmentOptionsMode
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
 
         self.selectedTheme = configuration.themeSettings.theme
@@ -99,7 +99,8 @@ internal final class ConfigurationViewModel: ObservableObject {
                 billingAddress: billingAddress,
                 socialSecurityNumberVisibility: socialSecurityNumberVisibility,
                 koreanAuthenticationVisibility: koreanAuthenticationVisibility,
-                enableInstallments: installmentsEnabled,
+                enableInstallments: installmentOptionsMode.isEnabled,
+                installmentOptionsMode: installmentOptionsMode,
                 showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(
