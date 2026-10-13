@@ -563,8 +563,8 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertTrue(headerView.subtitleLabel.isHidden)
     }
 
-    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByEightPoints() throws {
-        let expectedSpacing: CGFloat = 8
+    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByFourPoints() throws {
+        let expectedSpacing: CGFloat = 4
         let searchViewController = try makeSearchViewController(
             configuration: .init(
                 title: "Installments",
