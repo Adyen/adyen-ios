@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 /// SwiftUI wrapper around the shared `AdyenUI.PaymentLogoView` so all logo styling lives in one place.
-internal struct PaymentMethodLogoView: View {
+internal struct PaymentMethodLogoView: UIViewRepresentable {
 
     // MARK: - Properties
 
@@ -19,25 +19,11 @@ internal struct PaymentMethodLogoView: View {
     internal let theme: CheckoutTheme
     internal let size: CGSize
 
-    // MARK: - Body
-
-    internal var body: some View {
-        LogoViewRepresentable(url: url, theme: theme, size: size)
-            .frame(width: size.width, height: size.height)
-    }
-}
-
-private struct LogoViewRepresentable: UIViewRepresentable {
-
-    internal let url: URL
-    internal let theme: CheckoutTheme
-    internal let size: CGSize
+    // MARK: - UIViewRepresentable
 
     internal func makeUIView(context: Context) -> PaymentLogoView {
         let logoView = PaymentLogoView(size: size)
-        logoView.shadowColor = theme.colors.supportShadow
-        logoView.placeholderColor = theme.colors.disabled
-        logoView.load(url: url)
+        updateUIView(logoView, context: context)
         return logoView
     }
 
@@ -45,5 +31,9 @@ private struct LogoViewRepresentable: UIViewRepresentable {
         logoView.shadowColor = theme.colors.supportShadow
         logoView.placeholderColor = theme.colors.disabled
         logoView.load(url: url)
+    }
+
+    internal func sizeThatFits(_ proposal: ProposedViewSize, uiView: PaymentLogoView, context: Context) -> CGSize? {
+        size
     }
 }
