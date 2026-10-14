@@ -216,7 +216,7 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal static let installmentMonthValues: [UInt] = [2, 3]
-    internal static let installmentPreselectedValue = 2
+    internal static let installmentPreselectedValue: UInt = 2
 
     internal var installmentConfiguration: InstallmentConfiguration? {
         let mode = cardSettings.resolvedInstallmentOptionsMode
