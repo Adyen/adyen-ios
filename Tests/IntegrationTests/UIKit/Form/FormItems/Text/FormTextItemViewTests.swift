@@ -109,13 +109,13 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .milliseconds(500))
         
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         XCTAssertEqual(sut.accessory, .none)
     
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
     
     func testValidationStatusIsInvalidWhenValueIsInvalid() {
@@ -129,7 +129,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .milliseconds(500))
 
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
         item.value = "123456H" // Set item value so validation has content to validate
@@ -140,7 +140,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .seconds(1))
         
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
     
     func testValidationStatusIsValidWhenValueIsValid() {
@@ -154,7 +154,7 @@ class FormTextItemViewTests: XCTestCase {
     
         wait(for: .milliseconds(500))
 
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
         item.value = "123456H" // Set item value so validation has content to validate
@@ -162,7 +162,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .valid)
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor?.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
 
     func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {

@@ -96,7 +96,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         return imageView
     }()
 
-    internal lazy var valueLabel: UILabel = {
+    internal lazy var valueLabel: AdyenLabel = {
         let valueLabel = ValueLabel()
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false

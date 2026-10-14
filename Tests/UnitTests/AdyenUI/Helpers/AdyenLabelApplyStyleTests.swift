@@ -7,11 +7,11 @@
 @testable import AdyenUI
 import XCTest
 
-final class UILabelApplyStyleTests: XCTestCase {
+final class AdyenLabelApplyStyleTests: XCTestCase {
     
     func test_apply_shouldSetAllPropertiesFromStyle() {
         // Given
-        let label = UILabel()
+        let label = AdyenLabel()
         let expectedFont = UIFont.systemFont(ofSize: 16, weight: .medium)
         let expectedColor = UIColor.red
         let expectedAlignment = NSTextAlignment.center
@@ -33,7 +33,7 @@ final class UILabelApplyStyleTests: XCTestCase {
     
     func test_apply_shouldOverwritePreviousStyleWhenAppliedMultipleTimes() {
         // Given
-        let label = UILabel()
+        let label = AdyenLabel()
         let firstStyle = AdyenLabelStyle(
             font: UIFont.systemFont(ofSize: 12),
             color: UIColor.blue,

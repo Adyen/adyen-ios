@@ -47,13 +47,13 @@ internal final class PaymentMethodItemView: UIView {
         return imageView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
+    private lazy var subtitleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

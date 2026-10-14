@@ -23,7 +23,7 @@ internal final class PaymentMethodListHeaderView: UIView {
 
     // MARK: - UI Elements
     
-    private lazy var amountLabel: UILabel = {
+    private lazy var amountLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.text = viewModel.title
         label.numberOfLines = 1
@@ -32,7 +32,7 @@ internal final class PaymentMethodListHeaderView: UIView {
         return label
     }()
     
-    private lazy var subtitleLabel: UILabel = {
+    private lazy var subtitleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.text = viewModel.subtitle
         label.numberOfLines = 0
