@@ -16,6 +16,10 @@ package final class ListViewController: UITableViewController {
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
 
+    private enum Layout {
+        static let footerHeight: CGFloat = 55
+    }
+
     /// Vertical spacing below each section that has no footer.
     package var sectionSpacing: CGFloat = 0
 
@@ -148,7 +152,7 @@ package final class ListViewController: UITableViewController {
     }
 
     override package func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        sections[section].footer == nil ? sectionSpacing : 55
+        sections[section].footer == nil ? sectionSpacing : Layout.footerHeight
     }
 
     override package func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
