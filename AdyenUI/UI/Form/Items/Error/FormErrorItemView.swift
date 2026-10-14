@@ -10,6 +10,10 @@ import UIKit
 /// A view representing an error item.
 internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
+    private enum Constants {
+        static let iconSize = CGSize(width: 16, height: 16)
+    }
+
     private let theme: CheckoutTheme
 
     /// Initializes the error item view.
@@ -74,18 +78,15 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Icon
 
     private lazy var iconView: UIImageView = {
-        let view = UIImageView(image: .init(
-            named: item.iconName,
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        ))
+        let view = UIImageView(image: item.icon)
+        view.tintColor = theme.colors.destructive
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 12),
-            view.heightAnchor.constraint(equalToConstant: 12)
+            view.widthAnchor.constraint(equalToConstant: Constants.iconSize.width),
+            view.heightAnchor.constraint(equalToConstant: Constants.iconSize.height)
         ])
         return view
     }()

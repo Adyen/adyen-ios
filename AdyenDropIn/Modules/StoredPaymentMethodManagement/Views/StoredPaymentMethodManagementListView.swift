@@ -67,7 +67,6 @@ private extension StoredPaymentMethodManagementListView {
     struct RemovalErrorView: View {
 
         private enum Constants {
-            static let iconSystemName = "exclamationmark.triangle"
             static let spacing: CGFloat = 16
             static let iconSize: CGFloat = 16
         }
@@ -77,11 +76,13 @@ private extension StoredPaymentMethodManagementListView {
 
         var body: some View {
             HStack(spacing: Constants.spacing) {
-                Image(systemName: Constants.iconSystemName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: Constants.iconSize, height: Constants.iconSize)
-                    .accessibilityHidden(true)
+                if let icon = UIImage.adyenWarning {
+                    Image(uiImage: icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: Constants.iconSize, height: Constants.iconSize)
+                        .accessibilityHidden(true)
+                }
 
                 Text(message)
                     .font(Font(theme.elements.labels.body.font))

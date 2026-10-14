@@ -20,8 +20,8 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
         // Then - trigger validation to show error state
         sut.showValidation()
-        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.primary)
-        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.primary)
+        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.text)
+        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.text)
         XCTAssertEqual(sut.footerLabel.textColor, CheckoutColors.default.destructive)
         XCTAssertEqual(sut.footerLabel.text, expectedErrorMessage)
 
@@ -36,8 +36,8 @@ final class FormTextItemViewThemeTests: XCTestCase {
         let customColors = CheckoutColors(
             container: .yellow,
             containerOutline: .systemPurple,
-            primary: .magenta,
-            destructive: .orange
+            destructive: .orange,
+            text: .magenta
         )
         let item = FormTextInputItem()
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
@@ -85,7 +85,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextInputItemView_isEnabled_shouldApplyCorrectTextColor() {
         // Given
-        let customColors = CheckoutColors(primary: .systemBlue)
+        let customColors = CheckoutColors(text: .systemBlue)
         let item = FormTextInputItem()
         let sut = makeSUT(item: item, colors: customColors)
 
@@ -113,8 +113,8 @@ final class FormTextItemViewThemeTests: XCTestCase {
         let sut = FormTextItemView(item: FormTextInputItem())
 
         // Then
-        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.primary)
-        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.primary)
+        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.text)
+        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.text)
     }
 
     // MARK: - SUT Factory

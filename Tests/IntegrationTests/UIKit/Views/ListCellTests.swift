@@ -10,28 +10,24 @@ import XCTest
 
 final class ListCellTests: XCTestCase {
 
+    private enum Colors {
+        static let background: UIColor = .purple
+        static let container: UIColor = .orange
+    }
+
     func test_cell_whenItemSelected_shouldShowSelectedAppearance() throws {
-        let selectedBackgroundColor: UIColor = .purple
-        let checkmarkColor: UIColor = .green
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: selectedBackgroundColor,
-                titleColor: checkmarkColor,
-                isSelected: true
-            )
-        )
+        let cell = makeCell(item: makeItem(isSelected: true))
 
         let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
         let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
         let titleStackView = try XCTUnwrap(titleLabel.superview)
 
-        XCTAssertEqual(cell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.container)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
         XCTAssertTrue(cell.clipsToBounds)
         XCTAssertNotNil(checkmarkImageView.image)
         XCTAssertFalse(checkmarkImageView.isHidden)
-        XCTAssertEqual(checkmarkImageView.tintColor, checkmarkColor)
         XCTAssertEqual(checkmarkImageView.bounds.size, CGSize(width: 24, height: 24))
         XCTAssertEqual(checkmarkImageView.frame.minX - titleStackView.frame.maxX, 20, accuracy: 0.1)
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
@@ -39,23 +35,14 @@ final class ListCellTests: XCTestCase {
     }
 
     func test_cell_whenSelectionChanges_shouldUpdateSelectedAppearance() throws {
-        let selectedBackgroundColor: UIColor = .purple
-        let unselectedBackgroundColor: UIColor = .orange
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: selectedBackgroundColor,
-                isSelected: true
-            )
-        )
+        let cell = makeCell(item: makeItem(isSelected: true))
 
-        cell.item = makeItem(
-            backgroundColor: unselectedBackgroundColor
-        )
+        cell.item = makeItem()
         cell.layoutIfNeeded()
 
         let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
 
-        XCTAssertEqual(cell.backgroundColor, unselectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.background)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, 0)
         XCTAssertFalse(cell.clipsToBounds)
@@ -63,13 +50,10 @@ final class ListCellTests: XCTestCase {
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
         XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
 
-        cell.item = makeItem(
-            backgroundColor: selectedBackgroundColor,
-            isSelected: true
-        )
+        cell.item = makeItem(isSelected: true)
         cell.layoutIfNeeded()
 
-        XCTAssertEqual(cell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.container)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
         XCTAssertTrue(cell.clipsToBounds)
@@ -82,7 +66,6 @@ final class ListCellTests: XCTestCase {
         let trailingText = "Trailing text"
         let cell = makeCell(
             item: makeItem(
-                backgroundColor: .purple,
                 isSelected: true,
                 trailingInfo: .text(trailingText)
             )
@@ -97,50 +80,8 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(checkmarkImageView.frame.minX - trailingTextLabel.frame.maxX, 20, accuracy: 0.1)
     }
 
-    func test_itemStyleContentInsets_shouldApplyCustomInsetsAndRestoreDefaults() throws {
-        let cell = makeCell(item: makeItem(backgroundColor: .purple))
-        let itemView: UIView = try XCTUnwrap(cell.findView(by: "itemView"))
-        let defaultInsets = UIEdgeInsets(
-            top: 0,
-            left: cell.contentView.layoutMargins.left,
-            bottom: 0,
-            right: cell.contentView.layoutMargins.right
-        )
-        let customInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
-
-        cell.item = makeItem(backgroundColor: .purple, contentInsets: customInsets)
-        XCTAssertEqual(itemView.layoutMargins, customInsets)
-
-        cell.item = makeItem(backgroundColor: .purple, contentInsets: .zero)
-        XCTAssertEqual(itemView.layoutMargins, .zero)
-
-        cell.item = makeItem(backgroundColor: .purple)
-        XCTAssertEqual(itemView.layoutMargins, defaultInsets)
-    }
-
-    func test_cell_whenCustomHighlightColorProvided_shouldApplyAndResetHighlightColor() {
-        let backgroundColor: UIColor = .purple
-        let highlightedBackgroundColor: UIColor = .orange
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: backgroundColor,
-                highlightedBackgroundColor: highlightedBackgroundColor
-            )
-        )
-
-        cell.setHighlighted(true, animated: false)
-
-        XCTAssertEqual(cell.contentView.backgroundColor, highlightedBackgroundColor)
-
-        cell.setHighlighted(false, animated: false)
-
-        XCTAssertEqual(cell.contentView.backgroundColor, backgroundColor)
-    }
-
-    func test_cell_whenHighlightColorOmitted_shouldKeepContentBackgroundClearWhileHighlighting() {
-        let cell = makeCell(
-            item: makeItem(backgroundColor: .purple)
-        )
+    func test_cell_whenHighlighted_shouldKeepContentBackgroundClear() {
+        let cell = makeCell(item: makeItem())
 
         cell.setHighlighted(true, animated: false)
 
@@ -150,35 +91,86 @@ final class ListCellTests: XCTestCase {
 
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
     }
+
+    func test_cell_whenHorizontalContentInsetProvided_shouldInsetContentAndRestoreMargins() throws {
+        let cell = makeCell(item: makeItem(horizontalContentInset: 14))
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+
+        XCTAssertEqual(titleLabel.convert(titleLabel.bounds, to: cell.contentView).minX, 14, accuracy: 0.1)
+
+        cell.item = makeItem()
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(
+            titleLabel.convert(titleLabel.bounds, to: cell.contentView).minX,
+            cell.contentView.layoutMargins.left,
+            accuracy: 0.1
+        )
+    }
+
+    func test_cell_whenTitleEmphasisPrimary_shouldUsePrimaryColorForTitleAndCheckmark() throws {
+        let cell = makeCell(item: makeItem(isSelected: true, titleEmphasis: .primary))
+
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+
+        XCTAssertEqual(titleLabel.textColor, theme.colors.primary)
+        XCTAssertEqual(checkmarkImageView.tintColor, theme.colors.primary)
+    }
+
+    func test_cell_whenTitleEmphasisHighlighted_shouldUseHighlightColor() throws {
+        let cell = makeCell(item: makeItem(titleEmphasis: .highlighted))
+
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+
+        XCTAssertEqual(titleLabel.textColor, theme.colors.highlight)
+    }
+
+    func test_cell_whenItemHasSubtitle_fittingHeightIncludesLabels() {
+        let cell = ListCell(style: .default, reuseIdentifier: nil)
+        cell.theme = theme
+        cell.item = ListItem(title: "Title", subtitle: "Subtitle", identifier: "identifier")
+
+        let fittingSize = cell.contentView.systemLayoutSizeFitting(
+            CGSize(width: 361, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        XCTAssertGreaterThanOrEqual(fittingSize.height, 64)
+    }
+
+    // MARK: - Helpers
+
+    private let theme = CheckoutTheme(
+        colors: CheckoutColors(
+            background: Colors.background,
+            container: Colors.container,
+            primary: .green,
+            highlight: .blue
+        )
+    )
 
     private func makeCell(item: ListItem) -> ListCell {
         let cell = ListCell(style: .default, reuseIdentifier: nil)
         cell.frame = CGRect(x: 0, y: 0, width: 361, height: 68)
+        cell.theme = theme
         cell.item = item
         cell.layoutIfNeeded()
         return cell
     }
 
     private func makeItem(
-        backgroundColor: UIColor,
-        titleColor: UIColor? = nil,
-        highlightedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
+        titleEmphasis: ListItem.TitleEmphasis = .standard,
         trailingInfo: ListItem.TrailingInfoType? = nil,
-        contentInsets: UIEdgeInsets? = nil
+        horizontalContentInset: CGFloat? = nil
     ) -> ListItem {
-        var style = ListItemStyle()
-        style.backgroundColor = backgroundColor
-        style.highlightedBackgroundColor = highlightedBackgroundColor
-        style.contentInsets = contentInsets
-        if let titleColor {
-            style.title.color = titleColor
-        }
-
-        return ListItem(
+        ListItem(
             title: "Title",
             trailingInfo: trailingInfo,
-            style: style,
+            titleEmphasis: titleEmphasis,
+            horizontalContentInset: horizontalContentInset,
             identifier: "identifier",
             isSelected: isSelected
         )

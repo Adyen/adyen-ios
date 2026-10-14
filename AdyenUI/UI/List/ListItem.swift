@@ -26,8 +26,18 @@ package class ListItem: FormItem {
 
     package var subitems: [FormItem] = []
 
-    /// The list item style.
-    package let style: ListItemStyle
+    /// The emphasis applied to an item's title.
+    package enum TitleEmphasis {
+        /// Rendered in the theme's primary text color.
+        case standard
+        /// Rendered in the theme's highlight color, for items that act as a link or an action.
+        case highlighted
+        /// Rendered in the theme's primary color, for items picked from a list of options.
+        case primary
+    }
+
+    /// The emphasis applied to the item's title.
+    package let titleEmphasis: TitleEmphasis
 
     /// The title of the item.
     package var title: String
@@ -40,6 +50,10 @@ package class ListItem: FormItem {
 
     /// The trailing text of the item.
     package var trailingInfo: TrailingInfoType?
+
+    /// The distance between the cell's edges and the item's content.
+    /// `nil` aligns the content with the cell's layout margins.
+    package let horizontalContentInset: CGFloat?
 
     /// Whether the item is currently selected.
     package let isSelected: Bool
@@ -68,7 +82,8 @@ package class ListItem: FormItem {
     ///   - subtitle: The subtitle of the item.
     ///   - icon: The icon of the item.
     ///   - trailingInfo: The trailing information.
-    ///   - style: The list item style.
+    ///   - titleEmphasis: The emphasis applied to the title.
+    ///   - horizontalContentInset: The distance between the cell's edges and the item's content.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
     ///   - isSelected: Whether the item is currently selected.
@@ -78,7 +93,8 @@ package class ListItem: FormItem {
         subtitle: String? = nil,
         icon: Icon? = nil,
         trailingInfo: TrailingInfoType? = nil,
-        style: ListItemStyle = ListItemStyle(),
+        titleEmphasis: TitleEmphasis = .standard,
+        horizontalContentInset: CGFloat? = nil,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         isSelected: Bool = false,
@@ -88,7 +104,8 @@ package class ListItem: FormItem {
         self.subtitle = subtitle
         self.icon = icon
         self.trailingInfo = trailingInfo
-        self.style = style
+        self.titleEmphasis = titleEmphasis
+        self.horizontalContentInset = horizontalContentInset
         self.identifier = identifier
         self.isSelected = isSelected
         self.accessibilityLabel = accessibilityLabel ?? [

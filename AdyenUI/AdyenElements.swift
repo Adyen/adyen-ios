@@ -23,19 +23,19 @@ package struct AdyenElements {
         let labels = AdyenLabelStyles(
             title: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.title.rawValue, weight: .bold),
-                color: colors.primary
+                color: colors.text
             ),
             subtitle: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subtitle.rawValue, weight: .semibold),
-                color: colors.primary
+                color: colors.text
             ),
             body: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .regular),
-                color: colors.primary
+                color: colors.text
             ),
             bodyEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
-                color: colors.primary
+                color: colors.text
             ),
             subheadline: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .regular),
@@ -47,7 +47,7 @@ package struct AdyenElements {
             ),
             footnote: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .regular),
-                color: colors.textSecondary
+                color: colors.text
             ),
             footnoteEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .semibold),
