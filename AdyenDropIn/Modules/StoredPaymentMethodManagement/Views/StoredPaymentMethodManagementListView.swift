@@ -13,7 +13,7 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementListView: View {
 
     private enum Constants {
-        static let topPadding: CGFloat = 16
+        static let topPadding: CGFloat = 24
         static let verticalSpacing: CGFloat = 16
         static let animationDuration = 0.2
     }

@@ -226,6 +226,31 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(searchViewController.loadingView.frame.minY, expectedMinY, accuracy: 0.1)
     }
 
+    func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
+        let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.configureWithDefaultBackground()
+        barAppearance.titleTextAttributes = [.font: titleFont]
+
+        let searchViewController = makeSearchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
+        navigationController.navigationBar.standardAppearance = barAppearance
+
+        setupRootViewController(navigationController)
+
+        let navigationBar = navigationController.navigationBar
+        XCTAssertEqual(navigationBar.standardAppearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        XCTAssertNil(navigationBar.scrollEdgeAppearance)
+
+        let navigationItem = searchViewController.navigationItem
+        let standardAppearance = try XCTUnwrap(navigationItem.standardAppearance)
+        let scrollEdgeAppearance = try XCTUnwrap(navigationItem.scrollEdgeAppearance)
+        for appearance in [standardAppearance, scrollEdgeAppearance] {
+            XCTAssertEqual(appearance.shadowColor?.cgColor.alpha ?? 0, 0)
+            XCTAssertEqual(appearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        }
+    }
+
     func test_interfaceState_whenEmpty_shouldShowEmptyView() {
         
         // Given

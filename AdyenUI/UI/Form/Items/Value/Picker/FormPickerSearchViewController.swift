@@ -88,8 +88,6 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
 
         super.init(rootViewController: searchViewController)
         searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
-
-        configureSearchField(in: searchViewController, style: theme.elements.textField)
         
         searchViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
@@ -103,36 +101,9 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureSearchField(
-        in viewController: SearchViewController,
-        style: AdyenTextFieldStyle
-    ) {
-        let searchBar = viewController.searchBar
-        let searchTextField = searchBar.searchTextField
-
-        searchBar.setSearchFieldBackgroundImage(UIImage(), for: .normal)
-        searchTextField.applyPickerStyle(style)
-        viewController.searchBarEditingStateDidChange = { [weak searchTextField] isEditing in
-            searchTextField?.adyen.applyLayerBorderColor(
-                isEditing ? style.borderActiveColor : style.borderColor
-            )
-        }
-    }
-
     @objc
     private func dismissTapped() {
         self.dismiss(animated: true)
-    }
-}
-
-private extension UISearchTextField {
-
-    func applyPickerStyle(_ style: AdyenTextFieldStyle) {
-        backgroundColor = style.containerColor
-        clipsToBounds = true
-        layer.borderWidth = style.borderWidth
-        adyen.applyLayerBorderColor(style.borderColor)
-        adyen.round(using: style.cornerRadius)
     }
 }
 

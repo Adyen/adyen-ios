@@ -39,7 +39,7 @@ internal struct StoredPaymentMethodManagementView: View {
         .sheet(item: removalConfirmationItem) { item in
             if #available(iOS 16.4, *) {
                 removalConfirmationView(for: item)
-                    .presentationBackground(.black.opacity(0.1))
+                    .presentationBackground(Color(uiColor: theme.colors.background))
             } else {
                 removalConfirmationView(for: item)
             }
@@ -102,7 +102,7 @@ private extension StoredPaymentMethodManagementView {
     private struct HeaderView: View {
 
         private enum Constants {
-            static let spacing: CGFloat = 8
+            static let spacing: CGFloat = 4
         }
 
         let title: String
@@ -115,7 +115,7 @@ private extension StoredPaymentMethodManagementView {
                     .adyenLabelStyle(theme.elements.labels.title)
 
                 Text(description)
-                    .adyenLabelStyle(theme.elements.labels.body)
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
             }
         }
     }
@@ -123,10 +123,10 @@ private extension StoredPaymentMethodManagementView {
     private struct RemovalConfirmationView: View {
         
         private enum Constants {
-            static let horizontalPadding: CGFloat = 16
+            static let horizontalPadding: CGFloat = 8
             static let verticalPadding: CGFloat = 16
             static let buttonHeight: CGFloat = 52
-            static let buttonSpacing: CGFloat = 8
+            static let buttonSpacing: CGFloat = 12
             static let buttonCornerRadius: CGFloat = 14
         }
 
@@ -149,9 +149,9 @@ private extension StoredPaymentMethodManagementView {
 
                 Button(action: onCancel) {
                     Text(cancelTitle)
-                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.highlight)
+                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.text)
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
-                        .background(Color(uiColor: theme.colors.background))
+                        .background(Color(uiColor: theme.colors.container))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
                 }
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.cancelRemoval)
