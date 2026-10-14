@@ -165,6 +165,7 @@
 "adyen.card.installments.plan" = "Method of payment";
 "adyen_checkout_card_installments_title" = "Payment plan";
 "adyen_checkout_card_installments_picker_title" = "Installments";
+"adyen_checkout_card_installments_option_one_time_description" = "Pay the full amount today";
 "adyen.bacs.holderNameField.title" = "Bank account holder name";
 "adyen.bacs.bankAccountNumberField.title" = "Bank account number";
 "adyen.bacs.bankLocationIdField.title" = "Sort code";
