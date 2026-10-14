@@ -7,6 +7,8 @@
 extension AdyenButtonStyle: Equatable {
     public static func == (lhs: AdyenButtonStyle, rhs: AdyenButtonStyle) -> Bool {
         lhs.textColor == rhs.textColor && lhs.backgroundColor == rhs.backgroundColor
+            && lhs.loadingBackgroundColor == rhs.loadingBackgroundColor
+            && lhs.loadingTextColor == rhs.loadingTextColor
             && lhs.disabledTextColor == rhs.disabledTextColor
             && lhs.disabledBackgroundColor == rhs.disabledBackgroundColor
             && lhs.cornerRadius == rhs.cornerRadius
@@ -16,7 +18,7 @@ extension AdyenButtonStyle: Equatable {
 extension AdyenLabelStyle: Equatable {
     public static func == (lhs: AdyenLabelStyle, rhs: AdyenLabelStyle) -> Bool {
         lhs.font == rhs.font && lhs.color == rhs.color && lhs.disabledColor == rhs.disabledColor
-            && lhs.textAlignment == rhs.textAlignment
+            && lhs.textAlignment == rhs.textAlignment && lhs.lineHeight == rhs.lineHeight
     }
 }
 
@@ -33,6 +35,7 @@ extension AdyenLabelStyles: Equatable {
             && lhs.bodyEmphasized == rhs.bodyEmphasized && lhs.subheadline == rhs.subheadline
             && lhs.subheadlineEmphasized == rhs.subheadlineEmphasized
             && lhs.footnote == rhs.footnote && lhs.footnoteEmphasized == rhs.footnoteEmphasized
+            && lhs.label == rhs.label
     }
 }
 

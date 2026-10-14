@@ -62,15 +62,15 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
         return stackView
     }()
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.subtitle)
         label.numberOfLines = 0
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var subtitleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.subheadline)
         label.textColor = theme.colors.textSecondary
         label.numberOfLines = 0

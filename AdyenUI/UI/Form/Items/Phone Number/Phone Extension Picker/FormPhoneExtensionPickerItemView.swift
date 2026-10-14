@@ -12,8 +12,8 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
 
     private let theme: CheckoutTheme
     
-    private lazy var valueLabel: UILabel = {
-        let label = UILabel()
+    private lazy var valueLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.body)
         return label
     }()
@@ -26,8 +26,8 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
     }()
     
     /// The country code view.
-    private lazy var countryCodeLabel: UILabel = {
-        let label = UILabel()
+    private lazy var countryCodeLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.body)
         return label
     }()

@@ -484,13 +484,13 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
         XCTAssertEqual(switchView.onTintColor?.cgColor, tintColor.cgColor)
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, textColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor?.cgColor, textColor.cgColor)
 
         try withoutAnimation {
             focus(textItemView: securityCodeItemView)
         }
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, textColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor?.cgColor, textColor.cgColor)
     }
 
     // TODO: Fix Later

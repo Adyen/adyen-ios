@@ -52,7 +52,7 @@ package final class ListItemView: UIView, AnyFormItemView {
 
         titleLabel.apply(titleLabelStyle)
         subtitleLabel.apply(labels.subheadline.color(theme.colors.textSecondary))
-        (trailingView as? UILabel)?.apply(labels.body)
+        (trailingView as? AdyenLabel)?.apply(labels.body)
 
         checkmarkImageView.tintColor = item?.titleEmphasis == .primary ? theme.colors.primary : theme.colors.text
         updateImageView()
@@ -128,7 +128,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         
         switch item?.trailingInfo {
         case let .text(string):
-            let trailingTextLabel = UILabel()
+            let trailingTextLabel = AdyenLabel()
             trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
             trailingTextLabel.text = string
             trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
@@ -199,8 +199,8 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Title Label
     
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let titleLabel = AdyenLabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titleLabel
@@ -208,8 +208,8 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Subtitle Label
     
-    private lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel()
+    private lazy var subtitleLabel: AdyenLabel = {
+        let subtitleLabel = AdyenLabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isHidden = true
         

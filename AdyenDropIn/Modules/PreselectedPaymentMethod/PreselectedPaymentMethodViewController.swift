@@ -233,8 +233,8 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.title)
         label.numberOfLines = 0
@@ -243,8 +243,8 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var subtitleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.body)
         label.numberOfLines = 0
@@ -261,15 +261,16 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
+        button.leadingImage = .adyenLock ?? .systemLock
         return button
     }()
 
     private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.secondary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")

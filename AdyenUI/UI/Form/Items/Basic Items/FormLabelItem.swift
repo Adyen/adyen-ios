@@ -50,7 +50,7 @@ package class FormLabelItem: FormItem {
     }
 }
 
-internal final class FormLabelItemView: UILabel, AnyFormItemView {
+internal final class FormLabelItemView: AdyenLabel, AnyFormItemView {
 
     private let theme: CheckoutTheme
 

@@ -31,8 +31,8 @@ internal final class PaymentMethodSectionView: UIView {
         return stackView
     }()
     
-    private lazy var headerLabel: UILabel = {
-        let label = UILabel()
+    private lazy var headerLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(section.theme.elements.labels.subheadlineEmphasized)
         label.numberOfLines = 0

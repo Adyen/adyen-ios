@@ -10,9 +10,6 @@ import UIKit
 /// Contains the styling customization options for any list-based component.
 package struct ListComponentStyle: ViewStyle {
 
-    /// The style of any of the items in the list.
-    package var listItem = ListItemStyle()
-
     /// The style of any of the section headers in the list.
     package var sectionHeader = ListSectionHeaderStyle()
 
@@ -21,18 +18,6 @@ package struct ListComponentStyle: ViewStyle {
 
     package var backgroundColor = UIColor.Adyen.componentBackground
 
-    /// Initializes the list component style.
-    ///
-    /// - Parameter listItem: The style of any of the items in the list.
-    /// - Parameter sectionHeader: The style of any of the section headers in the list.
-    package init(
-        listItem: ListItemStyle,
-        sectionHeader: ListSectionHeaderStyle
-    ) {
-        self.listItem = listItem
-        self.sectionHeader = sectionHeader
-    }
-    
     /// Initializes the list component style with the default style.
     package init() {}
 }

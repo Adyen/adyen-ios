@@ -16,7 +16,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
-        static let spacing: CGFloat = 24
+        static let spacing: CGFloat = 16
         static let labelsSpacing: CGFloat = 8
     }
 
@@ -33,7 +33,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
-                    .font(Font(theme.elements.labels.title.font))
+                    .adyenLabelStyle(theme.elements.labels.title)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
                 Text(AttributedString(subtitle))
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)

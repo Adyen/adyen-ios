@@ -96,7 +96,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         return imageView
     }()
 
-    internal lazy var valueLabel: UILabel = {
+    internal lazy var valueLabel: AdyenLabel = {
         let valueLabel = ValueLabel()
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
@@ -185,7 +185,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 }
 
 /// A label reporting it's intrinsic content size to match the text field of the ``FormTextItemView``
-private class ValueLabel: UILabel {
+private class ValueLabel: AdyenLabel {
 
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize

@@ -39,8 +39,8 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     // MARK: - Title Label
 
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let titleLabel = AdyenLabel()
         titleLabel.text = item.title
         titleLabel.apply(theme.elements.labels.body)
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
