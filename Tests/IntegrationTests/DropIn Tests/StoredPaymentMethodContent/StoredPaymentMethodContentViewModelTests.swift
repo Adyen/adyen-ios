@@ -68,6 +68,18 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(context.flowManager.submitFromCalled)
     }
 
+    @Test
+    internal func isPaymentInProgress_whenTheDropInFlowManagerChanges_thenFollowsIt() {
+        let context = makeSUTStoredCardWithCVC()
+        #expect(!context.sut.isPaymentInProgress)
+
+        context.flowManager.paymentInProgressSubject.send(true)
+        #expect(context.sut.isPaymentInProgress)
+
+        context.flowManager.paymentInProgressSubject.send(false)
+        #expect(!context.sut.isPaymentInProgress)
+    }
+
     private struct TestContext {
         let sut: StoredPaymentMethodContentViewModel
         let component: any StoredPaymentComponent

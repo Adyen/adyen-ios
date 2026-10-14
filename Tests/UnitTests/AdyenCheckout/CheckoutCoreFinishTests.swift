@@ -295,6 +295,68 @@ final class CheckoutCoreFinishTests: XCTestCase {
         XCTAssertEqual(failureCount, 1)
     }
 
+    // MARK: - Ending the drop in payment attempt
+
+    func test_dropInSubmitCompletion_shouldEndTheDropInPaymentAttempt() async {
+        let dropIn = DropInComponentMock()
+        callbackStore.onSubmit = { _ in .completion(resultCode: CheckoutResultCode.authorised.rawValue) }
+        let completed = expectation(description: "onComplete called")
+        callbackStore.onComplete = { _ in completed.fulfill() }
+
+        sut.didSubmit(makePaymentData(), from: PaymentComponentMock(paymentMethod: paymentMethod), in: dropIn)
+
+        await fulfillment(of: [completed], timeout: 1)
+        XCTAssertEqual(dropIn.endPaymentAttemptCallsCount, 1)
+    }
+
+    func test_dropInFailureWhileSubmitting_shouldEndTheDropInPaymentAttempt() async {
+        let dropIn = DropInComponentMock()
+        let component = PaymentComponentMock(paymentMethod: paymentMethod)
+        let (submitGate, openSubmitGate) = AsyncStream<Void>.makeStream()
+        let submitStarted = expectation(description: "onSubmit started")
+        callbackStore.onSubmit = { _ in
+            submitStarted.fulfill()
+            for await _ in submitGate {}
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+        let failed = expectation(description: "onFailure called")
+        callbackStore.onFailure = { _ in failed.fulfill() }
+
+        sut.didSubmit(makePaymentData(), from: component, in: dropIn)
+        await fulfillment(of: [submitStarted], timeout: 1)
+        sut.didFail(with: TestError(), from: component, in: dropIn)
+
+        await fulfillment(of: [failed], timeout: 1)
+        XCTAssertEqual(dropIn.endPaymentAttemptCallsCount, 1)
+        openSubmitGate.finish()
+    }
+
+    func test_dropInRetry_shouldEndTheDropInPaymentAttempt() async {
+        let dropIn = DropInComponentMock()
+        let component = FinalizablePaymentComponentMock(paymentMethod: paymentMethod)
+        component.releaseFinalize()
+        let finalized = expectation(description: "finalize called")
+        component.onFinalize = { finalized.fulfill() }
+        callbackStore.onSubmit = { _ in .retry() }
+
+        sut.didSubmit(makePaymentData(), from: component, in: dropIn)
+
+        await fulfillment(of: [finalized], timeout: 1)
+        XCTAssertEqual(dropIn.endPaymentAttemptCallsCount, 1)
+    }
+
+    func test_dropInSubmitAction_shouldKeepTheDropInPaymentAttempt() async {
+        let dropIn = DropInComponentMock()
+        let actionHandled = expectation(description: "action handled")
+        dropIn.onHandle = { _ in actionHandled.fulfill() }
+        callbackStore.onSubmit = { _ in .action(.await(AwaitAction(paymentData: "payment-data", paymentMethodType: .blik))) }
+
+        sut.didSubmit(makePaymentData(), from: PaymentComponentMock(paymentMethod: paymentMethod), in: dropIn)
+
+        await fulfillment(of: [actionHandled], timeout: 1)
+        XCTAssertEqual(dropIn.endPaymentAttemptCallsCount, 0)
+    }
+
     // MARK: - Outcomes without a submit
 
     func test_closingDropInWithoutSubmit_shouldReportTheCancellation() async {
@@ -396,6 +458,12 @@ private final class DropInComponentMock: @preconcurrency AnyDropInComponent, Act
     }
 
     func reload(with order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) throws {}
+
+    private(set) var endPaymentAttemptCallsCount = 0
+
+    func endPaymentAttempt() {
+        endPaymentAttemptCallsCount += 1
+    }
 }
 
 @MainActor

@@ -283,6 +283,8 @@ private final class ActionHandlingDropInMock: @preconcurrency AnyDropInComponent
     }
 
     func reload(with order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) throws {}
+
+    func endPaymentAttempt() {}
 }
 
 @MainActor

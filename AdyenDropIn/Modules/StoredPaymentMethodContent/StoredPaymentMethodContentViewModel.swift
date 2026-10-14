@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Combine
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
@@ -17,15 +18,18 @@ internal protocol StoredPaymentMethodContentRouting: AnyObject {
 }
 
 @MainActor
-internal final class StoredPaymentMethodContentViewModel {
+internal final class StoredPaymentMethodContentViewModel: ObservableObject {
 
     internal let theme: CheckoutTheme
     internal weak var router: StoredPaymentMethodContentRouting?
+
+    @Published internal private(set) var isPaymentInProgress = false
 
     private let component: any StoredPaymentComponent
     private let logoURLProvider: LogoURLProvider
     private let localizationParameters: LocalizationParameters?
     private let dropInFlowManager: DropInFlowManaging
+    private var cancellables = Set<AnyCancellable>()
 
     internal init(
         component: any StoredPaymentComponent,
@@ -40,6 +44,7 @@ internal final class StoredPaymentMethodContentViewModel {
         self.localizationParameters = localizationParameters
         self.dropInFlowManager = dropInFlowManager
         component.delegate = self
+        observePaymentProgress()
     }
 
     // MARK: - Content
@@ -75,6 +80,15 @@ internal final class StoredPaymentMethodContentViewModel {
 
     private var displayInformation: DisplayInformation {
         component.paymentMethod.displayInformation(using: localizationParameters)
+    }
+
+    private func observePaymentProgress() {
+        dropInFlowManager.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                self?.isPaymentInProgress = isPaymentInProgress
+            }
+            .store(in: &cancellables)
     }
 }
 
