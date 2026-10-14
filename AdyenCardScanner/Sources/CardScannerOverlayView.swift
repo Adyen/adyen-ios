@@ -41,7 +41,7 @@ internal class CardScannerOverlayView: UIView {
     override internal init(frame: CGRect) {
         super.init(frame: frame)
         setupMaskViews()
-        setupMasksLayout()
+        setupConstraints()
     }
 
     @available(*, unavailable)
@@ -68,7 +68,7 @@ internal class CardScannerOverlayView: UIView {
         addSubview(roiView)
     }
 
-    private func setupMasksLayout() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             topMask.topAnchor.constraint(equalTo: topAnchor),
             topMask.leadingAnchor.constraint(equalTo: leadingAnchor),
