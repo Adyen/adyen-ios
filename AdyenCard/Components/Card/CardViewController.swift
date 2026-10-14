@@ -222,7 +222,7 @@ internal class CardViewController: FormViewController {
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
-        return installmentsItem.value.element.installmentValue
+        return installmentsItem.value?.installmentValue
     }
     
     internal func stopLoading() {
@@ -390,9 +390,9 @@ extension CardViewController {
     
     private var installmentsItem: FormItem? {
         guard let installmentsItem = items.installmentsItem else { return nil }
-        return installmentsItem.withSectionHeader(title: localizedString(
-            .cardInstallmentsTitle, localizationParameters
-        ))
+        return installmentsItem.withSectionHeader(
+            title: localizedString(.cardInstallmentsTitle, localizationParameters)
+        )
     }
     
     private var billingAddressItem: FormItem? {

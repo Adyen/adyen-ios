@@ -45,10 +45,10 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
         self.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: title,
             placeholder: placeholder,
             style: style,
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: title)
         )
     }
 
@@ -150,9 +150,9 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - Style Tests (Baseline before theme migration)
 
-    func test_titleLabel_shouldUseThemeBodyEmphasizedStyle() {
+    func test_titleLabel_shouldUseThemeLabelStyle() {
         // Then - titleLabel is styled by theme (already migrated in FormValueItemView)
-        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
+        let expectedFont = CheckoutTheme.default.elements.labels.label.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 

@@ -215,7 +215,7 @@ class SearchViewControllerTests: XCTestCase {
         setupRootViewController(searchViewController)
         searchViewController.view.layoutIfNeeded()
 
-        let expectedMinY = headerView.frame.maxY + 8
+        let expectedMinY = headerView.frame.maxY + 24
 
         XCTAssertEqual(
             searchViewController.resultsListViewController.view.frame.minY,
@@ -224,6 +224,31 @@ class SearchViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(searchViewController.emptyView.frame.minY, expectedMinY, accuracy: 0.1)
         XCTAssertEqual(searchViewController.loadingView.frame.minY, expectedMinY, accuracy: 0.1)
+    }
+
+    func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
+        let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.configureWithDefaultBackground()
+        barAppearance.titleTextAttributes = [.font: titleFont]
+
+        let searchViewController = makeSearchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
+        navigationController.navigationBar.standardAppearance = barAppearance
+
+        setupRootViewController(navigationController)
+
+        let navigationBar = navigationController.navigationBar
+        XCTAssertEqual(navigationBar.standardAppearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        XCTAssertNil(navigationBar.scrollEdgeAppearance)
+
+        let navigationItem = searchViewController.navigationItem
+        let standardAppearance = try XCTUnwrap(navigationItem.standardAppearance)
+        let scrollEdgeAppearance = try XCTUnwrap(navigationItem.scrollEdgeAppearance)
+        for appearance in [standardAppearance, scrollEdgeAppearance] {
+            XCTAssertEqual(appearance.shadowColor?.cgColor.alpha ?? 0, 0)
+            XCTAssertEqual(appearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        }
     }
 
     func test_interfaceState_whenEmpty_shouldShowEmptyView() {
@@ -282,7 +307,10 @@ class SearchViewControllerTests: XCTestCase {
     func test_interfaceState_whenShowingResults_shouldShowResultsList() {
         
         // Given
-        let resultItems = [ListItem(title: "Result")]
+        let resultItems = [
+            ListItem(title: "First result"),
+            ListItem(title: "Second result")
+        ]
         
         let viewModel = SearchViewController.ViewModel(
             style: DummyStyle()
@@ -303,6 +331,7 @@ class SearchViewControllerTests: XCTestCase {
         // Then
         XCTAssertTrue(searchViewController.loadingView.isHidden)
         XCTAssertFalse(searchViewController.resultsListViewController.view.isHidden)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.count, 1)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items, resultItems)
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }

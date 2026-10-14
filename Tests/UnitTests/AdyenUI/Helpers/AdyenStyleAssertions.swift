@@ -19,7 +19,9 @@ extension XCTestCase {
         XCTAssertEqual(actualStyle.errorColor, expectedStyle.errorColor, "textfield errorColor mismatch", file: file, line: line)
         XCTAssertEqual(actualStyle.cornerRadius, expectedStyle.cornerRadius, "textfield cornerRadius mismatch", file: file, line: line)
         XCTAssertEqual(actualStyle.borderColor, expectedStyle.borderColor, "textfield borderColor mismatch", file: file, line: line)
-        XCTAssertEqual(actualStyle.borderWidth, expectedStyle.borderWidth, "textfield borderWidth mismatch", file: file, line: line)
+        XCTAssertEqual(actualStyle.defaultBorderWidth, expectedStyle.defaultBorderWidth, "textfield defaultBorderWidth mismatch", file: file, line: line)
+        XCTAssertEqual(actualStyle.errorBorderWidth, expectedStyle.errorBorderWidth, "textfield errorBorderWidth mismatch", file: file, line: line)
+        XCTAssertEqual(actualStyle.focusedBorderWidth, expectedStyle.focusedBorderWidth, "textfield focusedBorderWidth mismatch", file: file, line: line)
     }
     
     package func expect(

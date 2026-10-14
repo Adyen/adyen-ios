@@ -51,7 +51,7 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")

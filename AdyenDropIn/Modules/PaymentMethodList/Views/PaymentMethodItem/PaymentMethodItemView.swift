@@ -25,11 +25,7 @@ internal final class PaymentMethodItemView: UIView {
             trailing: PaymentMethodItemView.contentHorizontalInset
         )
         static let iconImageSize: CGSize = .init(width: 40, height: 26)
-        static let chevronSize: CGSize = .init(width: 20, height: 14)
-    }
-
-    private enum Images {
-        static let chevron = "chevron.forward"
+        static let chevronSize: CGSize = .init(width: 16, height: 16)
     }
 
     private enum Highlight {
@@ -41,24 +37,19 @@ internal final class PaymentMethodItemView: UIView {
 
     // MARK: - UI Elements
 
-    private lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = AdyenUIConstants.imageCornerRadius
-        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private lazy var logoView = PaymentLogoView(
+        size: Layout.iconImageSize,
+        imageLoader: imageLoader
+    )
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var subtitleLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -85,7 +76,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var chevronImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: Images.chevron)
+        imageView.image = .adyenChevronRight
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -94,7 +85,7 @@ internal final class PaymentMethodItemView: UIView {
 
     private lazy var contentStackView: UIStackView = {
         let subviews = [
-            iconImageView,
+            logoView,
             textStackView,
             trailingInfoView,
             chevronImageView
@@ -115,10 +106,6 @@ internal final class PaymentMethodItemView: UIView {
     }()
 
     // MARK: - Properties
-
-    private var imageLoadingTask: AdyenCancellable? {
-        willSet { imageLoadingTask?.cancel() }
-    }
 
     private var item: PaymentMethodItem
     private let imageLoader: ImageLoader
@@ -154,9 +141,6 @@ internal final class PaymentMethodItemView: UIView {
         contentStackView.adyen.anchor(inside: layoutMarginsGuide)
 
         NSLayoutConstraint.activate([
-            iconImageView.widthAnchor.constraint(equalToConstant: Layout.iconImageSize.width),
-            iconImageView.heightAnchor.constraint(equalToConstant: Layout.iconImageSize.height),
-
             chevronImageView.widthAnchor.constraint(equalToConstant: Layout.chevronSize.width),
             chevronImageView.heightAnchor.constraint(equalToConstant: Layout.chevronSize.height),
 
@@ -186,8 +170,8 @@ internal final class PaymentMethodItemView: UIView {
         layer.cornerRadius = item.theme.attributes.cornerRadius
         layer.masksToBounds = true
 
-        // Icon ImageView
-        iconImageView.layer.borderColor = item.theme.colors.separator.cgColor
+        // Logo
+        logoView.shadowColor = item.theme.colors.supportShadow
 
         // Title Label
         titleLabel.apply(item.theme.elements.labels.bodyEmphasized)
@@ -197,7 +181,7 @@ internal final class PaymentMethodItemView: UIView {
         subtitleLabel.textColor = item.subtitleColor
 
         // Chevron ImageView
-        chevronImageView.tintColor = item.theme.colors.textSecondary
+        chevronImageView.tintColor = item.theme.colors.textOnDisabled
 
         // Highlight view
         highlightView.backgroundColor = item.theme.colors.disabled
@@ -205,23 +189,17 @@ internal final class PaymentMethodItemView: UIView {
 
     private var logosStyle: SupportedPaymentMethodLogosView.Style {
         var style = SupportedPaymentMethodLogosView.Style()
-        style.images.borderColor = item.theme.colors.separator
+        style.images.borderWidth = 0
+        style.logoShadowColor = item.theme.colors.supportShadow
         style.trailingText = TextStyle(
             font: item.theme.elements.labels.subheadline.font,
-            color: item.theme.colors.textSecondary
+            color: item.theme.colors.textOnDisabled
         )
         return style
     }
 
     private func loadIcon(from url: URL?) {
-        iconImageView.image = nil
-        imageLoadingTask = nil
-
-        guard let url else { return }
-
-        imageLoadingTask = imageLoader.load(url: url) { [weak self] image in
-            self?.iconImageView.image = image
-        }
+        logoView.load(url: url)
     }
 
     @objc private func handleTap() {

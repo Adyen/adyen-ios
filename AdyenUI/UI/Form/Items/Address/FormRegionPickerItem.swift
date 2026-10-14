@@ -27,12 +27,11 @@ package final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
         super.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: configuration.title,
             placeholder: placeholder,
             style: style,
             presenter: presenter,
-            localizationParameters: localizationParameters,
             configuration: configuration,
+            localizationParameters: localizationParameters,
             identifier: identifier
         )
         

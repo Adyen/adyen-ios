@@ -22,20 +22,21 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
     internal let logoURL: URL
     internal let title: String
-    internal let subtitle: NSAttributedString
+    internal let subtitle: String
     internal let theme: CheckoutTheme
 
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
-            PaymentLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
+            PaymentMethodLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
                 .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.logo)
                 .accessibilityHidden(true)
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
-                    .font(Font(theme.elements.labels.title.font))
+                    .adyenLabelStyle(theme.elements.labels.title)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
-                Text(AttributedString(subtitle))
+                Text(subtitle)
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)
             }
             .foregroundStyle(Color(uiColor: theme.colors.text))
@@ -50,7 +51,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
         StoredPaymentMethodContentHeaderView(
             logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
             title: "•••• 1111",
-            subtitle: NSAttributedString(string: "Use Visa to pay €10.00"),
+            subtitle: "Use Visa to pay €10.00",
             theme: theme
         )
         .padding()
