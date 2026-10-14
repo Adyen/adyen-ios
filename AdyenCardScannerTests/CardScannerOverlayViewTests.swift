@@ -22,4 +22,20 @@ final class CardScannerOverlayViewTests: XCTestCase {
         XCTAssertEqual(sut.roiFrame.midX, 207, accuracy: 0.5)
         XCTAssertEqual(sut.roiFrame.midY, 419, accuracy: 0.5)
     }
+
+    func test_layoutPasses_doNotAccumulateConstraints_andRoiFollowsSizeChanges() {
+        let sut = CardScannerOverlayView(frame: CGRect(x: 0, y: 0, width: 414, height: 838))
+        sut.layoutIfNeeded()
+        let constraintCount = sut.constraints.count
+
+        sut.frame = CGRect(x: 0, y: 0, width: 838, height: 414)
+        sut.layoutIfNeeded()
+        sut.setNeedsLayout()
+        sut.layoutIfNeeded()
+
+        XCTAssertEqual(sut.constraints.count, constraintCount)
+        XCTAssertEqual(sut.roiFrame.width, 414 - 24, accuracy: 0.5)
+        XCTAssertEqual(sut.roiFrame.midX, 419, accuracy: 0.5)
+        XCTAssertEqual(sut.roiFrame.midY, 207, accuracy: 0.5)
+    }
 }
