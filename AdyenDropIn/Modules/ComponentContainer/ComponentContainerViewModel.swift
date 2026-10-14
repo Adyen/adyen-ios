@@ -17,7 +17,6 @@ import UIKit
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
-    /// Publishes whether the submitted payment is in progress, during which the shopper cannot navigate away.
     var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
     func cancel()
 }

@@ -87,20 +87,20 @@ internal class ComponentContainerViewController: UIViewController {
         setupBackButton()
     }
 
-    /// The system back button cannot be disabled while a payment is in progress, so it is replaced by one that can be.
-    /// A module presenting this view as its root can provide its own back button, which is kept.
     private func setupBackButton() {
         guard navigationItem.leftBarButtonItem == nil else {
             return
         }
 
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
+        let backButton = UIBarButtonItem(
             image: UIImage(systemName: Constants.chevronBackwardImage),
             style: .plain,
             target: self,
             action: #selector(didTapBack)
         )
+        backButton.tintColor = theme.colors.primary
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = backButton
     }
 
     @objc private func didTapBack() {
@@ -116,7 +116,6 @@ internal class ComponentContainerViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    /// A submitted payment cannot be cancelled, so the shopper cannot leave it until it ends.
     private func setNavigationLock(active isActive: Bool) {
         isModalInPresentation = isActive
         navigationItem.leftBarButtonItem?.isEnabled = !isActive

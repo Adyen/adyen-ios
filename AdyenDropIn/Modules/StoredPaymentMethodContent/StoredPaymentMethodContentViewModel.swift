@@ -23,7 +23,6 @@ internal final class StoredPaymentMethodContentViewModel: ObservableObject {
     internal let theme: CheckoutTheme
     internal weak var router: StoredPaymentMethodContentRouting?
 
-    /// Whether the submitted payment is in progress, during which the shopper cannot navigate away.
     @Published internal private(set) var isPaymentInProgress = false
 
     private let component: any StoredPaymentComponent

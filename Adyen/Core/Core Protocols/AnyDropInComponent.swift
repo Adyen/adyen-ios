@@ -25,6 +25,5 @@ package protocol AnyDropInComponent: Component {
         _ paymentMethods: PaymentMethods
     ) throws
 
-    /// Ends the submitted payment attempt, once it has an outcome or was reset so the shopper can submit again.
     func endPaymentAttempt()
 }

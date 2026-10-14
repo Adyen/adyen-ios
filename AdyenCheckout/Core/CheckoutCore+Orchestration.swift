@@ -180,7 +180,6 @@ private extension CheckoutCore {
         }
     }
 
-    /// Lets the drop in know the attempt ended, so the shopper can leave the submitted payment method.
     func endPendingDropInAttempt() {
         pendingDropInComponent?.endPaymentAttempt()
         pendingDropInComponent = nil

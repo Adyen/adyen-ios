@@ -8,6 +8,7 @@
 @testable import AdyenDropIn
 import Combine
 
+@MainActor
 final class DropInFlowManagingMock: DropInFlowManaging {
 
     var dropInFlowRouter: DropInFlowRouting?

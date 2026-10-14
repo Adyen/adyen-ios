@@ -35,9 +35,7 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
-    /// Publishes whether a submitted payment is in progress. It cannot be cancelled, so the shopper cannot navigate away from it.
     var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
-    /// Ends the payment in progress, once the checkout handled its outcome or reset it so the shopper can submit again.
     func endPaymentAttempt()
 }
 
@@ -55,7 +53,6 @@ internal class DropInFlowManager: DropInFlowManaging {
     /// Whether the payment session is expected to return an action to handle.
     private var isAwaitingAction = false
     private var didCancelDropIn = false
-    /// Whether a submitted payment is in progress, from its submission until the checkout ends it.
     @Published private var isPaymentInProgress = false
 
     // MARK: - Initializers

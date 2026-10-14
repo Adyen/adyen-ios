@@ -130,6 +130,19 @@ struct ComponentContainerViewControllerTests {
         #expect(!navigationController.viewControllers.contains(sut))
     }
 
+    @Test
+    func backButton_shouldUseThemePrimaryColor() async throws {
+        // Given
+        let theme = CheckoutTheme(colors: CheckoutColors(primary: .magenta))
+        let (sut, _, _) = await makeSUT(theme: theme)
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then
+        #expect(try #require(sut.navigationItem.leftBarButtonItem).tintColor == theme.colors.primary)
+    }
+
     @Test("A module presenting the container as its root can provide its own back button, which is kept and disabled.")
     func paymentInProgress_withACustomBackButton_shouldDisableIt() async {
         // Given
