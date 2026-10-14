@@ -34,6 +34,8 @@ internal class CardScannerOverlayView: UIView {
 
     @Published internal private(set) var roiFrame: CGRect = .zero
 
+    private lazy var roiWidthConstraint = roiView.widthAnchor.constraint(equalToConstant: 0)
+
     // MARK: - Initializers
 
     override internal init(frame: CGRect) {
@@ -86,24 +88,17 @@ internal class CardScannerOverlayView: UIView {
             rightMask.topAnchor.constraint(equalTo: topMask.bottomAnchor),
             rightMask.leadingAnchor.constraint(equalTo: roiView.trailingAnchor),
             rightMask.trailingAnchor.constraint(equalTo: trailingAnchor),
-            rightMask.bottomAnchor.constraint(equalTo: bottomMask.topAnchor)
+            rightMask.bottomAnchor.constraint(equalTo: bottomMask.topAnchor),
+
+            roiView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            roiView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            roiView.heightAnchor.constraint(equalTo: roiView.widthAnchor, multiplier: 1.0 / Constants.roiAspectRatio),
+            roiWidthConstraint
         ])
     }
 
     private func updateRoiLayout() {
-        // Deactivate old constraints
-        NSLayoutConstraint.deactivate(roiView.constraints)
-
         let padding: CGFloat = 12
-
-        let roiWidth = min(bounds.width, bounds.height) - (padding * 2)
-        let roiHeightMultiplier = 1.0 / Constants.roiAspectRatio
-
-        NSLayoutConstraint.activate([
-            roiView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            roiView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            roiView.widthAnchor.constraint(equalToConstant: roiWidth),
-            roiView.heightAnchor.constraint(equalTo: roiView.widthAnchor, multiplier: roiHeightMultiplier)
-        ])
+        roiWidthConstraint.constant = max(0, min(bounds.width, bounds.height) - (padding * 2))
     }
 }
