@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Combine
 import Foundation
 import UIKit
 
@@ -12,11 +13,12 @@ import UIKit
     import AdyenUI
 #endif
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
+    /// Publishes whether the submitted payment is in progress, during which the shopper cannot navigate away.
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
     func cancel()
 }
 
@@ -53,6 +55,10 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal var componentViewController: UIViewController {
         component.viewController
+    }
+
+    internal var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        dropInFlowManager.paymentInProgressPublisher
     }
 
     internal func cancel() {

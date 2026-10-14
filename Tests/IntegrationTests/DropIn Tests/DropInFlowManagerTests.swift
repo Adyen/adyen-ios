@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenUI
+import Combine
 import Testing
 import UIKit
 
@@ -357,6 +358,74 @@ struct DropInFlowManagerTests {
         #expect(environment.paymentActionAssembler.resolvePaymentActionRouterForListenerOnCancelCallsCount == 0)
     }
 
+    // MARK: - Payment In Progress Tests
+
+    @Test
+    func submit_shouldPutThePaymentInProgress() {
+        // Given
+        let environment = makeSUT()
+
+        // When
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
+
+        // Then
+        #expect(isPaymentInProgress(environment.sut))
+    }
+
+    @Test
+    func endPaymentAttempt_shouldEndThePaymentInProgress() {
+        // Given
+        let environment = makeSUT()
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
+
+        // When
+        environment.sut.endPaymentAttempt()
+
+        // Then
+        #expect(!isPaymentInProgress(environment.sut))
+    }
+
+    @Test("The payment keeps going while its action is handled, so it stays in progress.")
+    func receive_shouldKeepThePaymentInProgress() {
+        // Given
+        let environment = makeSUT()
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
+
+        // When
+        environment.sut.receive(action: makeAction())
+
+        // Then
+        #expect(isPaymentInProgress(environment.sut))
+    }
+
+    @Test("A submitted payment cannot be cancelled, so cancelling its component does not end it.")
+    func cancelComponent_shouldKeepThePaymentInProgress() {
+        // Given
+        let environment = makeSUT()
+        let component = makePaymentComponent()
+        environment.sut.submit(makePaymentComponentData(), from: component)
+
+        // When
+        environment.sut.cancel(component: component)
+
+        // Then
+        #expect(isPaymentInProgress(environment.sut))
+    }
+
+    @Test
+    func receive_afterThePaymentAttemptEnded_shouldNotHandleTheAction() {
+        // Given
+        let environment = makeSUT()
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
+        environment.sut.endPaymentAttempt()
+
+        // When
+        environment.sut.receive(action: makeAction())
+
+        // Then
+        #expect(environment.dropInFlowRouter.presentPaymentActionRouterCallsCount == 0)
+    }
+
     // MARK: - Mocks
 
     @MainActor
@@ -454,5 +523,11 @@ struct DropInFlowManagerTests {
     private func isCancellation(_ error: Error?) -> Bool {
         guard let error = error as? ComponentError, case .cancelled = error else { return false }
         return true
+    }
+
+    private func isPaymentInProgress(_ sut: DropInFlowManager) -> Bool {
+        var isPaymentInProgress = false
+        _ = sut.paymentInProgressPublisher.sink { isPaymentInProgress = $0 }
+        return isPaymentInProgress
     }
 }

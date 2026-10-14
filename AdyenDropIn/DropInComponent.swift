@@ -155,6 +155,12 @@ package final class DropInComponent: NSObject,
         dropInFlowManager.receive(action: action)
     }
 
+    // MARK: - Ending the Payment Attempt
+
+    package func endPaymentAttempt() {
+        dropInFlowManager.endPaymentAttempt()
+    }
+
     // MARK: - Handling Partial Payments
 
     private var apiClient: AsyncAPIClientProtocol

@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Combine
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
@@ -21,7 +22,7 @@ internal struct StoredPaymentMethodContentView: View {
         static let bottomPadding: CGFloat = 16
     }
 
-    private let viewModel: StoredPaymentMethodContentViewModel
+    @ObservedObject private var viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
         self.viewModel = viewModel
@@ -53,6 +54,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .interactiveDismissDisabled(viewModel.isPaymentInProgress)
         .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
     }
 
@@ -62,6 +64,7 @@ internal struct StoredPaymentMethodContentView: View {
         } label: {
             Image(systemName: "chevron.backward")
         }
+        .disabled(viewModel.isPaymentInProgress)
     }
 }
 
@@ -198,6 +201,10 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
         func submit(_ data: PaymentComponentData, from component: PaymentComponent) {}
         func fail(with error: Error, from component: PaymentComponent) {}
         func cancel(component: PaymentComponent) {}
+        func endPaymentAttempt() {}
+        var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+            Just(false).eraseToAnyPublisher()
+        }
     }
 #endif
 

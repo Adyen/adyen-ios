@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Combine
 import Foundation
 import UIKit
 
@@ -13,10 +14,15 @@ import UIKit
 #endif
 
 internal class ComponentContainerViewController: UIViewController {
+
+    private enum Constants {
+        static let chevronBackwardImage = "chevron.backward"
+    }
     
     // MARK: - Properties
     
     private let viewModel: ComponentContainerViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -41,6 +47,7 @@ internal class ComponentContainerViewController: UIViewController {
         setupComponentView()
         setupNavigationItem()
         applyTheme()
+        observePaymentProgress()
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -77,5 +84,41 @@ internal class ComponentContainerViewController: UIViewController {
         navigationItem.title = componentViewController.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        setupBackButton()
+    }
+
+    /// The system back button cannot be disabled while a payment is in progress, so it is replaced by one that can be.
+    /// A module presenting this view as its root can provide its own back button, which is kept.
+    private func setupBackButton() {
+        guard navigationItem.leftBarButtonItem == nil else {
+            return
+        }
+
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: Constants.chevronBackwardImage),
+            style: .plain,
+            target: self,
+            action: #selector(didTapBack)
+        )
+    }
+
+    @objc private func didTapBack() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    private func observePaymentProgress() {
+        viewModel.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                self?.setNavigationLock(active: isPaymentInProgress)
+            }
+            .store(in: &cancellables)
+    }
+
+    /// A submitted payment cannot be cancelled, so the shopper cannot leave it until it ends.
+    private func setNavigationLock(active isActive: Bool) {
+        isModalInPresentation = isActive
+        navigationItem.leftBarButtonItem?.isEnabled = !isActive
     }
 }

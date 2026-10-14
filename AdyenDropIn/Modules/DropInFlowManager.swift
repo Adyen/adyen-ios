@@ -8,6 +8,7 @@ import Adyen
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
+import Combine
 import Foundation
 import UIKit
 
@@ -22,7 +23,6 @@ internal protocol DropInDismissing: AnyObject {
 @MainActor
 internal protocol DropInFlowRouting: PaymentActionPresenting, DropInDismissing {}
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol DropInFlowManaging: AnyObject {
     var dropInFlowRouter: DropInFlowRouting? { get set }
@@ -35,6 +35,10 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
+    /// Publishes whether a submitted payment is in progress. It cannot be cancelled, so the shopper cannot navigate away from it.
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
+    /// Ends the payment in progress, once the checkout handled its outcome or reset it so the shopper can submit again.
+    func endPaymentAttempt()
 }
 
 @MainActor
@@ -51,6 +55,8 @@ internal class DropInFlowManager: DropInFlowManaging {
     /// Whether the payment session is expected to return an action to handle.
     private var isAwaitingAction = false
     private var didCancelDropIn = false
+    /// Whether a submitted payment is in progress, from its submission until the checkout ends it.
+    @Published private var isPaymentInProgress = false
 
     // MARK: - Initializers
 
@@ -84,11 +90,16 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - DropInFlowManaging
 
+    internal var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        $isPaymentInProgress.eraseToAnyPublisher()
+    }
+
     internal func submit(
         _ data: PaymentComponentData,
         from component: PaymentComponent
     ) {
         isAwaitingAction = true
+        isPaymentInProgress = true
         notifyDidSubmit(data, from: component)
     }
 
@@ -126,6 +137,11 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func dismissDropIn() {
         dropInFlowRouter?.dismissDropIn(completion: nil)
+    }
+
+    internal func endPaymentAttempt() {
+        endSubmission()
+        isPaymentInProgress = false
     }
 
     // MARK: - Private

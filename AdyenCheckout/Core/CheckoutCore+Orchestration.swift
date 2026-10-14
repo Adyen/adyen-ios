@@ -69,6 +69,7 @@ internal extension CheckoutCore {
             condition: pendingPaymentComponent != nil
         )
         pendingPaymentComponent = source.paymentComponent
+        pendingDropInComponent = source.dropInComponent
         submitTask?.cancel()
 
         let onSubmit = onSubmit(for: data)
@@ -155,6 +156,7 @@ internal extension CheckoutCore {
         // Cleared before any suspension, so a submit that arrives while the component
         // finalizes doesn't trip the assertion in `performSubmit`.
         pendingPaymentComponent = nil
+        endPendingDropInAttempt()
         submitTask?.cancel()
         additionalDetailsTask?.cancel()
 
@@ -172,9 +174,16 @@ private extension CheckoutCore {
     /// Ends the attempt without a result, so the shopper can submit again.
     func resetAttempt(for component: any PaymentComponent) {
         pendingPaymentComponent = nil
+        endPendingDropInAttempt()
         Task {
             await component.finalizeIfNeeded(success: false)
         }
+    }
+
+    /// Lets the drop in know the attempt ended, so the shopper can leave the submitted payment method.
+    func endPendingDropInAttempt() {
+        pendingDropInComponent?.endPaymentAttempt()
+        pendingDropInComponent = nil
     }
 
     func triggerResultCallback(for outcome: CheckoutOutcome) {
