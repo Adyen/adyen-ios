@@ -120,7 +120,7 @@ package final class FormButton: UIControl {
         }
     }
     
-    internal lazy var titleLabel: UILabel = {
+    internal lazy var titleLabel: AdyenLabel = {
         let titleLabel = AdyenLabel()
         titleLabel.apply(titleStyle)
         titleLabel.isAccessibilityElement = false

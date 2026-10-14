@@ -43,7 +43,8 @@ public struct InstallmentOptions: Equatable, Codable {
     @_spi(AdyenInternal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.regularInstallmentMonths = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
+        let monthValues = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
+        self.regularInstallmentMonths = monthValues.filter { $0 > 1 }
         let plans = try container.decode([String].self, forKey: .plans)
         self.includesRevolving = plans.contains(Installments.Plan.revolving.rawValue)
     }

@@ -82,41 +82,36 @@ package enum AmountAwarePaymentStringsPolicy {
         )
     }
 
-    /// Returns the stored payment method subtitle as an attributed string,
-    /// formatting the payment method name and a positive amount when present.
-    package static func storedPaymentMethodAttributedSubtitle(
-        for paymentMethodName: String,
+    /// Returns the subtitle for a regular installment option.
+    ///
+    /// When `showAmount` is enabled and an amount is available, it shows
+    /// “3 monthly payments of €10.00”; otherwise, it shows “3 monthly payments”.
+    package static func installmentSubtitle(
+        monthValue: Int,
         with amount: Amount?,
-        localizationParameters: LocalizationParameters?,
-        attributes: [NSAttributedString.Key: Any],
-        emphasizedAttributes: [NSAttributedString.Key: Any]
-    ) -> NSAttributedString {
-        let text = storedPaymentMethodSubtitle(
-            for: paymentMethodName,
-            with: amount,
-            localizationParameters: localizationParameters
-        )
-        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
-
-        let emphasizedValues = [
-            paymentMethodName,
-            formattedPositiveAmount(with: amount, localizationParameters: localizationParameters)
-        ].compactMap { $0 }
-        for value in emphasizedValues {
-            let range = (text as NSString).range(of: value)
-            guard range.location != NSNotFound else { continue }
-            attributedString.addAttributes(emphasizedAttributes, range: range)
-        }
-        return attributedString
-    }
-
-    /// Returns the formatted amount when it is greater than zero, otherwise `nil`.
-    package static func formattedPositiveAmount(
-        with amount: Amount?,
+        showAmount: Bool,
         localizationParameters: LocalizationParameters?
-    ) -> String? {
-        guard let amount, amount.value > 0 else { return nil }
-        return formatted(amount, localizationParameters: localizationParameters)
+    ) -> String {
+        guard showAmount,
+              monthValue > 1,
+              let amount,
+              let formattedAmount = AmountFormatter.formatted(
+                  amount: amount.value / monthValue,
+                  currencyCode: amount.currencyCode
+              ) else {
+            return localizedString(
+                .cardInstallmentsRegularDescription,
+                localizationParameters,
+                String(monthValue)
+            )
+        }
+
+        return localizedString(
+            .cardInstallmentsRegularDescriptionWithPrice,
+            localizationParameters,
+            String(monthValue),
+            formattedAmount
+        )
     }
 
     private static func formatted(_ amount: Amount, localizationParameters: LocalizationParameters?) -> String {

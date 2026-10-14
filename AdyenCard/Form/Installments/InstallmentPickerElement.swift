@@ -6,9 +6,10 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import UIKit
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.BasePickerElement
+    @_spi(AdyenInternal) import protocol AdyenUI.FormPickable
 #endif
 
 /// Type that combines month values and plan selections
@@ -41,16 +42,6 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
             }
         case let .month(month):
             return Installments(totalMonths: month.monthValue, plan: .regular)
-        }
-    }
-    
-    /// Value to be represented in a BaseFormPickerItem
-    internal var pickerElement: BasePickerElement<InstallmentElement> {
-        switch kind {
-        case let .plan(plan):
-            return .init(identifier: plan.installmentPlan.rawValue, element: self)
-        case let .month(month):
-            return .init(identifier: String(month.monthValue), element: self)
         }
     }
     
@@ -92,18 +83,20 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         internal let showAmount: Bool
         
         internal func title(with localizationParameters: LocalizationParameters?) -> String {
-            var localizedText: String
-            if showAmount,
-               let amount,
-               let formatted = AmountFormatter.formatted(
-                   amount: amount.value / monthValue,
-                   currencyCode: amount.currencyCode
-               ) {
-                localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
-            } else {
-                localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))
-            }
-            return localizedText
+            localizedString(
+                .cardInstallmentsRegular,
+                localizationParameters,
+                String(monthValue)
+            )
+        }
+
+        internal func subtitle(with localizationParameters: LocalizationParameters?) -> String {
+            AmountAwarePaymentStringsPolicy.installmentSubtitle(
+                monthValue: monthValue,
+                with: amount,
+                showAmount: showAmount,
+                localizationParameters: localizationParameters
+            )
         }
     }
     
@@ -116,5 +109,43 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         default:
             return false
         }
+    }
+}
+
+extension InstallmentElement: FormPickable {
+    internal var identifier: String {
+        switch kind {
+        case let .plan(plan): return plan.installmentPlan.rawValue
+        case let .month(month): return String(month.monthValue)
+        }
+    }
+
+    internal var icon: UIImage? {
+        nil
+    }
+
+    internal var title: String {
+        description
+    }
+
+    internal var subtitle: String? {
+        switch kind {
+        case .plan(.oneTime):
+            return localizedString(
+                .cardInstallmentsOneTimeDescription,
+                localizationParameters
+            )
+        case .plan(.revolving):
+            return localizedString(
+                .cardInstallmentsRevolvingDescription,
+                localizationParameters
+            )
+        case let .month(month):
+            return month.subtitle(with: localizationParameters)
+        }
+    }
+
+    internal var trailingText: String? {
+        nil
     }
 }

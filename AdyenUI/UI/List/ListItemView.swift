@@ -29,7 +29,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     /// Initializes the list item view.
     package init(
-        theme: CheckoutTheme = .default,
+        theme: CheckoutTheme,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     ) {
         self.theme = theme
@@ -49,7 +49,7 @@ package final class ListItemView: UIView, AnyFormItemView {
 
         titleLabel.apply(titleLabelStyle)
         subtitleLabel.apply(labels.subheadline.color(theme.colors.textSecondary))
-        (trailingView as? UILabel)?.apply(labels.body)
+        (trailingView as? AdyenLabel)?.apply(labels.body)
 
         checkmarkImageView.tintColor = item?.titleEmphasis == .primary ? theme.colors.primary : theme.colors.text
         updateImageView()
@@ -171,7 +171,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Title Label
     
-    private lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: AdyenLabel = {
         let titleLabel = AdyenLabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -180,7 +180,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Subtitle Label
     
-    private lazy var subtitleLabel: UILabel = {
+    private lazy var subtitleLabel: AdyenLabel = {
         let subtitleLabel = AdyenLabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isHidden = true

@@ -10,6 +10,10 @@ import UIKit
 /// A view representing an error item.
 internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
+    private enum Constants {
+        static let iconSize = CGSize(width: 16, height: 16)
+    }
+
     private let theme: CheckoutTheme
 
     /// Initializes the error item view.
@@ -58,7 +62,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
     // MARK: - Message
 
-    internal lazy var messageLabel: UILabel = {
+    internal lazy var messageLabel: AdyenLabel = {
         let messageLabel = AdyenLabel()
         messageLabel.apply(theme.elements.labels.subheadline)
         messageLabel.numberOfLines = 0
@@ -81,8 +85,8 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 16),
-            view.heightAnchor.constraint(equalToConstant: 16)
+            view.widthAnchor.constraint(equalToConstant: Constants.iconSize.width),
+            view.heightAnchor.constraint(equalToConstant: Constants.iconSize.height)
         ])
         return view
     }()

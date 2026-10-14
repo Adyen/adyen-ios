@@ -233,7 +233,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.title)
@@ -243,7 +243,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
+    private lazy var subtitleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.body)

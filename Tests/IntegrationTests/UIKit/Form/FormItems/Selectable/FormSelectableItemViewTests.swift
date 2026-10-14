@@ -45,10 +45,10 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
         self.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: title,
             placeholder: placeholder,
             style: style,
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: title)
         )
     }
 

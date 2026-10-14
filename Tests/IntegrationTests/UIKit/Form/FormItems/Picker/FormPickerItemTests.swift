@@ -63,10 +63,10 @@ class FormPickerItemTests: XCTestCase {
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
             selectableValues: [],
-            title: "",
             placeholder: "",
             style: .init(),
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: "")
         )
         
         // Test resetValue()
@@ -111,18 +111,21 @@ class FormPickerItemTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func test_pickerItem_whenConfigurationOmitted_shouldDefaultToNoHeader() {
+    func test_pickerItem_withConfiguredTitle_shouldUseConfigurationTitle() {
+        let expectedTitle = "Choose a payment plan"
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
             selectableValues: [],
-            title: "",
             placeholder: "",
             style: .init(),
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: expectedTitle)
         )
 
-        XCTAssertEqual(formPickerItem.configuration.title, "")
+        XCTAssertEqual(formPickerItem.title, expectedTitle)
+        XCTAssertEqual(formPickerItem.configuration.title, expectedTitle)
         XCTAssertNil(formPickerItem.configuration.subtitle)
+        XCTAssertTrue(formPickerItem.configuration.isSearchEnabled)
     }
 
     func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
@@ -152,7 +155,6 @@ class FormPickerItemTests: XCTestCase {
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: selectedOption,
             selectableValues: [selectedOption],
-            title: "Installments",
             placeholder: "",
             style: .init(),
             presenter: presenter,
@@ -203,10 +205,10 @@ class FormPickerItemTests: XCTestCase {
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
             selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
-            title: "Country/Region",
             placeholder: "",
             style: .init(),
-            presenter: presenter
+            presenter: presenter,
+            configuration: .init(title: "Country/Region")
         )
 
         _ = FormPickerItemView(item: formPickerItem, theme: .default)

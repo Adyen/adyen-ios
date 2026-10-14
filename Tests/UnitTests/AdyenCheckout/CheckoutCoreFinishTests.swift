@@ -8,27 +8,25 @@
 @testable import AdyenActions
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@testable import AdyenSession
 import UIKit
 import XCTest
 
 @MainActor
 final class CheckoutCoreFinishTests: XCTestCase {
 
+    private var paymentMethods: PaymentMethods!
     private var paymentMethod: BLIKPaymentMethod!
     private var callbackStore: AdvancedCheckoutCallbackStore!
     private var sut: CheckoutCore!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let paymentMethods = try AdyenCoder.decode(["paymentMethods": [blik]]) as PaymentMethods
+        paymentMethods = try AdyenCoder.decode(["paymentMethods": [blik]]) as PaymentMethods
         paymentMethod = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         callbackStore = AdvancedCheckoutCallbackStore()
         sut = CheckoutCore(
-            configuration: CheckoutConfiguration(
-                apiContext: Dummy.apiContext,
-                analyticsApiContext: nil,
-                analyticsConfiguration: .init()
-            ),
+            configuration: makeConfiguration(),
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
             resultCallbacks: callbackStore,
@@ -40,6 +38,7 @@ final class CheckoutCoreFinishTests: XCTestCase {
         sut = nil
         callbackStore = nil
         paymentMethod = nil
+        paymentMethods = nil
         super.tearDown()
     }
 
@@ -111,6 +110,7 @@ final class CheckoutCoreFinishTests: XCTestCase {
         let finalizeStarted = expectation(description: "finalize started")
         firstComponent.onFinalize = { finalizeStarted.fulfill() }
         let secondSubmitHandled = expectation(description: "second onSubmit called")
+        let (secondSubmitGate, openSecondSubmitGate) = AsyncStream<Void>.makeStream()
         var submitCount = 0
         callbackStore.onSubmit = { _ in
             submitCount += 1
@@ -118,6 +118,7 @@ final class CheckoutCoreFinishTests: XCTestCase {
                 return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
             }
             secondSubmitHandled.fulfill()
+            for await _ in secondSubmitGate {}
             return .retry()
         }
         let completed = expectation(description: "onComplete called")
@@ -139,6 +140,61 @@ final class CheckoutCoreFinishTests: XCTestCase {
         firstComponent.releaseFinalize()
         await fulfillment(of: [completed], timeout: 1)
         XCTAssertEqual(completionCount, 1)
+        openSecondSubmitGate.finish()
+    }
+
+    // MARK: - Ending an attempt without a result
+
+    func test_retry_shouldEndComponentAttemptWithoutNotifyingMerchant() async {
+        let component = FinalizablePaymentComponentMock(paymentMethod: paymentMethod)
+        component.releaseFinalize()
+        let finalized = expectation(description: "finalize called")
+        component.onFinalize = { finalized.fulfill() }
+        callbackStore.onSubmit = { _ in .retry() }
+        let notified = expectation(description: "merchant must not be notified")
+        notified.isInverted = true
+        callbackStore.onComplete = { _ in notified.fulfill() }
+        callbackStore.onFailure = { _ in notified.fulfill() }
+
+        sut.didSubmit(makePaymentData(), from: component)
+
+        await fulfillment(of: [finalized], timeout: 1)
+        await fulfillment(of: [notified], timeout: 0.3)
+        XCTAssertEqual(component.finalizeCalls, [false])
+        XCTAssertNil(sut.pendingPaymentComponent)
+    }
+
+    func test_beforeSubmitAbort_shouldEndComponentAttemptWithoutNotifyingMerchant() async {
+        let session = makeSessionMock()
+        let sessionCallbackStore = SessionCheckoutCallbackStore()
+        sessionCallbackStore.onBeforeSubmit = { _ in .abort }
+        let notified = expectation(description: "merchant must not be notified")
+        notified.isInverted = true
+        sessionCallbackStore.onComplete = { _ in notified.fulfill() }
+        sessionCallbackStore.onFailure = { _ in notified.fulfill() }
+        let checkout = CheckoutCore(
+            configuration: makeConfiguration(),
+            session: session,
+            adyenContext: Dummy.context,
+            resultCallbacks: sessionCallbackStore,
+            callbackHandler: BeforeSubmitCallbackHandler(
+                handler: SessionCallbackHandler(session: session),
+                session: session,
+                callbackStore: sessionCallbackStore
+            )
+        )
+        let component = FinalizablePaymentComponentMock(paymentMethod: paymentMethod)
+        component.releaseFinalize()
+        let finalized = expectation(description: "finalize called")
+        component.onFinalize = { finalized.fulfill() }
+
+        checkout.didSubmit(makePaymentData(), from: component)
+
+        await fulfillment(of: [finalized], timeout: 1)
+        await fulfillment(of: [notified], timeout: 0.3)
+        XCTAssertEqual(component.finalizeCalls, [false])
+        XCTAssertNil(checkout.pendingPaymentComponent)
+        XCTAssertFalse(session.performSubmitCalled)
     }
 
     // MARK: - First outcome wins
@@ -239,7 +295,61 @@ final class CheckoutCoreFinishTests: XCTestCase {
         XCTAssertEqual(failureCount, 1)
     }
 
+    // MARK: - Outcomes without a submit
+
+    func test_closingDropInWithoutSubmit_shouldReportTheCancellation() async {
+        let failed = expectation(description: "onFailure called")
+        var failureCodes: [CheckoutError.Code] = []
+        callbackStore.onFailure = { error in
+            failureCodes.append(error.code)
+            failed.fulfill()
+        }
+
+        sut.didFail(with: ComponentError.cancelled, from: DropInComponentMock())
+
+        await fulfillment(of: [failed], timeout: 1)
+        XCTAssertNil(sut.pendingPaymentComponent)
+        XCTAssertEqual(failureCodes, [.cancelled])
+    }
+
+    func test_cancellingTwiceWithoutSubmit_shouldReportBothCancellations() async {
+        let component = PaymentComponentMock(paymentMethod: paymentMethod)
+        let failed = expectation(description: "onFailure called twice")
+        failed.expectedFulfillmentCount = 2
+        var failureCodes: [CheckoutError.Code] = []
+        callbackStore.onFailure = { error in
+            failureCodes.append(error.code)
+            failed.fulfill()
+        }
+
+        sut.didFail(with: ComponentError.cancelled, from: component)
+        sut.didFail(with: ComponentError.cancelled, from: component)
+
+        await fulfillment(of: [failed], timeout: 1)
+        XCTAssertEqual(failureCodes, [.cancelled, .cancelled])
+    }
+
     // MARK: - Helpers
+
+    private func makeConfiguration() -> CheckoutConfiguration {
+        CheckoutConfiguration(
+            apiContext: Dummy.apiContext,
+            analyticsApiContext: nil,
+            analyticsConfiguration: .init()
+        )
+    }
+
+    private func makeSessionMock() -> AdyenSessionMock {
+        AdyenSessionMock(state: .init(
+            data: "session-data",
+            identifier: "session-id",
+            countryCode: "NL",
+            shopperLocale: "en_US",
+            amount: Amount(value: 1000, currencyCode: "EUR"),
+            paymentMethods: paymentMethods,
+            responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
+        ))
+    }
 
     private func makePaymentData() -> PaymentComponentData {
         PaymentComponentData(

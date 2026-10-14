@@ -23,18 +23,8 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
-    /// The continuation that bridges the gap between `submit(data:)` (fire-and-forget)
-    /// and the backend result delivered via `finalize(success:)`.
-    /// While suspended, the Apple Pay sheet stays on screen waiting for a `PKPaymentAuthorizationResult`.
-    internal var paymentResultContinuation: CheckedContinuation<Bool, Never>?
-
-    /// `true` once the shopper has tapped Pay. Lets `didFinish` distinguish a real
-    /// cancellation (false) from a UI-only sheet dismissal during authorization (true).
-    internal var authorizationHandled = false
-
-    /// The controller of the sheet, from the moment `submit()` starts presenting it until it's dismissed.
-    /// `nil` when no sheet is shown.
-    internal var authorizationController: ApplePayAuthorizationControlling?
+    /// Handles the Apple Pay sheet on screen. `nil` when no sheet is shown.
+    internal private(set) var authorizationHandler: ApplePayAuthorizationHandler?
 
     /// Creates the controller that presents the Apple Pay sheet. A new one is needed for every presentation.
     internal var makeAuthorizationController: (PKPaymentRequest) -> ApplePayAuthorizationControlling = {
@@ -56,6 +46,10 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     package let type: PaymentComponentType = .regular
     package let requiresUserInteraction: Bool = true
+    
+    private var presentationWindow: UIWindow? {
+        viewController.viewIfLoaded?.window ?? UIApplication.shared.adyen.mainKeyWindow
+    }
 
     /// Initializes the component.
     ///
@@ -88,15 +82,6 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         // because _isDropIn is not used yet.
         // Inside Drop-in, this duplicates Drop-in's own setup request.
         sendInitialAnalytics()
-    }
-
-    deinit {
-        // The sheet has its own window and PassKit holds its delegate weakly,
-        // so nothing else would close a sheet that is still on screen.
-        guard let controller = authorizationController else { return }
-        Task { @MainActor in
-            await controller.dismiss()
-        }
     }
 
     /// The screen that contains the Apple Pay button. It's empty when `showsSubmitButton` is `false`.
@@ -143,28 +128,13 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         PKPaymentAuthorizationController.canMakePayments(usingNetworks: networks)
     }
 
-    /// Cancels a pending authorization when the user dismisses the Apple Pay sheet
-    /// before the async `didAuthorizePayment` flow has completed.
-    internal func cancelPendingAuthorization() {
-        resumeContinuation(success: false)
-    }
-
-    /// Extracts and resumes the continuation, guaranteeing exactly-once delivery
-    /// via MainActor serialization.
-    private func resumeContinuation(success: Bool) {
-        let continuation = paymentResultContinuation
-        paymentResultContinuation = nil
-        continuation?.resume(returning: success)
-    }
-    
-    // TODO: return only once the sheet is dismissed, so the Checkout layer
-    // doesn't notify the merchant while the sheet still shows its result.
-    /// Resumes the suspended Apple Pay authorization so the sheet shows a success/failure animation
-    /// and dismisses. Called by the Checkout layer once the backend payment result is known.
+    /// Shows the payment result on the Apple Pay sheet and returns once the sheet is dismissed.
+    /// Returns right away when no sheet is on screen.
+    /// Called by the Checkout layer once the backend payment result is known.
     ///
     /// - Parameter success: `true` if the payment succeeded, `false` otherwise.
     package func finalize(success: Bool) async {
-        resumeContinuation(success: success)
+        await authorizationHandler?.finalize(success: success)
     }
 
     /// Opens the Apple Pay sheet.
@@ -172,24 +142,50 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// Does nothing while the sheet is already on screen.
     /// Reports `ApplePayComponent.Error.invalidPaymentRequest` if the sheet can't be presented.
     package func performSubmit() {
-        guard authorizationController == nil else { return }
+        guard authorizationHandler == nil else { return }
 
-        // A dismissed sheet can still wait for a result that will never arrive.
-        cancelPendingAuthorization()
-        authorizationHandled = false
-
-        let controller = makeAuthorizationController(paymentRequest)
-        controller.delegate = self
-        // Set before presenting, so repeated taps are ignored before the sheet appears.
-        authorizationController = controller
-
-        Task {
-            guard await controller.present() else {
-                authorizationController = nil
-                delegate?.didFail(with: Error.invalidPaymentRequest, from: self)
-                return
+        let handler = ApplePayAuthorizationHandler(
+            controller: makeAuthorizationController(paymentRequest),
+            configuration: configuration,
+            presentationWindow: presentationWindow,
+            onPresent: { [weak self] in
+                self?.sendDidLoadEvent()
+            },
+            submitPayment: { [weak self] payment in
+                self?.submit(payment)
+            },
+            onFinish: { [weak self] outcome in
+                // Clearing the handler lets `performSubmit()` open a new sheet.
+                // Known edge case: if PassKit closed the sheet on its 30-second timeout, the submitted payment
+                // has no result yet, so the shopper can start a second payment before the first one ends.
+                self?.authorizationHandler = nil
+                self?.report(outcome)
             }
-            sendDidLoadEvent()
+        )
+        authorizationHandler = handler
+        handler.start()
+    }
+
+    private func submit(_ payment: PKPayment) {
+        let details = ApplePayDetails(
+            paymentMethod: applePayPaymentMethod,
+            token: payment.token.paymentData.base64EncodedString(),
+            network: payment.token.paymentMethod.network?.rawValue ?? "",
+            billingContact: payment.billingContact,
+            shippingContact: payment.shippingContact,
+            shippingMethod: payment.shippingMethod
+        )
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+    }
+
+    private func report(_ outcome: ApplePayAuthorizationHandler.Outcome) {
+        switch outcome {
+        case .submitted:
+            break
+        case .cancelled:
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case let .failed(error):
+            delegate?.didFail(with: error, from: self)
         }
     }
 }

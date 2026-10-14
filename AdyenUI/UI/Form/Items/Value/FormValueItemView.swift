@@ -18,7 +18,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     // MARK: - Title Label
 
     /// The top label view.
-    public lazy var titleLabel: UILabel = {
+    package lazy var titleLabel: AdyenLabel = {
         let titleLabel = AdyenLabel()
         titleLabel.apply(theme.elements.labels.label)
         titleLabel.text = item.title

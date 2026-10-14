@@ -90,13 +90,13 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         let imageView = UIImageView(image: .adyenChevronRight)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Constants.chevronWidth).isActive = true
         imageView.contentMode = .scaleAspectFit
 
         return imageView
     }()
 
-    internal lazy var valueLabel: UILabel = {
+    internal lazy var valueLabel: AdyenLabel = {
         let valueLabel = ValueLabel()
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
@@ -195,4 +195,8 @@ private class ValueLabel: AdyenLabel {
             height: size.height + 3
         )
     }
+}
+
+private enum Constants {
+    static let chevronWidth: CGFloat = 16
 }

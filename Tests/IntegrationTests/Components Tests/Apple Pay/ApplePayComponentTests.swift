@@ -18,11 +18,16 @@ class ApplePayComponentTest: XCTestCase {
     var sut: ApplePayComponent!
     var controllerMock: ApplePayAuthorizationControllerMock!
     var makeControllerCallsCount = 0
-    /// Passed to the component's PassKit delegate methods. The component itself only talks to `controllerMock`.
+    /// Passed to the handler's PassKit delegate methods. The handler itself only talks to `controllerMock`.
     lazy var passKitController = PKPaymentAuthorizationController(paymentRequest: Dummy.createTestApplePayPaymentRequest())
     lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var countryCode = getRandomCountryCode()
     let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "amex", "mc"])
+
+    /// The PassKit delegate of the sheet on screen.
+    private var handler: ApplePayAuthorizationHandler! {
+        sut.authorizationHandler
+    }
 
     private var emptyVC: UIViewController {
         let vc = UIViewController()
@@ -44,6 +49,9 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func tearDown() {
+        // The sheet only ends when PassKit reports that it finished.
+        sut?.delegate = nil
+        sut?.authorizationHandler?.paymentAuthorizationControllerDidFinish(passKitController)
         sut = nil
         mockDelegate = nil
         controllerMock = nil
@@ -271,7 +279,7 @@ class ApplePayComponentTest: XCTestCase {
 
         viewController.paymentButton.sendActions(for: .touchUpInside)
 
-        XCTAssertNotNil(sut.authorizationController)
+        XCTAssertNotNil(sut.authorizationHandler)
         XCTAssertEqual(makeControllerCallsCount, 1)
     }
 
@@ -284,8 +292,8 @@ class ApplePayComponentTest: XCTestCase {
         submit()
 
         await fulfillment(of: [presented], timeout: 5)
-        XCTAssertTrue(controllerMock.delegate === sut)
-        XCTAssertNotNil(sut.authorizationController)
+        XCTAssertTrue(controllerMock.delegate === sut.authorizationHandler)
+        XCTAssertNotNil(sut.authorizationHandler)
     }
 
     func test_submit_whileSheetIsPresenting_shouldBeIgnored() {
@@ -296,20 +304,25 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(makeControllerCallsCount, 1)
     }
 
-    func test_release_whileSheetIsOnScreen_shouldDismissSheet() {
+    func test_release_whileSheetIsOnScreen_shouldReleaseComponentAndStillDismissSheet() {
+        let presented = expectation(description: "present called")
+        controllerMock.onPresent = { presented.fulfill() }
+        mockDelegate.onDidFail = { _, _ in XCTFail("A released component doesn't report") }
         submit()
-        weak var releasedComponent = sut
+        wait(for: [presented], timeout: 5)
+        weak var releasedComponent: ApplePayComponent?
+        releasedComponent = sut
 
         sut = nil
+
+        XCTAssertNil(releasedComponent)
+
+        // PassKit holds its delegate weakly, like the mock. The sheet task keeps the handler alive.
+        let handler = controllerMock.delegate as? ApplePayAuthorizationHandler
+        XCTAssertNotNil(handler)
+        handler?.paymentAuthorizationControllerDidFinish(passKitController)
 
         wait(until: { self.controllerMock.dismissCallsCount == 1 }, timeout: 5, retryInterval: .milliseconds(10))
-        XCTAssertNil(releasedComponent)
-    }
-
-    func test_release_withoutSheet_shouldNotDismiss() {
-        sut = nil
-
-        XCTAssertEqual(controllerMock.dismissCallsCount, 0)
     }
 
     func test_submit_whenSheetCannotBePresented_shouldFailWithInvalidPaymentRequest() async {
@@ -324,7 +337,7 @@ class ApplePayComponentTest: XCTestCase {
         submit()
 
         await fulfillment(of: [didFail], timeout: 5)
-        XCTAssertNil(sut.authorizationController)
+        XCTAssertNil(sut.authorizationHandler)
     }
 
     func test_cancel_shouldFailWithCancelledAndAllowNewSubmit() async {
@@ -338,14 +351,14 @@ class ApplePayComponentTest: XCTestCase {
             XCTFail("didSubmit must not fire")
         }
 
-        sut.paymentAuthorizationControllerDidFinish(passKitController)
+        finishSheet()
         await fulfillment(of: [didFail], timeout: 5)
 
         XCTAssertEqual(controllerMock.dismissCallsCount, 1)
-        XCTAssertNil(sut.authorizationController)
+        XCTAssertNil(sut.authorizationHandler)
 
         sut.performSubmit()
-        XCTAssertNotNil(sut.authorizationController)
+        XCTAssertNotNil(sut.authorizationHandler)
         XCTAssertEqual(makeControllerCallsCount, 2)
     }
 
@@ -368,7 +381,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
 
         let shippingMethod = PKShippingMethod(label: "Shipping1", amount: 1.0)
-        let result = await sut.paymentAuthorizationController(passKitController, didSelectShippingMethod: shippingMethod)
+        let result = await handler.paymentAuthorizationController(passKitController, didSelectShippingMethod: shippingMethod)
 
         XCTAssertEqual(receivedMethod, shippingMethod)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
@@ -393,7 +406,7 @@ class ApplePayComponentTest: XCTestCase {
         contact.name?.givenName = "Test"
         contact.name?.familyName = "Testovich"
 
-        let result = await sut.paymentAuthorizationController(passKitController, didSelectShippingContact: contact)
+        let result = await handler.paymentAuthorizationController(passKitController, didSelectShippingContact: contact)
 
         XCTAssertEqual(receivedContact, contact)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
@@ -414,7 +427,7 @@ class ApplePayComponentTest: XCTestCase {
         sut = try makeComponent(configuration: configuration)
         submit()
 
-        let result = await sut.paymentAuthorizationController(passKitController, didChangeCouponCode: "Coupon")
+        let result = await handler.paymentAuthorizationController(passKitController, didChangeCouponCode: "Coupon")
 
         XCTAssertEqual(receivedCoupon, "Coupon")
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
@@ -435,7 +448,7 @@ class ApplePayComponentTest: XCTestCase {
         sut = try makeComponent(configuration: configuration)
         submit()
 
-        let result = await sut.paymentAuthorizationController(passKitController, didSelectPaymentMethod: PKPaymentMethodMock())
+        let result = await handler.paymentAuthorizationController(passKitController, didSelectPaymentMethod: PKPaymentMethodMock())
 
         XCTAssertNotNil(receivedPaymentMethod)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
@@ -447,13 +460,13 @@ class ApplePayComponentTest: XCTestCase {
         submit()
         let originalItems = sut.paymentRequest.paymentSummaryItems
 
-        let shippingMethodResult = await sut.paymentAuthorizationController(
+        let shippingMethodResult = await handler.paymentAuthorizationController(
             passKitController,
             didSelectShippingMethod: PKShippingMethod(label: "Shipping", amount: 1.0)
         )
-        let shippingContactResult = await sut.paymentAuthorizationController(passKitController, didSelectShippingContact: PKContact())
-        let couponResult = await sut.paymentAuthorizationController(passKitController, didChangeCouponCode: "Coupon")
-        let paymentMethodResult = await sut.paymentAuthorizationController(passKitController, didSelectPaymentMethod: PKPaymentMethodMock())
+        let shippingContactResult = await handler.paymentAuthorizationController(passKitController, didSelectShippingContact: PKContact())
+        let couponResult = await handler.paymentAuthorizationController(passKitController, didChangeCouponCode: "Coupon")
+        let paymentMethodResult = await handler.paymentAuthorizationController(passKitController, didSelectPaymentMethod: PKPaymentMethodMock())
 
         XCTAssertEqual(shippingMethodResult.paymentSummaryItems, originalItems)
         XCTAssertEqual(shippingContactResult.paymentSummaryItems, originalItems)
@@ -464,53 +477,24 @@ class ApplePayComponentTest: XCTestCase {
 
     // MARK: - Invalid Summary Items
 
-    func testApplePayShipping_givenDelegateReturnsNegativeGrandTotal_shouldKeepOriginalItemsAndCallDidFail() async throws {
-        var configuration = try makeConfiguration()
-        configuration.onSelectShippingMethod = { _, _ in
-            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [
+    func test_invalidSummaryItems_withNegativeGrandTotal_shouldCloseSheetAndFailOnce() async throws {
+        try await assertInvalidSummaryItemsCloseSheet(
+            [
                 PKPaymentSummaryItem(label: "Item", amount: 10.0),
                 PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(value: -1.0))
-            ])
-        }
-        sut = try makeComponent(configuration: configuration)
-        submit()
-        let originalItems = sut.paymentRequest.paymentSummaryItems
-        let onDidFail = expectation(description: "Wait for didFail call")
-        mockDelegate.onDidFail = { error, _ in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .negativeGrandTotal)
-            onDidFail.fulfill()
-        }
-
-        _ = await sut.paymentAuthorizationController(
-            passKitController,
-            didSelectShippingMethod: PKShippingMethod(label: "Shipping", amount: 5.0)
+            ],
+            failWith: .negativeGrandTotal
         )
-
-        XCTAssertEqual(sut.paymentRequest.paymentSummaryItems, originalItems)
-        await fulfillment(of: [onDidFail], timeout: 5)
     }
 
-    func testApplePayShippingContact_givenDelegateReturnsNaNAmount_shouldKeepOriginalItemsAndCallDidFail() async throws {
-        var configuration = try makeConfiguration()
-        configuration.onSelectShippingContact = { _, _ in
-            PKPaymentRequestShippingContactUpdate(paymentSummaryItems: [
+    func test_invalidSummaryItems_withNaNAmount_shouldCloseSheetAndFailOnce() async throws {
+        try await assertInvalidSummaryItemsCloseSheet(
+            [
                 PKPaymentSummaryItem(label: "Item", amount: NSDecimalNumber.notANumber),
                 PKPaymentSummaryItem(label: "Total", amount: 10.0)
-            ])
-        }
-        sut = try makeComponent(configuration: configuration)
-        submit()
-        let originalItems = sut.paymentRequest.paymentSummaryItems
-        let onDidFail = expectation(description: "Wait for didFail call")
-        mockDelegate.onDidFail = { error, _ in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidSummaryItem)
-            onDidFail.fulfill()
-        }
-
-        _ = await sut.paymentAuthorizationController(passKitController, didSelectShippingContact: PKContact())
-
-        XCTAssertEqual(sut.paymentRequest.paymentSummaryItems, originalItems)
-        await fulfillment(of: [onDidFail], timeout: 5)
+            ],
+            failWith: .invalidSummaryItem
+        )
     }
 
     func testApplePayCoupon_givenDelegateReturnsEmptyItems_shouldKeepOriginalItems() async throws {
@@ -522,7 +506,7 @@ class ApplePayComponentTest: XCTestCase {
         submit()
         let originalItems = sut.paymentRequest.paymentSummaryItems
 
-        _ = await sut.paymentAuthorizationController(passKitController, didChangeCouponCode: "INVALID")
+        _ = await handler.paymentAuthorizationController(passKitController, didChangeCouponCode: "INVALID")
 
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems, originalItems)
     }
@@ -548,14 +532,16 @@ class ApplePayComponentTest: XCTestCase {
 
         // When — run the authorization, then resolve it from outside once it's waiting for the result.
         let resultTask = Task {
-            await self.sut.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
         XCTAssertNotNil(receivedPayment)
 
-        await sut.finalize(success: true)
+        let finalizeTask = startFinalize(success: true)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
+        finishSheet()
+        await finalizeTask.value
     }
 
     func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() async throws {
@@ -574,13 +560,13 @@ class ApplePayComponentTest: XCTestCase {
         }
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
-        let result = await sut.paymentAuthorizationController(passKitController, didAuthorizePayment: payment)
+        let result = await handler.paymentAuthorizationController(passKitController, didAuthorizePayment: payment)
 
         XCTAssertEqual(result.status, .failure)
         XCTAssertEqual(result.errors?.count, 1)
     }
 
-    func test_didAuthorizeWithEmptyToken_shouldFailImmediately() async throws {
+    func test_didAuthorizeWithEmptyToken_shouldFailOnceAfterSheetIsDismissed() async throws {
         var authorizeCalled = false
         var configuration = try makeConfiguration()
         configuration.onAuthorize = { _ in
@@ -589,20 +575,30 @@ class ApplePayComponentTest: XCTestCase {
         }
         sut = try makeComponent(configuration: configuration)
         submit()
-        let didFailExpectation = expectation(description: "didFail should be called")
+        var errors: [Error] = []
+        let didFail = expectation(description: "didFail(.invalidToken)")
         mockDelegate.onDidFail = { error, _ in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidToken)
-            didFailExpectation.fulfill()
+            errors.append(error)
+            didFail.fulfill()
         }
 
-        let result = await sut.paymentAuthorizationController(
+        let result = await handler.paymentAuthorizationController(
             passKitController,
             didAuthorizePayment: PKPaymentMock.create(withPaymentData: Data())
         )
 
         XCTAssertEqual(result.status, .failure)
-        await fulfillment(of: [didFailExpectation], timeout: 5)
         XCTAssertFalse(authorizeCalled, "onAuthorize should not be called when token is empty")
+        XCTAssertTrue(errors.isEmpty, "The error is reported once the sheet is gone")
+
+        // PassKit closes the sheet by itself after a failure without errors.
+        finishSheet()
+        await fulfillment(of: [didFail], timeout: 5)
+        await sut.finalize(success: false)
+
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1)
+        XCTAssertEqual(errors.count, 1, "No cancel may follow the failure")
+        XCTAssertEqual(errors.first as? ApplePayComponent.Error, .invalidToken)
     }
 
     func test_finalize_shouldResolveSheetWithResult() async throws {
@@ -614,54 +610,132 @@ class ApplePayComponentTest: XCTestCase {
             let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
             let resultTask = Task {
-                await self.sut.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+                await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
             }
             await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
-            await sut.finalize(success: success)
+            let finalizeTask = startFinalize(success: success)
 
             let result = await resultTask.value
             XCTAssertEqual(result.status, success ? .success : .failure)
+            finishSheet()
+            await finalizeTask.value
         }
+    }
+
+    // MARK: - Sheet Task
+
+    func test_finalize_shouldReturnOnlyAfterSheetIsDismissed() async throws {
+        submit()
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
+        let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
+        let resultTask = Task {
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+        }
+        await fulfillment(of: [didSubmitExpectation], timeout: 5)
+
+        var finalized = false
+        let finalizeTask = Task {
+            await self.sut.finalize(success: true)
+            finalized = true
+        }
+        let result = await resultTask.value
+        // Give a wrong early return enough time to happen.
+        try await Task.sleep(for: .milliseconds(100))
+
+        XCTAssertEqual(result.status, .success)
+        XCTAssertFalse(finalized)
+        XCTAssertEqual(controllerMock.dismissCallsCount, 0)
+
+        finishSheet()
+        await finalizeTask.value
+
+        XCTAssertTrue(finalized)
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1)
+        XCTAssertNil(sut.authorizationHandler)
+    }
+
+    func test_finalize_withoutSheet_shouldReturnImmediately() async {
+        await sut.finalize(success: true)
+
+        XCTAssertEqual(controllerMock.dismissCallsCount, 0)
+    }
+
+    func test_finalize_afterSheetIsDismissed_shouldReturnImmediately() async {
+        submit()
+        let didFail = expectation(description: "didFail(.cancelled)")
+        mockDelegate.onDidFail = { _, _ in didFail.fulfill() }
+        finishSheet()
+        await fulfillment(of: [didFail], timeout: 5)
+
+        await sut.finalize(success: false)
+
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1)
+    }
+
+    func test_didFinish_whilePresenting_shouldStillCloseSheet() async {
+        controllerMock.onPresent = { [unowned self] in
+            self.finishSheet()
+        }
+        let didFail = expectation(description: "didFail(.cancelled)")
+        mockDelegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? ComponentError, .cancelled)
+            didFail.fulfill()
+        }
+
+        submit()
+
+        await fulfillment(of: [didFail], timeout: 5)
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1)
+        XCTAssertNil(sut.authorizationHandler)
     }
 
     // MARK: - Dismissal During Authorization
 
-    /// The shopper dismisses the sheet while `onAuthorize` is still running.
-    /// This must not be reported as a cancel, because the payment continues.
-    func test_dismiss_duringAwaitOnAuthorize_doesNotCallDidFailCancelled() async throws {
-        let onAuthorizeStarted = expectation(description: "onAuthorize entered")
-        let releaseOnAuthorize = expectation(description: "release onAuthorize")
-        var configuration = try makeConfiguration()
-        configuration.onAuthorize = { _ in
-            onAuthorizeStarted.fulfill()
-            await self.fulfillment(of: [releaseOnAuthorize], timeout: 5)
-            return PKPaymentAuthorizationResult(status: .success, errors: nil)
+    /// The sheet finishes while `onAuthorize` is still running, for example after PassKit's timeout.
+    /// This is reported as a cancel right away, and the payment isn't submitted, whatever `onAuthorize` returns.
+    func test_finish_duringOnAuthorize_shouldReportCancelAndNotSubmit() async throws {
+        for status in [PKPaymentAuthorizationStatus.success, .failure] {
+            let onAuthorizeStarted = expectation(description: "onAuthorize entered")
+            let releaseOnAuthorize = expectation(description: "release onAuthorize")
+            var configuration = try makeConfiguration()
+            configuration.onAuthorize = { _ in
+                onAuthorizeStarted.fulfill()
+                await self.fulfillment(of: [releaseOnAuthorize], timeout: 5)
+                return PKPaymentAuthorizationResult(status: status, errors: nil)
+            }
+            sut = try makeComponent(configuration: configuration)
+            submit()
+            let handler = try XCTUnwrap(sut.authorizationHandler)
+
+            var errors: [Error] = []
+            let cancelled = expectation(description: "didFail(.cancelled)")
+            mockDelegate.onDidFail = { error, _ in
+                errors.append(error)
+                cancelled.fulfill()
+            }
+            mockDelegate.onDidSubmit = { _, _ in XCTFail("didSubmit must not fire after the sheet finished") }
+            let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
+
+            let resultTask = Task {
+                await handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+            }
+            await fulfillment(of: [onAuthorizeStarted], timeout: 5)
+            finishSheet()
+            await fulfillment(of: [cancelled], timeout: 5)
+
+            releaseOnAuthorize.fulfill()
+            let result = await resultTask.value
+
+            XCTAssertEqual(result.status, .failure)
+            XCTAssertEqual(errors.count, 1)
+            XCTAssertEqual(errors.first as? ComponentError, .cancelled)
         }
-        sut = try makeComponent(configuration: configuration)
-        submit()
-
-        let didSubmitExpectation = expectation(description: "didSubmit should be called once")
-        mockDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
-        mockDelegate.onDidFail = { error, _ in XCTFail("didFail must not fire; got \(error)") }
-        let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
-
-        let resultTask = Task {
-            await self.sut.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
-        }
-        await fulfillment(of: [onAuthorizeStarted], timeout: 5)
-        sut.paymentAuthorizationControllerDidFinish(passKitController)
-
-        releaseOnAuthorize.fulfill()
-        await fulfillment(of: [didSubmitExpectation], timeout: 5)
-
-        await sut.finalize(success: true)
-        let result = await resultTask.value
-        XCTAssertEqual(result.status, .success)
     }
 
-    /// The shopper dismisses the sheet after the payment was submitted, before the result arrives.
-    /// The result must still reach the sheet that submitted it.
+    /// The sheet closes after the payment was submitted, before the result arrives, for example after a PassKit timeout.
+    /// This must not be reported as a cancel, and the suspended authorization ends because PassKit stopped waiting.
     func test_dismiss_duringSubmitContinuation_doesNotCallDidFailCancelled() async throws {
         submit()
         let didSubmitExpectation = expectation(description: "didSubmit should be called")
@@ -670,17 +744,19 @@ class ApplePayComponentTest: XCTestCase {
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
         let resultTask = Task {
-            await self.sut.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
-        sut.paymentAuthorizationControllerDidFinish(passKitController)
+        finishSheet()
         // Give a wrong `didFail` enough time to fire.
         try await Task.sleep(for: .milliseconds(200))
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1)
+        XCTAssertNil(sut.authorizationHandler)
+        let result = await resultTask.value
+        XCTAssertEqual(result.status, .failure)
 
         await sut.finalize(success: true)
-        let result = await resultTask.value
-        XCTAssertEqual(result.status, .success)
     }
 
     func test_dismiss_afterMerchantRejection_callsDidFailCancelled() async throws {
@@ -704,10 +780,10 @@ class ApplePayComponentTest: XCTestCase {
         }
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
-        let result = await sut.paymentAuthorizationController(passKitController, didAuthorizePayment: payment)
+        let result = await handler.paymentAuthorizationController(passKitController, didAuthorizePayment: payment)
         XCTAssertEqual(result.status, .failure)
 
-        sut.paymentAuthorizationControllerDidFinish(passKitController)
+        finishSheet()
 
         await fulfillment(of: [didFailExpectation], timeout: 5)
     }
@@ -953,6 +1029,70 @@ class ApplePayComponentTest: XCTestCase {
     private func submit() {
         sut.delegate = mockDelegate
         sut.performSubmit()
+    }
+
+    /// Delivers PassKit's signal that the sheet finished.
+    private func finishSheet(file: StaticString = #filePath, line: UInt = #line) {
+        guard let handler = sut.authorizationHandler else {
+            return XCTFail("No sheet is on screen", file: file, line: line)
+        }
+        handler.paymentAuthorizationControllerDidFinish(passKitController)
+    }
+
+    /// Returns `items` from `onSelectShippingMethod` and checks that the sheet closes and reports `expectedError` once.
+    private func assertInvalidSummaryItemsCloseSheet(
+        _ items: [PKPaymentSummaryItem],
+        failWith expectedError: ApplePayComponent.Error,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async throws {
+        var configuration = try makeConfiguration()
+        configuration.onSelectShippingMethod = { _, _ in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
+        }
+        sut = try makeComponent(configuration: configuration)
+        submit()
+        let handler = try XCTUnwrap(sut.authorizationHandler)
+        let originalItems = sut.paymentRequest.paymentSummaryItems
+        var errors: [Error] = []
+        let didFail = expectation(description: "didFail(\(expectedError))")
+        mockDelegate.onDidFail = { error, _ in
+            errors.append(error)
+            didFail.fulfill()
+        }
+
+        let result = await handler.paymentAuthorizationController(
+            passKitController,
+            didSelectShippingMethod: PKShippingMethod(label: "Shipping", amount: 5.0)
+        )
+        await fulfillment(of: [didFail], timeout: 5)
+
+        XCTAssertEqual(result.paymentSummaryItems, originalItems, file: file, line: line)
+        XCTAssertEqual(sut.paymentRequest.paymentSummaryItems, originalItems, file: file, line: line)
+        XCTAssertEqual(controllerMock.dismissCallsCount, 1, "The sheet closes without PassKit's didFinish", file: file, line: line)
+        XCTAssertNil(sut.authorizationHandler, file: file, line: line)
+
+        // PassKit can still report that the sheet finished.
+        handler.paymentAuthorizationControllerDidFinish(passKitController)
+        // Give a wrong cancel enough time to fire.
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertEqual(errors.count, 1, "No cancel may follow the error", file: file, line: line)
+        XCTAssertEqual(errors.first as? ApplePayComponent.Error, expectedError, file: file, line: line)
+
+        // A new sheet doesn't report the old error.
+        let cancelled = expectation(description: "didFail(.cancelled)")
+        mockDelegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? ComponentError, .cancelled, file: file, line: line)
+            cancelled.fulfill()
+        }
+        sut.performSubmit()
+        finishSheet()
+        await fulfillment(of: [cancelled], timeout: 5)
+    }
+
+    /// Starts `finalize(success:)`, which returns only once the sheet is dismissed.
+    private func startFinalize(success: Bool) -> Task<Void, Never> {
+        Task { await self.sut.finalize(success: success) }
     }
 
     private func makeConfiguration() throws -> ApplePayConfiguration {

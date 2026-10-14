@@ -539,6 +539,28 @@ class SessionTests: XCTestCase {
         )
     }
 
+    func test_componentConfiguration_withInvalidInstallmentMonthValues_shouldFilterInvalidValues() throws {
+        let json = """
+        {
+            "installmentOptions": {
+                "card": {
+                    "plans": ["regular"],
+                    "values": [0, 1, 2]
+                }
+            }
+        }
+        """
+        let config = try JSONDecoder().decode(
+            SessionSetupResponse.Configuration.self,
+            from: XCTUnwrap(json.data(using: .utf8))
+        )
+
+        XCTAssertEqual(
+            config.installmentOptions?.defaultOptions,
+            .init(monthValues: [2], includesRevolving: false)
+        )
+    }
+
     func test_componentConfiguration_shouldReturnStorePaymentMethodVisibility() {
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,

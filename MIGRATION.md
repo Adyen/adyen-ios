@@ -360,6 +360,10 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
 - `ApplePayComponent.Error.submitNotSupported` is removed.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
+- `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
+- When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
+  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
+  `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 
