@@ -49,8 +49,8 @@ internal class CardScannerOverlayView: UIView {
     }
 
     override internal func layoutSubviews() {
-        super.layoutSubviews()
         updateRoiLayout()
+        super.layoutSubviews()
         self.roiFrame = roiView.frame
     }
 
