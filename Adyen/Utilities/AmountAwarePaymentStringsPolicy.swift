@@ -119,6 +119,38 @@ package enum AmountAwarePaymentStringsPolicy {
         return formatted(amount, localizationParameters: localizationParameters)
     }
 
+    /// Returns the subtitle for a regular installment option.
+    ///
+    /// When `showAmount` is enabled and an amount is available, it shows
+    /// “3 monthly payments of €10.00”; otherwise, it shows “3 monthly payments”.
+    package static func installmentSubtitle(
+        monthValue: Int,
+        with amount: Amount?,
+        showAmount: Bool,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        guard showAmount,
+              monthValue > 1,
+              let amount,
+              let formattedAmount = AmountFormatter.formatted(
+                  amount: amount.value / monthValue,
+                  currencyCode: amount.currencyCode
+              ) else {
+            return localizedString(
+                .cardInstallmentsRegularDescription,
+                localizationParameters,
+                String(monthValue)
+            )
+        }
+
+        return localizedString(
+            .cardInstallmentsRegularDescriptionWithPrice,
+            localizationParameters,
+            String(monthValue),
+            formattedAmount
+        )
+    }
+
     private static func formatted(_ amount: Amount, localizationParameters: LocalizationParameters?) -> String {
         var amount = amount
         amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale

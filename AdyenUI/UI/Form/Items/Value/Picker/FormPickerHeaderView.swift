@@ -11,7 +11,7 @@ import UIKit
 internal final class FormPickerHeaderView: UIView {
 
     private enum Layout {
-        static let stackSpacing = AdyenUIConstants.stackViewSpacing
+        static let stackSpacing: CGFloat = 4
     }
 
     // MARK: - Subviews

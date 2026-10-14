@@ -396,6 +396,70 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
+    func test_picker_withMultipleOptions_shouldSeparateOptionsIntoSections() throws {
+        let options: [FormPickerElement] = [
+            .init(identifier: "first", title: "First option"),
+            .init(identifier: "second", title: "Second option")
+        ]
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: options
+        )
+        let sections = searchViewController.resultsListViewController.sections
+
+        XCTAssertEqual(sections.count, options.count)
+        XCTAssertEqual(sections.map(\.items.count), [1, 1])
+        XCTAssertEqual(sections.flatMap(\.items).map(\.title), options.map(\.title))
+    }
+
+    func test_picker_withMultipleOptions_shouldSpaceRowsByTwelvePoints() throws {
+        let expectedSpacing: CGFloat = 12
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: [
+                .init(identifier: "first", title: "First option"),
+                .init(identifier: "second", title: "Second option")
+            ]
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+        resultsListViewController.tableView.layoutIfNeeded()
+
+        let tableView = try XCTUnwrap(resultsListViewController.tableView)
+        let firstCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+        )
+        let secondCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))
+        )
+
+        let firstFrame = firstCell.convert(firstCell.bounds, to: tableView)
+        let secondFrame = secondCell.convert(secondCell.bounds, to: tableView)
+
+        XCTAssertEqual(
+            secondFrame.minY - firstFrame.maxY,
+            expectedSpacing,
+            accuracy: 0.5
+        )
+    }
+
+    func test_picker_whenResultsRendered_shouldSpaceTitleAndSubtitleByTwoPoints() throws {
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: cell)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: cell)
+
+        XCTAssertEqual(subtitleFrame.minY - titleFrame.maxY, 2, accuracy: 0.5)
+    }
+
     func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
         let title = "Installments"
         let searchViewController = try makeSearchViewController(
@@ -406,6 +470,25 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
         XCTAssertEqual(searchViewController.title, title)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderPresent_shouldSpaceFirstResultBelowHeader() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments.",
+                isSearchEnabled: false
+            )
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let headerView = try XCTUnwrap(searchViewController.headerView)
+        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first)
+        let firstCellFrame = firstCell.convert(firstCell.bounds, to: searchViewController.view)
+
+        XCTAssertEqual(firstCellFrame.minY - headerView.frame.maxY, 24, accuracy: 0.5)
     }
 
     func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
@@ -480,8 +563,8 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertTrue(headerView.subtitleLabel.isHidden)
     }
 
-    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByEightPoints() throws {
-        let expectedSpacing: CGFloat = 8
+    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByFourPoints() throws {
+        let expectedSpacing: CGFloat = 4
         let searchViewController = try makeSearchViewController(
             configuration: .init(
                 title: "Installments",

@@ -83,18 +83,20 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         internal let showAmount: Bool
         
         internal func title(with localizationParameters: LocalizationParameters?) -> String {
-            var localizedText: String
-            if showAmount,
-               let amount,
-               let formatted = AmountFormatter.formatted(
-                   amount: amount.value / monthValue,
-                   currencyCode: amount.currencyCode
-               ) {
-                localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
-            } else {
-                localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))
-            }
-            return localizedText
+            localizedString(
+                .cardInstallmentsRegular,
+                localizationParameters,
+                String(monthValue)
+            )
+        }
+
+        internal func subtitle(with localizationParameters: LocalizationParameters?) -> String {
+            AmountAwarePaymentStringsPolicy.installmentSubtitle(
+                monthValue: monthValue,
+                with: amount,
+                showAmount: showAmount,
+                localizationParameters: localizationParameters
+            )
         }
     }
     
@@ -127,7 +129,20 @@ extension InstallmentElement: FormPickable {
     }
 
     internal var subtitle: String? {
-        nil
+        switch kind {
+        case .plan(.oneTime):
+            return localizedString(
+                .cardInstallmentsOneTimeDescription,
+                localizationParameters
+            )
+        case .plan(.revolving):
+            return localizedString(
+                .cardInstallmentsRevolvingDescription,
+                localizationParameters
+            )
+        case let .month(month):
+            return month.subtitle(with: localizationParameters)
+        }
     }
 
     internal var trailingText: String? {
