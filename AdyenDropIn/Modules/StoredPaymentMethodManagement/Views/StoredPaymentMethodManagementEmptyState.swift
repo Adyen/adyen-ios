@@ -32,7 +32,7 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
             
             VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
-                    .adyenLabelStyle(theme.elements.labels.title2)
+                    .adyenLabelStyle(theme.elements.labels.subtitle)
 
                 Text(viewModel.emptyMessage)
                     .adyenLabelStyle(theme.elements.labels.body)
