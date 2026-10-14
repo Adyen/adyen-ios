@@ -12,13 +12,13 @@ import UIKit
 
 internal struct DemoSessionInstallmentOptions: Encodable, Equatable {
     internal let plans: [String]
-    internal let preselectedValue: Int
-    internal let values: [Int]
+    internal let preselectedValue: UInt
+    internal let values: [UInt]
 }
 
 internal extension DemoAppSettings {
     var sessionInstallmentOptions: [String: DemoSessionInstallmentOptions]? {
-        let values = DemoAppSettings.installmentMonthValues.map { Int($0) }
+        let values = DemoAppSettings.installmentMonthValues
         let regularPlan = Installments.Plan.regular.rawValue
         let revolvingPlan = Installments.Plan.revolving.rawValue
         let preselectedValue = DemoAppSettings.installmentPreselectedValue
