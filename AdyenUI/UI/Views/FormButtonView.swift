@@ -11,6 +11,7 @@ package struct FormButtonView: View {
 
     package let title: String
     package let style: AdyenButtonStyle
+    package let titleStyle: AdyenLabelStyle
     package let isEnabled: Bool
     package let showsActivityIndicator: Bool
     package let accessibilityIdentifier: String
@@ -20,6 +21,7 @@ package struct FormButtonView: View {
     package init(
         title: String,
         style: AdyenButtonStyle,
+        titleStyle: AdyenLabelStyle,
         isEnabled: Bool,
         showsActivityIndicator: Bool,
         accessibilityIdentifier: String,
@@ -27,6 +29,7 @@ package struct FormButtonView: View {
     ) {
         self.title = title
         self.style = style
+        self.titleStyle = titleStyle
         self.isEnabled = isEnabled
         self.showsActivityIndicator = showsActivityIndicator
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -37,6 +40,7 @@ package struct FormButtonView: View {
         FormButtonBridge(
             title: title,
             style: style,
+            titleStyle: titleStyle,
             showsActivityIndicator: showsActivityIndicator,
             accessibilityIdentifier: accessibilityIdentifier,
             action: action
@@ -49,6 +53,7 @@ private struct FormButtonBridge: UIViewRepresentable {
 
     let title: String
     let style: AdyenButtonStyle
+    let titleStyle: AdyenLabelStyle
     let showsActivityIndicator: Bool
     let accessibilityIdentifier: String
     let action: () -> Void
@@ -60,7 +65,7 @@ private struct FormButtonBridge: UIViewRepresentable {
 
     /// Creates the UIKit form button and connects its tap handler.
     func makeUIView(context: Context) -> FormButton {
-        let button = FormButton(buttonStyle: style)
+        let button = FormButton(buttonStyle: style, titleStyle: titleStyle)
         button.addTarget(context.coordinator, action: #selector(Coordinator.didTapButton), for: .touchUpInside)
         return button
     }

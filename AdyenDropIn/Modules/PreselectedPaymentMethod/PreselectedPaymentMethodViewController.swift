@@ -119,6 +119,7 @@ internal struct PreselectedPaymentMethodView: View {
             FormButtonView(
                 title: viewModel.submitButtonTitle,
                 style: viewModel.theme.elements.buttons.primary,
+                titleStyle: viewModel.theme.elements.labels.bodyEmphasized,
                 isEnabled: !viewModel.isLoading,
                 showsActivityIndicator: viewModel.isLoading,
                 accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.primaryButton,
@@ -130,6 +131,7 @@ internal struct PreselectedPaymentMethodView: View {
                 FormButtonView(
                     title: viewModel.showAllPaymentMethodsButtonTitle,
                     style: viewModel.theme.elements.buttons.secondary,
+                    titleStyle: viewModel.theme.elements.labels.bodyEmphasized,
                     isEnabled: !viewModel.isLoading,
                     showsActivityIndicator: false,
                     accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.secondaryButton,

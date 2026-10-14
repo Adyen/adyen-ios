@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 /// A form item that represents an error.
 package final class FormErrorItem: FormItem {
@@ -13,8 +13,8 @@ package final class FormErrorItem: FormItem {
     /// Indicates the error message.
     @AdyenObservable(nil) package var message: String?
 
-    /// The error icon name.
-    package let iconName: String
+    /// The error icon.
+    package let icon: UIImage?
 
     /// The error item style.
     package let style: FormErrorItemStyle
@@ -25,8 +25,8 @@ package final class FormErrorItem: FormItem {
 
     package var subitems: [FormItem] = []
 
-    package init(message: String? = nil, iconName: String = "error", style: FormErrorItemStyle = FormErrorItemStyle()) {
-        self.iconName = iconName
+    package init(message: String? = nil, icon: UIImage? = .adyenWarning, style: FormErrorItemStyle = FormErrorItemStyle()) {
+        self.icon = icon
         self.style = style
         self.message = message
     }

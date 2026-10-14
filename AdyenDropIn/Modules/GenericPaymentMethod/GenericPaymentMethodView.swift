@@ -13,11 +13,11 @@ internal struct GenericPaymentMethodView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
-        static let descriptionViewSpacing: CGFloat = 16
-        static let descriptionViewTopPadding: CGFloat = 32
+        static let descriptionViewSpacing: CGFloat = 8
+        static let descriptionViewTopPadding: CGFloat = 24
 
         static let progressViewSpacing: CGFloat = 16
-        static let progressViewBottomPadding: CGFloat = 64
+        static let progressViewTopPadding: CGFloat = 32
         static let progressViewSize: CGFloat = 48
         static let progressViewWidth: CGFloat = 4
     }
@@ -38,7 +38,7 @@ internal struct GenericPaymentMethodView: View {
             logoView
             descriptionView
             progressView
-                .padding(.top, Constants.progressViewBottomPadding)
+                .padding(.top, Constants.progressViewTopPadding)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -64,7 +64,7 @@ internal struct GenericPaymentMethodView: View {
     // MARK: - Private
 
     private var logoView: some View {
-        PaymentLogoView(
+        PaymentMethodLogoView(
             url: viewModel.paymentMethodLogoURL,
             theme: theme,
             size: Constants.logoSize
@@ -75,10 +75,10 @@ internal struct GenericPaymentMethodView: View {
     private var descriptionView: some View {
         VStack(spacing: Constants.descriptionViewSpacing) {
             Text("\(viewModel.title)")
-                .font(Font(theme.elements.labels.title.font))
+                .adyenLabelStyle(theme.elements.labels.title)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.title)
             Text(viewModel.description)
-                .font(Font(theme.elements.labels.body.font))
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.description)
         }
         .foregroundStyle(Color(uiColor: theme.colors.text))
@@ -95,8 +95,7 @@ internal struct GenericPaymentMethodView: View {
                 lineWidth: Constants.progressViewWidth
             )
             Text(viewModel.progressTitle)
-                .font(Font(theme.elements.labels.body.font))
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.progressTitle)
         }
     }

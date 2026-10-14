@@ -21,7 +21,8 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     private enum Layout {
         static let searchBarHorizontalInset: CGFloat = 8
-        static let headerBottomSpacing: CGFloat = 8
+        static let headerTopSpacing: CGFloat = 16
+        static let headerBottomSpacing: CGFloat = 24
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
@@ -37,10 +38,12 @@ package class SearchViewController: UIViewController, AdyenObserver {
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
-
-    internal var searchBarEditingStateDidChange: ((Bool) -> Void)?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style)
+    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
+
+    /// Displays each result in its own section when enabled.
+    /// Configure before loading the view.
+    package var separatesResultsIntoSections = false
 
     /// Initializes the search view controller.
     ///
@@ -82,7 +85,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var searchBar: UISearchBar = {
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
-            backgroundColor: viewModel.style.backgroundColor,
+            theme: viewModel.theme,
             delegate: self
         )
     }()
@@ -136,6 +139,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         delegate?.viewWillAppear(viewController: self)
+        hideNavigationBarHairline()
         
         if viewModel.shouldShowSearchBar,
            viewModel.shouldFocusSearchBarOnAppearance {
@@ -150,6 +154,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
         delegate?.viewDidAppear(viewController: self)
     }
     
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // The search field background is a rendered UIImage; re-bake it on appearance changes.
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection),
+              viewModel.shouldShowSearchBar else { return }
+        searchBar.adyenApplyFieldStyle(
+            theme: viewModel.theme,
+            isEditing: searchBar.isFirstResponder
+        )
+    }
+    
     private func setupConstraints() {
 
         let contentTopAnchor: NSLayoutYAxisAnchor
@@ -159,7 +174,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
             let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
             headerHeightHug.priority = .defaultLow
             NSLayoutConstraint.activate([
-                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: Layout.headerTopSpacing),
                 headerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
                 headerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
                 headerHeightHug
@@ -224,9 +239,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
             emptyView.searchTerm = searchTerm
             
         case let .showingResults(results):
-            resultsListViewController.reload(
-                newSections: [.init(items: results)]
-            )
+            let sections = separatesResultsIntoSections
+                ? results.map { ListSection(items: [$0]) }
+                : [ListSection(items: results)]
+
+            resultsListViewController.reload(newSections: sections)
             resultsListViewController.view.isHidden = false
         }
     }
@@ -273,6 +290,15 @@ package class SearchViewController: UIViewController, AdyenObserver {
         """) }
     }
     
+    private func hideNavigationBarHairline() {
+        let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = viewModel.style.backgroundColor
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+    }
+
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
@@ -280,17 +306,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-
-    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(true)
-    }
-
-    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(false)
-    }
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
+    }
+    
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: true)
+    }
+    
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: false)
     }
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

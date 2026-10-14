@@ -13,7 +13,7 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementListView: View {
 
     private enum Constants {
-        static let topPadding: CGFloat = 16
+        static let topPadding: CGFloat = 24
         static let verticalSpacing: CGFloat = 16
         static let animationDuration = 0.2
     }
@@ -67,7 +67,6 @@ private extension StoredPaymentMethodManagementListView {
     struct RemovalErrorView: View {
 
         private enum Constants {
-            static let iconSystemName = "exclamationmark.triangle"
             static let spacing: CGFloat = 16
             static let iconSize: CGFloat = 16
         }
@@ -77,14 +76,16 @@ private extension StoredPaymentMethodManagementListView {
 
         var body: some View {
             HStack(spacing: Constants.spacing) {
-                Image(systemName: Constants.iconSystemName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: Constants.iconSize, height: Constants.iconSize)
-                    .accessibilityHidden(true)
+                if let icon = UIImage.adyenWarning {
+                    Image(uiImage: icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: Constants.iconSize, height: Constants.iconSize)
+                        .accessibilityHidden(true)
+                }
 
                 Text(message)
-                    .font(Font(theme.elements.labels.body.font))
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.destructive)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .foregroundStyle(Color(uiColor: theme.colors.destructive))
@@ -110,8 +111,7 @@ private extension StoredPaymentMethodManagementListView {
             VStack(alignment: .leading, spacing: Constants.headerSpacing) {
                 if let title {
                     Text(title)
-                        .font(Font(theme.elements.labels.subheadlineEmphasized.font))
-                        .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
+                        .adyenLabelStyle(theme.elements.labels.subheadlineEmphasized)
                         .padding(.vertical, Constants.headerVerticalPadding)
                 }
 
@@ -158,20 +158,18 @@ private extension StoredPaymentMethodManagementListView {
                                 lineWidth: Constants.progressViewWidth
                             )
                         } else {
-                            PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
+                            PaymentMethodLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
                         }
                     }
                     .frame(width: Constants.logoSize.width, height: Constants.logoSize.height)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)
-                            .font(Font(theme.elements.labels.bodyEmphasized.font))
-                            .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
+                            .adyenLabelStyle(theme.elements.labels.bodyEmphasized)
 
                         if let subtitle = item.subtitle {
                             Text(subtitle)
-                                .font(Font(theme.elements.labels.subheadline.font))
-                                .foregroundStyle(Color(uiColor: subtitleColor))
+                                .adyenLabelStyle(theme.elements.labels.subheadline, color: subtitleColor)
                         }
                     }
                 }

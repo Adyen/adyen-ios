@@ -87,22 +87,16 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
     }()
 
     internal lazy var chevronView: UIImageView = {
-        let chevron = UIImage(
-            named: "chevron",
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        )?.withRenderingMode(.alwaysTemplate)
-
-        let imageView = UIImageView(image: chevron)
+        let imageView = UIImageView(image: .adyenChevronRight)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.widthAnchor.constraint(equalToConstant: 8).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Constants.chevronWidth).isActive = true
         imageView.contentMode = .scaleAspectFit
 
         return imageView
     }()
 
-    internal lazy var valueLabel: UILabel = {
+    internal lazy var valueLabel: AdyenLabel = {
         let valueLabel = ValueLabel()
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
@@ -125,8 +119,8 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
     private func apply(_ theme: CheckoutTheme) {
         let style = theme.elements.textField
 
-        containerView.backgroundColor = style.containerColor
-        containerView.layer.borderWidth = style.borderWidth
+        containerView.backgroundColor = style.backgroundColor
+        containerView.layer.borderWidth = style.defaultBorderWidth
         adyen.applyLayerBorderColor(style.borderColor, on: containerView.layer)
 
         switch style.cornerRadius {
@@ -136,7 +130,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
             containerView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
         }
 
-        chevronView.tintColor = theme.colors.primary
+        chevronView.tintColor = theme.colors.text
         valueLabel.apply(theme.elements.labels.body)
     }
 
@@ -145,6 +139,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         resolvingWith traitCollection: UITraitCollection? = nil
     ) {
         let style = theme.elements.textField
+        containerView.layer.borderWidth = isValid ? style.defaultBorderWidth : style.errorBorderWidth
         let borderColor = isValid ? style.borderColor : style.errorColor
         adyen.applyLayerBorderColor(borderColor, on: containerView.layer, resolvingWith: traitCollection)
     }
@@ -191,7 +186,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 }
 
 /// A label reporting it's intrinsic content size to match the text field of the ``FormTextItemView``
-private class ValueLabel: UILabel {
+private class ValueLabel: AdyenLabel {
 
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
@@ -200,4 +195,8 @@ private class ValueLabel: UILabel {
             height: size.height + 3
         )
     }
+}
+
+private enum Constants {
+    static let chevronWidth: CGFloat = 16
 }

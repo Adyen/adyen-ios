@@ -31,18 +31,16 @@ internal struct PaymentMethodContentHeaderView: View {
 
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
-            PaymentLogoView(url: viewModel.logoURL, theme: viewModel.theme, size: Constants.logoSize)
+            PaymentMethodLogoView(url: viewModel.logoURL, theme: viewModel.theme, size: Constants.logoSize)
                 .accessibilityIdentifier(accessibilityIdentifiers.logo)
                 .accessibilityHidden(true)
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(viewModel.title)
-                    .font(Font(viewModel.theme.elements.labels.title.font))
-                    .foregroundStyle(Color(uiColor: viewModel.theme.elements.labels.title.color))
+                    .adyenLabelStyle(viewModel.theme.elements.labels.title)
                     .accessibilityIdentifier(accessibilityIdentifiers.title)
                 Text(viewModel.subtitle)
-                    .font(Font(viewModel.theme.elements.labels.body.font))
-                    .foregroundStyle(Color(uiColor: viewModel.theme.elements.labels.body.color))
+                    .adyenLabelStyle(viewModel.theme.elements.labels.body, color: viewModel.theme.colors.textSecondary)
                     .accessibilityIdentifier(accessibilityIdentifiers.subtitle)
             }
             .multilineTextAlignment(.center)
