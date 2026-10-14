@@ -22,6 +22,10 @@ internal struct StoredPaymentMethodContentView: View {
         static let bottomPadding: CGFloat = 16
     }
 
+    private enum Images {
+        static let backwardChevron = "chevron.backward"
+    }
+
     @ObservedObject private var viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
@@ -62,8 +66,9 @@ internal struct StoredPaymentMethodContentView: View {
         Button {
             viewModel.cancel()
         } label: {
-            Image(systemName: "chevron.backward")
+            Image(systemName: Images.backwardChevron)
         }
+        .tint(Color(uiColor: viewModel.theme.colors.primary))
         .disabled(viewModel.isPaymentInProgress)
     }
 }
