@@ -18,21 +18,21 @@ internal struct StoredPaymentMethodContentViewModelTests {
     internal func storedCardSecurityCodeComponent_whenCreated_thenProvidesSharedHeaderAndComponentController() {
         let context = makeSUTStoredCardWithCVC()
 
-        #expect(context.sut.title == "\(String.Adyen.securedString)4556")
-        #expect(context.sut.paymentMethodLogoURL.absoluteString.contains("visa"))
-        #expect(context.sut.subtitle == "Use Visa to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.header.title == "\(String.Adyen.securedString)4556")
+        #expect(context.sut.header.logoURL.absoluteString.contains("visa"))
+        #expect(context.sut.header.subtitle == "Use Visa to pay \(Dummy.amount.formatted)")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withMissingAmount_thenProvidesUnformattedPayDescription() {
         let context = makeSUTStoredCardWithCVC(amount: nil)
-        #expect(context.sut.subtitle == "Use Visa to pay")
+        #expect(context.sut.header.subtitle == "Use Visa to pay")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withZeroAmount_thenProvidesSaveDetailsDescription() {
         let context = makeSUTStoredCardWithCVC(amount: Amount(value: 0, currencyCode: "EUR"))
-        #expect(context.sut.subtitle == "Use Visa to save details")
+        #expect(context.sut.header.subtitle == "Use Visa to save details")
     }
 
     @Test
@@ -50,8 +50,8 @@ internal struct StoredPaymentMethodContentViewModelTests {
         )
         let context = makeSUT(component: component)
 
-        #expect(context.sut.title == "$arjenLandstra")
-        #expect(context.sut.subtitle == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
+        #expect(context.sut.header.title == "$arjenLandstra")
+        #expect(context.sut.header.subtitle == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
     }
 
     @Test
