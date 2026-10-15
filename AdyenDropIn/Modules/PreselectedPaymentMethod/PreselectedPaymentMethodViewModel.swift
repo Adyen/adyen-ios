@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import Combine
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
