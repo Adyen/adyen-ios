@@ -142,12 +142,31 @@ final class FormButtonTests: XCTestCase {
         XCTAssertTrue(isActionCalled)
     }
 
+    private struct FormButtonContainer: View {
+        let title: String
+        let isEnabled: Bool
+        let showsActivityIndicator: Bool
+        let action: () -> Void
+
+        var body: some View {
+            FormButtonView(
+                title: title,
+                style: .primary(for: .default),
+                titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized,
+                showsActivityIndicator: showsActivityIndicator,
+                accessibilityIdentifier: "representableButton",
+                action: action
+            )
+            .disabled(!isEnabled)
+        }
+    }
+
     private func makeRepresentableSUT(
         title: String = "Submit",
         isEnabled: Bool = true,
         showsActivityIndicator: Bool = false,
         action: @escaping () -> Void = {}
-    ) throws -> (UIWindow, UIHostingController<FormButtonView>, FormButton) {
+    ) throws -> (UIWindow, UIHostingController<FormButtonContainer>, FormButton) {
         let hostingController = UIHostingController(rootView: makeRepresentable(
             title: title,
             isEnabled: isEnabled,
@@ -167,14 +186,11 @@ final class FormButtonTests: XCTestCase {
         isEnabled: Bool,
         showsActivityIndicator: Bool,
         action: @escaping () -> Void = {}
-    ) -> FormButtonView {
-        FormButtonView(
+    ) -> FormButtonContainer {
+        FormButtonContainer(
             title: title,
-            style: .primary(for: .default),
-            titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized,
             isEnabled: isEnabled,
             showsActivityIndicator: showsActivityIndicator,
-            accessibilityIdentifier: "representableButton",
             action: action
         )
     }

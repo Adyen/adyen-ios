@@ -120,24 +120,24 @@ internal struct PreselectedPaymentMethodView: View {
                 title: viewModel.submitButtonTitle,
                 style: viewModel.theme.elements.buttons.primary,
                 titleStyle: viewModel.theme.elements.labels.bodyEmphasized,
-                isEnabled: !viewModel.isLoading,
                 showsActivityIndicator: viewModel.isLoading,
                 accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.primaryButton,
                 action: viewModel.submitPayment
             )
             .frame(height: Constants.buttonHeight)
+            .disabled(viewModel.isLoading)
 
             if viewModel.showsAllPaymentMethodsButton {
                 FormButtonView(
                     title: viewModel.showAllPaymentMethodsButtonTitle,
                     style: viewModel.theme.elements.buttons.secondary,
                     titleStyle: viewModel.theme.elements.labels.bodyEmphasized,
-                    isEnabled: !viewModel.isLoading,
                     showsActivityIndicator: false,
                     accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.secondaryButton,
                     action: viewModel.showAllPaymentMethods
                 )
                 .frame(height: Constants.buttonHeight)
+                .disabled(viewModel.isLoading)
             }
         }
     }

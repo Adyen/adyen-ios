@@ -9,12 +9,11 @@ import UIKit
 
 package struct FormButtonView: UIViewRepresentable {
 
-    @Environment(\.isEnabled) private var isEnabledInEnvironment
+    @SwiftUI.Environment(\.isEnabled) private var isEnabled
 
     package let title: String
     package let style: AdyenButtonStyle
     package let titleStyle: AdyenLabelStyle
-    package let isEnabled: Bool
     package let showsActivityIndicator: Bool
     package let accessibilityIdentifier: String
     package let action: () -> Void
@@ -24,7 +23,6 @@ package struct FormButtonView: UIViewRepresentable {
         title: String,
         style: AdyenButtonStyle,
         titleStyle: AdyenLabelStyle,
-        isEnabled: Bool,
         showsActivityIndicator: Bool,
         accessibilityIdentifier: String,
         action: @escaping () -> Void
@@ -32,7 +30,6 @@ package struct FormButtonView: UIViewRepresentable {
         self.title = title
         self.style = style
         self.titleStyle = titleStyle
-        self.isEnabled = isEnabled
         self.showsActivityIndicator = showsActivityIndicator
         self.accessibilityIdentifier = accessibilityIdentifier
         self.action = action
@@ -55,7 +52,7 @@ package struct FormButtonView: UIViewRepresentable {
         context.coordinator.action = action
         button.title = title
         button.showsActivityIndicator = showsActivityIndicator
-        button.isEnabled = isEnabled && isEnabledInEnvironment && !showsActivityIndicator
+        button.isEnabled = isEnabled && !showsActivityIndicator
         button.accessibilityIdentifier = accessibilityIdentifier
     }
 
