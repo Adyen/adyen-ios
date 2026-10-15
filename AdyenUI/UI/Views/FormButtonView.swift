@@ -68,7 +68,7 @@ package struct FormButtonView: UIViewRepresentable {
         }
 
         /// Forwards the UIKit tap event to the configured action.
-        package @objc func didTapButton() {
+        @objc package func didTapButton() {
             action()
         }
     }
