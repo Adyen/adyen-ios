@@ -40,7 +40,7 @@ internal struct PaymentMethodContentHeaderView: View {
                     .adyenLabelStyle(viewModel.theme.elements.labels.title)
                     .accessibilityIdentifier(accessibilityIdentifiers.title)
                 Text(viewModel.subtitle)
-                    .adyenLabelStyle(viewModel.theme.elements.labels.body, color: viewModel.theme.colors.textSecondary)
+                    .adyenLabelStyle(viewModel.theme.elements.labels.body)
                     .accessibilityIdentifier(accessibilityIdentifiers.subtitle)
             }
             .multilineTextAlignment(.center)
