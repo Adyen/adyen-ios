@@ -47,6 +47,7 @@ extension CheckoutLocalizationKey {
     public static let generalClose = CheckoutLocalizationKey(name: "generalClose")
     public static let generalOptional = CheckoutLocalizationKey(localizationKey: .fieldTitleOptional)
     public static let generalSearchHint = CheckoutLocalizationKey(localizationKey: .searchPlaceholder)
+    public static let submitButtonLabelSaveDetails = CheckoutLocalizationKey(localizationKey: .submitButtonLabelSaveDetails)
 }
 
 // MARK: - Address
@@ -113,6 +114,18 @@ extension CheckoutLocalizationKey {
     public static let dropInManageFavoritesRemoveConfirmation = CheckoutLocalizationKey(name: "dropInManageFavoritesRemoveConfirmation")
     public static let dropInOtherPaymentMethods = CheckoutLocalizationKey(name: "dropInOtherPaymentMethods")
     public static let dropInPaymentMethodListDescription = CheckoutLocalizationKey(name: "dropInPaymentMethodListDescription")
+    public static let dropInPaymentMethodListDescriptionCompletePayment = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionCompletePayment
+    )
+    public static let dropInPaymentMethodListDescriptionSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionSaveDetails
+    )
+    public static let dropInPaymentMethodListTitleSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListTitleSaveDetails
+    )
+    public static let dropInPreselectedPaymentMethodButtonLabel = CheckoutLocalizationKey(
+        localizationKey: .dropInPreselectedPaymentMethodButtonLabel
+    )
     // swiftlint:disable:next line_length
     public static let dropInPaymentMethodListFavoritesSectionTitle = CheckoutLocalizationKey(name: "dropInPaymentMethodListFavoritesSectionTitle")
     // swiftlint:disable:next line_length

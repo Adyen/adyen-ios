@@ -420,9 +420,9 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var submitButtonText: String {
             switch self {
-            case .visa, .bcmc, .initiableBCMC: "Pay €1.00"
-            case .visaWithoutAmount: "Pay"
+            case .visa, .visaWithoutAmount: "Use VISA"
             case .visaWithZeroAmount: "Save details"
+            case .bcmc, .initiableBCMC: "Use Maestro"
             }
         }
 
