@@ -120,4 +120,42 @@ final class DemoConfigurationTests: XCTestCase {
 
         XCTAssertNil(configuration)
     }
+
+    func test_externalConfigurationReader_withDropInConfiguration_shouldDecodeStoredPaymentMethodFlags() {
+        let configuration = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(hideStoredPaymentMethods: true, startWithLastStoredPaymentMethod: false)
+        )
+        let encodedPayload = base64Encode(configuration)
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.dropIn?.hideStoredPaymentMethods, true)
+        XCTAssertEqual(result?.dropIn?.startWithLastStoredPaymentMethod, false)
+    }
+
+    func test_applying_withDropInConfiguration_shouldOverrideStoredPaymentMethodFlags() {
+        let external = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(hideStoredPaymentMethods: true, startWithLastStoredPaymentMethod: false)
+        )
+
+        let configuration = defaultConfiguration.applying(external)
+
+        XCTAssertTrue(configuration.dropInSettings.hideStoredPaymentMethods)
+        XCTAssertFalse(configuration.dropInSettings.startWithLastStoredPaymentMethod)
+    }
+
+    func test_applying_withPartialDropInConfiguration_shouldKeepUnsetDropInDefaults() {
+        let external = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(startWithLastStoredPaymentMethod: false)
+        )
+
+        let configuration = defaultConfiguration.applying(external)
+
+        XCTAssertFalse(configuration.dropInSettings.hideStoredPaymentMethods)
+        XCTAssertFalse(configuration.dropInSettings.startWithLastStoredPaymentMethod)
+        XCTAssertEqual(
+            configuration.dropInSettings.showRemovePaymentMethodButton,
+            defaultConfiguration.dropInSettings.showRemovePaymentMethodButton
+        )
+    }
 }
