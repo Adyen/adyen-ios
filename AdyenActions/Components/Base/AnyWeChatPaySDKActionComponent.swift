@@ -8,13 +8,13 @@ import Adyen
 import Foundation
 
 /// Represents any structure/class that can be initialized without any parameters.
-public protocol APIContextInitializable {
+package protocol APIContextInitializable {
     /// Initializer that takes an `APIContext`.
     init(context: AdyenContext)
 }
 
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.
-public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent, APIContextInitializable {
+package protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent, APIContextInitializable {
 
     /// Handles the action.
     ///
@@ -24,8 +24,7 @@ public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent
 }
 
 /// Loads the concrete WeChatPaySDKActionComponent Class dynamically.
-@_spi(AdyenInternal)
-public func loadTheConcreteWeChatPaySDKActionComponentClass() -> AnyWeChatPaySDKActionComponent.Type? {
+package func loadTheConcreteWeChatPaySDKActionComponentClass() -> AnyWeChatPaySDKActionComponent.Type? {
     [
         "AdyenWeChatPay.WeChatPaySDKActionComponent",
         "Adyen.WeChatPaySDKActionComponent"

@@ -5,7 +5,7 @@
 //
 
 /// A stored Cash App Pay account.
-public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
+public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
@@ -14,18 +14,11 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
     /// Public identifier for the customer on Cash App.
     public let cashtag: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             "\(localizedString(.cashAppPayCashtag, parameters)): \(cashtag)"
@@ -46,5 +39,13 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
         case identifier = "id"
         case supportedShopperInteractions
 
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredCashAppPayPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
 @testable import AdyenComponents
+import XCTest
 
 @MainActor
 class CardComponentUITests: XCTestCase {
@@ -50,7 +50,7 @@ class CardComponentUITests: XCTestCase {
         
         var configuration = CardConfiguration.minimal
         
-        [BillingAddressMode.none, .full, .postalCode].forEach { mode in
+        [BillingAddressMode.none, .full(), .postalCode()].forEach { mode in
             configuration = configuration.billingAddressMode(mode)
             
             let sut = CardComponent(
@@ -84,7 +84,7 @@ private extension CardConfiguration {
     static var extended: Self {
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .full
+        configuration.billingAddressMode = .full()
         configuration.koreanAuthenticationVisibility = .show
         configuration.socialSecurityNumberVisibility = .show
         configuration.installmentConfiguration = .init(

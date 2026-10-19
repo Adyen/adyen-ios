@@ -12,18 +12,19 @@ public struct BACSDirectDebitPaymentMethod: PaymentMethod {
     public let type: PaymentMethodType
 
     public let name: String
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
 
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension BACSDirectDebitPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

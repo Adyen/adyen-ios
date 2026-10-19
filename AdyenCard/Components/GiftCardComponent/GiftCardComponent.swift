@@ -17,7 +17,7 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 @MainActor
-public final class GiftCardComponent: PresentableComponent,
+package final class GiftCardComponent: PaymentComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
@@ -39,30 +39,32 @@ public final class GiftCardComponent: PresentableComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     private let partialPaymentMethodType: PartialPaymentMethodType
 
     /// The gift card payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         partialPaymentMethodType.partialPaymentMethod
     }
 
     /// Describes the component's UI style.
-    public let style: FormComponentStyle
+    package let style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
     internal let showsSubmitButton: Bool
 
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
+
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The partial payment component delegate.
-    public weak var partialPaymentDelegate: PartialPaymentDelegate?
+    package weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
-    public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
+    package weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
     /// The localization parameters.
     package var localizationParameters: LocalizationParameters?
@@ -80,7 +82,7 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-    public convenience init(
+    package convenience init(
         paymentMethod: GiftCardPaymentMethod,
         context: AdyenContext,
         amount: Amount,
@@ -108,7 +110,7 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-    public convenience init(
+    package convenience init(
         paymentMethod: MealVoucherPaymentMethod,
         context: AdyenContext,
         amount: Amount,
@@ -144,7 +146,7 @@ public final class GiftCardComponent: PresentableComponent,
 
     // MARK: - Presentable Component Protocol
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    package lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
     private lazy var formViewController: FormViewController = {
 
@@ -240,14 +242,14 @@ public final class GiftCardComponent: PresentableComponent,
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
 
     // MARK: - Loading Component Protocol
 
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         viewController.view.isUserInteractionEnabled = true
     }
@@ -273,9 +275,9 @@ public final class GiftCardComponent: PresentableComponent,
 
 extension GiftCardComponent {
     
-    internal func didSelectSubmitButton() {
+    package func performSubmit() {
         hideError()
-        guard validate() else {
+        guard formViewController.validate() else {
             return
         }
 
@@ -310,8 +312,7 @@ extension GiftCardComponent {
                             paymentData: paymentData
                         )
                     } else {
-                        let newPaymentData = paymentData.replacing(amount: balanceCheckResult.amountToPay)
-                        return self.startPartialPaymentFlow(paymentData: newPaymentData)
+                        return self.startPartialPaymentFlow(paymentData: paymentData)
                     }
                 }
                 .handle(success: { /* Do nothing.*/ }, failure: { self.handle(error: $0) })
@@ -382,7 +383,7 @@ extension GiftCardComponent {
             remainingAmount: remainingAmount
         )
         
-        let component = InstantPaymentComponent(
+        let component = GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             paymentData: paymentData
@@ -453,7 +454,6 @@ extension GiftCardComponent {
 
             return .success(PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: amount,
                 order: order,
                 storePaymentMethod: false
             ))
@@ -474,16 +474,3 @@ extension GiftCardComponent {
 }
 
 extension GiftCardComponent: PartialPaymentComponent {}
-
-// MARK: - SubmitCustomizable
-
-extension GiftCardComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

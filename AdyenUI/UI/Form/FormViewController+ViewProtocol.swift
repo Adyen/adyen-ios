@@ -6,23 +6,21 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol FormViewProtocol {
-    
+package protocol FormViewProtocol {
+
     func add(item: (some FormItem)?)
     
     func displayValidation()
 }
 
-@_spi(AdyenInternal)
 extension FormViewController: FormViewProtocol {
 
-    public func add(item: (some FormItem)?) {
+    package func add(item: (some FormItem)?) {
         guard let item else { return }
         append(item)
     }
 
-    public func displayValidation() {
+    package func displayValidation() {
         resignFirstResponder()
         showValidation()
     }

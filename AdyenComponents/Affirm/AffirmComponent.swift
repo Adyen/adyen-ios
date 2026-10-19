@@ -7,17 +7,16 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormLabelItem
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 
 /// A component that provides a form for Affirm payment.
-public final class AffirmComponent: AbstractPersonalInformationComponent {
-    
+package final class AffirmComponent: AbstractPersonalInformationComponent {
+
     /// Configuration for Affirm Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     private enum ViewIdentifier {
         static let billingAddress = "billingAddressItem"
         static let deliveryAddress = "deliveryAddressItem"
@@ -37,7 +36,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Affirm payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -100,16 +99,14 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         }
     }
     
-    // MARK: - Public
-    
-    @_spi(AdyenInternal)
-    override public func submitButtonTitle() -> String {
+    // MARK: - package
+
+    override package func submitButtonTitle() -> String {
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
     
-    @_spi(AdyenInternal)
-    override public func createPaymentDetails() throws -> PaymentMethodDetails {
-        
+    override package func createPaymentDetails() throws -> PaymentMethodDetails {
+
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let emailAddress = emailItem?.value,
@@ -131,8 +128,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         )
     }
     
-    @_spi(AdyenInternal)
-    override public func phoneExtensions() -> [PhoneExtension] {
+    override package func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }

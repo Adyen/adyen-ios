@@ -14,8 +14,7 @@ import UIKit
 
 /// A component that provides a form for Online Banking payment.
 @MainActor
-public final class OnlineBankingComponent: PaymentComponent,
-    PresentableComponent,
+package final class OnlineBankingComponent: PaymentComponent,
     LoadingComponent {
 
     private enum ViewIdentifier {
@@ -29,26 +28,25 @@ public final class OnlineBankingComponent: PaymentComponent,
         static let onlineBankingSK = "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
     }
 
-    /// Configuration for Online Banking Component.
-    public typealias Configuration = BasicComponentConfiguration
-
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         onlineBankingPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
+
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     private let onlineBankingPaymentMethod: OnlineBankingPaymentMethod
 
@@ -83,7 +81,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -114,25 +112,18 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Online Banking payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: OnlineBankingPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.onlineBankingPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
     }
 
-    public func stopLoading() {
-        continueButton.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-
-    // MARK: - Private
-
-    private func didSelectContinueButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(
             paymentMethod: paymentMethod,
@@ -141,8 +132,15 @@ public final class OnlineBankingComponent: PaymentComponent,
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
+
+    public func stopLoading() {
+        continueButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+
+    // MARK: - Private
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
@@ -167,18 +165,4 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 }
 
-@_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension OnlineBankingComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectContinueButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

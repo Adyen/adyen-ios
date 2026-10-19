@@ -9,8 +9,7 @@ import UIKit
 
 /// Protocol specifying the interface of a view that is shown
 /// when the results of the ``SearchViewController`` are empty.
-@_spi(AdyenInternal)
-public protocol SearchResultsEmptyView: UIView {
+package protocol SearchResultsEmptyView: UIView {
     /// The searchTerm that caused the search results to be empty
     ///
     /// Use this value to update your messaging
@@ -18,31 +17,53 @@ public protocol SearchResultsEmptyView: UIView {
 }
 
 /// A view controller that shows search results in a ``ListViewController``
-@_spi(AdyenInternal)
-public class SearchViewController: UIViewController, AdyenObserver {
-    
+package class SearchViewController: UIViewController, AdyenObserver {
+
+    private enum Layout {
+        static let searchBarHorizontalInset: CGFloat = 8
+        static let headerTopSpacing: CGFloat = 16
+        static let headerBottomSpacing: CGFloat = 24
+    }
+
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
+    private let resultsHorizontalInset: CGFloat
+    private let searchTextFieldToResultsSpacing: CGFloat?
+
+    /// Optional view shown above the search bar (e.g. a title/description header).
+    internal let headerView: UIView?
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style)
+    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
+
+    /// Displays each result in its own section when enabled.
+    /// Configure before loading the view.
+    package var separatesResultsIntoSections = false
 
     /// Initializes the search view controller.
     ///
     /// - Parameters:
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
-    public init(
+    ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
+    ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
+    package init(
         viewModel: ViewModel,
-        emptyView: SearchResultsEmptyView
+        emptyView: SearchResultsEmptyView,
+        headerView: UIView? = nil,
+        resultsHorizontalInset: CGFloat = 0,
+        searchTextFieldToResultsSpacing: CGFloat? = nil
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
+        self.headerView = headerView
+        self.resultsHorizontalInset = resultsHorizontalInset
+        self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,6 +77,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
         loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
+        loadingView.setContentHuggingPriority(.fittingSizeLevel, for: .vertical)
         loadingView.translatesAutoresizingMaskIntoConstraints = false
         return loadingView
     }()
@@ -63,12 +85,12 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var searchBar: UISearchBar = {
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
-            backgroundColor: viewModel.style.backgroundColor,
+            theme: viewModel.theme,
             delegate: self
         )
     }()
 
-    override public func viewDidLoad() {
+    override package func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = viewModel.style.backgroundColor
 
@@ -76,7 +98,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
         
         delegate?.viewDidLoad(viewController: self)
         
-        emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
+        if viewModel.shouldShowSearchBar {
+            emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
+        }
         emptyView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emptyView)
         
@@ -86,9 +110,16 @@ public class SearchViewController: UIViewController, AdyenObserver {
         resultsListViewController.didMove(toParent: self)
         resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
-        searchBar.setContentHuggingPriority(.required, for: .vertical)
-        view.addSubview(searchBar)
+        if viewModel.shouldShowSearchBar {
+            searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+            searchBar.setContentHuggingPriority(.required, for: .vertical)
+            view.addSubview(searchBar)
+        }
+
+        if let headerView {
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(headerView)
+        }
         
         setupConstraints()
         
@@ -104,12 +135,14 @@ public class SearchViewController: UIViewController, AdyenObserver {
         viewModel.handleViewDidLoad()
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         delegate?.viewWillAppear(viewController: self)
+        hideNavigationBarHairline()
         
-        if viewModel.shouldFocusSearchBarOnAppearance {
+        if viewModel.shouldShowSearchBar,
+           viewModel.shouldFocusSearchBarOnAppearance {
             DispatchQueue.main.async { // Fix animation glitch on iOS 17
                 self.searchBar.becomeFirstResponder()
             }
@@ -121,29 +154,72 @@ public class SearchViewController: UIViewController, AdyenObserver {
         delegate?.viewDidAppear(viewController: self)
     }
     
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // The search field background is a rendered UIImage; re-bake it on appearance changes.
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection),
+              viewModel.shouldShowSearchBar else { return }
+        searchBar.adyenApplyFieldStyle(
+            theme: viewModel.theme,
+            isEditing: searchBar.isFirstResponder
+        )
+    }
+    
     private func setupConstraints() {
+
+        let contentTopAnchor: NSLayoutYAxisAnchor
+        let contentTopSpacing: CGFloat
+        if let headerView {
+            // Keep the header at its content height so the results list, not the header, absorbs extra vertical space.
+            let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
+            headerHeightHug.priority = .defaultLow
+            NSLayoutConstraint.activate([
+                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: Layout.headerTopSpacing),
+                headerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+                headerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+                headerHeightHug
+            ])
+            contentTopAnchor = headerView.bottomAnchor
+            contentTopSpacing = Layout.headerBottomSpacing
+        } else {
+            contentTopAnchor = view.layoutMarginsGuide.topAnchor
+            contentTopSpacing = 0
+        }
+
+        let resultsTopAnchor: NSLayoutYAxisAnchor
+        let resultsTopSpacing: CGFloat
+        if viewModel.shouldShowSearchBar {
+            NSLayoutConstraint.activate([
+                searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Layout.searchBarHorizontalInset),
+                searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
+                searchBar.topAnchor.constraint(equalTo: contentTopAnchor, constant: contentTopSpacing)
+            ])
+            resultsTopAnchor = searchTextFieldToResultsSpacing == nil
+                ? searchBar.bottomAnchor
+                : searchBar.searchTextField.bottomAnchor
+            resultsTopSpacing = searchTextFieldToResultsSpacing ?? 0
+        } else {
+            resultsTopAnchor = contentTopAnchor
+            resultsTopSpacing = contentTopSpacing
+        }
         
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: resultsHorizontalInset),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -resultsHorizontalInset),
+            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
             
-            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            
-            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0)
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            loadingView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
         ])
         
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         emptyViewBottomConstraint?.isActive = true
     }
     
@@ -163,9 +239,11 @@ public class SearchViewController: UIViewController, AdyenObserver {
             emptyView.searchTerm = searchTerm
             
         case let .showingResults(results):
-            resultsListViewController.reload(
-                newSections: [.init(items: results)]
-            )
+            let sections = separatesResultsIntoSections
+                ? results.map { ListSection(items: [$0]) }
+                : [ListSection(items: results)]
+
+            resultsListViewController.reload(newSections: sections)
             resultsListViewController.view.isHidden = false
         }
     }
@@ -194,7 +272,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         )
     }
 
-    override public var preferredContentSize: CGSize {
+    override package var preferredContentSize: CGSize {
         get {
             guard resultsListViewController.isViewLoaded else { return .zero }
             let innerSize = resultsListViewController.preferredContentSize
@@ -212,6 +290,15 @@ public class SearchViewController: UIViewController, AdyenObserver {
         """) }
     }
     
+    private func hideNavigationBarHairline() {
+        let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = viewModel.style.backgroundColor
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+    }
+
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
@@ -220,11 +307,19 @@ public class SearchViewController: UIViewController, AdyenObserver {
 
 extension SearchViewController: UISearchBarDelegate {
     
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
     }
     
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: true)
+    }
+    
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: false)
+    }
+    
+    package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
 }

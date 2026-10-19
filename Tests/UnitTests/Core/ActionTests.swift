@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import Adyen
+@testable import AdyenActions
 import XCTest
 
 class ActionTests: XCTestCase {
@@ -145,6 +145,24 @@ class ActionTests: XCTestCase {
         XCTAssertNotNil(challengeAction)
         XCTAssertEqual(challengeAction?.challengeToken, "example_token")
         XCTAssertEqual(challengeAction?.paymentData, "example_data")
+    }
+    
+    func testActionTypeDecodesKnownRawValues() throws {
+        let json = "[\"redirect\", \"nativeRedirect\", \"threeDS2\", \"sdk\", \"qrCode\", \"await\", \"voucher\"]"
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        
+        let types = try JSONDecoder().decode([ActionType].self, from: data)
+        
+        XCTAssertEqual(types, [.redirect, .nativeRedirect, .threeDS2, .sdk, .qrCode, .await, .voucher])
+    }
+    
+    func testActionTypeDecodesUnknownRawValue() throws {
+        let json = "[\"someFutureType\"]"
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        
+        let types = try JSONDecoder().decode([ActionType].self, from: data)
+        
+        XCTAssertEqual(types, [ActionType(rawValue: "someFutureType")])
     }
     
     func testInvalidActionDecoding() throws {

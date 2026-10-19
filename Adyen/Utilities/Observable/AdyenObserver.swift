@@ -7,7 +7,7 @@
 import Foundation
 
 /// Conforming to the Observer protocol will make the observe and binding functions available for use.
-public protocol AdyenObserver: AnyObject {}
+package protocol AdyenObserver: AnyObject {}
 
 package extension AdyenObserver {
 

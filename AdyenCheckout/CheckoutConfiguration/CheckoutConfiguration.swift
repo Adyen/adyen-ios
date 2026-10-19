@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -23,7 +26,6 @@ import Foundation
 /// ```swift
 /// let configuration = try CheckoutConfiguration(
 ///     environment: .test,
-///     amount: Amount(value: 1000, currencyCode: "USD"),
 ///     clientKey: "<client-key>"
 /// ) {
 ///     CardComponentConfiguration()
@@ -37,11 +39,11 @@ public struct CheckoutConfiguration {
     
     // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
-    
+
+    package var dropInConfiguration: DropInConfiguration
+
     package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
-
-    package let amount: Amount?
 
     package let apiContext: APIContext
 
@@ -52,14 +54,14 @@ public struct CheckoutConfiguration {
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
-    ///   - amount: Payment amount.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
+    /// - Throws: `CheckoutError` with one of the following codes if the configuration is invalid:
+    ///   - ``CheckoutError/Code/invalidClientKey`` — the client key is malformed.
+    ///   - ``CheckoutError/Code/invalidConfiguration`` — a component configuration (e.g. Apple Pay) is invalid.
     public init(
         environment: Environment,
-        amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
@@ -68,39 +70,46 @@ public struct CheckoutConfiguration {
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
-        let content = try content()
-        let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
+        var dropInConfiguration = DropInConfiguration()
+        let configurations: CheckoutConfigurable
+        do {
+            configurations = try content()
+        } catch {
+            throw CheckoutError(error: error, fallback: .invalidConfiguration)
+        }
+        let configArray = (configurations as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
                 configDictionary[configuration.componentType] = configuration
+            } else if let configuration = configuration as? DropInConfiguration {
+                dropInConfiguration = configuration
             }
         }
-        let configurations = configDictionary
 
         self.init(
             apiContext: apiContext,
-            amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
-            configurations: configurations
+            configurations: configDictionary,
+            dropInConfiguration: dropInConfiguration
         )
     }
     
     internal init(
         apiContext: APIContext,
-        amount: Amount?,
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        dropInConfiguration: DropInConfiguration = .init(),
         localizationProvider: (any CheckoutLocalizationProvider)? = nil,
         theme: CheckoutTheme = .default
     ) {
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
-        self.amount = amount
         self.apiContext = apiContext
         self.configurations = configurations
+        self.dropInConfiguration = dropInConfiguration
         self.localizationProvider = localizationProvider
         self.theme = theme
     }
@@ -141,10 +150,7 @@ public struct CheckoutConfiguration {
         return (base ?? LocalizationParameters()).withProvider(localizationProvider)
     }
 
-    // TODO: Robert: Make public to private.
-    // This public is not needed, but it currently supports providing
-    // analyticsAPIContext in the Integration Examples.
-    public static func createAnalyticsAPIContext(
+    package static func createAnalyticsAPIContext(
         apiContext: APIContext
     ) -> APIContext? {
         guard
@@ -166,6 +172,14 @@ public struct CheckoutConfiguration {
 
 extension CheckoutConfiguration {
     
+    /// Sets whether payment components show their own submit button.
+    ///
+    /// Hide the button when you want to trigger the payment yourself by calling `submit()` on the component.
+    ///
+    /// - Note: This applies only to components created with `createPaymentComponent`.
+    ///   Drop-in ignores it and always shows the submit buttons of the components it presents.
+    /// - Parameter showsSubmitButton: Whether components show their submit button. Defaults to `true`.
+    /// - Returns: A modified copy of the configuration.
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
         var copy = self
         copy.showsSubmitButton = showsSubmitButton
@@ -192,7 +206,7 @@ extension CheckoutConfiguration {
 
     /// Sets the theme for the checkout configuration.
     ///
-    /// Use `CheckoutTheme` builder methods to customize colors, attributes, and elements:
+    /// Use `CheckoutTheme` to provide shared checkout color overrides, such as a custom `CheckoutColors` palette.
     ///
     /// - Parameter theme: The CheckoutTheme to apply to the checkout configuration.
     /// - Returns: A modified CheckoutConfiguration with the specified theme.

@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
+import XCTest
 
 @MainActor
 class AtomeComponentUITests: XCTestCase {

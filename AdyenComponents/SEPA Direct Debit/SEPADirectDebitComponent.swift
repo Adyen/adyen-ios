@@ -15,51 +15,66 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 @MainActor
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
-    
-    /// Configuration for SEPA Direct Debit Component
-    public typealias Configuration = BasicComponentConfiguration
-    
+package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent {
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// Component's configuration
-    public var configuration: Configuration
-    
+    package var configuration: BasicComponentConfiguration
+
     /// The SEPA Direct Debit payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         sepaDirectDebitPaymentMethod
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
+    
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
-    public init(
+    package init(
         paymentMethod: SEPADirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
     }
-    
+
+    package func performSubmit() {
+        guard formViewController.validate() else {
+            return
+        }
+
+        let details = SEPADirectDebitDetails(
+            paymentMethod: sepaDirectDebitPaymentMethod,
+            iban: ibanItem.value,
+            ownerName: nameItem.value
+        )
+        button.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+    }
+
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
     
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -84,25 +99,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 
         return formViewController
     }()
-    
-    // MARK: - Private
-    
-    private func didSelectSubmitButton() {
-        guard validate() else {
-            return
-        }
-        
-        let details = SEPADirectDebitDetails(
-            paymentMethod: sepaDirectDebitPaymentMethod,
-            iban: ibanItem.value,
-            ownerName: nameItem.value
-        )
-        button.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
-    }
-    
+
     // MARK: - Form Items
     
     internal lazy var nameItem: FormTextInputItem = {
@@ -139,34 +136,18 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
 
 }
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension SEPADirectDebitComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

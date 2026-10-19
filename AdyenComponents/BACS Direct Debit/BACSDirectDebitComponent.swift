@@ -5,158 +5,74 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.BasicComponentConfiguration
 #endif
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol: AnyObject {
-    func presentConfirmation(with data: BACSDirectDebitData)
-    func confirmPayment(with data: BACSDirectDebitData)
-}
-
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+package final class BACSDirectDebitComponent: PaymentComponent {
 
-    /// Configuration for BACS Direct Debit Component.
-    public typealias Configuration = BasicComponentConfiguration
-    
-    // MARK: - PresentableComponent
+    // MARK: - PaymentComponent
 
-    public let viewController: UIViewController
+    package let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The BACS Direct Debit payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         bacsPaymentMethod
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
-    /// The object that acts as the presentation delegate of the component.
-    public weak var presentationDelegate: PresentationDelegate?
-    
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
+
+    // MARK: - PaymentComponent
+
+    package func performSubmit() {
+        bacsViewModel.performSubmit()
+    }
 
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
-    
-    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
-    private var confirmationViewPresented = false
-    
-    internal let inputFormViewController: BACSInputFormViewController
-    
-    internal private(set) var inputPresenter: BACSInputPresenterProtocol?
-    
+
+    internal let bacsViewModel: BACSViewModel
+
     // MARK: - Initializers
 
     /// Creates and returns a BACS Direct Debit component.
+    ///
+    /// - Note: Prefer creating instances via ``BACSDirectDebitFactory`` instead of calling
+    /// this initializer directly, as it is responsible for assembling the view model and
+    /// view controller dependencies.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public init(
+    ///   - viewModel: The view model backing the component's form.
+    ///   - viewController: The view controller presented by the component.
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init(),
+        viewModel: BACSViewModel,
+        viewController: UIViewController
     ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.inputFormViewController = BACSInputFormViewController(
-            title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style
-        )
-        self.viewController = SecuredViewController(
-            child: inputFormViewController,
-            style: configuration.style
-        )
-        
-        let tracker = BACSDirectDebitComponentTracker(
-            paymentMethod: bacsPaymentMethod,
-            context: context,
-            isDropIn: _isDropIn
-        )
-        let itemsFactory = BACSItemsFactory(
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters,
-            scope: String(describing: self)
-        )
-        self.inputPresenter = BACSInputPresenter(
-            view: inputFormViewController,
-            router: self,
-            tracker: tracker,
-            itemsFactory: itemsFactory
-        )
-        inputPresenter?.amount = context.amount
-        inputFormViewController.presenter = inputPresenter
-        
-    }
-}
-
-// MARK: - BACSDirectDebitRouterProtocol
-
-/// :nodoc:
-extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
-
-    internal func presentConfirmation(with data: BACSDirectDebitData) {
-        confirmationViewPresented = true
-        let confirmationView = assembleConfirmationView(with: data)
-
-        let wrappedComponent = PresentableComponentWrapper(
-            component: self,
-            viewController: confirmationView
-        )
-        presentationDelegate?.present(component: wrappedComponent)
-    }
-
-    internal func confirmPayment(with data: BACSDirectDebitData) {
-        guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
-            return
-        }
-        let details = BACSDirectDebitDetails(
-            paymentMethod: bacsDirectDebitPaymentMethod,
-            holderName: data.holderName,
-            bankAccountNumber: data.bankAccountNumber,
-            bankLocationId: data.bankLocationId
-        )
-        confirmationPresenter?.startLoading()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
-    }
-
-    // MARK: - Private
-
-    private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
-        let confirmationViewController = BACSConfirmationViewController(
-            title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters
-        )
-        let itemsFactory = BACSItemsFactory(
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters,
-            scope: String(describing: self)
-        )
-        confirmationPresenter = BACSConfirmationPresenter(
-            data: data,
-            view: confirmationViewController,
-            router: self,
-            itemsFactory: itemsFactory
-        )
-        confirmationViewController.presenter = confirmationPresenter
-        return SecuredViewController(child: confirmationViewController, style: configuration.style)
+        self.bacsViewModel = viewModel
+        self.viewController = viewController
     }
 }
 
@@ -166,22 +82,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 extension BACSDirectDebitComponent: LoadingComponent {
 
     /// Stops any processing animation that the component is running.
-    public func stopLoading() {
-        confirmationPresenter?.stopLoading()
-    }
-}
-
-// MARK: - Cancellable
-
-/// :nodoc:
-extension BACSDirectDebitComponent: Cancellable {
-
-    /// Called when the user cancels the component.
-    public func didCancel() {
-        if confirmationViewPresented == false {
-            inputPresenter?.resetForm()
-        } else {
-            confirmationViewPresented = false
-        }
+    package func stopLoading() {
+        bacsViewModel.stopLoading()
     }
 }

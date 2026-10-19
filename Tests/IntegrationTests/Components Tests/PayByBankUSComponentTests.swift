@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
-@testable @_spi(AdyenInternal) import Adyen
-@testable @_spi(AdyenInternal) import AdyenComponents
+@_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
+import XCTest
 
 @MainActor
 class PayByBankUSComponentTests: XCTestCase {
@@ -27,14 +27,14 @@ class PayByBankUSComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! InstantPaymentDetails
+            let details = data.paymentMethod as! GenericPaymentDetails
             XCTAssertEqual(details.type, .payByBankAISDD)
             delegateExpectation.fulfill()
         }
         
         sut.delegate = delegate
         
-        sut.initiatePayment()
+        sut.performSubmit()
         
         wait(for: [delegateExpectation], timeout: 1)
     }

@@ -8,7 +8,7 @@ import XCTest
 
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) @testable import Adyen
-    @_spi(AdyenInternal) @testable import AdyenActions
+    @testable import AdyenActions
     import AdyenAuthentication
     import Foundation
     import UIKit
@@ -370,7 +370,7 @@ import XCTest
             authenticationServiceMock.onAuthenticate = { input in
                 "OnAuthenticate"
             }
-            var capturedCardDetails: (number: String?, type: Adyen.CardType?)?
+            var capturedCardDetails: (number: String?, brand: Adyen.CardBrand?)?
             var capturedAmount: Amount?
             let presenterMock = ThreeDS2DAScreenPresenterMock(
                 showRegistrationReturnState: .fallback,
@@ -638,7 +638,7 @@ import XCTest
             ))
             
             let presenterMock = ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback)
-            var capturedCardDetails: (number: String?, type: Adyen.CardType?)?
+            var capturedCardDetails: (number: String?, brand: Adyen.CardBrand?)?
             presenterMock.onShowRegistrationScreen = {
                 capturedCardDetails = $0
             }

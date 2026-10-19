@@ -8,10 +8,9 @@ import Adyen
 import Foundation
 
 /// A selectable item displayed in the list.
-@_spi(AdyenInternal)
-public class ListItem: FormItem {
-    
-    public enum TrailingInfoType {
+package class ListItem: FormItem {
+
+    package enum TrailingInfoType {
         case text(String)
         case logos(urls: [URL], trailingText: String?)
         
@@ -23,37 +22,54 @@ public class ListItem: FormItem {
         }
     }
     
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var subitems: [FormItem] = []
-    
-    /// The list item style.
-    public let style: ListItemStyle
-    
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+
+    package var subitems: [FormItem] = []
+
+    /// The emphasis applied to an item's title.
+    package enum TitleEmphasis {
+        /// Rendered in the theme's primary text color.
+        case standard
+        /// Rendered in the theme's highlight color, for items that act as a link or an action.
+        case highlighted
+        /// Rendered in the theme's primary color, for items picked from a list of options.
+        case primary
+    }
+
+    /// The emphasis applied to the item's title.
+    package let titleEmphasis: TitleEmphasis
+
     /// The title of the item.
-    public var title: String
-    
+    package var title: String
+
     /// The subtitle of the item.
-    public var subtitle: String?
-    
+    package var subtitle: String?
+
     /// The icon to display
-    public var icon: Icon?
+    package var icon: Icon?
 
     /// The trailing text of the item.
-    public var trailingInfo: TrailingInfoType?
-    
+    package var trailingInfo: TrailingInfoType?
+
+    /// The distance between the cell's edges and the item's content.
+    /// `nil` aligns the content with the cell's layout margins.
+    package let horizontalContentInset: CGFloat?
+
+    /// Whether the item is currently selected.
+    package let isSelected: Bool
+
     /// The handler to invoke when the item is selected.
-    public var selectionHandler: (() -> Void)?
-    
+    package var selectionHandler: (() -> Void)?
+
     /// The handler to invoke when the item is deleted.
-    public var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
-    
+    package var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
+
     /// The `accessibilityIdentifier` to be used on the `ListItem`
-    public var identifier: String?
-    
+    package var identifier: String?
+
     /// The `accessibilityLabel` to be used on the ``ListItem`` or ``ListCell``
-    public let accessibilityLabel: String
-    
+    package let accessibilityLabel: String
+
     /// The closure for the ``ListViewController`` to assign, to listen to updates for its loading state
     ///
     /// See: ``ListItem/startLoading()`` & ``ListItem/stopLoading()``
@@ -65,27 +81,33 @@ public class ListItem: FormItem {
     ///   - title: The title of the item.
     ///   - subtitle: The subtitle of the item.
     ///   - icon: The icon of the item.
-    ///   - trailingText: The trailing text.
-    ///   - style: The list item style.
+    ///   - trailingInfo: The trailing information.
+    ///   - titleEmphasis: The emphasis applied to the title.
+    ///   - horizontalContentInset: The distance between the cell's edges and the item's content.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
-    ///   - selectionHandler: The closure to execute when an item is selected.
     ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
-    public init(
+    ///   - isSelected: Whether the item is currently selected.
+    ///   - selectionHandler: The closure to execute when an item is selected.
+    package init(
         title: String,
         subtitle: String? = nil,
         icon: Icon? = nil,
         trailingInfo: TrailingInfoType? = nil,
-        style: ListItemStyle = ListItemStyle(),
+        titleEmphasis: TitleEmphasis = .standard,
+        horizontalContentInset: CGFloat? = nil,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
+        isSelected: Bool = false,
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
         self.trailingInfo = trailingInfo
-        self.style = style
+        self.titleEmphasis = titleEmphasis
+        self.horizontalContentInset = horizontalContentInset
         self.identifier = identifier
+        self.isSelected = isSelected
         self.accessibilityLabel = accessibilityLabel ?? [
             title,
             subtitle,
@@ -94,7 +116,7 @@ public class ListItem: FormItem {
         self.selectionHandler = selectionHandler
     }
     
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -102,12 +124,12 @@ public class ListItem: FormItem {
     ///
     /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()``
     /// or ListItem.``ListItem/stopLoading()``
-    public func startLoading() {
+    package func startLoading() {
         setLoading(true)
     }
     
     /// Indicate to the ``ListViewController`` to stop loading
-    public func stopLoading() {
+    package func stopLoading() {
         setLoading(false)
     }
     
@@ -127,14 +149,13 @@ public class ListItem: FormItem {
 
 // MARK: - Hashable & Equatable
 
-@_spi(AdyenInternal)
 extension ListItem: Hashable {
     
-    public func hash(into hasher: inout Hasher) {
+    package func hash(into hasher: inout Hasher) {
         hasher.combine(listIdentifier)
     }
     
-    public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
+    package static func == (lhs: ListItem, rhs: ListItem) -> Bool {
         lhs.listIdentifier == rhs.listIdentifier
     }
 }

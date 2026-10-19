@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenActions
 import XCTest
-@testable @_spi(AdyenInternal) import Adyen
-@testable @_spi(AdyenInternal) import AdyenActions
 
 #if canImport(TwintSDK)
     import TwintSDK
@@ -123,11 +123,11 @@ import XCTest
                 return true
             }
         
-            let presentationDelegate = Self.failingPresentationDelegateMock()
+            let actionPresentationDelegate = Self.failingActionPresentationDelegateMock()
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
-                presentationDelegate: presentationDelegate,
+                actionPresentationDelegate: actionPresentationDelegate,
                 delegate: delegate,
                 shouldFailPolling: shouldFailPolling
             )

@@ -8,24 +8,24 @@ import UIKit
 
 extension ListItem {
 
-    public struct Icon: Hashable {
+    package struct Icon: Hashable {
 
-        public enum Location: Hashable {
+        package enum Location: Hashable {
             case local(image: UIImage)
             case remote(url: URL?)
         }
 
         /// The location of the icon image
-        public let location: Location
+        package let location: Location
         /// Whether or not the icon should be styled/altered
-        public let canBeModified: Bool
+        package let canBeModified: Bool
 
         /// Initializes the icon of the `ListItem`
         ///
         /// - Parameters:
         ///   - location: The location of the icon image
         ///   - canBeModified: Whether or not the icon should be styled/altered
-        public init(
+        package init(
             location: Location,
             canBeModified: Bool = true
         ) {
@@ -48,7 +48,7 @@ extension ListItem.Icon {
     }
 
     /// Convenience init to instantiate an ``ListItem.Icon`` with a remote ``URL``
-    public init(
+    package init(
         url: URL?,
         canBeModified: Bool = true
     ) {
@@ -59,7 +59,7 @@ extension ListItem.Icon {
     }
 
     /// Convenience init to instantiate an ``ListItem.Icon`` with a ``UIImage`` object
-    public init(
+    package init(
         image: UIImage,
         canBeModified: Bool = true
     ) {

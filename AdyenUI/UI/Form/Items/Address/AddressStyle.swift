@@ -8,30 +8,30 @@ import Foundation
 import UIKit
 
 /// The style of form address
-public struct AddressStyle: FormValueItemStyle {
+package struct AddressStyle: FormValueItemStyle {
 
     /// The section header style.
-    public var title = TextStyle(
+    package var title = TextStyle(
         font: .preferredFont(forTextStyle: .headline),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .natural
     )
 
     /// The text field style.
-    public var textField = FormTextItemStyle()
+    package var textField = FormTextItemStyle()
 
     /// The tint color of the view.
-    public var tintColor: UIColor? {
+    package var tintColor: UIColor? {
         didSet {
             textField.tintColor = tintColor
         }
     }
 
     /// The background color of the view.
-    public var backgroundColor: UIColor = .clear
+    package var backgroundColor: UIColor = .clear
 
     /// The color of form view item's separator line.
-    public var separatorColor: UIColor? {
+    package var separatorColor: UIColor? {
         textField.separatorColor
     }
     
@@ -41,7 +41,7 @@ public struct AddressStyle: FormValueItemStyle {
     ///   - textField: The text field style.
     ///   - tintColor: The tint color of the view.
     ///   - backgroundColor: The background color of the view.
-    public init(
+    package init(
         title: TextStyle,
         textField: FormTextItemStyle,
         tintColor: UIColor? = nil,
@@ -54,5 +54,5 @@ public struct AddressStyle: FormValueItemStyle {
     }
     
     /// Initializes the form address item configuration with default values
-    public init() {}
+    package init() {}
 }

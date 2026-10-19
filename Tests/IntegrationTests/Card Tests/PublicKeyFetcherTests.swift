@@ -32,9 +32,9 @@ class PublicKeyFetcherTests: XCTestCase {
         do {
             _ = try await sut.fetchPublicKey(apiClient: mockApiClient, clientKey: "invalid_key")
             XCTFail("Expected invalidClientKey error")
-        } catch let error as PublicKeyFetcher.PublicKeyFetcherError {
-            XCTAssertEqual(error, .invalidClientKey)
-            XCTAssertEqual(error.errorDescription, "Client key not found on the selected environment.")
+        } catch let error as CheckoutError {
+            XCTAssertEqual(error.code, .invalidClientKey)
+            XCTAssertEqual(error.message, "The client key was not found on the selected environment.")
         } catch {
             XCTFail("Unexpected error type: \(error)")
         }

@@ -14,12 +14,11 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 @MainActor
-public final class UPIComponent: PaymentComponent,
-    PresentableComponent,
+package final class UPIComponent: PaymentComponent,
     LoadingComponent {
     
     /// The flow types for UPI component.
-    public enum UPIFlowType: Int {
+    package enum UPIFlowType: Int {
 
         /// Transaction handled through UPI-enabled apps.
         case upiIntent = 0
@@ -46,51 +45,46 @@ public final class UPIComponent: PaymentComponent,
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
     
-    internal enum Images {
-        internal static let errorIcon = "error"
-    }
-    
-    /// Configuration for UPI Component.
-    public typealias Configuration = BasicComponentConfiguration
-    
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
-    
+    package var context: AdyenContext
+
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         upiPaymentMethod
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
     
     /// The view controller for the component.
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
     
-    /// Component's configuration
-    public var configuration: Configuration
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
+    /// Component's configuration
+    package var configuration: BasicComponentConfiguration
+
     private let upiPaymentMethod: UPIPaymentMethod
     
     internal private(set) var currentSelectedItemIdentifier: String?
     
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
-    @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
-    
+    @AdyenObservable(.upiIntent) package private(set) var selectedUPIFlow: UPIFlowType
+
     /// Initializes the UPI  component.
     ///
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: UPIPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.upiPaymentMethod = paymentMethod
         self.context = context
@@ -98,10 +92,24 @@ public final class UPIComponent: PaymentComponent,
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
-    
+
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
+
+        guard canSubmit() else {
+            showError()
+            return
+        }
+
+        continueButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
+        submitPayment()
+    }
+
     // MARK: - LoadingComponent
     
-    public func stopLoading() {
+    package func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -217,14 +225,14 @@ public final class UPIComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
     
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
-        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
+        let item = FormErrorItem(message: errorMessage, style: FormErrorItemStyle())
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem
@@ -295,20 +303,6 @@ extension UPIComponent {
     private func handleSelection(item: SelectableFormItem?) {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
-    }
-    
-    private func didSelectContinueButton() {
-        guard validate() else { return }
-        
-        guard canSubmit() else {
-            showError()
-            return
-        }
-        
-        continueButton.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submitPayment()
     }
     
     private func didChangeSegmentedControlIndex(_ index: Int) {
@@ -393,30 +387,16 @@ private extension UPIComponent {
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         case .upiCollect:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
                 appId: nil
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         }
     }
 }
 
-@_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension UPIComponent: SubmittableComponent {
-    
-    public func submit() {
-        didSelectContinueButton()
-    }
-    
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

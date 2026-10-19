@@ -9,12 +9,11 @@ import Adyen
 import UIKit
 
 /// A ``FormViewController`` with a ``FormAddressItem`` and optional ``FormSearchButtonItem``
-@_spi(AdyenInternal)
-public class AddressInputFormViewController: FormViewController {
-    
+package class AddressInputFormViewController: FormViewController {
+
     private let viewModel: ViewModel
     
-    public init(viewModel: ViewModel) {
+    package init(viewModel: ViewModel) {
         self.viewModel = viewModel
         
         super.init(
@@ -36,7 +35,7 @@ public class AddressInputFormViewController: FormViewController {
         setupNavigationItems()
     }
     
-    override public func viewDidLoad() {
+    override package func viewDidLoad() {
         super.viewDidLoad()
         
         // The done button should only be enabled once at least one field is filled in.

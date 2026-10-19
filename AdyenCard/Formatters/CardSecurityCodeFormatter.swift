@@ -9,34 +9,37 @@ import Foundation
 
 /// Formats a card's security code (CVC/CVV).
 public final class CardSecurityCodeFormatter: NumericFormatter {
-    
-    /// Indicate is validating CVV belong to a Amex card
-    private var cardType: CardType?
+
+    private var cardBrand: CardBrand?
     private var expectedLength: Int {
-        cardType == CardType.americanExpress ? 4 : 3
+        cardBrand.expectedSecurityCodeLength
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator
+    /// Initiate new instance of CardSecurityCodeFormatter
     override public init() {
         super.init()
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator
+    /// Initiate new instance of CardSecurityCodeFormatter
     /// - Parameter publisher: observer of a card type.
-    public init(publisher: AdyenObservable<CardType?>) {
+    public init(publisher: AdyenObservable<CardBrand?>) {
         super.init()
-        bind(publisher, to: self, at: \.cardType)
+        bind(publisher, to: self, at: \.cardBrand)
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
-    /// - Parameter cardType: The card type to format the security code for
-    public init(cardType: CardType) {
+    /// Initiate new instance of CardSecurityCodeFormatter with a fixed ``CardBrand``
+    /// - Parameter cardBrand: The card brand to format the security code for
+    public init(cardBrand: CardBrand) {
         super.init()
-        self.cardType = cardType
+        self.cardBrand = cardBrand
     }
     
     override public func formattedValue(for value: String) -> String {
-        let value = super.formattedValue(for: value)
+        sanitizedValue(for: value)
+    }
+    
+    override public func sanitizedValue(for value: String) -> String {
+        let value = super.sanitizedValue(for: value)
         
         if value.count > expectedLength {
             return String(value.prefix(expectedLength))

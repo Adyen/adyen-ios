@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any `Component` that show a loading state of some kind
-public protocol LoadingComponent {
+package protocol LoadingComponent {
     /// Stops any processing animation that the view controller is running.
     ///
     func stopLoading()

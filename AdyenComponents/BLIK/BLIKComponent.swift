@@ -15,25 +15,27 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
-    
+package final class BLIKComponent: PaymentComponent, LoadingComponent {
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public var paymentMethod: PaymentMethod {
+    package let context: AdyenContext
+
+    package var paymentMethod: PaymentMethod {
         blikPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         theme: configuration.theme
     )
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
-    public var configuration: BLIKComponentConfiguration
+    package var configuration: BasicComponentConfiguration
 
     private let blikPaymentMethod: BLIKPaymentMethod
 
@@ -42,17 +44,17 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BLIKComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
     }
     
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -110,21 +112,20 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         let buttonStylePrimary = configuration.theme.elements.buttons.primary
         let item = FormButtonItem(buttonStyle: buttonStylePrimary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
 
     // MARK: - Private
 
-    private func didSelectSubmitButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
 
         let details = BLIKDetails(
             paymentMethod: paymentMethod,
@@ -133,26 +134,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order)
+        let data = PaymentComponentData(paymentMethodDetails: details, order: order)
         submit(data: data)
     }
 }
 
-@_spi(AdyenInternal)
 extension BLIKComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension BLIKComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

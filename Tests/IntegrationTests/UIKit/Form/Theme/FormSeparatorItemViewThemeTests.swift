@@ -11,7 +11,7 @@ import XCTest
 final class FormSeparatorItemViewThemeTests: XCTestCase {
 
     func test_formSeparatorItemView_shouldApplyThemeSeparatorColor() {
-        let customTheme = CheckoutTheme(colors: AdyenColors(separator: .red))
+        let customTheme = CheckoutTheme(colors: CheckoutColors(separator: .red))
         let sut = makeSUT(theme: customTheme)
 
         XCTAssertEqual(getSeparatorView(from: sut)?.backgroundColor, .red)

@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
@@ -149,7 +149,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTAssertGreaterThan(paymentMethod.encryptedSecurityCode.count, 0)
             expectation.fulfill()
         }
-        sut.didSelectSubmitButton()
+        sut.performSubmit()
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -585,7 +585,7 @@ class GiftCardComponentTests: XCTestCase {
 
         XCTAssertEqual(paymentMethod.type, giftCard.type)
 
-        let displayInformation = paymentMethod.defaultDisplayInformation(using: nil)
+        let displayInformation = paymentMethod.overriddenDisplayInformation(using: nil)
 
         XCTAssertEqual(displayInformation.title, "•••• 1234")
         XCTAssertEqual(displayInformation.logoName, giftCard.brand)
@@ -613,45 +613,6 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(order.remainingAmount, decodedOrder.remainingAmount)
         XCTAssertNil(decodedOrder.expiresAt)
         XCTAssertEqual(order.compactOrder, decodedOrder.compactOrder)
-    }
-
-    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        sut = GiftCardComponent(
-            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-            context: context,
-            amount: amountToPay
-        )
-        populate(cardNumber: "60643650100000000000", pin: "73737")
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertTrue(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
-    }
-
-    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        sut = GiftCardComponent(
-            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-            context: context,
-            amount: amountToPay
-        )
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertFalse(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
     }
 }
 

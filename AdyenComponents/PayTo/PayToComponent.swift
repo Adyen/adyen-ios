@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -15,25 +14,24 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, LoadingComponent {
-
-    /// Configuration for PayTo Component.
-    public typealias Configuration = BasicComponentConfiguration
+package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         payToPaymentMethod
     }
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     private let payToPaymentMethod: PayToPaymentMethod
 
@@ -47,7 +45,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     }()
 
     /// The viewController for the component.
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
@@ -94,14 +92,36 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     /// - Parameter paymentMethod: The PayTo payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: PayToPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.payToPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+    }
+
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
+
+        startLoading()
+
+        let details = PayToDetails(
+            paymentMethod: payToPaymentMethod,
+            accountIdentifier: selectedPaymentIdentifier(),
+            shopperName: .init(
+                firstName: firstNameInputItem.value,
+                lastName: lastNameInputItem.value
+            )
+        )
+
+        submit(
+            data: PaymentComponentData(
+                paymentMethodDetails: details,
+                order: order
+            )
+        )
     }
 
     /// The payment flow selection title label item.
@@ -176,7 +196,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     internal lazy var continueButtonItem: FormButtonItem = {
         let item = itemsProvider.createContinueButtonItem()
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -211,37 +231,24 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         return formViewController
     }()
 
-    public func stopLoading() {
+    package func stopLoading() {
         continueButtonItem.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-    }
-}
-
-extension PayToComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectContinueButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
     }
 }
 
 @_spi(AdyenInternal)
 extension PayToComponent: ViewControllerDelegate {}
 
-@_spi(AdyenInternal)
 extension PayToComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension PayToComponent: ViewControllerPresenter {
 
-    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
     }
 
-    public func dismissViewController(animated: Bool) {
+    package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
     }
 }
@@ -249,29 +256,6 @@ extension PayToComponent: ViewControllerPresenter {
 // MARK: - Event Handling
 
 private extension PayToComponent {
-
-    func didSelectContinueButton() {
-        guard validate() else { return }
-
-        startLoading()
-
-        let details = PayToDetails(
-            paymentMethod: payToPaymentMethod,
-            accountIdentifier: selectedPaymentIdentifier(),
-            shopperName: .init(
-                firstName: firstNameInputItem.value,
-                lastName: lastNameInputItem.value
-            )
-        )
-
-        submit(
-            data: PaymentComponentData(
-                paymentMethodDetails: details,
-                amount: context.amount,
-                order: order
-            )
-        )
-    }
 
     func startLoading() {
         continueButtonItem.showsActivityIndicator = true

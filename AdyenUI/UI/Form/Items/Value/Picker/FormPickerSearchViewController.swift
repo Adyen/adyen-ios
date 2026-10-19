@@ -7,20 +7,30 @@
 import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
-public final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
+private enum FormPickerLayout {
+    static let horizontalInset: CGFloat = 16
+    static let searchTextFieldToResultsSpacing: CGFloat = 24
+    static let listItemSpacing: CGFloat = 12
+    static let listItemHorizontalInset: CGFloat = 14
+}
+
+package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
     
-    public convenience init(
+    package convenience init(
         style: Style = .init(),
-        title: String?,
+        configuration: FormPickerConfiguration,
+        theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
         self.init(
             localizationParameters: nil,
             style: style,
-            title: title,
+            configuration: configuration,
+            theme: theme,
             options: options,
+            selectedOption: selectedOption,
             selectionHandler: selectionHandler
         )
     }
@@ -28,32 +38,56 @@ public final class FormPickerSearchViewController<Option: FormPickable>: UINavig
     package init(
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
-        title: String?,
+        configuration: FormPickerConfiguration,
+        theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
+        let selectedOptionIdentifier = selectedOption?.identifier
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
             style: style,
+            theme: theme,
             searchBarPlaceholder: nil,
-            shouldFocusSearchBarOnAppearance: true
+            shouldShowSearchBar: configuration.isSearchEnabled,
+            shouldFocusSearchBarOnAppearance: configuration.isSearchEnabled
         ) { searchTerm, handler in
             
             let results = options
                 .filter { $0.matches(searchTerm: searchTerm) }
-                .map { $0.toListItem(with: selectionHandler) }
+                .map {
+                    $0.toListItem(
+                        isSelected: $0.identifier == selectedOptionIdentifier,
+                        selectionHandler: selectionHandler
+                    )
+                }
             
             handler(results)
         }
         
+        // An in-content header is only rendered when a subtitle is provided;
+        // otherwise the title is shown in the navigation bar.
+        let headerView: UIView? = configuration.subtitle == nil
+            ? nil
+            : FormPickerHeaderView(configuration: configuration, theme: theme)
+
         let searchViewController = SearchViewController(
             viewModel: viewModel,
-            emptyView: EmptyView()
+            emptyView: EmptyView(),
+            headerView: headerView,
+            resultsHorizontalInset: FormPickerLayout.horizontalInset,
+            searchTextFieldToResultsSpacing: FormPickerLayout.searchTextFieldToResultsSpacing
         )
+
+        if headerView == nil {
+            searchViewController.title = configuration.title
+        }
         
-        searchViewController.title = title
-        
+        searchViewController.separatesResultsIntoSections = true
+
         super.init(rootViewController: searchViewController)
+        searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
         
         searchViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
@@ -63,7 +97,7 @@ public final class FormPickerSearchViewController<Option: FormPickable>: UINavig
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -73,21 +107,27 @@ public final class FormPickerSearchViewController<Option: FormPickable>: UINavig
     }
 }
 
-// MARK: FormPickerElement Convenience
+// MARK: - FormPickable Convenience
 
 private extension FormPickable {
-    
-    func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
-        .init(
+
+    func toListItem(
+        isSelected: Bool,
+        selectionHandler: @escaping (Self) -> Void
+    ) -> ListItem {
+        ListItem(
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
             trailingInfo: trailingText.map { .text($0) },
+            titleEmphasis: .primary,
+            horizontalContentInset: FormPickerLayout.listItemHorizontalInset,
             identifier: identifier,
+            isSelected: isSelected,
             selectionHandler: { selectionHandler(self) }
         )
     }
-    
+
     func matches(searchTerm: String) -> Bool {
         if searchTerm.isEmpty {
             return true
@@ -102,7 +142,7 @@ private extension FormPickable {
         
         return subtitle?.range(of: searchTerm, options: .caseInsensitive) != nil
     }
-    
+
     private var listItemIcon: ListItem.Icon? {
         guard let icon else { return nil }
         return .init(location: .local(image: icon))

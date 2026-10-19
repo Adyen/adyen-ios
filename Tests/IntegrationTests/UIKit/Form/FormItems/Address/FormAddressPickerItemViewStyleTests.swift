@@ -25,13 +25,13 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - TitleLabel Style Tests
 
-    func test_titleLabel_font_shouldUseThemeBodyEmphasizedFont() {
-        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
+    func test_titleLabel_font_shouldUseThemeLabelFont() {
+        let expectedFont = CheckoutTheme.default.elements.labels.label.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 
-    func test_titleLabel_color_shouldUseThemeBodyEmphasizedColor() {
-        let expectedColor = CheckoutTheme.default.elements.labels.bodyEmphasized.color
+    func test_titleLabel_color_shouldUseThemeLabelColor() {
+        let expectedColor = CheckoutTheme.default.elements.labels.label.color
         XCTAssertEqual(sut.titleLabel.textColor, expectedColor)
     }
 
@@ -116,7 +116,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     func test_customTheme_footerLabel_shouldUseCustomDestructiveColor() {
         // Given
         let expectedColor = UIColor.systemPurple
-        var customColors = AdyenColors()
+        var customColors = CheckoutColors()
         customColors.destructive = expectedColor
         let customTheme = CheckoutTheme(colors: customColors)
 

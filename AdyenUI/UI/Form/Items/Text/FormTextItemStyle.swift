@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a text item in a form.
-public struct FormTextItemStyle: FormValueItemStyle {
+@_spi(AdyenInternal) public struct FormTextItemStyle: FormValueItemStyle {
     
     /// The title style.
     public var title = TextStyle(
@@ -28,7 +28,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     public var placeholderText: TextStyle?
     
     /// The icons' style.
-    public var icon = ImageStyle(
+    package var icon = ImageStyle(
         borderColor: UIColor.Adyen.componentSeparator,
         borderWidth: 1.0 / UIScreen.main.nativeScale,
         cornerRadius: 4.0,

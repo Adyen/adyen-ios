@@ -48,7 +48,7 @@ class SearchViewControllerTests: XCTestCase {
     
     // MARK: - ViewModel
     
-    func testViewModelHandleViewDidLoad() {
+    func test_viewModel_whenLoaded_shouldRequestInitialResults() {
         
         let handleViewDidLoadExpectation = expectation(description: "Result provider was called on handleViewDidLoad")
         
@@ -67,7 +67,7 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: ""))
     }
     
-    func testViewModelStateCycling() {
+    func test_viewModel_whenResultsChange_shouldUpdateInterfaceState() {
         
         let resultsSearchTerm = "Results"
         let emptySearchTerm = "Empty"
@@ -113,7 +113,7 @@ class SearchViewControllerTests: XCTestCase {
     
     // MARK: - SearchViewController
     
-    func testViewModelBinding() {
+    func test_searchBar_whenTextChanges_shouldRequestMatchingResults() {
         
         let testSearchTerm = "This is a search"
         
@@ -154,7 +154,104 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(expectedLookups.isEmpty)
     }
     
-    func testInterfaceStateEmpty() {
+    func test_searchBar_whenVisibilityOmitted_shouldBeAddedToViewHierarchy() {
+        let searchViewController = makeSearchViewController()
+
+        searchViewController.loadViewIfNeeded()
+
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+    }
+
+    func test_content_whenSearchBarVisibleAndSpacingOmitted_shouldStartBelowSearchBar() {
+        let searchViewController = makeSearchViewController()
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.minY,
+            searchViewController.searchBar.frame.maxY,
+            accuracy: 0.1
+        )
+    }
+
+    func test_searchBar_whenHiddenAndFocusRequested_shouldNotBeAddedOrFocused() {
+        let searchViewController = makeSearchViewController(
+            shouldShowSearchBar: false,
+            shouldFocusSearchBarOnAppearance: true
+        )
+
+        setupRootViewController(searchViewController)
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
+    }
+
+    func test_content_whenSearchBarHiddenAndHeaderAbsent_shouldStartAtTopMargin() {
+        let searchViewController = makeSearchViewController(shouldShowSearchBar: false)
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        let expectedMinY = searchViewController.view.layoutMarginsGuide.layoutFrame.minY
+
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.minY,
+            expectedMinY,
+            accuracy: 0.1
+        )
+        XCTAssertEqual(searchViewController.emptyView.frame.minY, expectedMinY, accuracy: 0.1)
+        XCTAssertEqual(searchViewController.loadingView.frame.minY, expectedMinY, accuracy: 0.1)
+    }
+
+    func test_content_whenSearchBarHiddenAndHeaderPresent_shouldStartBelowHeader() {
+        let headerView = UIView()
+        headerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        let searchViewController = makeSearchViewController(
+            headerView: headerView,
+            shouldShowSearchBar: false
+        )
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        let expectedMinY = headerView.frame.maxY + 24
+
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.minY,
+            expectedMinY,
+            accuracy: 0.1
+        )
+        XCTAssertEqual(searchViewController.emptyView.frame.minY, expectedMinY, accuracy: 0.1)
+        XCTAssertEqual(searchViewController.loadingView.frame.minY, expectedMinY, accuracy: 0.1)
+    }
+
+    func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
+        let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.configureWithDefaultBackground()
+        barAppearance.titleTextAttributes = [.font: titleFont]
+
+        let searchViewController = makeSearchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
+        navigationController.navigationBar.standardAppearance = barAppearance
+
+        setupRootViewController(navigationController)
+
+        let navigationBar = navigationController.navigationBar
+        XCTAssertEqual(navigationBar.standardAppearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        XCTAssertNil(navigationBar.scrollEdgeAppearance)
+
+        let navigationItem = searchViewController.navigationItem
+        let standardAppearance = try XCTUnwrap(navigationItem.standardAppearance)
+        let scrollEdgeAppearance = try XCTUnwrap(navigationItem.scrollEdgeAppearance)
+        for appearance in [standardAppearance, scrollEdgeAppearance] {
+            XCTAssertEqual(appearance.shadowColor?.cgColor.alpha ?? 0, 0)
+            XCTAssertEqual(appearance.titleTextAttributes[.font] as? UIFont, titleFont)
+        }
+    }
+
+    func test_interfaceState_whenEmpty_shouldShowEmptyView() {
         
         // Given
         let testSearchTerm = "This is a search"
@@ -182,7 +279,7 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(searchViewController.emptyView.searchTerm, testSearchTerm)
     }
     
-    func testInterfaceStateLoading() {
+    func test_interfaceState_whenLoading_shouldShowLoadingView() {
         
         // Given
         let viewModel = SearchViewController.ViewModel(
@@ -207,10 +304,13 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
     
-    func testInterfaceStateShowingResults() {
+    func test_interfaceState_whenShowingResults_shouldShowResultsList() {
         
         // Given
-        let resultItems = [ListItem(title: "Result")]
+        let resultItems = [
+            ListItem(title: "First result"),
+            ListItem(title: "Second result")
+        ]
         
         let viewModel = SearchViewController.ViewModel(
             style: DummyStyle()
@@ -231,11 +331,12 @@ class SearchViewControllerTests: XCTestCase {
         // Then
         XCTAssertTrue(searchViewController.loadingView.isHidden)
         XCTAssertFalse(searchViewController.resultsListViewController.view.isHidden)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.count, 1)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items, resultItems)
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
     
-    func testKeyboardFrameChangeUpdatesEmptyViewBottomConstraint() throws {
+    func test_emptyView_whenKeyboardFrameChanges_shouldUpdateBottomConstraint() throws {
         let viewModel = SearchViewController.ViewModel(
             style: DummyStyle()
         ) { _, handler in
@@ -265,6 +366,28 @@ class SearchViewControllerTests: XCTestCase {
 
 private extension SearchViewControllerTests {
     
+    func makeSearchViewController(
+        headerView: UIView? = nil,
+        shouldShowSearchBar: Bool = true,
+        shouldFocusSearchBarOnAppearance: Bool = false
+    ) -> SearchViewController {
+        let viewModel = SearchViewController.ViewModel(
+            localizationParameters: nil,
+            style: DummyStyle(),
+            searchBarPlaceholder: nil,
+            shouldShowSearchBar: shouldShowSearchBar,
+            shouldFocusSearchBarOnAppearance: shouldFocusSearchBarOnAppearance
+        ) { _, handler in
+            handler([ListItem(title: "Result")])
+        }
+
+        return SearchViewController(
+            viewModel: viewModel,
+            emptyView: emptyView,
+            headerView: headerView
+        )
+    }
+
     func emptyViewBottomConstraint(
         from searchViewController: SearchViewController,
         file: StaticString = #file,

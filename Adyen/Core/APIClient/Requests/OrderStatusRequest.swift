@@ -9,23 +9,23 @@ import Foundation
 
 package struct OrderStatusRequest: APIRequest {
 
-    public typealias ResponseType = OrderStatusResponse
+    package typealias ResponseType = OrderStatusResponse
 
-    public var path: String {
+    package var path: String {
         "checkoutshopper/v1/order/status"
     }
 
-    public var counter: UInt = 0
-    
-    public var headers: [String: String] = [:]
+    package var counter: UInt = 0
 
-    public let queryParameters: [URLQueryItem] = []
+    package var headers: [String: String] = [:]
 
-    public let method: HTTPMethod = .post
+    package let queryParameters: [URLQueryItem] = []
 
-    public let orderData: String
+    package let method: HTTPMethod = .post
 
-    public init(orderData: String) {
+    package let orderData: String
+
+    package init(orderData: String) {
         self.orderData = orderData
     }
 

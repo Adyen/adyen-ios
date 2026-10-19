@@ -71,7 +71,7 @@ internal extension CheckoutCore {
             self?.reload(dropInComponent, with: partialPayment, from: source.paymentComponent)
         } as () -> Void
 
-        if session?.currentResult?.resultCode == .refused {
+        if session?.state.resultCode == .refused {
             showPaymentFailedAlert(on: dropInComponent, completion: reloadDropIn)
         } else {
             reloadDropIn()

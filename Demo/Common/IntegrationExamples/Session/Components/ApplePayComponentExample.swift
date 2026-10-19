@@ -25,7 +25,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
-    internal init() {}
+    /// Whether the app shows its own Apple Pay button instead of the component's button.
+    private let usesOwnApplePayButton: Bool
+
+    internal init(usesOwnApplePayButton: Bool = false) {
+        self.usesOwnApplePayButton = usesOwnApplePayButton
+    }
 
     internal func start() {
         startLoading()
@@ -49,7 +54,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -67,64 +71,67 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         )
                         return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
                     }
-                }.onShippingContactChange { contact, summaryItems in
+                }.onSelectShippingContact { contact, summaryItems in
                     let cityLabel = contact.postalAddress?.city ?? "Somewhere"
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [
+                        appending: [
                             .init(
                                 label: "Shipping \(cityLabel)",
                                 amount: NSDecimalNumber(value: 5.0)
                             )
-                        ],
-                        totalAmountDelta: 5.0
+                        ]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                 }
-                .onShippingMethodChange { shippingMethod, summaryItems in
+                .onSelectShippingMethod { shippingMethod, summaryItems in
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [shippingMethod],
-                        totalAmountDelta: shippingMethod.amount.doubleValue
+                        appending: [shippingMethod]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
                 }
-                .onCouponCodeChange { _, summaryItems in
+                .onChangeCouponCode { _, summaryItems in
                     // make sure your backend's amount and apple pay sheet amount are the same
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))],
-                        totalAmountDelta: -5.0
+                        appending: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                 }
-                .onPaymentMethodChange { paymentMethod, summaryItems in
+                .onSelectPaymentMethod { paymentMethod, summaryItems in
                     // Example: Add a processing fee based on card type
                     let cardType = paymentMethod.displayName ?? "Card"
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
-                        appendedItems: [
+                        appending: [
                             .init(
                                 label: "Processing Fee (\(cardType))",
                                 amount: NSDecimalNumber(value: 1.0)
                             )
-                        ],
-                        totalAmountDelta: 1.0
+                        ]
                     )
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
                 }
+                .buttonAppearance(
+                    .init(
+                        buttonType: .donate,
+                        buttonStyle: .whiteOutline,
+                        cornerRadius: 6.0
+                    )
+                )
         }
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
-        .onBeforeSubmit { data in
+        .onBeforeSubmit { [weak self] data in
+            guard let self else { return .abort }
             print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
             print("onBeforeSubmit: shopperEmail: \(String(describing: data.shopperEmail))")
             print("onBeforeSubmit: billingAddress: \(String(describing: data.billingAddress))")
@@ -132,15 +139,19 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
             switch ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode {
             case .updateData:
-                let updatedData = data
-                    .replacing(shopperName: ShopperName(firstName: "Demo", lastName: "Shopper"))
-                    .replacing(shopperEmail: "updatedForDemo-\(ConfigurationConstants.shopperEmail)")
+                var updatedData = data
+                updatedData.shopperName = ShopperName(firstName: "Demo", lastName: "Shopper")
+                updatedData.shopperEmail = "updatedForDemo-\(ConfigurationConstants.shopperEmail)"
                 return .proceed(data: updatedData, sessionData: nil)
             case .abort:
                 return .abort
             case .patchSession:
-                let patchedSession = try await self.patchSession(using: sessionResponse)
-                return .proceed(data: data, sessionData: patchedSession.sessionData)
+                do {
+                    let patchedSession = try await self.patchSession(using: sessionResponse)
+                    return .proceed(data: data, sessionData: patchedSession.sessionData)
+                } catch {
+                    return .abort
+                }
             }
         }
         .onComplete { [weak self] result in
@@ -149,7 +160,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
@@ -171,12 +182,25 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func present(component: CheckoutPaymentComponent) {
-        guard let viewController = component.viewController else {
-            handleError(IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self))
+        guard !usesOwnApplePayButton else {
+            // The shopper already tapped the app's own Apple Pay button, so open the sheet directly.
+            component.submit()
             return
         }
-        // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
-        presenter?.present(viewController: viewController, completion: nil)
+
+        let componentViewController = component.viewController
+        componentViewController.view.backgroundColor = .systemBackground
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        presenter?.present(viewController: navigation, completion: nil)
+    }
+
+    @objc private func cancelPressed() {
+        presenter?.dismiss(completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
@@ -189,22 +213,14 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     private func updatedSummaryItems(
         from summaryItems: [PKPaymentSummaryItem],
-        appendedItems: [PKPaymentSummaryItem],
-        totalAmountDelta: Double
+        appending appendedItems: [PKPaymentSummaryItem]
     ) -> [PKPaymentSummaryItem] {
         guard let total = summaryItems.last else {
             return summaryItems
         }
 
-        var updatedItems = Array(summaryItems.dropLast())
-        updatedItems.append(contentsOf: appendedItems)
-        updatedItems.append(
-            .init(
-                label: total.label,
-                amount: NSDecimalNumber(value: total.amount.doubleValue + totalAmountDelta)
-            )
-        )
-        return updatedItems
+        let updatedTotal = appendedItems.reduce(total.amount) { $0.adding($1.amount) }
+        return Array(summaryItems.dropLast()) + appendedItems + [PKPaymentSummaryItem(label: total.label, amount: updatedTotal)]
     }
 
     private func updateLatestApplePayAmount(using summaryItems: [PKPaymentSummaryItem]) {
@@ -215,8 +231,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let currentAmount = ConfigurationConstants.current.amount
         let updatedValue = AmountFormatter.minorUnitAmount(
             from: total.amount.decimalValue,
-            currencyCode: currentAmount.currencyCode,
-            localeIdentifier: currentAmount.localeIdentifier
+            currencyCode: currentAmount.currencyCode
         )
         latestApplePayAmount = Amount(
             value: updatedValue,
@@ -234,12 +249,5 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             amount: latestApplePayAmount
         )
         return try await asyncApiClient.performAsync(request)
-    }
-}
-
-extension ApplePayComponentExample: PresentationDelegate {
-
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

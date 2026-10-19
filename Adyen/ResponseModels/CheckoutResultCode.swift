@@ -37,6 +37,8 @@ public enum CheckoutResultCode: RawRepresentable, Decodable, Equatable {
             self = .pending
         case "Cancelled":
             self = .cancelled
+        case "Error":
+            self = .error
         case "Received":
             self = .received
         case "RedirectShopper":

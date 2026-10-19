@@ -35,22 +35,23 @@ public struct OnlineBankingPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     /// The available issuers.
     public let issuers: [Issuer]
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     // MARK: - Private
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case name
         case issuers
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension OnlineBankingPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

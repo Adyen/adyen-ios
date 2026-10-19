@@ -14,32 +14,26 @@ import UIKit
 
 /// A component that handles document actions.
 @MainActor
-public final class DocumentComponent: ActionComponent, ShareableComponent {
+package final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public weak var delegate: ActionComponentDelegate?
-    
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
-    
+    package let context: AdyenContext
+
+    package weak var delegate: ActionComponentDelegate?
+
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
+
     /// The document component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component UI style.
-        public var style: DocumentComponentStyle
+        package var style: DocumentComponentStyle
         
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: DocumentComponentStyle = DocumentComponentStyle()) {
+        package init(style: DocumentComponentStyle = DocumentComponentStyle()) {
             self.init(style: style, localizationParameters: nil)
         }
 
@@ -50,8 +44,8 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     }
     
     /// The document component configurations.
-    public var configuration: Configuration = .init()
-    
+    package var configuration: Configuration = .init()
+
     internal let presenterViewController = UIViewController()
     
     private let componentName = "documentAction"
@@ -60,7 +54,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(
+    package init(
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
@@ -71,7 +65,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// Handles document action.
     ///
     /// - Parameter action: The document action object.
-    public func handle(_ action: DocumentAction) {
+    package func handle(_ action: DocumentAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(
@@ -87,40 +81,17 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         )
         let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
         view.delegate = self
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController,
-                navBarType: navBarType()
-            )
-            presentationDelegate.present(component: presentableComponent)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
             )
         }
-    }
-    
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(
-            leadingButtonTitle: nil,
-            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
-        )
-        let style = ActionNavigationBar.Style(
-            leadingButton: nil,
-            trailingButton: configuration.style.doneButton,
-            backgroundColor: configuration.style.backgroundColor
-        )
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
     }
 }
 

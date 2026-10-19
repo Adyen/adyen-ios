@@ -11,10 +11,10 @@ import Foundation
 import MapKit
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class MapkitAddressLookupProvider {
-    
-    public init() {}
-    
+internal class MapkitAddressLookupProvider {
+
+    internal init() {}
+
     private let minDebounceDelay: TimeInterval = 0.3
     
     private var searchTask: DispatchWorkItem? {
@@ -31,8 +31,8 @@ public class MapkitAddressLookupProvider {
         }
     }
     
-    public func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
-        
+    internal func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
+
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
         

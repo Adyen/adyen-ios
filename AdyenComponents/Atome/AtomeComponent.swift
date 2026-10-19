@@ -8,17 +8,15 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
 #if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormLabelItem
-    @_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 
 /// A component that provides a form for Atome payment.
-public final class AtomeComponent: AbstractPersonalInformationComponent {
+package final class AtomeComponent: AbstractPersonalInformationComponent {
 
     /// Configuration for Atome Component
-    public typealias Configuration = PersonalInformationConfiguration
+    package typealias Configuration = PersonalInformationConfiguration
 
     private enum ViewIdentifier {
         static let billingAddress = "billingAddressItem"
@@ -35,7 +33,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Atome payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -68,15 +66,11 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         phoneItem?.title = localizedString(.phoneNumberTitle, configuration.localizationParameters)
     }
 
-    // MARK: - Public
-
-    @_spi(AdyenInternal)
-    override public func submitButtonTitle() -> String {
+    override package func submitButtonTitle() -> String {
         localizedString(.continueTitle, configuration.localizationParameters)
     }
 
-    @_spi(AdyenInternal)
-    override public func createPaymentDetails() throws -> PaymentMethodDetails {
+    override package func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let telephoneNumber = phoneItem?.phoneNumber,
@@ -93,14 +87,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         )
     }
 
-    @_spi(AdyenInternal)
-    override public func phoneExtensions() -> [PhoneExtension] {
+    override package func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
-    
-    @_spi(AdyenInternal)
-    override public func addressViewModelBuilder() -> AddressViewModelBuilder {
+
+    override package func addressViewModelBuilder() -> AddressViewModelBuilder {
         AtomeAddressViewModelBuilder()
     }
 

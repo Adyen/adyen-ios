@@ -16,12 +16,11 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 @MainActor
-public final class CashAppPayComponent: PaymentComponent,
-    PresentableComponent,
+package final class CashAppPayComponent: PaymentComponent,
     LoadingComponent {
 
     /// The notification to post when returning back to your application from Cash App.
-    public static let RedirectNotification = CashAppPay.RedirectNotification
+    package static let RedirectNotification = CashAppPay.RedirectNotification
 
     private enum ViewIdentifier {
         static let storeDetailsItem = "storeDetailsItem"
@@ -35,36 +34,41 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cashAppPayPaymentMethod
     }
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Component's configuration
-    public var configuration: CashAppPayConfiguration
+    // TODO(COSDK-1313): Apply session configuration during CashAppPayComponentFactory assembly.
+    package var configuration: CashAppPayConfiguration
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package let type: PaymentComponentType = .regular
+
+    package var requiresUserInteraction: Bool {
+        configuration.showsStorePaymentMethodField
+    }
+
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    private var shouldStorePayment: Bool {
+        // Zero amount always stores the payment method.
+        // Otherwise, use the visible toggle or hidden configuration value.
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -90,7 +94,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
     internal lazy var cashAppPayButton: CashAppPayButtonItem = {
         let item = CashAppPayButtonItem { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.cashAppButtonItem)
         return item
@@ -107,7 +111,10 @@ public final class CashAppPayComponent: PaymentComponent,
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
-        if configuration.showsStorePaymentMethodField {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showsStorePaymentMethodField,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
     
@@ -124,7 +131,7 @@ public final class CashAppPayComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Cash App Pay  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: CashAppPayPaymentMethod,
         context: AdyenContext,
         configuration: CashAppPayConfiguration
@@ -134,8 +141,8 @@ public final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    private func didSelectSubmitButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
     
         startLoading()
         startCashAppPayFlow()
@@ -146,7 +153,7 @@ public final class CashAppPayComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = false
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         cashAppPayButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -177,7 +184,7 @@ public final class CashAppPayComponent: PaymentComponent,
             actions.append(oneTimeAction)
         }
     
-        if storePayment == true {
+        if shouldStorePayment {
             let onFileAction = PaymentAction.onFilePayment(
                 scopeID: cashAppPayPaymentMethod.scopeId,
                 accountReferenceID: nil
@@ -214,9 +221,8 @@ public final class CashAppPayComponent: PaymentComponent,
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order,
-                storePaymentMethod: storePayment
+                storePaymentMethod: shouldStorePayment
             ))
         } catch {
             fail(with: error, message: error.localizedDescription)
@@ -227,7 +233,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
 extension CashAppPayComponent: CashAppPayObserver {
 
-    public func stateDidChange(to state: CashAppPayState) {
+    package func stateDidChange(to state: CashAppPayState) {
         switch state {
         case let .readyToAuthorize(request):
             cashAppPay.authorizeCustomerRequest(request)
@@ -270,13 +276,13 @@ extension CashAppPayComponent: CashAppPayObserver {
 extension CashAppPayComponent {
 
     /// Describes the errors that can occur during the Cash App Pay payment flow, in addition to Cash App Pay's own errors.
-    public enum Error: LocalizedError {
+    package enum Error: LocalizedError {
         /// Grants array of the customer request is empty
         case noGrant
         /// Payment was declined by the Cash App Pay app.
         case declined
     
-        public var errorDescription: String? {
+        package var errorDescription: String? {
             switch self {
             case .noGrant:
                 return "There was no grant object in the customer request."
@@ -287,21 +293,6 @@ extension CashAppPayComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension CashAppPayComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

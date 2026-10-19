@@ -5,13 +5,15 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.ListSection
-#endif
 
 internal struct PaymentMethodsSection {
-    internal var header: ListSectionHeader?
+    internal enum Kind: Equatable {
+        case paid
+        case stored
+        case regular
+    }
+
+    internal let kind: Kind
+    internal var headerTitle: String?
     internal var paymentMethods: [PaymentMethod]
-    internal var footer: ListSectionFooter?
 }

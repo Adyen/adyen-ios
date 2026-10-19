@@ -23,6 +23,23 @@ package protocol PaymentComponentFactory {
     /// The type of payment component this factory creates.
     associatedtype Component: PaymentComponent
     
+    /// Returns whether a component can currently be created for the payment method.
+    ///
+    /// Every factory implements this explicitly, so adding a factory requires a deliberate availability decision.
+    ///
+    /// Implementations must be synchronous and free of side effects. A factory that can return `false`
+    /// must enforce the same prerequisites in ``create(with:context:configuration:)``,
+    /// because callers may create a component without checking availability first.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method to check.
+    ///   - configuration: The resolved configuration that component creation would use.
+    /// - Returns: `true` if a component can currently be created; otherwise, `false`.
+    func isAvailable(
+        for paymentMethod: Method,
+        configuration: Configuration
+    ) -> Bool
+    
     /// Creates a payment component for the given payment method and configuration.
     ///
     /// - Parameters:

@@ -7,48 +7,20 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
-import UIKit
 
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
 
 @MainActor
-internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
-
-    // To Retrieve what to be displayed
-    var cardImageItem: CardImageItem { get }
-    var titleText: String { get }
-    var subtitleText: String { get }
-
-    var submitButtonTitle: String { get }
-    func submitPayment()
-
-    var showAllPaymentMethodsButtonTitle: String { get }
-    func showAllPaymentMethods()
-    /// Theming
-    var theme: CheckoutTheme { get }
-
-    /// Loading state
-    var onLoadingStateChange: ((_ isLoading: Bool) -> Void)? { get set }
-
-    // Actions
-    func cancel()
-    func viewDidLoad()
-}
-
-@MainActor
-internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
-
-    private enum Constants {
-        static let cardImageSize = CGSize(width: 80, height: 52)
-    }
+internal final class PreselectedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Properties
 
     private let component: PaymentComponent
     internal let theme: CheckoutTheme
     private let localizationParameters: LocalizationParameters?
+    internal let showsAllPaymentMethodsButton: Bool
     private let dropInFlowManager: DropInFlowManaging
     internal let analyticsProvider: AnyAnalyticsProvider?
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
@@ -58,8 +30,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     /// Callback for when the component is loaded on display.
     internal var onDidLoad: (() -> Void)?
 
-    /// Callback for when the loading state changes.
-    internal var onLoadingStateChange: ((_ isLoading: Bool) -> Void)?
+    @Published internal private(set) var isLoading = false
 
     // MARK: - Initializers
 
@@ -67,6 +38,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         component: PaymentComponent,
         theme: CheckoutTheme,
         localizationParameters: LocalizationParameters?,
+        showsAllPaymentMethodsButton: Bool,
         analyticsProvider: AnyAnalyticsProvider?,
         dropInAnalyticsConfiguration: DropInAnalyticsConfiguration,
         dropInFlowManager: DropInFlowManaging
@@ -77,40 +49,25 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         self.dropInAnalyticsConfiguration = dropInAnalyticsConfiguration
         self.theme = theme
         self.localizationParameters = localizationParameters
+        self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
     }
 
-    // MARK: - PreselectedPaymentMethodViewModelProtocol
+    // MARK: - Display Properties
 
-    internal var cardImageItem: CardImageItem {
-        let paymentMethod = component.paymentMethod
-        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
-        let imageURL = LogoURLProvider.logoURL(
-            withName: displayInformation.logoName,
-            environment: component.context.apiContext.environment,
-            size: .large
-        )
-        return CardImageItem(
-            imageURL: imageURL,
-            sizeMode: .fixed(Constants.cardImageSize),
+    internal var header: PaymentMethodContentHeaderViewModel {
+        PaymentMethodContentHeaderViewModel(
+            paymentMethod: component.paymentMethod,
+            context: component.context,
+            localizationParameters: localizationParameters,
             theme: theme
         )
     }
 
-    internal var titleText: String {
-        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
-        return displayInformation.title
-    }
-
-    internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
-    }
-
     internal var submitButtonTitle: String {
-        localizedSubmitButtonTitle(
+        AmountAwarePaymentStringsPolicy.preselectedPaymentMethodButtonTitle(
+            for: component.paymentMethod.name,
             with: component.context.amount,
-            style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
     }
 
@@ -149,26 +106,24 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     private func startPaymentFlow(for component: PaymentComponent) {
-        startLoading(for: component)
 
         switch component.type {
         case .regular, .stored:
-            router?.present(component: component) { [weak self] in
-                self?.stopLoading()
-            }
-        case let .initiable(initiablePaymentComponent):
-            initiablePaymentComponent.initiatePayment(delegate: self)
+            router?.present(component: component)
+        case .generic:
+            startLoading()
+            component.performSubmit()
         }
     }
 
     // MARK: -
 
-    private func startLoading(for component: PaymentComponent) {
-        onLoadingStateChange?(true)
+    private func startLoading() {
+        isLoading = true
     }
 
     private func stopLoading() {
-        onLoadingStateChange?(false)
+        isLoading = false
     }
 }
 
@@ -180,13 +135,15 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        stopLoading()
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
+        stopLoading()
         if case ComponentError.cancelled = error {
             cancel()
         } else {
@@ -194,24 +151,9 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         }
     }
 
-    public func sendDidLoadEvent() {
+    internal func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: AnalyticsConstants.dropInComponentIdentifier, type: .rendered)
         infoEvent.configData = dropInAnalyticsConfiguration
         analyticsProvider?.add(info: infoEvent)
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PreselectedPaymentMethodViewModel: ActionPresenter {
-
-    internal func present(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
     }
 }

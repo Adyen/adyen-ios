@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
+import XCTest
 
 final class DualBrandAccessoryViewTests: XCTestCase {
     var sut: FormCardNumberItemView.DualBrandAccessoryView!
@@ -50,8 +50,8 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             return nil
         }
         let dualBrandLogos = try [
-            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
-            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+            FormCardLogosItem.CardBrandLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), brand: .visa),
+            FormCardLogosItem.CardBrandLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), brand: .bcmc)
         ]
             
         // Load initial dual brand state
@@ -76,14 +76,14 @@ final class DualBrandAccessoryViewTests: XCTestCase {
     func testUpdateCurrentLogos_changingFromDualToSingle_resetsAndShowsSingleBrand() throws {
         // Given: Set up dual brand state
         let dualBrandLogos = try [
-            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
-            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+            FormCardLogosItem.CardBrandLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), brand: .visa),
+            FormCardLogosItem.CardBrandLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), brand: .bcmc)
         ]
         sut.updateCurrentLogos(dualBrandLogos)
         
         // When: Update with single brand
         let singleBrandLogo = try [
-            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/amex.png")), type: .americanExpress)
+            FormCardLogosItem.CardBrandLogo(url: XCTUnwrap(URL(string: "https://example.com/amex.png")), brand: .americanExpress)
         ]
         sut.updateCurrentLogos(singleBrandLogo)
         

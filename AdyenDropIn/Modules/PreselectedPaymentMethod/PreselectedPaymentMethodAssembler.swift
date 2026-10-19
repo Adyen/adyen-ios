@@ -12,7 +12,7 @@ import UIKit
 @MainActor
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodRouter(
-        delegate: PreselectedPaymentMethodRouterListener?,
+        listener: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
     ) -> Router
@@ -25,7 +25,9 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let configuration: DropInComponent.Configuration
+    private let storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
+    private let showsAllPaymentMethodsButton: Bool
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
     private let analyticsProvider: AnyAnalyticsProvider?
@@ -35,13 +37,17 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        configuration: DropInComponent.Configuration,
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling,
+        showsAllPaymentMethodsButton: Bool,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
+        self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -51,24 +57,28 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
     
     internal func resolvePreselectedPaymentMethodRouter(
-        delegate: PreselectedPaymentMethodRouterListener?,
+        listener: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
     ) -> Router {
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: showsAllPaymentMethodsButton,
             analyticsProvider: analyticsProvider,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManager
         )
+        component.delegate = viewModel
         let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)
         let router = PreselectedPaymentMethodRouter(
             viewController: viewController,
-            listener: delegate,
+            listener: listener,
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler
+            componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
+            theme: configuration.theme
         )
         viewModel.router = router
         return router

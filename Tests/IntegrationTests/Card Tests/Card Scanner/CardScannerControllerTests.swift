@@ -5,8 +5,8 @@
 //
 
 #if canImport(AdyenCardScanner)
+    import Adyen
     @testable import AdyenCard
-    @testable @_spi(AdyenInternal) import Adyen
     @testable import AdyenCardScanner
     import XCTest
 

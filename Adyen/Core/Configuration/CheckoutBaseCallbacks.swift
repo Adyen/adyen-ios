@@ -5,9 +5,13 @@
 //
 
 import Foundation
+import UIKit
 
-public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async throws -> SubmitResult
-public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async throws -> AdditionalDetailsResult
-public typealias BeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async throws -> BeforeSubmitResult
-public typealias CheckoutErrorHandler = @MainActor (_ error: Error) -> Void
-public typealias CheckoutSuccessHandler = @MainActor (_ result: CheckoutResult) -> Void
+public typealias CheckoutSubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> SubmitResult
+public typealias CheckoutAdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
+public typealias CheckoutBeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
+public typealias CheckoutActionHandler = @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
+
+package typealias SessionCheckoutCompletionHandler = @MainActor (_ result: SessionCheckoutResult) -> Void
+package typealias AdvancedCheckoutCompletionHandler = @MainActor (_ result: AdvancedCheckoutResult) -> Void
+package typealias CheckoutFailureHandler = @MainActor (_ error: CheckoutError) -> Void

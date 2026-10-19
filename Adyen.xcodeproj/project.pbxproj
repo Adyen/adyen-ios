@@ -799,6 +799,8 @@
 				"",
 				"$swiftlintPath --config \"$SRCROOT/.swiftlint.yml\"",
 				"",
+				"",
+				"",
 			);
 		};
 		B64285632BB4682A005C88C7 /* SwiftLint */ = {
@@ -815,6 +817,8 @@
 				"fi",
 				"",
 				"$swiftlintPath --config \"$SRCROOT/.swiftlint.yml\"",
+				"",
+				"",
 				"",
 			);
 		};
@@ -840,6 +844,8 @@
 				"fi",
 				"",
 				"echo \"✅ Sourcery finished successfully\"",
+				"",
+				"",
 				"",
 			);
 		};
@@ -872,6 +878,8 @@
 				"  fi",
 				"done",
 				"",
+				"",
+				"",
 			);
 		};
 		F9A4A304237323EE00D774E8 /* SwiftFormat */ = {
@@ -903,6 +911,8 @@
 				"    $swiftformatPath \"$filepath\"",
 				"  fi",
 				"done",
+				"",
+				"",
 				"",
 			);
 		};

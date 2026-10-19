@@ -17,7 +17,7 @@ extension CardViewController {
     internal struct InfoEventData {
         internal let type: AnalyticsEventInfo.InfoType
         internal let target: AnalyticsEventTarget
-        internal let brands: [CardBrand]?
+        internal let brands: [DetectedCardBrand]?
         internal let error: AnalyticsValidationError?
     }
 
@@ -28,7 +28,7 @@ extension CardViewController {
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardConfiguration
         private let shopperInformation: PrefilledShopperInformation?
-        private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogosItem.CardBrandLogo]
         private let scope: String
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
@@ -45,7 +45,7 @@ extension CardViewController {
             amount: Amount?,
             configuration: CardConfiguration,
             shopperInformation: PrefilledShopperInformation?,
-            cardLogos: [FormCardLogosItem.CardTypeLogo],
+            cardLogos: [FormCardLogosItem.CardBrandLogo],
             scope: String,
             initialCountryCode: String,
             localizationParameters: LocalizationParameters?,
@@ -71,7 +71,7 @@ extension CardViewController {
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(onLookup, onAddressSelected):
+            case let .lookup(_, onLookup, onAddressSelected):
                 let provider = AsyncAddressLookupProvider(
                     onLookup: onLookup,
                     onAddressSelected: onAddressSelected
@@ -91,7 +91,7 @@ extension CardViewController {
             return FormAddressPickerItem(
                 for: .billing,
                 initialCountry: initialCountry,
-                supportedCountryCodes: configuration.billingAddress.countryCodes,
+                supportedCountryCodes: addressMode.supportedCountryCodes,
                 prefillAddress: prefillAddress,
                 theme: theme,
                 style: formStyle,
@@ -114,7 +114,7 @@ extension CardViewController {
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(
-                cardTypeLogos: cardLogos,
+                cardBrandLogos: cardLogos,
                 showSupportedCardBrandLogos: configuration.showSupportedCardBrandLogos,
                 style: formStyle.textField,
                 localizationParameters: localizationParameters,
@@ -256,6 +256,7 @@ extension CardViewController {
                 installmentConfiguration: installmentsConfiguration,
                 style: formStyle.textField,
                 amount: amount,
+                presenter: presenter,
                 localizationParameters: localizationParameters
             )
             installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
@@ -265,10 +266,9 @@ extension CardViewController {
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-            item.title = localizedSubmitButtonTitle(
+            item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
                 with: amount,
-                style: .immediate,
-                localizationParameters
+                localizationParameters: localizationParameters
             )
             return item
         }()
@@ -276,7 +276,7 @@ extension CardViewController {
         internal func triggerInfoEvent(
             of type: AnalyticsEventInfo.InfoType,
             target: AnalyticsEventTarget,
-            brands: [CardBrand]? = nil,
+            brands: [DetectedCardBrand]? = nil,
             error: AnalyticsValidationError? = nil
         ) {
             let infoEventData = InfoEventData(

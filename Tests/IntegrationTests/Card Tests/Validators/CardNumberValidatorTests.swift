@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable @_spi(AdyenInternal) import AdyenCard
 @_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenCard
 import XCTest
 
 class CardNumberValidatorTests: XCTestCase {

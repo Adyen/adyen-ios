@@ -8,20 +8,19 @@ import Adyen
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
-public enum Dimensions {
+package enum Dimensions {
 
-    public static var leastPresentableScale: CGFloat = 0.25
+    package static var leastPresentableScale: CGFloat = 0.25
 
-    public static var greatestPresentableHeightScale: CGFloat = 0.9
+    package static var greatestPresentableHeightScale: CGFloat = 0.9
 
-    public static var maxAdaptiveWidth: CGFloat = 360
+    package static var maxAdaptiveWidth: CGFloat = 360
 
-    public static var greatestPresentableScale: CGFloat {
+    package static var greatestPresentableScale: CGFloat {
         UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isLandscape ? 1 : greatestPresentableHeightScale
     }
 
-    public static func expectedWidth(for window: UIWindow? = nil) -> CGFloat {
+    package static func expectedWidth(for window: UIWindow? = nil) -> CGFloat {
         let containerSize = keyWindowSize(for: window)
         if UIDevice.current.userInterfaceIdiom == .pad {
             return min(containerSize.width * (1 - leastPresentableScale), maxAdaptiveWidth * UIScreen.main.scale)
@@ -30,7 +29,7 @@ public enum Dimensions {
         }
     }
 
-    public static func keyWindowSize(for window: UIWindow? = nil) -> CGRect {
+    package static func keyWindowSize(for window: UIWindow? = nil) -> CGRect {
         guard let window = window ?? UIApplication.shared.adyen.mainKeyWindow else {
             return UIScreen.main.bounds
         }

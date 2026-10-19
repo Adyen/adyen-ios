@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) import AdyenCard
+import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
@@ -45,23 +45,23 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
         self.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: title,
             placeholder: placeholder,
             style: style,
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: title)
         )
     }
 
-    override public func resetValue() {
+    override func resetValue() {
         value = nil
         formattedValue = nil
     }
 
-    override public func updateValidationFailureMessage() {
+    override func updateValidationFailureMessage() {
         validationFailureMessage = "Please select a value"
     }
 
-    override public func updateFormattedValue() {
+    override func updateFormattedValue() {
         formattedValue = value?.title
     }
 }
@@ -150,9 +150,9 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - Style Tests (Baseline before theme migration)
 
-    func test_titleLabel_shouldUseThemeBodyEmphasizedStyle() {
+    func test_titleLabel_shouldUseThemeLabelStyle() {
         // Then - titleLabel is styled by theme (already migrated in FormValueItemView)
-        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
+        let expectedFont = CheckoutTheme.default.elements.labels.label.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 

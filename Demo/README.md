@@ -1,8 +1,10 @@
 # Demo
 
-Sample project to try out iOS Drop-in and Components integrations.
+Sample project to try out iOS Components integrations.
 
 ![DropIn preview](Screenshots/dropin-ios.jpg)
+
+> **Note:** The Drop-in examples in this project are **not** a supported v6 integration path. Drop-in is not part of the public v6 API yet, and these samples build only because the demo targets have `package` access to the SDK. Use the Components examples as the reference for a v6 integration.
 
 ---
 
@@ -83,7 +85,7 @@ The [`Common/`](Common/) folder contains all basic code necessary to handle UI, 
 
 #### Session Flow
 
-##### Drop-in
+##### Drop-in (not a supported v6 path)
 
 [`Common/IntegrationExamples/Session/DropIn/DropInExample.swift`](Common/IntegrationExamples/Session/DropIn/DropInExample.swift)
 
@@ -95,14 +97,14 @@ Located in [`Common/IntegrationExamples/Session/Components/`](Common/Integration
 
 - **[`CardComponentExample.swift`](Common/IntegrationExamples/Session/Components/CardComponentExample.swift)** – Card payments
 - **[`ApplePayComponentExample.swift`](Common/IntegrationExamples/Session/Components/ApplePayComponentExample.swift)** – Apple Pay integration
-- **[`InstantPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/InstantPaymentComponentExample.swift)** – Instant payment methods
+- **[`GenericPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/GenericPaymentComponentExample.swift)** – Generic payment methods
 - **[`IssuerListComponentExample.swift`](Common/IntegrationExamples/Session/Components/IssuerListComponentExample.swift)** – Issuer list payments
 
 ---
 
 #### Advanced Flow
 
-##### Drop-in (with partial payments support)
+##### Drop-in (with partial payments support, not a supported v6 path)
 
 [`Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift)
 
@@ -116,7 +118,7 @@ Located in [`Common/IntegrationExamples/AdvancedFlow/Components/`](Common/Integr
 
 - **[`CardComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/CardComponentAdvancedFlowExample.swift)**
 - **[`ApplePayComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/ApplePayComponentAdvancedFlowExample.swift)**
-- **[`InstantPaymentComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/InstantPaymentComponentAdvancedFlowExample.swift)**
+- **[`GenericPaymentComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/GenericPaymentComponentAdvancedFlowExample.swift)**
 - **[`IssuerListComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/IssuerListComponentAdvancedFlowExample.swift)**
 
 ---

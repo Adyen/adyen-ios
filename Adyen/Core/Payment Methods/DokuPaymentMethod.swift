@@ -13,13 +13,6 @@ public struct DokuPaymentMethod: PaymentMethod {
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     private enum CodingKeys: String, CodingKey {
         case type
         case name
@@ -34,3 +27,11 @@ public typealias AlfamartPaymentMethod = DokuPaymentMethod
 
 /// A Doku Indomaret payment method.
 public typealias IndomaretPaymentMethod = DokuPaymentMethod
+
+// MARK: - PaymentComponentBuildable
+
+extension DokuPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}

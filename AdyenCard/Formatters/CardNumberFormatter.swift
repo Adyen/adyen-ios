@@ -12,7 +12,7 @@ public final class CardNumberFormatter: NumericFormatter {
     
     /// The type of card to consider during the formatting.
     /// For example, setting this to `americanExpress` will change the number grouping accordingly.
-    public var cardType: CardType?
+    public var cardBrand: CardBrand?
     
     override public func formattedValue(for value: String) -> String {
         let sanitizedCardNumber = sanitizedValue(for: value)
@@ -26,7 +26,7 @@ public final class CardNumberFormatter: NumericFormatter {
     private let maxCharactersInCardNumber = 19
     
     private func cardFormatGrouping(for length: Int) -> [Int] {
-        switch cardType {
+        switch cardBrand {
         case .americanExpress:
             return [4, 6, 5]
         case .diners where length < 15:

@@ -4,8 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@_spi(AdyenInternal) import protocol Adyen.Component
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import UIKit
 
@@ -13,18 +12,18 @@ extension RedirectComponent: AnyRedirectComponent {}
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
 @MainActor
-public final class RedirectComponent: ActionComponent {
-    
+package final class RedirectComponent: ActionComponent {
+
     /// Describes the types of errors that can be returned by the component.
-    public enum Error: LocalizedError {
-        
+    package enum Error: LocalizedError {
+
         /// Indicates that no app is installed that can handle the payment.
         case appNotFound
         
         /// Indicates that invalid parameters are passed back from the issuer.
         case invalidRedirectParameters
         
-        public var errorDescription: String? {
+        package var errorDescription: String? {
             switch self {
             case .appNotFound:
                 return "No app installed that can handle the payment."
@@ -36,30 +35,29 @@ public final class RedirectComponent: ActionComponent {
     }
     
     /// The component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component's UI style.
-        public var style: RedirectComponentStyle?
+        package var style: RedirectComponentStyle?
         
-        fileprivate let componentName = "redirect"
+        package let componentName = "redirect"
         
         /// Initializes an instance of `Configuration`
         ///
         /// - Parameter style: The component's UI style.
-        public init(style: RedirectComponentStyle? = nil) {
+        package init(style: RedirectComponentStyle? = nil) {
             self.style = style
         }
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public weak var delegate: ActionComponentDelegate?
+    package let context: AdyenContext
 
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
-    
+    package weak var delegate: ActionComponentDelegate?
+
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
+
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
     internal lazy var apiClient: AsyncAPIClientProtocol = {
@@ -69,15 +67,15 @@ public final class RedirectComponent: ActionComponent {
     private var browserComponent: BrowserComponent?
     
     /// The component configurations.
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     private var action: RedirectAction?
     
     /// Initializes the component.
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations.
-    public init(
+    package init(
         context: AdyenContext,
         configuration: Configuration = Configuration()
     ) {
@@ -88,7 +86,7 @@ public final class RedirectComponent: ActionComponent {
     /// Handles a redirect action.
     ///
     /// - Parameter action: The redirect action object.
-    public func handle(_ action: RedirectAction) {
+    package func handle(_ action: RedirectAction) {
         Analytics.sendEvent(
             component: configuration.componentName,
             flavor: _isDropIn ? .dropin : .components,
@@ -111,7 +109,7 @@ public final class RedirectComponent: ActionComponent {
     /// - Parameter url: The URL through which the application was opened.
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
-    public static func applicationDidOpen(from url: URL) -> Bool {
+    package static func applicationDidOpen(from url: URL) -> Bool {
         do {
             return try RedirectListener.applicationDidOpen(from: url)
         } catch {
@@ -142,7 +140,7 @@ public final class RedirectComponent: ActionComponent {
         )
         component.delegate = self
         browserComponent = component
-        presentationDelegate?.present(component: component)
+        actionPresentationDelegate?.present(actionViewController: component.viewController, actionData: ActionData(type: .redirect))
     }
     
     // MARK: - Custom scheme link handling
@@ -234,22 +232,21 @@ extension RedirectComponent: BrowserComponentDelegate {
     
 }
 
-@_spi(AdyenInternal)
 extension RedirectComponent: ActionComponentDelegate {
     
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
 
-    public func didComplete(from component: ActionComponent) {
+    package func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: self)
     }
     
-    public func didFail(with error: Swift.Error, from component: ActionComponent) {
+    package func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
     
-    public func didOpenExternalApplication(component: ActionComponent) {
+    package func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)
     }
     

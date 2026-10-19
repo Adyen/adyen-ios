@@ -5,13 +5,13 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 import XCTest
 
 class CardSecurityCodeValidatorTests: XCTestCase {
     
-    func testValidSecurityCodes() {
-        let observer = AdyenObservable<CardType?>(.masterCard)
+    func test_isValid_givenCorrectLengthForBrand_shouldReturnTrue() {
+        let observer = AdyenObservable<CardBrand?>(.masterCard)
         let validator = CardSecurityCodeValidator(publisher: observer)
         
         XCTAssertTrue(validator.isValid("123"))
@@ -22,7 +22,16 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("1234"))
     }
     
-    func testInvalidSecurityCodes() {
+    func test_defaultLength_givenNilBrand_shouldExpectThreeDigits() {
+        let observer = AdyenObservable<CardBrand?>(nil)
+        let validator = CardSecurityCodeValidator(publisher: observer)
+
+        XCTAssertFalse(validator.isValid("12"))
+        XCTAssertTrue(validator.isValid("123"))
+        XCTAssertFalse(validator.isValid("1234"))
+    }
+
+    func test_isValid_givenIncorrectLength_shouldReturnFalse() {
         let validator = CardSecurityCodeValidator()
         
         XCTAssertFalse(validator.isValid(""))
@@ -31,7 +40,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("12345"))
     }
     
-    func testEmptyInvalidStatus() {
+    func test_validate_givenEmptyCode_shouldReturnEmptyError() {
         let validator = CardSecurityCodeValidator()
         let status = validator.validate("")
         
@@ -41,7 +50,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.securityCodeEmpty)
     }
     
-    func testPartialInvalidStatus() {
+    func test_validate_givenPartialCode_shouldReturnPartialError() {
         let validator = CardSecurityCodeValidator()
         let status = validator.validate("12")
         
@@ -51,7 +60,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.securityCodePartial)
     }
     
-    func testValidStatusRegular() {
+    func test_validate_givenValidRegularCode_shouldReturnValidStatus() {
         let validator = CardSecurityCodeValidator()
         let status = validator.validate("123")
         
@@ -59,8 +68,8 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertTrue(status.isValid)
     }
     
-    func testValidStatusAmex() {
-        let validator = CardSecurityCodeValidator(cardType: .americanExpress)
+    func test_validate_givenAmexBrand_shouldRequireFourDigits() {
+        let validator = CardSecurityCodeValidator(cardBrand: .americanExpress)
         let invalidStatus = validator.validate("123")
         
         XCTAssertNotNil(invalidStatus.validationError)

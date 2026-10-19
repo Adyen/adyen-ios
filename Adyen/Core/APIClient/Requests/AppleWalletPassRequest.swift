@@ -9,27 +9,27 @@ import Foundation
 
 package struct AppleWalletPassRequest: APIRequest {
 
-    public typealias ResponseType = AppleWalletPassResponse
+    package typealias ResponseType = AppleWalletPassResponse
 
-    public let path: String = "checkoutshopper/v1/createVoucherPass"
+    package let path: String = "checkoutshopper/v1/createVoucherPass"
 
-    public var counter: UInt = 0
+    package var counter: UInt = 0
 
-    public var headers: [String: String] = [:]
+    package var headers: [String: String] = [:]
 
-    public let queryParameters: [URLQueryItem] = []
+    package let queryParameters: [URLQueryItem] = []
 
-    public let method: HTTPMethod = .post
+    package let method: HTTPMethod = .post
 
-    public let platform: String = "apple"
+    package let platform: String = "apple"
 
-    public let passToken: String
+    package let passToken: String
 
-    public init(passToken: String) {
+    package init(passToken: String) {
         self.passToken = passToken
     }
 
-    public enum CodingKeys: CodingKey {
+    package enum CodingKeys: CodingKey {
         case platform
         case passToken
     }

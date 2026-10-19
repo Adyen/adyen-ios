@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 import AdyenNetworking
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
@@ -18,7 +18,7 @@ class FormViewControllerTests: XCTestCase {
         
         let formViewController = FormViewController(scrollEnabled: true, style: style, localizationParameters: nil)
 
-        let cardNumberItem = FormCardNumberItem(cardTypeLogos: [], scanCardHandler: nil)
+        let cardNumberItem = FormCardNumberItem(cardBrandLogos: [], scanCardHandler: nil)
         let securityCodeItem = FormCardSecurityCodeItem(style: style.textField)
         
         formViewController.append(cardNumberItem)
@@ -51,7 +51,7 @@ class FormViewControllerTests: XCTestCase {
             localizationParameters: nil
         )
 
-        let cardNumberItem = FormCardNumberItem(cardTypeLogos: [], scanCardHandler: nil)
+        let cardNumberItem = FormCardNumberItem(cardBrandLogos: [], scanCardHandler: nil)
         cardNumberItem.setCardNumber("4111 1111 1111 1111")
         let securityCodeItem = FormCardSecurityCodeItem(style: style.textField)
         securityCodeItem.value = "737"

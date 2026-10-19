@@ -32,7 +32,7 @@ class QRCodeActionComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
+    lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
@@ -70,15 +70,15 @@ class QRCodeActionComponentTests: XCTestCase {
             expectationForDidProvide.fulfill()
         }
         
-        let presentationDelegate = PresentationDelegateMock()
-        presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        actionPresentationDelegate.doPresent = { viewController in
+            XCTAssertNotNil(viewController as? QRCodeViewController)
+            let viewController = viewController as! QRCodeViewController
             
             self.setupRootViewController(viewController)
         }
         
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
         sut.delegate = componentDelegate
         
         sut.handle(action)
@@ -118,14 +118,14 @@ class QRCodeActionComponentTests: XCTestCase {
             expectationForDidFail.fulfill()
         }
         
-        let presentationDelegate = PresentationDelegateMock()
-        presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        actionPresentationDelegate.doPresent = { viewController in
+            XCTAssertNotNil(viewController as? QRCodeViewController)
+            let viewController = viewController as! QRCodeViewController
             self.setupRootViewController(viewController)
         }
         
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
         sut.delegate = componentDelegate
         
         sut.handle(action)
@@ -254,7 +254,7 @@ class QRCodeActionComponentTests: XCTestCase {
     }
     
     func testQRCodeViewModelCopyCodeActionButtonType() {
-        lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
+        lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)

@@ -8,33 +8,32 @@ import Adyen
 import Foundation
 
 /// A form item that represents a single button with a spinner.
-@_spi(AdyenInternal)
-public final class FormButtonItem: FormItem {
+package final class FormButtonItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var subitems: [FormItem] = []
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var style: FormButtonItemStyle
+    package var subitems: [FormItem] = []
+
+    package var style: FormButtonItemStyle
 
     /// Indicates the item's UI styling.
     internal var buttonStyle: AdyenButtonStyle = AdyenButtonStyles.default.primary
 
-    public var identifier: String?
-    
-    /// The title of the button.
-    @AdyenObservable(nil) public var title: String?
-    
-    /// The observable of the button indicator activity.
-    @AdyenObservable(false) public var showsActivityIndicator: Bool
-    
-    /// The observable of the button's availability status.
-    @AdyenObservable(true) public var enabled: Bool
-    
-    /// A closure that will be invoked when a button is selected.
-    public var buttonSelectionHandler: (() -> Void)?
+    package var identifier: String?
 
-    public init(style: FormButtonItemStyle) {
+    /// The title of the button.
+    @AdyenObservable(nil) package var title: String?
+
+    /// The observable of the button indicator activity.
+    @AdyenObservable(false) package var showsActivityIndicator: Bool
+
+    /// The observable of the button's availability status.
+    @AdyenObservable(true) package var enabled: Bool
+
+    /// A closure that will be invoked when a button is selected.
+    package var buttonSelectionHandler: (() -> Void)?
+
+    package init(style: FormButtonItemStyle) {
         self.style = style
     }
 
@@ -46,7 +45,7 @@ public final class FormButtonItem: FormItem {
         self.style = .init(button: .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red)))
     }
     
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     

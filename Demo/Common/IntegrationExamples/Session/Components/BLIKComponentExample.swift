@@ -43,19 +43,15 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
-        ) {
-            BLIKComponentConfiguration()
-        }
+        ) {}
         
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -63,7 +59,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
         
@@ -100,10 +96,9 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     }
     
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
-        
-        let navigation = UINavigationController(rootViewController: viewController)
-        viewController.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -115,12 +110,5 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         // TODO: how to do component cancellation
 //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-}
-
-extension BLIKComponentExample: PresentationDelegate {
-    
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

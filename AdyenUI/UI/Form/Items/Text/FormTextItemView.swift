@@ -8,9 +8,8 @@ import Adyen
 import UIKit
 
 /// The interface of the delegate of a text item view.
-@_spi(AdyenInternal)
-public protocol FormTextItemViewDelegate: AnyObject {
-    
+package protocol FormTextItemViewDelegate: AnyObject {
+
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
     ///
     /// - Parameter itemView: The item view in which the maximum length was reached.
@@ -24,8 +23,7 @@ public protocol FormTextItemViewDelegate: AnyObject {
 }
 
 /// Defines any form text item view.
-@_spi(AdyenInternal)
-public protocol AnyFormTextItemView: AnyFormItemView {
+package protocol AnyFormTextItemView: AnyFormItemView {
 
     /// Delegate text related events.
     var delegate: FormTextItemViewDelegate? { get set }
@@ -73,18 +71,17 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let style = theme.elements.textField
 
         // Title
-        titleLabel.font = style.title.font
-        titleLabel.textColor = style.title.color
-        titleLabel.textAlignment = style.title.textAlignment
+        titleLabel.apply(style.title)
 
         // Text field
         textField.font = style.text.font
         textField.textColor = style.text.color
         textField.textAlignment = style.text.textAlignment
+        textField.tintColor = style.borderActiveColor
 
         // Container
-        entryTextStackView.backgroundColor = style.containerColor
-        entryTextStackView.layer.borderWidth = style.borderWidth
+        entryTextStackView.backgroundColor = style.backgroundColor
+        entryTextStackView.layer.borderWidth = style.defaultBorderWidth
 
         // Corner radius
         switch style.cornerRadius {
@@ -99,8 +96,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     /// Delegate text related events.
-    public weak var delegate: FormTextItemViewDelegate?
-    
+    package weak var delegate: FormTextItemViewDelegate?
+
     // MARK: - Stack View
     
     private lazy var textStackView: UIStackView = {
@@ -123,6 +120,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
         stackView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "entryTextStackView")
+        stackView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: AdyenUIConstants.minimumInputHeight
+        ).isActive = true
 
         return stackView
     }()
@@ -173,18 +173,20 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let accessoryView: UIView
         switch accessory {
         case .valid:
-            accessoryView = AccessoryLogo(success: true)
+            accessoryView = AccessoryLogo(image: .adyenCheckmark)
+            accessoryView.tintColor = theme.colors.text
         case .invalid:
-            accessoryView = AccessoryLogo(success: false)
+            accessoryView = AccessoryLogo(image: .adyenWarning)
+            accessoryView.tintColor = theme.colors.destructive
         case let .customView(view):
             accessoryView = view
+            accessoryView.tintColor = theme.colors.primary
         default:
             accessoryStackView.isHidden = true
             return
         }
         
         accessoryStackView.isHidden = false
-        accessoryView.tintColor = theme.colors.primary
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     
@@ -209,12 +211,16 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Validation
     
     override public var isValid: Bool {
-        if isHidden { return true }
+        if isHidden {
+            return true
+        }
         return super.isValid
     }
     
     override public func showValidation() {
-        if isHidden { return }
+        if isHidden {
+            return
+        }
         super.showValidation()
     }
     
@@ -237,13 +243,17 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Interaction
     
     override open var canBecomeFirstResponder: Bool {
-        if isHidden { return false }
+        if isHidden {
+            return false
+        }
         return textField.canBecomeFirstResponder
     }
     
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        if isHidden { return false }
+        if isHidden {
+            return false
+        }
         return textField.becomeFirstResponder()
     }
     
@@ -300,7 +310,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     private func removeAccessoryIfNeeded() {
-        if case .customView = accessory { return }
+        if case .customView = accessory {
+            return
+        }
         accessory = .none
     }
 
@@ -323,7 +335,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         // Keep custom view unchanged
-        if case .customView = accessory { return }
+        if case .customView = accessory {
+            return
+        }
         
         let hasContent = !(textField.text ?? "").isEmpty
         accessory = (hasContent && !isEditing) ? .valid : .none
@@ -332,7 +346,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Border Styling
 
     /// Updates the border color based on both editing state and validation state.
-    /// Priority: editing (active color) > validation error (error color) > default (normal color)
+    /// Priority: validation error (error color) > editing (active color) > default (normal color)
     private func updateBorderColor() {
         updateBorderColor(state: item.validationState)
     }
@@ -343,13 +357,18 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     ) {
         let style = theme.elements.textField
         let borderColor: UIColor
-        if isEditing {
-            borderColor = style.borderActiveColor
-        } else if state.shouldShowError {
+        let borderWidth: CGFloat
+        if state.shouldShowError {
             borderColor = style.errorColor
+            borderWidth = style.errorBorderWidth
+        } else if isEditing {
+            borderColor = style.borderActiveColor
+            borderWidth = style.focusedBorderWidth
         } else {
             borderColor = style.borderColor
+            borderWidth = style.defaultBorderWidth
         }
+        entryTextStackView.layer.borderWidth = borderWidth
         adyen.applyLayerBorderColor(borderColor, on: entryTextStackView.layer, resolvingWith: traitCollection)
     }
 
@@ -370,10 +389,7 @@ public extension FormTextItemView {
 
     private final class AccessoryLogo: UIImageView {
 
-        init(success: Bool) {
-            let resource = "verification_" + success.description
-            let bundle = Bundle.coreInternalResources
-            let image = UIImage(named: resource, in: bundle, compatibleWith: nil)
+        override init(image: UIImage?) {
             super.init(image: image)
             
             setContentHuggingPriority(.required, for: .horizontal)

@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) @testable import Adyen
 import UIKit
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
 
-public extension UIViewController {
+extension UIViewController {
 
     /// Returns the first child of the viewControllers children that matches the type
     ///
@@ -37,8 +37,8 @@ public extension UIViewController {
     }
 }
 
-extension UIViewController: PresentationDelegate {
-    public func present(component: PresentableComponent) {
-        self.present(component.viewController, animated: false, completion: nil)
+extension UIViewController: ActionPresentationDelegate {
+    public func present(actionViewController: UIViewController, actionData: ActionData) {
+        present(actionViewController, animated: false, completion: nil)
     }
 }

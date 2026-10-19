@@ -11,9 +11,9 @@ import UIKit
 extension FormPickerSearchViewController {
     
     /// The view that is shown when the form picker search result is empty
-    public class EmptyView: EmptyStateView<UILabel> {
-        
-        override public var searchTerm: String {
+    package class EmptyView: EmptyStateView<UILabel> {
+
+        override package var searchTerm: String {
             didSet { updateLabels() }
         }
         

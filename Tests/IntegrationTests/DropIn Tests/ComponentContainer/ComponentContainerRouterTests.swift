@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -16,56 +17,20 @@ struct ComponentContainerRouterTests {
     // MARK: - Tests
 
     @Test
-    func presentPaymentComponent_shouldPushViewController() async throws {
+    func presentPaymentComponent_shouldPushViewController() async {
         // Given
         let (sut, viewControllerSpy, _) = await makeSUT()
         let paymentComponent = await makePaymentComponent()
 
-        let navController = UINavigationController(rootViewController: viewControllerSpy)
-        viewControllerSpy.attachNavigationController(navController)
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.attachNavigationController(navigationControllerSpy)
 
         // When
         sut.present(paymentComponent: paymentComponent)
-        try await Task.sleep(for: .milliseconds(300))
 
         // Then
-        #expect(navController.viewControllers.contains(paymentComponent.viewController))
-    }
-
-    @Test
-    func presentActionComponent_shouldPresentModallyViewController() async {
-        // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
-
-        // When
-        sut.present(actionComponent: actionComponent, onCancel: nil)
-
-        // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
-    }
-
-    @Test
-    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
-        // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
-
-        var cancelWasCalled = false
-        let cancelCallback = { cancelWasCalled = true }
-
-        // When
-        sut.present(actionComponent: actionComponent, onCancel: cancelCallback)
-
-        // Then
-        let wrapper = try #require(
-            viewControllerSpy.presentedViewControllerCaptured as? ActionWrapperViewController
-        )
-
-        let injectedCallback = try #require(wrapper.onCancel)
-        injectedCallback()
-
-        #expect(cancelWasCalled)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === paymentComponent.viewController)
     }
 
     @Test
@@ -84,8 +49,6 @@ struct ComponentContainerRouterTests {
     // MARK: - Spy
 
     private class ViewControllerSpy: ComponentContainerViewController {
-        var pushedViewController: UIViewController?
-        var presentedViewControllerCaptured: UIViewController?
         var dismissCalled = false
         var dismissCompletion: (() -> Void)?
 
@@ -99,15 +62,33 @@ struct ComponentContainerRouterTests {
             _navigationController = nav
         }
 
-        override func present(_ vc: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-            presentedViewControllerCaptured = vc
-            completion?()
-        }
-
         override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
             dismissCalled = true
             dismissCompletion = completion
             completion?()
+        }
+    }
+
+    // MARK: - Mocks
+
+    private class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
+        var didDismissComponentContainerCompletionCallsCount = 0
+        var didDismissComponentContainerCompletionReceivedCompletion: (() -> Void)?
+
+        func didDismissComponentContainer(completion: (() -> Void)?) {
+            didDismissComponentContainerCompletionCallsCount += 1
+            didDismissComponentContainerCompletionReceivedCompletion = completion
+            completion?()
+        }
+    }
+
+    private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
+        var componentViewController: UIViewController = .init()
+        var theme: CheckoutTheme = .init()
+        var cancelCallsCount = 0
+
+        func cancel() {
+            cancelCallsCount += 1
         }
     }
 
@@ -119,7 +100,6 @@ struct ComponentContainerRouterTests {
         listenerMock: ComponentContainerRouterListenerMock
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
-        viewModelMock.componentViewController = UIViewController()
 
         let viewControllerSpy = ViewControllerSpy(viewModel: viewModelMock)
         let listenerMock = ComponentContainerRouterListenerMock()
@@ -131,7 +111,7 @@ struct ComponentContainerRouterTests {
         return (sut, viewControllerSpy, listenerMock)
     }
 
-    private func makePaymentComponent() async -> PresentableComponentMock {
+    private func makePaymentComponent() async -> PresentablePaymentComponentMock {
         let viewController = UIViewController()
         let cardPaymentMethodMock = CardPaymentMethodMock(
             type: .scheme,
@@ -139,21 +119,9 @@ struct ComponentContainerRouterTests {
             brands: [.visa, .masterCard]
         )
 
-        return PresentableComponentMock(
+        return PresentablePaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewController
         )
-    }
-
-    private func makeActionComponent() async -> PresentableComponent {
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirect = RedirectComponent(context: context)
-        let viewController = UIViewController()
-        return PresentableComponentWrapper(component: redirect, viewController: viewController)
     }
 }

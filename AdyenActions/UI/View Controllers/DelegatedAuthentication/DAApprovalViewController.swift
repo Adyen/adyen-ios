@@ -8,7 +8,6 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormButton
 #endif
 import UIKit
 
@@ -16,7 +15,7 @@ internal final class DAApprovalViewController: UIViewController {
     private let style: DelegatedAuthenticationComponentStyle
     private let localizationParameters: LocalizationParameters?
     private let cardNumber: String?
-    private let cardType: CardType?
+    private let cardBrand: CardBrand?
     private let amount: String?
     private let cardLogoURL: URL?
     private let useBiometricsHandler: VoidHandler
@@ -88,7 +87,7 @@ internal final class DAApprovalViewController: UIViewController {
         logoProvider: LogoURLProvider,
         amount: String?,
         cardNumber: String?,
-        cardType: CardType?,
+        cardBrand: CardBrand?,
         useBiometricsHandler: @escaping VoidHandler,
         approveDifferentlyHandler: @escaping VoidHandler,
         removeCredentialsHandler: @escaping VoidHandler
@@ -99,9 +98,9 @@ internal final class DAApprovalViewController: UIViewController {
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
         self.amount = amount
-        self.cardType = cardType
+        self.cardBrand = cardBrand
         self.cardNumber = cardNumber
-        self.cardLogoURL = cardType.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
+        self.cardLogoURL = cardBrand.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
         super.init(nibName: nil, bundle: Bundle(for: DAApprovalViewController.self))
         approvalView.delegate = self
     }

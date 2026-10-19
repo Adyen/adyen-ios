@@ -18,9 +18,9 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     // MARK: - Title Label
 
     /// The top label view.
-    public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.apply(theme.elements.labels.bodyEmphasized)
+    package lazy var titleLabel: AdyenLabel = {
+        let titleLabel = AdyenLabel()
+        titleLabel.apply(theme.elements.labels.label)
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
@@ -80,8 +80,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 }
 
 /// A type-erased form value item view.
-@_spi(AdyenInternal)
-public protocol AnyFormValueItemView: AnyFormItemView {
+package protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }

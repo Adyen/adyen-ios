@@ -14,6 +14,8 @@ internal struct BalanceCheckRequest: APIRequest {
 
     internal let data: PaymentComponentData
 
+    internal let amount: Amount
+
     internal let path = "paymentMethods/balance"
 
     internal var counter: UInt = 0
@@ -30,7 +32,7 @@ internal struct BalanceCheckRequest: APIRequest {
         let configurations = ConfigurationConstants.current
 
         try container.encode(data.paymentMethod.encodable, forKey: .details)
-        try container.encode(data.amount, forKey: .amount)
+        try container.encode(amount, forKey: .amount)
         try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
     }
 

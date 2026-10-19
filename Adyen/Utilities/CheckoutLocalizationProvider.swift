@@ -47,6 +47,14 @@ extension CheckoutLocalizationKey {
     public static let generalClose = CheckoutLocalizationKey(name: "generalClose")
     public static let generalOptional = CheckoutLocalizationKey(localizationKey: .fieldTitleOptional)
     public static let generalSearchHint = CheckoutLocalizationKey(localizationKey: .searchPlaceholder)
+    public static let submitButtonLabelSaveDetails = CheckoutLocalizationKey(localizationKey: .submitButtonLabelSaveDetails)
+}
+
+// MARK: - Address
+
+extension CheckoutLocalizationKey {
+    public static let addressCountryPickerTitle = CheckoutLocalizationKey(localizationKey: .addressCountryPickerTitle)
+    public static let addressCountryPickerDescription = CheckoutLocalizationKey(localizationKey: .addressCountryPickerDescription)
 }
 
 // MARK: - Card
@@ -71,6 +79,29 @@ extension CheckoutLocalizationKey {
     public static let cardDualBrandSelectorDescription = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandDescription)
     public static let cardSocialSecurityNumber = CheckoutLocalizationKey(name: "cardSocialSecurityNumber")
     public static let cardSocialSecurityNumberInvalid = CheckoutLocalizationKey(name: "cardSocialSecurityNumberInvalid")
+    /// The card installments section title.
+    public static let cardInstallmentsTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsTitle)
+    /// The one-time payment option title.
+    public static let cardInstallmentsOneTime = CheckoutLocalizationKey(localizationKey: .cardInstallmentsOneTime)
+    /// The revolving payment option title.
+    public static let cardInstallmentsRevolving = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRevolving)
+    /// The regular installments option title. `%@` is replaced by the number of installments.
+    public static let cardInstallmentsRegular = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRegular)
+    /// The card installments picker title.
+    public static let cardInstallmentsPickerTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerTitle)
+    /// The card installments picker description.
+    public static let cardInstallmentsPickerDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerDescription)
+    /// The one-time payment option description.
+    public static let cardInstallmentsOneTimeDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsOneTimeDescription)
+    /// The revolving payment option description.
+    public static let cardInstallmentsRevolvingDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRevolvingDescription)
+    /// The regular installments option description. `%@` is replaced by the number of monthly payments.
+    public static let cardInstallmentsRegularDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRegularDescription)
+    /// The regular installments option description including the installment amount.
+    /// The first `%@` is replaced by the number of payments and the second by the formatted amount.
+    public static let cardInstallmentsRegularDescriptionWithPrice = CheckoutLocalizationKey(
+        localizationKey: .cardInstallmentsRegularDescriptionWithPrice
+    )
 }
 
 // MARK: - Drop-in
@@ -83,6 +114,18 @@ extension CheckoutLocalizationKey {
     public static let dropInManageFavoritesRemoveConfirmation = CheckoutLocalizationKey(name: "dropInManageFavoritesRemoveConfirmation")
     public static let dropInOtherPaymentMethods = CheckoutLocalizationKey(name: "dropInOtherPaymentMethods")
     public static let dropInPaymentMethodListDescription = CheckoutLocalizationKey(name: "dropInPaymentMethodListDescription")
+    public static let dropInPaymentMethodListDescriptionCompletePayment = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionCompletePayment
+    )
+    public static let dropInPaymentMethodListDescriptionSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionSaveDetails
+    )
+    public static let dropInPaymentMethodListTitleSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListTitleSaveDetails
+    )
+    public static let dropInPreselectedPaymentMethodButtonLabel = CheckoutLocalizationKey(
+        localizationKey: .dropInPreselectedPaymentMethodButtonLabel
+    )
     // swiftlint:disable:next line_length
     public static let dropInPaymentMethodListFavoritesSectionTitle = CheckoutLocalizationKey(name: "dropInPaymentMethodListFavoritesSectionTitle")
     // swiftlint:disable:next line_length
@@ -92,6 +135,11 @@ extension CheckoutLocalizationKey {
     // swiftlint:disable:next line_length
     public static let dropInPaymentMethodListOptionsTitleWithFavorites = CheckoutLocalizationKey(name: "dropInPaymentMethodListOptionsTitleWithFavorites")
     public static let dropInPaymentMethodCardDescription = CheckoutLocalizationKey(name: "dropInPaymentMethodCardDescription")
+    public static let dropInStoredPaymentMethodDescription = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescription)
+    // swiftlint:disable:next line_length
+    public static let dropInStoredPaymentMethodDescriptionWithAmount = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescriptionWithAmount)
+    // swiftlint:disable:next line_length
+    public static let dropInStoredPaymentMethodDescriptionSaveDetails = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescriptionSaveDetails)
 }
 
 // MARK: - Await

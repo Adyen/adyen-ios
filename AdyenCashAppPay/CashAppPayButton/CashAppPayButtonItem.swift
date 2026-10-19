@@ -6,9 +6,7 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.FormItem
-    @_spi(AdyenInternal) import class AdyenUI.FormItemView
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import Foundation
 import UIKit

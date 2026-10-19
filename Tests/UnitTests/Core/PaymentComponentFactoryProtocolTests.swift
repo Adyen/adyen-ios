@@ -21,7 +21,6 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
     // MARK: - Mock Types for Testing
     
     struct MockPaymentMethod: PaymentMethod {
-        var merchantProvidedDisplayInformation: Adyen.MerchantCustomDisplayInformation?
         
         var type: PaymentMethodType {
             .other("mock")
@@ -41,13 +40,16 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PaymentComponent, PresentableComponent {
+    class MockComponent: PaymentComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
 
-        /// PresentableComponent requirement
+        let type: PaymentComponentType = .regular
+        let requiresUserInteraction: Bool = true
+
+        /// PaymentComponent requirement
         var viewController: UIViewController {
             UIViewController()
         }
@@ -67,12 +69,30 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
             self.configValue = configuration.value
             self.order = nil
         }
+
+        // MARK: - submit
+
+        var submitCallsCount = 0
+        var submitCalled: Bool {
+            submitCallsCount > 0
+        }
+
+        var submitClosure: (() -> Void)?
+
+        func performSubmit() {
+            submitCallsCount += 1
+            submitClosure?()
+        }
     }
     
     struct MockFactory: PaymentComponentFactory {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
+        
+        func isAvailable(for _: MockPaymentMethod, configuration _: MockConfiguration) -> Bool {
+            true
+        }
         
         func defaultConfiguration() -> MockConfiguration {
             MockConfiguration(value: "factory_default", showsSubmitButton: true)

@@ -8,14 +8,13 @@ import Adyen
 import UIKit
 
 /// Simple form item that represent a single attributed UILabel element.
-@_spi(AdyenInternal)
-public class FormAttributedLabelItem: FormItem {
+package class FormAttributedLabelItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var subitems: [FormItem] = []
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public init(
+    package var subitems: [FormItem] = []
+
+    package init(
         originalText: String,
         links: [String],
         style: TextStyle,
@@ -29,7 +28,7 @@ public class FormAttributedLabelItem: FormItem {
         self.links = links
     }
 
-    public var identifier: String?
+    package var identifier: String?
 
     /// The style of the label.
     private let style: TextStyle
@@ -43,7 +42,7 @@ public class FormAttributedLabelItem: FormItem {
     /// The links present in the label.
     private let links: [String]
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = LinkTextViewFormItem { [weak self] linkIndex in
             self?.handleLinkTapped(atIndex: linkIndex)
         }
@@ -71,7 +70,7 @@ public class FormAttributedLabelItem: FormItem {
 
 private class LinkTextViewFormItem: LinkTextView, AnyFormItemView {
     
-    public var childItemViews: [AnyFormItemView] {
+    package var childItemViews: [AnyFormItemView] {
         []
     }
 }

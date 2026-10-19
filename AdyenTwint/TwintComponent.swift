@@ -5,8 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
-
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -14,20 +12,21 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-public final class TwintComponent: InitiablePaymentComponent {
+package final class TwintComponent: PaymentComponent, LoadingComponent {
 
-    /// Configuration for Twint Component.
-    public typealias Configuration = BasicComponentConfiguration
+    package lazy var viewController: UIViewController = paymentButtonViewController
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The payment method object for this component.
-    public let paymentMethod: PaymentMethod
+    package let paymentMethod: PaymentMethod
 
     /// The ready to submit payment data.
-    public var paymentData: PaymentComponentData {
+    package var paymentData: PaymentComponentData {
         let details = TwintDetails(
             type: paymentMethod,
             subType: "sdk"
@@ -35,17 +34,16 @@ public final class TwintComponent: InitiablePaymentComponent {
 
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: nil,
             storePaymentMethod: nil
         )
     }
 
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     // MARK: - Initializers
 
@@ -54,24 +52,42 @@ public final class TwintComponent: InitiablePaymentComponent {
     /// - Parameter paymentMethod: The Twint  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
     }
 
-    // MARK: - PaymentInitiable
-
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment(delegate: PaymentComponentDelegate) {
-        self.delegate = delegate
+    package func performSubmit() {
+        paymentButtonViewController.startLoading()
         submit(data: paymentData)
     }
+
+    package func stopLoading() {
+        paymentButtonViewController.stopLoading()
+    }
+
+    // MARK: - Private
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
+        let paymentButtonViewController = PaymentButtonViewController(
+            amount: context.amount,
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
+        )
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        paymentButtonViewController.onSubmit = { [weak self] in
+            self?.performSubmit()
+        }
+        return paymentButtonViewController
+    }()
+
 }
 
-@_spi(AdyenInternal)
 extension TwintComponent: TrackableComponent {}

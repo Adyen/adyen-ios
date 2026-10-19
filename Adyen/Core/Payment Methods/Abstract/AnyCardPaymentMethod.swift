@@ -10,7 +10,7 @@ import Foundation
 public protocol AnyCardPaymentMethod: PaymentMethod {
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    var brands: [CardType] { get }
+    var brands: [CardBrand] { get }
     
     /// Indicates the Card funding source.
     var fundingSource: CardFundingSource? { get }

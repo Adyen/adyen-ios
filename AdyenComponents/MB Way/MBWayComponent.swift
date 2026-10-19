@@ -13,11 +13,11 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for MB Way payments.
-public final class MBWayComponent: AbstractPersonalInformationComponent {
-    
+package final class MBWayComponent: AbstractPersonalInformationComponent {
+
     /// Configuration for MB Way Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     private let mbWayPaymentMethod: MBWayPaymentMethod
 
     /// Initializes the MB Way component.
@@ -25,7 +25,7 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The MB Way payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: MBWayPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()

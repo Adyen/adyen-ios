@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
-@_spi(AdyenInternal) @testable import AdyenUI
+@_spi(AdyenInternal) import Adyen
+@testable import AdyenActions
+@_spi(AdyenInternal) import AdyenUI
 import XCTest
 
 class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
@@ -22,7 +22,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
 
         let sut = viewProvider.provideView(with: action, logo: nil)
 
-        let viewController = ADYViewController(view: sut)
+        let viewController = ActionViewController(view: sut)
         viewController.loadViewIfNeeded()
 
         let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")

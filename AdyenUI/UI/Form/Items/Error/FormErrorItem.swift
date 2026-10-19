@@ -5,39 +5,33 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 /// A form item that represents an error.
-@_spi(AdyenInternal)
-public final class FormErrorItem: FormItem {
+package final class FormErrorItem: FormItem {
 
     /// Indicates the error message.
-    @AdyenObservable(nil) public var message: String?
+    @AdyenObservable(nil) package var message: String?
 
-    /// The error icon name.
-    public let iconName: String
+    /// The error icon.
+    package let icon: UIImage?
 
     /// The error item style.
-    public let style: FormErrorItemStyle
+    package let style: FormErrorItemStyle
 
-    public var identifier: String?
+    package var identifier: String?
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
 
-    public var subitems: [FormItem] = []
+    package var subitems: [FormItem] = []
 
-    /// Initializes the separator item.
-    ///
-    /// - Parameter message: The message.
-    /// - Parameter iconName: The icon name.
-    /// - Parameter style: a `FormErrorItemStyle` UI style.
-    public init(message: String? = nil, iconName: String = "error", style: FormErrorItemStyle = FormErrorItemStyle()) {
-        self.iconName = iconName
+    package init(message: String? = nil, icon: UIImage? = .adyenWarning, style: FormErrorItemStyle = FormErrorItemStyle()) {
+        self.icon = icon
         self.style = style
         self.message = message
     }
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 

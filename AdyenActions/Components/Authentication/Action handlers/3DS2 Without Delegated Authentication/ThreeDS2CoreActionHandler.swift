@@ -11,11 +11,12 @@ import Adyen
     import AdyenUI
 #endif
 import Foundation
+import UIKit
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
-    var presentationDelegate: PresentationDelegate? { get set }
+    var actionPresentationDelegate: ActionPresentationDelegate? { get set }
     
     func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
@@ -47,7 +48,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
     private var service: ThreeDSService
     
-    internal weak var presentationDelegate: PresentationDelegate?
+    internal weak var actionPresentationDelegate: ActionPresentationDelegate?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL?
@@ -303,9 +304,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     }
 }
 
-extension ThreeDS2CoreActionHandler: PresentationDelegate {
-    func present(component: any PresentableComponent) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
-        presentationDelegate?.present(component: component)
+extension ThreeDS2CoreActionHandler: ActionPresentationDelegate {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
+        AdyenAssertion.assert(message: "actionPresentationDelegate should not be nil", condition: actionPresentationDelegate == nil)
+        actionPresentationDelegate?.present(actionViewController: actionViewController, actionData: actionData)
     }
 }

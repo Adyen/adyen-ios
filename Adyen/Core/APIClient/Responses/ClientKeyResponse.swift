@@ -10,7 +10,7 @@ import Foundation
 public struct ClientKeyResponse: Response {
 
     /// The card public key
-    public let cardPublicKey: String
+    package let cardPublicKey: String
     
     internal enum CodingKeys: String, CodingKey {
         case cardPublicKey = "publicKey"

@@ -7,7 +7,7 @@
 import UIKit
 
 /// Contains the styling customization options for any images.
-public struct ImageStyle: TintableStyle {
+@_spi(AdyenInternal) public struct ImageStyle: TintableStyle {
     
     /// The color of the image's border.
     public var borderColor: UIColor?

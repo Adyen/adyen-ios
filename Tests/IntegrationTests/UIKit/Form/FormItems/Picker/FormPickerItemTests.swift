@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenUI
+import UIKit
 import XCTest
 
 class FormPickerItemTests: XCTestCase {
@@ -57,15 +58,15 @@ class FormPickerItemTests: XCTestCase {
 //        wait(for: [dismissViewControllerExpectation], timeout: 10)
 //    }
     
-    func testAssertions() {
+    func test_abstractMethods_whenNotOverridden_shouldTriggerAssertions() {
         
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
             selectableValues: [],
-            title: "",
             placeholder: "",
             style: .init(),
-            presenter: nil
+            presenter: nil,
+            configuration: .init(title: "")
         )
         
         // Test resetValue()
@@ -108,5 +109,124 @@ class FormPickerItemTests: XCTestCase {
         wait(for: [updateFormattedValueException], timeout: 10)
         
         AdyenAssertion.listener = nil
+    }
+
+    func test_pickerItem_withConfiguredTitle_shouldUseConfigurationTitle() {
+        let expectedTitle = "Choose a payment plan"
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [],
+            placeholder: "",
+            style: .init(),
+            presenter: nil,
+            configuration: .init(title: expectedTitle)
+        )
+
+        XCTAssertEqual(formPickerItem.title, expectedTitle)
+        XCTAssertEqual(formPickerItem.configuration.title, expectedTitle)
+        XCTAssertNil(formPickerItem.configuration.subtitle)
+        XCTAssertTrue(formPickerItem.configuration.isSearchEnabled)
+    }
+
+    func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
+        let secondaryColor: UIColor = .orange
+        let theme = CheckoutTheme(
+            colors: CheckoutColors(
+                primary: .purple,
+                textSecondary: secondaryColor
+            )
+        )
+        let presentationExpectation = expectation(description: "presenter.presentViewController was called")
+
+        var presentedViewController: UIViewController?
+        let presenter = PresenterMock(
+            present: { viewController, _ in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { _ in }
+        )
+
+        let selectedOption = FormPickerElement(
+            identifier: "Identifier",
+            title: "Title",
+            subtitle: "Subtitle"
+        )
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: selectedOption,
+            selectableValues: [selectedOption],
+            placeholder: "",
+            style: .init(),
+            presenter: presenter,
+            configuration: .init(
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments.",
+                isSearchEnabled: false
+            )
+        )
+
+        // FormPickerItemView installs the selection handler that presents the picker.
+        _ = FormPickerItemView(item: formPickerItem, theme: theme)
+
+        formPickerItem.selectionHandler()
+
+        wait(for: [presentationExpectation], timeout: 10)
+
+        let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
+        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
+        XCTAssertNil(searchViewController.title)
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?
+                .filter(\.isSelected)
+                .map(\.identifier),
+            [selectedOption.identifier]
+        )
+    }
+
+    func test_pickerItem_whenConfigurationOmitted_shouldPresentPickerWithoutHeader() throws {
+        let presentationExpectation = expectation(description: "presenter.presentViewController was called")
+
+        var presentedViewController: UIViewController?
+        let presenter = PresenterMock(
+            present: { viewController, _ in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { _ in }
+        )
+
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
+            placeholder: "",
+            style: .init(),
+            presenter: presenter,
+            configuration: .init(title: "Country/Region")
+        )
+
+        _ = FormPickerItemView(item: formPickerItem, theme: .default)
+
+        formPickerItem.selectionHandler()
+
+        wait(for: [presentationExpectation], timeout: 10)
+
+        let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Country/Region")
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(
+            try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+                .contains(where: \.isSelected)
+        )
     }
 }

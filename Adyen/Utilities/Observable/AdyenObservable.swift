@@ -38,8 +38,8 @@ open class AdyenObservable<ValueType: Equatable>: EventPublisher {
     public typealias Event = ValueType
 
     /// The event handlers attached to the observable.
-    public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
-    
+    package var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
+
     open var projectedValue: AdyenObservable {
         self
     }

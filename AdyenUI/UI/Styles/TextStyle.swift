@@ -8,13 +8,13 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for any labels.
-public struct TextStyle: ViewStyle {
+@_spi(AdyenInternal) public struct TextStyle: ViewStyle {
     
     /// The font used to display the text.
     public var font: UIFont
 
     /// The color of the text.
-    public var color: UIColor = AdyenColors.default.background
+    public var color: UIColor = CheckoutColors.default.background
 
     /// The color of the text when the element is disabled.
     public var disabledColor = UIColor.Adyen.secondaryComponentBackground

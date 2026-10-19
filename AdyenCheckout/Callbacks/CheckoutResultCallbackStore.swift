@@ -8,33 +8,60 @@ import Adyen
 import Foundation
 
 package protocol CheckoutResultCallbackStore: AnyObject {
-    var onComplete: CheckoutSuccessHandler? { get set }
+    @MainActor
+    func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?)
 
-    var onError: CheckoutErrorHandler? { get set }
+    var onFailure: CheckoutFailureHandler? { get set }
+
+    var onAction: CheckoutActionHandler? { get set }
 }
 
 package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onBeforeSubmit: BeforeSubmitHandler?
+    package var onBeforeSubmit: CheckoutBeforeSubmitHandler?
 
-    package var onComplete: CheckoutSuccessHandler?
+    package var onComplete: SessionCheckoutCompletionHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutFailureHandler?
+
+    package var onAction: CheckoutActionHandler?
+
+    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
+        guard let sessionId, let sessionResult else {
+            AdyenAssertion.assertionFailure(message: "Session completion called without sessionId or sessionResult.")
+            return
+        }
+        onComplete?(SessionCheckoutResult(resultCode: resultCode, sessionId: sessionId, sessionResult: sessionResult))
+    }
 }
 
 package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onSubmit: SubmitHandler?
+    package var onSubmit: CheckoutSubmitHandler?
 
-    package var onAdditionalDetails: AdditionalDetailsHandler?
+    package var onAdditionalDetails: CheckoutAdditionalDetailsHandler?
 
-    package var onComplete: CheckoutSuccessHandler?
+    package var onComplete: AdvancedCheckoutCompletionHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutFailureHandler?
+
+    package var onAction: CheckoutActionHandler?
+
+    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
+        // sessionId and sessionResult are session-specific and not applicable to the advanced flow.
+        onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
+    }
 }
 
 package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onAdditionalDetails: AdditionalDetailsHandler?
+    package var onAdditionalDetails: CheckoutAdditionalDetailsHandler?
 
-    package var onComplete: CheckoutSuccessHandler?
+    package var onComplete: AdvancedCheckoutCompletionHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutFailureHandler?
+
+    package var onAction: CheckoutActionHandler?
+
+    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
+        // sessionId and sessionResult are session-specific and not applicable to the action-only flow.
+        onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
+    }
 }

@@ -8,17 +8,17 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a list section header.
-public struct ListSectionHeaderStyle: ViewStyle {
-    
+package struct ListSectionHeaderStyle: ViewStyle {
+
     /// The title style.
-    public var title = TextStyle(
+    package var title = TextStyle(
         font: .preferredFont(forTextStyle: .subheadline),
         color: UIColor.Adyen.componentSecondaryLabel,
         textAlignment: .natural
     )
     
     /// The trailing button style.
-    public var trailingButton = ButtonStyle(
+    package var trailingButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .body),
             color: UIColor.Adyen.defaultBlue
@@ -27,16 +27,16 @@ public struct ListSectionHeaderStyle: ViewStyle {
         background: UIColor.clear
     )
     
-    public var backgroundColor = UIColor.Adyen.componentBackground
-    
+    package var backgroundColor = UIColor.Adyen.componentBackground
+
     /// Initializes the list header style.
     ///
     /// - Parameter title: The title style.
-    public init(title: TextStyle) {
+    package init(title: TextStyle) {
         self.title = title
     }
     
     /// Initializes the list header style with the default style.
-    public init() {}
+    package init() {}
     
 }

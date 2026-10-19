@@ -6,6 +6,9 @@
 
 import Adyen
 import AdyenNetworking
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 import UIKit
 
@@ -17,10 +20,11 @@ internal struct DropInAssembler {
     private let title: String
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let componentManager: ComponentManager
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
 
     // MARK: - Initializers
 
@@ -28,9 +32,11 @@ internal struct DropInAssembler {
         title: String,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
+        paymentComponentProvider: DropInPaymentComponentProvider
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -38,18 +44,19 @@ internal struct DropInAssembler {
         self.configuration = configuration
         self.partialPaymentDelegate = partialPaymentDelegate
         self.dropInFlowManager = dropInFlowManager
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            partialPaymentEnabled: false, // TODO: - Set partial payment flow
             order: nil,
-            supportsEditingStoredPaymentMethods: false, // TODO: - Support editing stored PMs
-            presentationDelegate: nil
+            paymentComponentProvider: paymentComponentProvider
         )
     }
 
-    // MARK: - Public
+    internal var hasSupportedPaymentMethods: Bool {
+        componentManager.hasSupportedPaymentMethods
+    }
 
     internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
@@ -67,7 +74,8 @@ internal struct DropInAssembler {
             viewModel: viewModel,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler
+            componentContainerAssembler: componentContainerAssembler,
+            theme: configuration.theme
         )
     }
 
@@ -77,15 +85,20 @@ internal struct DropInAssembler {
         APIClient(apiContext: context.apiContext)
     }
 
-    // TODO: - This should be replaced by the future LocalizationProvider
-    private func resolveLocalizationProvider() -> LocalizationParameters {
-        LocalizationParameters()
+    private func resolveLocalizationParameters() -> LocalizationParameters {
+        configuration.resolvedLocalizationParameters ?? LocalizationParameters()
+    }
+
+    private func resolveLogoURLProvider() -> LogoURLProvider {
+        LogoURLProvider(environment: context.apiContext.environment)
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
+            showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
@@ -96,15 +109,28 @@ internal struct DropInAssembler {
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
             componentManager: componentManager,
             context: context,
-            localizationParameters: resolveLocalizationProvider(),
+            localizationParameters: resolveLocalizationParameters(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate
+            theme: configuration.theme,
+            logoURLProvider: resolveLogoURLProvider(),
+            partialPaymentDelegate: partialPaymentDelegate,
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )
     }
     
+    private var storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling {
+        StoredPaymentMethodContentAssembler(
+            dropInFlowManager: dropInFlowManager,
+            logoURLProvider: resolveLogoURLProvider(),
+            theme: configuration.theme,
+            localizationParameters: configuration.resolvedLocalizationParameters
+        )
+    }
+
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
             configuration: configuration,

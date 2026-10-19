@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 import XCTest
 
 class APIContextTests: XCTestCase {
@@ -18,6 +18,28 @@ class APIContextTests: XCTestCase {
         XCTAssertEqual(sut.environment.baseURL, environment.baseURL)
     }
     
+    func testCreateClientKey_withMaximumLength_shouldSucceed() throws {
+        let environment = try Environment(baseURL: XCTUnwrap(URL(string: "https://adyen.com")))
+        let clientKey = "abcdefgh_" + String(repeating: "a", count: 128)
+
+        let sut = try APIContext(environment: environment, clientKey: clientKey)
+
+        XCTAssertEqual(sut.clientKey, clientKey)
+    }
+
+    func testCreateClientKey_exceedingMaximumLength_shouldThrowInvalidClientKey() throws {
+        let environment = try Environment(baseURL: XCTUnwrap(URL(string: "https://adyen.com")))
+        let clientKey = "abcdefgh_" + String(repeating: "a", count: 129)
+
+        XCTAssertThrowsError(try APIContext(environment: environment, clientKey: clientKey)) { error in
+            guard let checkoutError = error as? CheckoutError else {
+                XCTFail("Expected CheckoutError, got \(type(of: error))")
+                return
+            }
+            XCTAssertEqual(checkoutError.code, .invalidClientKey)
+        }
+    }
+
     func testCreateInvalidClientKey() throws {
         let environment = try Environment(baseURL: XCTUnwrap(URL(string: "https://adyen.com")))
         let clientKey = "WrongClientKey"
@@ -26,8 +48,11 @@ class APIContextTests: XCTestCase {
             try APIContext(environment: environment, clientKey: clientKey),
             "Testing Invalid client key"
         ) { error in
-            XCTAssertTrue(error is ClientKeyError)
-            XCTAssertEqual(error as! ClientKeyError, ClientKeyError.invalidClientKey)
+            guard let checkoutError = error as? CheckoutError else {
+                XCTFail("Expected CheckoutError, got \(type(of: error))")
+                return
+            }
+            XCTAssertEqual(checkoutError.code, .invalidClientKey)
         }
     }
     

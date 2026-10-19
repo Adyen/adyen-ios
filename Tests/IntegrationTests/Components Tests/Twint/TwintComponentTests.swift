@@ -6,7 +6,8 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
-@testable @_spi(AdyenInternal) import AdyenTwint
+@testable import AdyenTwint
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -51,8 +52,9 @@ class TwintComponentTests: XCTestCase {
             XCTAssertEqual(details.subType, "sdk")
             delegateExpectation.fulfill()
         }
+        sut.delegate = delegate
 
-        sut.initiatePayment(delegate: delegate)
+        sut.performSubmit()
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -68,12 +70,54 @@ class TwintComponentTests: XCTestCase {
 
             didSubmitExpectation.fulfill()
         }
+        sut.delegate = paymentComponentDelegate
 
         // When
-        sut.initiatePayment(delegate: paymentComponentDelegate)
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testViewControllerHasCorrectTitle() {
+        XCTAssertEqual(sut.viewController.title, paymentMethod.displayInformation(using: nil).title)
+    }
+
+    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() {
+        sut.viewController.loadViewIfNeeded()
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+            didSubmitExpectation.fulfill()
+        }
+
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(by: "payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testPerformSubmitStartsLoadingOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        XCTAssertFalse(payButton.showsActivityIndicator)
+
+        sut.performSubmit()
+
+        XCTAssertTrue(payButton.showsActivityIndicator)
+    }
+
+    func testStopLoadingStopsActivityIndicatorOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+
+        sut.performSubmit()
+        XCTAssertTrue(payButton.showsActivityIndicator)
+
+        sut.stopLoading()
+
+        XCTAssertFalse(payButton.showsActivityIndicator)
     }
 
     // MARK: - Private
@@ -85,7 +129,6 @@ class TwintComponentTests: XCTestCase {
         )
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: nil
         )
     }

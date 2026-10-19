@@ -104,9 +104,8 @@ public enum VoucherAction: Decodable {
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
-    
-    @_spi(AdyenInternal)
-    public var anyAction: AnyVoucherAction {
+
+    package var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
             return action

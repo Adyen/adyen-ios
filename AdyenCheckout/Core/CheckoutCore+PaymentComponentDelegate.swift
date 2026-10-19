@@ -4,18 +4,18 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 // MARK: - PaymentComponentDelegate
 
 extension CheckoutCore: PaymentComponentDelegate {
 
-    public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+    package func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         performSubmit(data, source: .component(component))
     }
 
-    public func didFail(with error: any Error, from component: any PaymentComponent) {
+    package func didFail(with error: any Error, from component: any PaymentComponent) {
         handle(error, from: component)
     }
 }

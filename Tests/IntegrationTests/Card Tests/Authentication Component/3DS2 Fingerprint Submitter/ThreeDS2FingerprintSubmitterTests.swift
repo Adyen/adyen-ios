@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenActions
+@testable import AdyenCard
 import XCTest
 
 extension RedirectAction: Equatable {

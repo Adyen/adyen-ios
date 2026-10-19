@@ -8,31 +8,16 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for any list-based component.
-public struct ListComponentStyle: ViewStyle {
-    
-    /// The style of any of the items in the list.
-    public var listItem = ListItemStyle()
-    
+package struct ListComponentStyle: ViewStyle {
+
     /// The style of any of the section headers in the list.
-    public var sectionHeader = ListSectionHeaderStyle()
+    package var sectionHeader = ListSectionHeaderStyle()
 
     /// The style of partial payment section footer.
-    public var partialPaymentSectionFooter = ListSectionFooterStyle()
-    
-    public var backgroundColor = UIColor.Adyen.componentBackground
-    
-    /// Initializes the list component style.
-    ///
-    /// - Parameter listItem: The style of any of the items in the list.
-    /// - Parameter sectionHeader: The style of any of the section headers in the list.
-    public init(
-        listItem: ListItemStyle,
-        sectionHeader: ListSectionHeaderStyle
-    ) {
-        self.listItem = listItem
-        self.sectionHeader = sectionHeader
-    }
-    
+    package var partialPaymentSectionFooter = ListSectionFooterStyle()
+
+    package var backgroundColor = UIColor.Adyen.componentBackground
+
     /// Initializes the list component style with the default style.
-    public init() {}
+    package init() {}
 }

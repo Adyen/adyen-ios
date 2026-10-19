@@ -17,7 +17,9 @@ extension SearchViewController {
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: ViewStyle
+        internal let theme: CheckoutTheme
         internal let searchBarPlaceholder: String
+        internal let shouldShowSearchBar: Bool
         internal let shouldFocusSearchBarOnAppearance: Bool
         
         private let resultProvider: ResultProvider
@@ -30,11 +32,13 @@ extension SearchViewController {
         /// - Parameters:
         ///   - localizationParameters: The localization parameters.
         ///   - style: The style of the view.
+        ///   - theme: The theme to use for styling.
         ///   - searchBarPlaceholder: The placeholder for the search bar. Defaults to the default `.searchPlaceholder` when `nil`.
         ///   - shouldFocusSearchBarOnAppearance: Whether to focus the search bar on viewWillAppear.
         ///   - resultProvider: A closure to provide result list items for a search term.
         public init(
             style: ViewStyle,
+            theme: CheckoutTheme = .default,
             searchBarPlaceholder: String? = nil,
             shouldFocusSearchBarOnAppearance: Bool = false,
             resultProvider: @escaping ResultProvider
@@ -42,6 +46,7 @@ extension SearchViewController {
             self.init(
                 localizationParameters: nil,
                 style: style,
+                theme: theme,
                 searchBarPlaceholder: searchBarPlaceholder,
                 shouldFocusSearchBarOnAppearance: shouldFocusSearchBarOnAppearance,
                 resultProvider: resultProvider
@@ -51,13 +56,17 @@ extension SearchViewController {
         package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ViewStyle,
+            theme: CheckoutTheme = .default,
             searchBarPlaceholder: String? = nil,
+            shouldShowSearchBar: Bool = true,
             shouldFocusSearchBarOnAppearance: Bool = false,
             resultProvider: @escaping ResultProvider
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
+            self.theme = theme
             self.searchBarPlaceholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
+            self.shouldShowSearchBar = shouldShowSearchBar
             self.shouldFocusSearchBarOnAppearance = shouldFocusSearchBarOnAppearance
             self.resultProvider = resultProvider
         }

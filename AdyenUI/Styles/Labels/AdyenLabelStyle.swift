@@ -20,6 +20,11 @@ package struct AdyenLabelStyle {
     /// The technique to use for aligning the text.
     package var textAlignment: NSTextAlignment = .center
 
+    /// The fixed height of each line of text, or `nil` to use the font's natural line height.
+    ///
+    /// Only rendered by `AdyenLabel`.
+    package var lineHeight: CGFloat?
+
     /// A default instance of AdyenLabelStyle.
     internal static let `default` = AdyenLabelStyle()
 
@@ -29,22 +34,25 @@ package struct AdyenLabelStyle {
     /// - Parameter color: The color of the text.
     /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
+    /// - Parameter lineHeight: The fixed height of each line of text, or `nil` to use the font's natural line height.
     internal init(
         font: UIFont = AdyenFonts.default.body,
-        color: UIColor = AdyenColors.default.primary,
-        disabledColor: UIColor = AdyenColors.default.textSecondary,
-        textAlignment: NSTextAlignment = .left
+        color: UIColor = CheckoutColors.default.primary,
+        disabledColor: UIColor = CheckoutColors.default.textSecondary,
+        textAlignment: NSTextAlignment = .left,
+        lineHeight: CGFloat? = nil
     ) {
         self.font = font
         self.color = color
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment
+        self.lineHeight = lineHeight
     }
 
     internal init() {
         self.font = AdyenFonts.default.body
-        self.color = AdyenColors.default.primary
-        self.disabledColor = AdyenColors.default.textSecondary
+        self.color = CheckoutColors.default.primary
+        self.disabledColor = CheckoutColors.default.textSecondary
         self.textAlignment = .natural
     }
 }

@@ -8,10 +8,15 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
+    var theme: CheckoutTheme { get }
     func cancel()
 }
 
@@ -20,27 +25,27 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
+    internal let theme: CheckoutTheme
     internal weak var router: ComponentContainerRouting?
-    private let component: PresentableComponent
-    private let configuration: DropInComponent.Configuration
+    private let component: PaymentComponent
+    private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
-    private let onCancel: (() -> Void)?
 
     // MARK: - Initializers
 
     internal init(
-        component: PresentableComponent,
-        configuration: DropInComponent.Configuration,
+        component: PaymentComponent,
+        theme: CheckoutTheme,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
-        partialPaymentDelegate: PartialPaymentDelegate?,
-        onCancel: (() -> Void)? = nil
+        partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
+        self.theme = theme
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
-        self.onCancel = onCancel
         setupComponent()
     }
 
@@ -51,19 +56,16 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        if let component = (component as? PaymentComponent) {
-            dropInFlowManager.cancel(component: component)
-        }
+        dropInFlowManager.cancel(component: component)
         
         stopLoading()
-        onCancel?()
         router?.dismiss(completion: nil)
     }
 
     // MARK: - Private
 
     private func setupComponent() {
-        (component as? PaymentComponent)?.delegate = self
+        component.delegate = self
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
@@ -81,7 +83,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
@@ -96,27 +98,12 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - ActionPresenter
-
-extension ComponentContainerViewModel: ActionPresenter {
-
-    internal func present(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
-    }
-}
-
 // MARK: - ReadyToSubmitPaymentComponentDelegate
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
     internal func showConfirmation(
-        for component: InstantPaymentComponent,
+        for component: PaymentComponent,
         with order: PartialPaymentOrder?
     ) {
         // TODO: - Handle gift card balance confirmation

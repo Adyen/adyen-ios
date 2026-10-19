@@ -8,19 +8,18 @@ import Adyen
 import UIKit
 
 /// Simple form item to wrap another item and provide padding around it.
-@_spi(AdyenInternal)
-public class FormContainerItem<ContentItem: FormItem>: FormItem {
+package class FormContainerItem<ContentItem: FormItem>: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var subitems: [FormItem] {
+    package var subitems: [FormItem] {
         [content]
     }
 
-    public var identifier: String?
+    package var identifier: String?
 
     /// The content of container.
-    public let content: ContentItem
+    package let content: ContentItem
 
     /// The margin around content.
     private let padding: UIEdgeInsets?
@@ -31,7 +30,7 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
     ///   - content: The Form item to wrap.
     ///   - padding: The padding around `content`.
     ///   - identifier: The optional accessibility identifier for FormView.
-    public init(
+    package init(
         content: ContentItem,
         padding: UIEdgeInsets? = nil,
         identifier: String? = nil
@@ -41,7 +40,7 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
         self.identifier = identifier
     }
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let container = FormContainerItemView()
         let contentView = content.build(with: builder)
         container.accessibilityIdentifier = identifier
@@ -78,9 +77,8 @@ private class FormContainerItemView: UIView, AnyFormItemView {
 
 // MARK: - Convenience extension
 
-@_spi(AdyenInternal)
-public extension FormItem {
-    
+package extension FormItem {
+
     /// Adds padding around the form item
     ///
     /// If no padding is provided it uses the superview layout margins to specify the amount of padding around the item

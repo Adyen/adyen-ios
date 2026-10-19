@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import UIKit
+import AdyenUI
 
 class PaymentComponentMock: PaymentComponent {
 
@@ -15,24 +15,59 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
-    /// Default type - subclasses provide their own implementation
+    var viewController: UIViewController = .init()
+
     var type: PaymentComponentType {
-        fatalError("Subclasses must override type")
+        .generic
+    }
+
+    var requiresUserInteraction: Bool {
+        false
     }
 
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }
+
+    // MARK: - submit
+
+    var submitCallsCount = 0
+    var submitCalled: Bool {
+        submitCallsCount > 0
+    }
+
+    var submitClosure: (() -> Void)?
+
+    /// When true, calling submit() will trigger didSubmit on the delegate with mock payment data
+    var shouldCallDelegateOnSubmit = true
+
+    func performSubmit() {
+        submitCallsCount += 1
+        submitClosure?()
+
+        if shouldCallDelegateOnSubmit {
+            let details: PaymentMethodDetails
+            if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+                details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
+            } else {
+                details = GenericPaymentDetails(type: paymentMethod.type)
+            }
+            let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
+            delegate?.didSubmit(data, from: self)
+        }
+    }
 }
 
-class PresentableComponentMock: PaymentComponentMock, PresentableComponent, LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
 
     // MARK: - Properties
 
-    var viewController: UIViewController
-
     override var type: PaymentComponentType {
-        .regular(self)
+        .regular
+    }
+
+    override var requiresUserInteraction: Bool {
+        true
     }
 
     // MARK: - Initializers
@@ -41,8 +76,8 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
         paymentMethod: PaymentMethod,
         viewController: UIViewController
     ) {
-        self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
     }
 
     // MARK: - stopLoading
@@ -60,27 +95,23 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     }
 }
 
-class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
+class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
+
+    var order: PartialPaymentOrder?
 
     override var type: PaymentComponentType {
-        .initiable(self)
+        .stored
     }
 
-    override init(paymentMethod: PaymentMethod) {
+    override var requiresUserInteraction: Bool {
+        true
+    }
+
+    init(
+        paymentMethod: PaymentMethod,
+        viewController: UIViewController
+    ) {
         super.init(paymentMethod: paymentMethod)
-    }
-
-    // MARK: - initiatePayment
-
-    var initiatePaymentCallsCount = 0
-    var initiatePaymentCalled: Bool {
-        initiatePaymentCallsCount > 0
-    }
-
-    var onInitiatePayment: (() -> Void)?
-
-    func initiatePayment(delegate: any PaymentComponentDelegate) {
-        initiatePaymentCallsCount += 1
-        onInitiatePayment?()
+        self.viewController = viewController
     }
 }

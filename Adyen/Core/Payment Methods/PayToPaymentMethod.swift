@@ -13,13 +13,6 @@ public struct PayToPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -30,7 +23,7 @@ public struct PayToPaymentMethod: PaymentMethod {
 }
 
 /// A stored PayTo payment method.
-public struct StoredPayToPaymentMethod: StoredPaymentMethod {
+public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
    
     public let type: PaymentMethodType
     
@@ -41,15 +34,8 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
     public let label: String
     
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             label
@@ -69,5 +55,19 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
         case identifier = "id"
         case label
         case supportedShopperInteractions
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension PayToPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}
+
+extension StoredPayToPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

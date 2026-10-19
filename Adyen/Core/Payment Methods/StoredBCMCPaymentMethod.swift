@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored Bancontact account.
-public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
+public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     private var storedCardPaymentMethod: StoredCardPaymentMethod
     
@@ -17,19 +17,19 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
         storedCardPaymentMethod.name
     }
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
-        get { storedCardPaymentMethod.merchantProvidedDisplayInformation }
-        set { storedCardPaymentMethod.merchantProvidedDisplayInformation = newValue }
-    }
-
     public var identifier: String {
         storedCardPaymentMethod.identifier
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.displayInformation(using: parameters)
     }
-    
+
+    package var descriptionProvider: StoredCardDescriptionProvider {
+        get { storedCardPaymentMethod.descriptionProvider }
+        set { storedCardPaymentMethod.descriptionProvider = newValue }
+    }
+
     public var supportedShopperInteractions: [ShopperInteraction] {
         storedCardPaymentMethod.supportedShopperInteractions
     }
@@ -56,12 +56,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     public var holderName: String? {
         storedCardPaymentMethod.holderName
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Decoding
     
     public init(from decoder: Decoder) throws {
@@ -72,4 +67,12 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
         try storedCardPaymentMethod.encode(to: encoder)
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredBCMCPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

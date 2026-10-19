@@ -19,6 +19,19 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
 
     package init() {}
 
+    /// Returns `false` if the device or wallet can't make the payment.
+    ///
+    /// Doesn't create the authorization controller or send analytics.
+    package func isAvailable(
+        for paymentMethod: ApplePayPaymentMethod,
+        configuration: ApplePayConfiguration
+    ) -> Bool {
+        (try? ApplePayComponent.validatedSupportedNetworks(
+            for: paymentMethod,
+            configuration: configuration
+        )) != nil
+    }
+
     package func create(
         with paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
@@ -31,12 +44,8 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
         )
     }
 
-    // TODO: replace `UnknownError` with a typed `CheckoutError.missingConfiguration` case
-    // when CheckoutError is fully implemented.
+    /// - Throws: `ApplePayComponent.Error.missingConfiguration` if no Apple Pay configuration was provided.
     package func defaultConfiguration() throws -> ApplePayConfiguration {
-        throw UnknownError(
-            errorDescription: "Apple Pay has no usable default configuration. "
-                + "Provide an `ApplePayConfiguration` via the `CheckoutConfiguration` DSL."
-        )
+        throw ApplePayComponent.Error.missingConfiguration
     }
 }

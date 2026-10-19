@@ -9,8 +9,8 @@ import AdyenUI
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class DemoAddressLookupProvider {
-    
+internal class DemoAddressLookupProvider {
+
     private struct AddressCompletionError: LocalizedError {
         var errorDescription: String? {
             "Could not complete address"
@@ -46,8 +46,8 @@ public class DemoAddressLookupProvider {
         }
     }
     
-    public func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
-        
+    internal func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
+
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
         
@@ -68,8 +68,8 @@ public class DemoAddressLookupProvider {
     }
     
     /// Optional implementation to fetch the full address for an incomplete version
-    public func complete(incompleteAddress: AddressLookupResult, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
-        
+    internal func complete(incompleteAddress: AddressLookupResult, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
+
         var dispatchWorkItem: DispatchWorkItem?
         
         dispatchWorkItem = DispatchWorkItem { [weak self] in

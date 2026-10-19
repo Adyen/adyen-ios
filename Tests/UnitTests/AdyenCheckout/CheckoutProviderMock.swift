@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenCheckout
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenSession
-@_spi(AdyenInternal) @testable import AdyenDropIn
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import Adyen
+@testable import AdyenActions
+@testable import AdyenCheckout
+@testable import AdyenDropIn
 import AdyenNetworking
+@testable import AdyenSession
 
 internal class CheckoutProviderMock: CheckoutProviding {
     var setupSessionCalled = false
@@ -44,8 +44,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: SessionCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
         setupSessionCalled = true
         
@@ -62,8 +61,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: AdvancedCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
         setupPaymentMethodsCalled = true
         
@@ -79,8 +77,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     func setup(
         configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: ActionOnlyCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
         setupActionOnlyCalled = true
         

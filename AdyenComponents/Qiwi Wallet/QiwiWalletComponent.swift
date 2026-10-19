@@ -13,11 +13,11 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.
-public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
-    
+package final class QiwiWalletComponent: AbstractPersonalInformationComponent {
+
     /// Configuration for Qiwi Wallet Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
     
     /// Initializes the Qiwi Wallet component.
@@ -26,7 +26,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Qiwi Wallet payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: QiwiWalletPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -40,18 +40,15 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
         )
     }
 
-    @_spi(AdyenInternal)
-    override public func submitButtonTitle() -> String {
+    override package func submitButtonTitle() -> String {
         localizedString(.continueTo, configuration.localizationParameters, paymentMethod.name)
     }
 
-    @_spi(AdyenInternal)
-    override public func phoneExtensions() -> [PhoneExtension] {
+    override package func phoneExtensions() -> [PhoneExtension] {
         qiwiWalletPaymentMethod.phoneExtensions
     }
 
-    @_spi(AdyenInternal)
-    override public func createPaymentDetails() throws -> PaymentMethodDetails {
+    override package func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }

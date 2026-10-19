@@ -29,19 +29,26 @@ public class BaseCheckout {
         self.resultCallbacks = resultCallbacks
     }
 
-    /// Sets the callback invoked when checkout completes successfully.
-    /// - Parameter handler: Callback invoked with the final checkout result.
-    ///   - result: The `CheckoutResult` containing the payment `resultCode` and, for session flows, an optional `sessionResult` that can be used on your server to retrieve the payment outcome.
-    public func onComplete(_ handler: @escaping CheckoutSuccessHandler) -> Self {
-        resultCallbacks.onComplete = handler
+    /// Sets the callback invoked when checkout fails.
+    /// - Parameter handler: Callback invoked with the checkout failure.
+    ///   - error: The `CheckoutError` describing why the checkout flow failed.
+    public func onFailure(_ handler: @escaping @MainActor (_ error: CheckoutError) -> Void) -> Self {
+        resultCallbacks.onFailure = handler
         return self
     }
 
-    /// Sets the callback invoked when checkout fails.
-    /// - Parameter handler: Callback invoked with the checkout failure.
-    ///   - error: The `Error` describing why the checkout flow failed.
-    public func onError(_ handler: @escaping CheckoutErrorHandler) -> Self {
-        resultCallbacks.onError = handler
+    /// Sets the callback invoked when the SDK has built the view controller for an action.
+    ///
+    /// Use this to present the action's view controller yourself. When no handler is set, the SDK
+    /// presents it on the payment component that started the flow, if there is one.
+    ///
+    /// Drop-in presents actions within its own navigation stack, so this callback is not invoked
+    /// for actions raised inside a Drop-in flow.
+    /// - Parameter handler: Callback invoked before the action is presented.
+    ///   - actionData: The ``ActionData`` describing the action, including its ``ActionData/type``.
+    ///   - actionViewController: The `UIViewController` the SDK built for the action.
+    public func onAction(_ handler: @escaping CheckoutActionHandler) -> Self {
+        resultCallbacks.onAction = handler
         return self
     }
 

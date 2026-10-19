@@ -7,18 +7,16 @@
 import Foundation
 
 /// A card payment method.
-public struct CardPaymentMethod: AnyCardPaymentMethod {
+public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     public let fundingSource: CardFundingSource?
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    public let brands: [CardType]
+    public let brands: [CardBrand]
     
     // MARK: - Decoding
     
@@ -26,20 +24,15 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
-        self.brands = try container.decodeIfPresent([CardType].self, forKey: .brands) ?? []
+        self.brands = try container.decodeIfPresent([CardBrand].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
-    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
+    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardBrand]) {
         self.type = type
         self.name = name
         self.brands = brands
@@ -56,50 +49,46 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
 }
 
 /// A stored card.
-public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
+public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
-    public var brands: [CardType] {
+    public var brands: [CardBrand] {
         [brand]
     }
 
     public var fundingSource: CardFundingSource?
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
-        let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
-        
+    package var descriptionProvider = StoredCardDescriptionProvider()
+
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        let description = descriptionProvider.description(for: self, using: parameters)
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
-            brand.name,
+            name,
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
-            localizedExpiryDate
-        ].joined(separator: ", ")
-        
+            description.subtitleStatus == .warning ? description.subtitle : nil
+        ]
+        .compactMap { $0 }
+        .joined(separator: ", ")
+
         return DisplayInformation(
             title: String.Adyen.securedString + lastFour,
-            subtitle: localizedExpiryDate,
+            subtitle: description.subtitle,
+            subtitleStatus: description.subtitleStatus,
             logoName: brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.
-    public let brand: CardType
+    public let brand: CardBrand
     
     /// The last four digits of the card number.
     public let lastFour: String
@@ -128,4 +117,90 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         case fundingSource
     }
     
+}
+
+package struct StoredCardDescriptionProvider {
+
+    package struct Description {
+        package let subtitle: String
+        package let subtitleStatus: DisplayInformation.SubtitleStatus
+    }
+
+    private let currentDate: Date
+    private let calendar: Calendar
+
+    package init(currentDate: Date = .now, calendar: Calendar = .current) {
+        self.currentDate = currentDate
+        self.calendar = calendar
+    }
+
+    package func description(
+        for card: StoredCardPaymentMethod,
+        using parameters: LocalizationParameters?
+    ) -> Description {
+        guard isExpired(card) else {
+            return Description(subtitle: card.name, subtitleStatus: .normal)
+        }
+
+        return Description(
+            subtitle: localizedString(.storedPaymentMethodExpired, parameters),
+            subtitleStatus: .warning
+        )
+    }
+
+    private func isExpired(_ card: StoredCardPaymentMethod) -> Bool {
+        guard
+            let expiryDateComponents = expiryDateComponents(for: card),
+            let expiryMonthStart = calendar.date(
+                from: expiryDateComponents
+            ),
+            let expiryThreshold = calendar.date(byAdding: .month, value: 1, to: expiryMonthStart)
+        else {
+            return false
+        }
+
+        return currentDate >= expiryThreshold
+    }
+
+    private func expiryDateComponents(for card: StoredCardPaymentMethod) -> DateComponents? {
+        guard
+            card.expiryMonth.count == 2,
+            let expiryMonth = Int(card.expiryMonth),
+            (1...12).contains(expiryMonth),
+            let expiryYear = normalizedExpiryYear(from: card.expiryYear)
+        else {
+            return nil
+        }
+
+        return DateComponents(year: expiryYear, month: expiryMonth)
+    }
+
+    private func normalizedExpiryYear(from expiryYear: String) -> Int? {
+        guard let year = Int(expiryYear) else {
+            return nil
+        }
+
+        switch expiryYear.count {
+        case 2:
+            return 2000 + year
+        case 4:
+            return year
+        default:
+            return nil
+        }
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension CardPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}
+
+extension StoredCardPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

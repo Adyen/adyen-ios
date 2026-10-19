@@ -8,14 +8,12 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
-@_spi(AdyenInternal)
-public struct AddressViewModelBuilderContext {
-    public var countryCode: String
-    public var isOptional: Bool
+package struct AddressViewModelBuilderContext {
+    package var countryCode: String
+    package var isOptional: Bool
 }
 
-@_spi(AdyenInternal)
-public protocol AddressViewModelBuilder {
+package protocol AddressViewModelBuilder {
     func build(context: AddressViewModelBuilderContext) -> AddressViewModel
 }
 

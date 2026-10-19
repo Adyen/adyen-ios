@@ -12,14 +12,13 @@ package protocol ViewControllerPresenter: AnyObject {
     func dismissViewController(animated: Bool)
 }
 
-@_spi(AdyenInternal)
 extension UIViewController: ViewControllerPresenter {
     
-    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.adyen.topPresenter.present(viewController, animated: animated)
     }
     
-    public func dismissViewController(animated: Bool) {
+    package func dismissViewController(animated: Bool) {
         self.dismiss(animated: animated)
     }
 }

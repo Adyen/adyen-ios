@@ -34,8 +34,8 @@ struct PreselectedPaymentMethodIntegrationTests {
     
     // MARK: - Submit Payment Tests
     
-    @Test("PaymentComponent that is initiable - submit payment triggers submit action")
-    func initiableComponent_submitPayment_triggersSubmit() throws {
+    @Test("PaymentComponent that is generic - submit payment triggers submit action")
+    func genericComponent_submitPayment_triggersSubmit() async throws {
         // Given - use an initiable component that triggers submit directly
         let dropInFlowManager = DropInFlowManagingMock()
         let preSelectedViewController = makeSUT(
@@ -46,9 +46,47 @@ struct PreselectedPaymentMethodIntegrationTests {
         // When - user submits payment
         preSelectedViewController.load()
         try preSelectedViewController.submitPayment()
-        
+        await waitUntil { dropInFlowManager.submitFromCalled }
+
         // Then - verify dropInFlowManager.submit was called
-        #expect(dropInFlowManager.submitFromActionPresenterCalled)
+        #expect(dropInFlowManager.submitFromCalled)
+    }
+
+    /// Verifies that successful submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionSucceeds_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.completePayment(from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that failed submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionFails_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.failPayment(with: Dummy.error, from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that cancelling payment removes the loading state.
+    @Test
+    func loadingViewModel_whenPaymentIsCancelled_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        sut.load()
+        try sut.submitPayment()
+
+        sut.cancel()
+
+        #expect(try !sut.isLoading)
     }
 
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
@@ -61,8 +99,57 @@ struct PreselectedPaymentMethodIntegrationTests {
         try preSelectedViewController.submitPayment()
         
         // Then - verify presentComponent is called
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 1)
+        #expect(mockedRouter.presentComponentCallsCount == 1)
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
+    }
+
+    /// The preselected screen has no navigation stack of its own, so it shows the stored payment screen
+    /// modally, wrapped in its own navigation controller that cannot be swiped away.
+    @Test
+    func storedComponentWithContent_whenPresented_thenShowsStoredPaymentMethodContentModally() throws {
+        let rootViewController = ViewControllerSpy()
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
+        )
+
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+
+        #expect(contentAssembler.resolveCallsCount == 1)
+        let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
+        #expect(navigationController.viewControllers.first === contentRouter.rootViewController)
+        #expect(navigationController.isModalInPresentation)
+        #expect(sut.childRouter === contentRouter)
+    }
+
+    /// When the shopper goes back from the stored payment screen, that screen does not close itself.
+    /// It calls `dismissStoredPaymentMethodContent()` on the preselected screen that presented it,
+    /// and the preselected screen dismisses the modal and drops its reference so the screen is released.
+    @Test
+    func storedPaymentMethodContent_whenDismissRequested_thenDismissesModalAndReleasesChildRouter() throws {
+        let rootViewController = ViewControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
+        )
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+        try #require(sut.childRouter != nil)
+
+        sut.dismissStoredPaymentMethodContent()
+
+        #expect(rootViewController.dismissCallsCount == 1)
+        #expect(sut.childRouter == nil)
     }
 
     // MARK: - Show All Payment Methods Tests
@@ -79,7 +166,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         
         // Then - verify payment method list is presented
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 1)
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 0)
+        #expect(mockedRouter.presentComponentCallsCount == 0)
     }
 
     // MARK: - Sending event on didLoad
@@ -95,7 +182,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(analyticsProviderMock.infos.count == 1)
         let infoEvent = try #require(analyticsProviderMock.infos.first)
         #expect(infoEvent.component == "dropin")
-        #expect(infoEvent.type == .rendered)
+        #expect(infoEvent.type == AnalyticsEventInfo.InfoType.rendered)
     }
 
     // MARK: - Cancel Tests
@@ -116,9 +203,15 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(dropInFlowManagerMock.cancelComponentCalled)
     }
 
+    private func makeGenericComponent() -> PaymentComponentMock {
+        let component = PaymentComponentMock(paymentMethod: PaymentComponentTestData.visa.paymentComponent.paymentMethod)
+        component.shouldCallDelegateOnSubmit = false
+        return component
+    }
+
     // MARK: - Setup of the system under test
 
-    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PresentableComponent
+    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PaymentComponent
     private func makeSUT(
         mockedRouter: PreselectedPaymentMethodRoutingMock? = nil,
         component: PaymentComponent
@@ -131,12 +224,13 @@ struct PreselectedPaymentMethodIntegrationTests {
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let routerMock = RouterMock()
-        let configuration: DropInComponent.Configuration = .init()
+        let configuration: DropInConfiguration = .init()
 
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: true,
             analyticsProvider: analyticsProviderMock,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManagerMock
@@ -157,11 +251,13 @@ struct PreselectedPaymentMethodIntegrationTests {
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
         let componentContainerRouterMock = RouterMock()
         componentContainerRouterMock.rootViewController = UIViewController()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue = componentContainerRouterMock
+        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
 
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssemblerSpy(router: RouterMock()),
+            showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: nil,
@@ -169,7 +265,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         )
 
         let router = assembler.resolvePreselectedPaymentMethodRouter(
-            delegate: nil,
+            listener: nil,
             component: component,
             title: "Test Title"
         )
@@ -187,64 +283,64 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         // MARK: - Readable UI accessors
 
+        private var preselectedViewController: PreselectedPaymentMethodViewController {
+            get throws {
+                try #require(viewController as? PreselectedPaymentMethodViewController)
+            }
+        }
+
         func load() {
             viewController.loadViewIfNeeded()
         }
 
         var primaryTitleText: String {
             get throws {
-                let titleLabel = try #require(viewController.view.findView(by: "title") as? UILabel)
-                return try #require(titleLabel.text)
+                try preselectedViewController.viewModel.header.title
             }
         }
 
         var subTitleText: String {
             get throws {
-                let secondaryTitleLabel = try #require(viewController.view.findView(by: "subTitle") as? UILabel)
-                return try #require(secondaryTitleLabel.text)
+                try preselectedViewController.viewModel.header.subtitle
             }
         }
 
         var submitButtonText: String {
             get throws {
-                let button = try submitButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.submitButtonTitle
             }
         }
 
         var showAllPaymentMethodsButtonText: String {
             get throws {
-                let button = try showAllPaymentMethodsButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.showAllPaymentMethodsButtonTitle
             }
         }
 
-        // MARK: - UI elements
-
-        func submitButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "primaryButton") as? FormButton,
-                "Cannot find submitButton - Check if the element exists in the view."
-            )
-        }
-
-        func showAllPaymentMethodsButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "secondaryButton") as? FormButton,
-                "Cannot find showAllPaymentMethodsButton - Check if the element exists in the view."
-            )
+        var isLoading: Bool {
+            get throws {
+                try preselectedViewController.viewModel.isLoading
+            }
         }
 
         // MARK: - User Actions
 
         func submitPayment() throws {
-            let button = try submitButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.submitPayment()
+        }
+
+        func completePayment(from component: PaymentComponent) throws {
+            let details = GenericPaymentDetails(type: component.paymentMethod.type)
+            let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
+            try preselectedViewController.viewModel.didSubmit(data, from: component)
+        }
+
+        func failPayment(with error: Error, from component: PaymentComponent) throws {
+            try preselectedViewController.viewModel.didFail(with: error, from: component)
         }
 
         func showAllPaymentMethods() throws {
-            let button = try showAllPaymentMethodsButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.showAllPaymentMethods()
         }
 
         func cancel() {
@@ -271,7 +367,7 @@ struct PreselectedPaymentMethodIntegrationTests {
             switch self {
             case .visa:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: Amount(value: 100, currencyCode: "EUR")),
                     theme: CheckoutTheme()
@@ -279,7 +375,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .visaWithoutAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: nil),
                     theme: CheckoutTheme()
@@ -287,7 +383,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .visaWithZeroAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: Amount(value: 0, currencyCode: "EUR")),
                     theme: CheckoutTheme()
@@ -302,9 +398,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .initiableBCMC:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
-                // Need to create a Mock Component that implements both PaymentComponent and PaymentInitiable
-                // to check if the dropInFlowManager's submit is called
-                return InitiablePaymentComponentMock(paymentMethod: paymentMethod, context: Dummy.context)
+                return PaymentComponentMock(paymentMethod: paymentMethod)
             }
         }
 
@@ -317,16 +411,18 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var expectedSubTitleText: String {
             switch self {
-            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "Use VISA"
-            case .bcmc, .initiableBCMC: "Use Maestro"
+            case .visa: "Use VISA to pay €1.00"
+            case .visaWithoutAmount: "Use VISA to pay"
+            case .visaWithZeroAmount: "Use VISA to save details"
+            case .bcmc, .initiableBCMC: "Use Maestro to pay €1.00"
             }
         }
 
         var submitButtonText: String {
             switch self {
-            case .visa, .bcmc, .initiableBCMC: "Pay €1.00"
-            case .visaWithoutAmount: "Pay"
-            case .visaWithZeroAmount: "Confirm preauthorization"
+            case .visa, .visaWithoutAmount: "Use VISA"
+            case .visaWithZeroAmount: "Save details"
+            case .bcmc, .initiableBCMC: "Use Maestro"
             }
         }
 
@@ -336,30 +432,21 @@ struct PreselectedPaymentMethodIntegrationTests {
     }
 }
 
-// MARK: - Mocks
+@MainActor
+private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodContentAssembling {
 
-internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePaymentComponent {
+    private let router: Router?
+    private(set) var resolveCallsCount = 0
 
-    var context: AdyenContext
-    var paymentMethod: PaymentMethod
-    weak var delegate: PaymentComponentDelegate?
-    var order: PartialPaymentOrder?
-
-    init(paymentMethod: PaymentMethod, context: AdyenContext) {
-        self.paymentMethod = paymentMethod
-        self.context = context
+    init(router: Router?) {
+        self.router = router
     }
 
-    func initiatePayment() {}
-
-    func initiatePayment(delegate: PaymentComponentDelegate) {
-        self.delegate = delegate
-        let details = StoredPaymentDetails(paymentMethod: paymentMethod as! StoredPaymentMethod)
-        let data = PaymentComponentData(
-            paymentMethodDetails: details,
-            amount: context.amount,
-            order: order
-        )
-        self.delegate?.didSubmit(data, from: self)
+    func resolveStoredPaymentMethodContentRouter(
+        for component: PaymentComponent,
+        listener: StoredPaymentMethodContentRouterListener
+    ) -> Router? {
+        resolveCallsCount += 1
+        return router
     }
 }

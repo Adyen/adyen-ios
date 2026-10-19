@@ -9,7 +9,7 @@ import Foundation
 
 /// Any component that can handle an `Action` object.
 @MainActor
-public protocol ActionHandlingComponent: Component {
+package protocol ActionHandlingComponent: Component {
     
     /// Handles an action object.
     /// - Parameters:

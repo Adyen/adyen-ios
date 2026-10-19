@@ -37,7 +37,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: amount, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
@@ -51,7 +51,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: zeroAmount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: zeroAmount, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
@@ -113,60 +113,10 @@ class BLIKComponentTests: XCTestCase {
         self.populate(textItemView: codeItemView, with: "123456")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        var configuration = BLIKComponentConfiguration()
-        configuration.showsSubmitButton = false
-        let sut = BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
-
-        self.populate(textItemView: codeItemView, with: "123456")
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertTrue(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
-    }
-
-    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        var configuration = BLIKComponentConfiguration()
-        configuration.showsSubmitButton = false
-        let sut = BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertFalse(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
     }
 }

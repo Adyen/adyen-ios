@@ -8,8 +8,8 @@ import Foundation
 import UIKit
 
 /// The size of corner rounding.
-public enum CornerRounding {
-    
+@_spi(AdyenInternal) public enum CornerRounding {
+
     /// No rounding.
     case none
     
@@ -31,6 +31,8 @@ extension CornerRounding: Equatable {
             return lhsValue == rhsValue
         case let (.percent(lhsValue), .percent(rhsValue)):
             return lhsValue == rhsValue
+        case (.none, .none):
+            return true
         default:
             return false
         }

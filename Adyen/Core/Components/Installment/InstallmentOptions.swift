@@ -6,24 +6,17 @@
 
 import Foundation
 
-/// Describes the interface to have an installments configuration.
-package protocol InstallmentConfigurationAware: AdyenSessionAware {
-    var installmentConfiguration: InstallmentConfiguration? { get }
-}
-
 /// Details to configure Installment Options.
 /// These always include regular monthly installments,
 /// but in some countries `revolving` option may be added.
 public struct InstallmentOptions: Equatable, Codable {
     
     /// Month options for regular installments.
-    @_spi(AdyenInternal)
-    public let regularInstallmentMonths: [UInt]
-    
+    package let regularInstallmentMonths: [UInt]
+
     /// Determines if revolving installment is an option.
-    @_spi(AdyenInternal)
-    public let includesRevolving: Bool
-    
+    package let includesRevolving: Bool
+
     /// Creates a new instance of installment options.
     /// - Parameters:
     ///   - monthValues: Allowed installment month values, such as `[2, 3]` or `[3, 6, 9]` etc.
@@ -50,7 +43,8 @@ public struct InstallmentOptions: Equatable, Codable {
     @_spi(AdyenInternal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.regularInstallmentMonths = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
+        let monthValues = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
+        self.regularInstallmentMonths = monthValues.filter { $0 > 1 }
         let plans = try container.decode([String].self, forKey: .plans)
         self.includesRevolving = plans.contains(Installments.Plan.revolving.rawValue)
     }
@@ -74,30 +68,27 @@ public struct InstallmentOptions: Equatable, Codable {
 }
 
 /// Configuration type to specify installment options.
-public struct InstallmentConfiguration: Decodable {
+public struct InstallmentConfiguration: Decodable, Equatable {
     
     /// The option that apply to all card types, unless included `cardTypeBased` options.
-    @_spi(AdyenInternal)
-    public let defaultOptions: InstallmentOptions?
+    package let defaultOptions: InstallmentOptions?
 
     /// Options that are specific to given card types
-    @_spi(AdyenInternal)
-    public let cardBasedOptions: [CardType: InstallmentOptions]?
+    package let cardBasedOptions: [CardBrand: InstallmentOptions]?
 
     /// Determines whether to show the amount next to the installment value.
     /// For example, `3 months X 500 USD` or `3 months`.
     /// Amount is calculated by simple division.
-    @_spi(AdyenInternal)
-    public var showInstallmentAmount: Bool
+    package var showInstallmentAmount: Bool
 
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.
     /// - Parameters:
-    ///   - cardBasedOptions: Options based on the card type. Must not be empty.
+    ///   - cardBasedOptions: Options based on the card brand. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
-        cardBasedOptions: [CardType: InstallmentOptions],
+        cardBasedOptions: [CardBrand: InstallmentOptions],
         defaultOptions: InstallmentOptions,
         showInstallmentAmount: Bool = false
     ) {
@@ -109,10 +100,10 @@ public struct InstallmentConfiguration: Decodable {
     
     /// Creates a new installment configuration by providing the card based options.
     /// - Parameters:
-    ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
+    ///   - cardBasedOptions:  Options based on the card brand. Must not be empty.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
-        cardBasedOptions: [CardType: InstallmentOptions],
+        cardBasedOptions: [CardBrand: InstallmentOptions],
         showInstallmentAmount: Bool = false
     ) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
@@ -138,15 +129,15 @@ public struct InstallmentConfiguration: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
         var defaultOptions: InstallmentOptions?
-        var cardBased = [CardType: InstallmentOptions]()
+        var cardBased = [CardBrand: InstallmentOptions]()
         
         for key in container.allKeys {
             switch key.stringValue {
             case Constants.regularCards:
                 defaultOptions = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
             default:
-                let cardType = CardType(rawValue: key.stringValue)
-                cardBased[cardType] = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
+                let cardBrand = CardBrand(rawValue: key.stringValue)
+                cardBased[cardBrand] = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
             }
         }
         self.defaultOptions = defaultOptions

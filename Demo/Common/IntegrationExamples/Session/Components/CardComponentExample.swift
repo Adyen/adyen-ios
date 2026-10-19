@@ -51,7 +51,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     private func cardComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -61,8 +60,8 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
-                .onBinLookup { brands in
-                    print("Bin lookup response \(brands)")
+                .onBinLookup { data in
+                    print("Bin lookup response \(data)")
                 }
             AuthenticationConfiguration()
                 .requestorAppURL(ConfigurationConstants.returnUrl)
@@ -70,8 +69,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -79,7 +77,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
         
@@ -116,19 +114,12 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     }
 }
 
-extension CardComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
-    }
-}
-
 private extension CardComponentExample {
     
     func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
-        
-        let navigation = UINavigationController(rootViewController: viewController)
-        viewController.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)

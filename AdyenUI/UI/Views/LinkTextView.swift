@@ -10,16 +10,15 @@ import UIKit
 /// A text view that easily makes links - delimited with a `linkRangeDelimiter` - selectable
 ///
 /// Use ``update(text:style:linkRangeDelimiter:)`` to update the content
-@_spi(AdyenInternal)
-public class LinkTextView: UITextView {
-    
+package class LinkTextView: UITextView {
+
     private let linkSelectionHandler: (_ linkIndex: Int) -> Void
     
     /// Initializes a LinkTextView
     ///
     /// - Parameters:
     ///    - linkSelectionHandler: A closure that is called when a link is selected. Including the index of the link.
-    public init(linkSelectionHandler: @escaping (_ linkIndex: Int) -> Void) {
+    package init(linkSelectionHandler: @escaping (_ linkIndex: Int) -> Void) {
         self.linkSelectionHandler = linkSelectionHandler
         
         super.init(frame: .zero, textContainer: nil)
@@ -33,7 +32,7 @@ public class LinkTextView: UITextView {
     }
     
     @available(*, unavailable)
-    public required init?(coder: NSCoder) {
+    package required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -43,7 +42,7 @@ public class LinkTextView: UITextView {
     ///   - text: The text including the delimited links e.g. "Some text %#this is a link%#".
     ///   - style: The style of the text
     ///   - linkRangeDelimiter: The delimiter indicating the link range. Defaults to `%#`.
-    public func update(
+    package func update(
         text: String,
         style: TextStyle,
         linkRangeDelimiter: String = "%#"
@@ -80,7 +79,7 @@ public class LinkTextView: UITextView {
 
 extension LinkTextView: UITextViewDelegate {
     
-    public func textView(
+    package func textView(
         _ textView: UITextView,
         shouldInteractWith URL: URL,
         in characterRange: NSRange,

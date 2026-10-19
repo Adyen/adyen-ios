@@ -5,8 +5,8 @@
 //
 
 #if canImport(AdyenCardScanner)
+    @testable import AdyenCard
     import XCTest
-    @testable @_spi(AdyenInternal) import AdyenCard
 
     final class CardScannerProviderDispatchOnceTests: XCTestCase {
 

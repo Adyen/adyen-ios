@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import enum Adyen.NavigationBarType
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 import LocalAuthentication
 import UIKit
@@ -13,7 +13,7 @@ import UIKit
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(
         component: Component,
-        cardDetails: (number: String?, type: CardType?),
+        cardDetails: (number: String?, brand: CardBrand?),
         registerDelegatedAuthenticationHandler: @escaping VoidHandler,
         fallbackHandler: @escaping VoidHandler
     )
@@ -21,7 +21,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     // swiftlint:disable function_parameter_count
     func showApprovalScreen(
         component: Component,
-        cardDetails: (number: String?, type: CardType?),
+        cardDetails: (number: String?, brand: CardBrand?),
         amount: Amount?,
         approveAuthenticationHandler: @escaping VoidHandler,
         fallbackHandler: @escaping VoidHandler,
@@ -38,7 +38,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationError(component: Component, handler: @escaping VoidHandler)
     func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler)
 
-    var presentationDelegate: PresentationDelegate? { get set }
+    var actionPresentationDelegate: ActionPresentationDelegate? { get set }
 }
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
@@ -48,8 +48,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     private let localizedParameters: LocalizationParameters?
     private let context: AdyenContext
     
-    /// Delegates `PresentableComponent`'s presentation.
-    internal weak var presentationDelegate: PresentationDelegate?
+    /// Delegates view controller presentation.
+    internal weak var actionPresentationDelegate: ActionPresentationDelegate?
     
     internal init(
         style: DelegatedAuthenticationComponentStyle,
@@ -72,12 +72,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: troubleshootingHandler
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
     
     internal func showRegistrationError(
@@ -90,12 +85,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler) {
@@ -105,17 +95,12 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
 
     internal func showRegistrationScreen(
         component: Component,
-        cardDetails: (number: String?, type: CardType?),
+        cardDetails: (number: String?, brand: CardBrand?),
         registerDelegatedAuthenticationHandler: @escaping VoidHandler,
         fallbackHandler: @escaping VoidHandler
     ) {
@@ -124,7 +109,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             localizationParameters: localizedParameters,
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
             cardNumber: cardDetails.number,
-            cardType: cardDetails.type,
+            cardBrand: cardDetails.brand,
             biometricName: biometricName,
             enableCheckoutHandler: {
                 registerDelegatedAuthenticationHandler()
@@ -133,20 +118,13 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 fallbackHandler()
             }
         )
-        
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: registrationViewController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-
-        presentationDelegate?.present(component: presentableComponent)
+        actionPresentationDelegate?.present(actionViewController: registrationViewController, actionData: ActionData(type: .threeDS2))
     }
     
     // swiftlint:disable function_parameter_count
     internal func showApprovalScreen(
         component: Component,
-        cardDetails: (number: String?, type: CardType?),
+        cardDetails: (number: String?, brand: CardBrand?),
         amount: Amount?,
         approveAuthenticationHandler: @escaping VoidHandler,
         fallbackHandler: @escaping VoidHandler,
@@ -159,7 +137,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
             amount: amount?.formatted,
             cardNumber: cardDetails.number,
-            cardType: cardDetails.type,
+            cardBrand: cardDetails.brand,
             useBiometricsHandler: {
                 approveAuthenticationHandler()
             },
@@ -170,13 +148,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 removeCredentialsHandler()
             }
         )
-        
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: approvalViewController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        actionPresentationDelegate?.present(actionViewController: approvalViewController, actionData: ActionData(type: .threeDS2))
     }
     
     private var biometricName: String {
@@ -193,8 +165,4 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             return localizedString(.threeds2DABiometrics, localizedParameters)
         }
     }
-}
-
-internal class EmptyNavigationBar: UIView, AnyNavigationBar {
-    internal var onCancelHandler: VoidHandler?
 }

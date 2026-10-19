@@ -7,20 +7,13 @@
 import Foundation
 
 /// Any Mealvoucher payment method.
-public struct MealVoucherPaymentMethod: PartialPaymentMethod {
+public struct MealVoucherPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 
@@ -31,4 +24,12 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         case name
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension MealVoucherPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

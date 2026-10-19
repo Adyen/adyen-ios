@@ -51,6 +51,14 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(parameters.locale, "is-IS")
     }
 
+    func test_localizedString_withEnforcedNonEnglishLocale_shouldFallbackToEnglishForInstallmentsKeys() {
+        // The installment keys ship in en-US only, so enforced non-English locales fall back to English.
+        let parameters = LocalizationParameters(enforcedLocale: "it-IT")
+        XCTAssertEqual(localizedString(.cardInstallmentsTitle, parameters), "Payment plan")
+        XCTAssertEqual(localizedString(.cardInstallmentsPickerTitle, parameters), "Installments")
+        XCTAssertEqual(localizedString(.cardInstallmentsOneTimeDescription, parameters), "Pay the full amount today")
+    }
+
     func testEnforcedLocalizationOverrides() {
         let parameters = LocalizationParameters(
             enforcedLocale: "is-IS",
@@ -130,14 +138,6 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
-    // MARK: - Button title
-
-    func testLocalizationWitZeroPayment() {
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .needsRedirectToThirdParty("test_name"), nil), "Preauthorize with test_name")
-
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
-    }
-    
     // MARK: - Custom Recognized TableName
     
     /// Default Separator
@@ -305,6 +305,19 @@ class LocalizationTests: XCTestCase {
         let parameters = LocalizationParameters().withProvider(provider)
 
         XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Custom card number")
+    }
+
+    func test_localizedString_withProvider_shouldReturnInstallmentsValues() {
+        let provider = MockCheckoutLocalizationProvider(values: [
+            .cardInstallmentsTitle: "Custom payment plan",
+            .cardInstallmentsPickerTitle: "Custom installments",
+            .cardInstallmentsOneTimeDescription: "Custom one time description"
+        ])
+        let parameters = LocalizationParameters().withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cardInstallmentsTitle, parameters), "Custom payment plan")
+        XCTAssertEqual(localizedString(.cardInstallmentsPickerTitle, parameters), "Custom installments")
+        XCTAssertEqual(localizedString(.cardInstallmentsOneTimeDescription, parameters), "Custom one time description")
     }
 
     func test_localizedString_withProviderReturningNil_shouldFallbackToBundleChain() {

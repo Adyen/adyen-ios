@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents any structure/object whose behavior is device dependent.
-public protocol DeviceDependent {
+package protocol DeviceDependent {
     
     /// Decides whether current device is supported.
     static func isDeviceSupported() -> Bool

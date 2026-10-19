@@ -17,12 +17,12 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showStorePaymentMethod = true
     @Published internal var showSecurityCodeForStoredCard = true
     @Published internal var showSecurityCode = true
-    @Published internal var addressMode: CardSettings.AddressFormType = .none
+    @Published internal var billingAddress: BillingAddressModeDemoSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
-    @Published internal var allowDisablingStoredPaymentMethods: Bool = false
-    @Published internal var allowsSkippingPaymentList: Bool = false
-    @Published internal var allowPreselectedPaymentView: Bool = true
+    @Published internal var showRemovePaymentMethodButton: Bool = true
+    @Published internal var hideStoredPaymentMethods: Bool = false
+    @Published internal var startWithLastStoredPaymentMethod: Bool = true
     
     /// Controls the setting to configure the option to force redirect action to authenticate using a Card instead of native.
     @Published internal var allowForceCardRedirectAction: Bool = false
@@ -34,6 +34,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
+
     @Published internal var selectedTheme: ExampleAppTheme = .defaultTheme
 
     private let onDone: (DemoAppSettings) -> Void
@@ -58,12 +59,12 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.showStorePaymentMethod = configuration.cardSettings.showStorePaymentMethod
         self.showSecurityCodeForStoredCard = configuration.cardSettings.showSecurityCodeForStoredCard
         self.showSecurityCode = configuration.cardSettings.showSecurityCode
-        self.addressMode = configuration.cardSettings.addressMode
+        self.billingAddress = configuration.cardSettings.billingAddress
         self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
         self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
-        self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
-        self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
-        self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
+        self.showRemovePaymentMethodButton = configuration.dropInSettings.showRemovePaymentMethodButton
+        self.hideStoredPaymentMethods = configuration.dropInSettings.hideStoredPaymentMethods
+        self.startWithLastStoredPaymentMethod = configuration.dropInSettings.startWithLastStoredPaymentMethod
         self.allowForceCardRedirectAction = configuration.threeDSConfigurationSettings.allowForceCardRedirectAction
         self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
@@ -72,6 +73,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
+
         self.selectedTheme = configuration.themeSettings.theme
     }
     
@@ -94,16 +96,16 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showStorePaymentMethod: showStorePaymentMethod,
                 showSecurityCodeForStoredCard: showSecurityCodeForStoredCard,
                 showSecurityCode: showSecurityCode,
-                addressMode: addressMode,
+                billingAddress: billingAddress,
                 socialSecurityNumberVisibility: socialSecurityNumberVisibility,
                 koreanAuthenticationVisibility: koreanAuthenticationVisibility,
                 enableInstallments: installmentsEnabled,
                 showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(
-                allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
-                allowsSkippingPaymentList: allowsSkippingPaymentList,
-                allowPreselectedPaymentView: allowPreselectedPaymentView
+                showRemovePaymentMethodButton: showRemovePaymentMethodButton,
+                hideStoredPaymentMethods: hideStoredPaymentMethods,
+                startWithLastStoredPaymentMethod: startWithLastStoredPaymentMethod
             ),
             threeDSConfigurationSettings: ThreeDSConfigurationSettings(
                 allowForceCardRedirectAction: allowForceCardRedirectAction

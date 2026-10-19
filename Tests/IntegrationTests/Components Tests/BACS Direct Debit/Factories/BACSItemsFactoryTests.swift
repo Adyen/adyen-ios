@@ -28,7 +28,7 @@ class BACSItemsFactoryTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCreateHolderNameItemShouldReturnItemWithCorrectProperties() throws {
+    func test_createHolderNameItem_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "Bank account holder name"
         let expectedPlaceholder = "Bank account holder name"
@@ -53,7 +53,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateBankAccountNumberItemShouldReturnItemWithCorrectProperties() throws {
+    func test_createBankAccountNumberItem_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "Bank account number"
         let expectedPlaceholder = "Bank account number"
@@ -81,7 +81,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateSortCodeItemShouldReturnItemWithCorrectProperties() throws {
+    func test_createSortCodeItem_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "Sort code"
         let expectedPlaceholder = "Sort code"
@@ -109,7 +109,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateEmailItemShouldReturnItemWithCorrectProperties() throws {
+    func test_createEmailItem_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "Email address"
         let expectedPlaceholder = "Email address"
@@ -131,37 +131,27 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateContinueButtonShouldReturnItemWithCorrectProperties() throws {
-        // Given
-        let expectedTitle = "Continue"
-        let expectedIdentifier = ".continueButtonItem"
-
-        // When
-        let continueButtonItem = sut.createContinueButton()
-
-        // Then
-        XCTAssertEqual(expectedTitle, continueButtonItem.title)
-
-        let identifier = try XCTUnwrap(continueButtonItem.identifier)
-        XCTAssertEqual(expectedIdentifier, identifier)
-    }
-
-    func testCreatePaymentButtonShouldReturnItemWithCorrectProperties() throws {
+    func test_createPaymentButton_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "Confirm and pay"
         let expectedIdentifier = ".paymentButtonItem"
+        var handlerCalled = false
 
         // When
-        let paymentButtonItem = sut.createPaymentButton()
+        let paymentButtonItem = sut.createPaymentButton { handlerCalled = true }
 
         // Then
         XCTAssertEqual(expectedTitle, paymentButtonItem.title)
 
         let identifier = try XCTUnwrap(paymentButtonItem.identifier)
         XCTAssertEqual(expectedIdentifier, identifier)
+
+        // Verify handler is wired up
+        paymentButtonItem.buttonSelectionHandler?()
+        XCTAssertTrue(handlerCalled)
     }
 
-    func testCreateAmountConsentToggleWhenAmountIsNotNilShouldReturnItemWithCorrectProperties() throws {
+    func test_createAmountConsentToggle_whenAmountIsNotNil_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedAmount = Amount(value: 10560, currencyCode: "USD")
         let expectedTitle = "I agree that \(expectedAmount.formatted) will be deducted from my bank account."
@@ -178,7 +168,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateAmountConsentToggleWhenAmountIsNilShouldReturnItemWithCorrectProperties() throws {
+    func test_createAmountConsentToggle_whenAmountIsNil_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I agree that the above amount will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"
@@ -194,7 +184,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateLegalConsentToggleShouldReturnItemWithCorrectProperties() throws {
+    func test_createLegalConsentToggle_shouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account."
         let expectedIdentifier = ".legalConsentToggleItem"

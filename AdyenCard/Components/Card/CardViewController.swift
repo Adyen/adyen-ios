@@ -24,15 +24,18 @@ internal class CardViewController: FormViewController {
     
     private let configuration: CardConfiguration
     private let shopperInformation: PrefilledShopperInformation?
-    private let supportedCardTypes: [CardType]
+    private let supportedCardBrands: [CardBrand]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
+    private var billingAddressSectionItem: FormItem?
+    private var installmentsSectionItem: FormItem?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
-    private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
+    private let cardLogos: [FormCardLogosItem.CardBrandLogo]
+    private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
@@ -69,7 +72,7 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode,
+            addressMode: configuration.billingAddressMode,
             scanCardHandler: scanCardHandler
         )
     }()
@@ -83,7 +86,7 @@ internal class CardViewController: FormViewController {
     ///   - formStyle: The style of form view controller.
     ///   - amount: The payment amount.
     ///   - logoProvider: The provider for logo image URLs.
-    ///   - supportedCardTypes: The list of supported cards.
+    ///   - supportedCardBrands: The list of supported cards.
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
@@ -94,7 +97,7 @@ internal class CardViewController: FormViewController {
         formStyle: FormComponentStyle,
         amount: Amount?,
         logoProvider: LogoURLProvider,
-        supportedCardTypes: [CardType],
+        supportedCardBrands: [CardBrand],
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
@@ -103,15 +106,15 @@ internal class CardViewController: FormViewController {
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
-        self.supportedCardTypes = supportedCardTypes
+        self.supportedCardBrands = supportedCardBrands
         self.formStyle = formStyle
         self.scope = scope
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
 
-        self.cardLogos = supportedCardTypes.map {
-            .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        self.cardLogos = supportedCardBrands.map {
+            .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)
         }
 
         super.init(
@@ -157,7 +160,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal var selectedBrand: String? {
-        items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+        items.numberContainerItem.numberItem.currentBrand?.brand.rawValue
     }
     
     internal var cardBIN: String {
@@ -168,10 +171,11 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard
                 let billingAddressItem = items.billingAddressPickerItem,
+                billingAddressItem.isVisible,
                 let lookupBillingAddress = billingAddressItem.value
             else { return nil }
             
@@ -179,6 +183,7 @@ internal class CardViewController: FormViewController {
             requiredFields = billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
+            guard items.postalCodeItem.isVisible else { return nil }
             address = PostalAddress(postalCode: items.postalCodeItem.value)
             requiredFields = [.postalCode]
             
@@ -207,13 +212,17 @@ internal class CardViewController: FormViewController {
     }
     
     internal var storePayment: Bool? {
-        configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
+        if amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
     }
-    
+
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
-        return installmentsItem.value.element.installmentValue
+        return installmentsItem.value?.installmentValue
     }
     
     internal func stopLoading() {
@@ -227,7 +236,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        var brands: [CardBrand] = []
+        var brands: [DetectedCardBrand] = []
 
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
@@ -241,19 +250,19 @@ internal class CardViewController: FormViewController {
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
-        updateBillingAddressOptionalStatus(brands: brands)
+        updateAddressItemVisibility(basedOn: brands)
     }
 
-    internal func handleSelection(_ selectedBrand: CardBrand) {
+    internal func handleSelection(_ selectedBrand: DetectedCardBrand) {
         items.coBadgedCardItem.updateSelection(selectedBrand)
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
         items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
     }
 
-    internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
+    internal func showCoBadgedCardsUI(for brands: [DetectedCardBrand]) {
         let coBadgedBrands = brands.filter { brand in
-            allowedCoBadgedCardTypes.contains(brand.type)
+            allowedCoBadgedCardBrands.contains(brand.brand)
         }
         if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
@@ -265,17 +274,17 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
-        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
-        switch configuration.billingAddress.mode {
+    private func updateAddressItemVisibility(basedOn brands: [DetectedCardBrand]) {
+        let shouldHide = configuration.billingAddressMode.shouldHide(for: brands.map(\.brand))
+        switch configuration.billingAddressMode {
         case .lookup, .full:
-            items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
+            items.billingAddressPickerItem?.isVisible = !shouldHide
+            billingAddressSectionItem?.isVisible = !shouldHide
         case .postalCode:
-            items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
+            items.postalCodeItem.isVisible = !shouldHide
         case .none:
             break
         }
-        
     }
     
     /// Observe the brand changes to update all other fields.
@@ -306,7 +315,7 @@ extension CardViewController {
     }
 
     /// Updates relevant other fields after number field changes
-    private func updateFields(from brand: CardBrand?) {
+    private func updateFields(from brand: DetectedCardBrand?) {
         items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
         
@@ -314,7 +323,7 @@ extension CardViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
-        items.installmentsItem?.update(cardType: brand?.type)
+        items.installmentsItem?.update(cardBrand: brand?.brand)
     }
     
     // MARK: Private methods
@@ -343,16 +352,22 @@ extension CardViewController {
             append(items.socialSecurityNumberItem)
         }
         
-        if let installmentsItem = items.installmentsItem {
+        if let installmentsItem {
+            installmentsSectionItem = installmentsItem
             append(installmentsItem)
+            bindInstallmentsSectionVisibility()
         }
         
-        if configuration.showStorePaymentMethod {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showStorePaymentMethod,
+            amount: amount
+        ) {
             append(items.storeDetailsItem)
             append(FormSpacerItem())
         }
         
         if let billingAddressItem {
+            billingAddressSectionItem = billingAddressItem
             append(billingAddressItem)
         }
         
@@ -363,9 +378,26 @@ extension CardViewController {
         }
     }
     
+    /// Keeps the installments section (header + field) visibility in sync with the
+    /// installments item, which toggles its own `isHidden` from `update(cardBrand:)`.
+    private func bindInstallmentsSectionVisibility() {
+        guard let installmentsFormItem = items.installmentsItem else { return }
+        installmentsSectionItem?.isVisible = !installmentsFormItem.isHidden.wrappedValue
+        observe(installmentsFormItem.isHidden) { [weak self] isHidden in
+            self?.installmentsSectionItem?.isVisible = !isHidden
+        }
+    }
+    
+    private var installmentsItem: FormItem? {
+        guard let installmentsItem = items.installmentsItem else { return nil }
+        return installmentsItem.withSectionHeader(
+            title: localizedString(.cardInstallmentsTitle, localizationParameters)
+        )
+    }
+    
     private var billingAddressItem: FormItem? {
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(
@@ -401,7 +433,7 @@ extension CardViewController {
     }
     
     private func didChange(pan: String) {
-        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
+        items.securityCodeItem.selectedCard = supportedCardBrands.adyen.type(forCardNumber: pan)
         cardDelegate?.didChange(pan: pan)
     }
     
@@ -420,7 +452,7 @@ extension CardViewController {
         }
     }
     
-    private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
+    private func shouldHideSocialSecurityItem(with brand: DetectedCardBrand?) -> Bool {
         guard let brand else { return true }
         switch configuration.socialSecurityNumberVisibility {
         case .show:
@@ -451,10 +483,14 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     internal func update(storePaymentMethodFieldVisibility isVisible: Bool) {
-        if !isVisible {
+        let shouldShowConsent = StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: isVisible,
+            amount: amount
+        )
+        if !shouldShowConsent {
             items.storeDetailsItem.value = false
         }
-        items.storeDetailsItem.isVisible = isVisible
+        items.storeDetailsItem.isVisible = shouldShowConsent
     }
     
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
@@ -483,7 +519,7 @@ extension CardViewController {
     }
 }
 
-extension CardBrand {
+extension DetectedCardBrand {
     
     internal var securityCodeItemDisplayMode: FormCardSecurityCodeItem.DisplayMode {
         switch self.cvcPolicy {

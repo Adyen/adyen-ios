@@ -10,6 +10,8 @@ import PassKit
 
 extension ApplePayComponent {
 
+    // TODO: Make package and decide
+    // how to connect with CheckoutError
     /// Describes the errors that can occur during Apple Pay payment.
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates that the user can't make payments on any of the payment request’s supported networks.
@@ -39,26 +41,38 @@ extension ApplePayComponent {
         /// Indicates that the token was generated incorrectly.
         case invalidToken
 
+        /// Indicates that no Apple Pay configuration was provided.
+        case missingConfiguration
+
+        /// Indicates that the Apple Pay sheet could not be presented for the payment request,
+        /// typically because the payment request contains invalid or missing fields.
+        /// Reported when the component is submitted.
+        case invalidPaymentRequest
+
         public var errorDescription: String? {
             switch self {
             case .userCannotMakePayment:
-                return "The user can’t make payments on any of the payment request’s supported networks."
+                return String(localized: "The user can't make payments on any of the payment request's supported networks.")
             case .deviceDoesNotSupportApplePay:
-                return "The current device's hardware doesn't support ApplePay."
+                return String(localized: "The current device's hardware doesn't support Apple Pay.")
             case .emptySummaryItems:
-                return "The summaryItems array is empty."
+                return String(localized: "The summaryItems array is empty.")
             case .emptyMerchantIdentifier:
-                return "The merchant identifier is missing, provide a valid one."
+                return String(localized: "The merchant identifier is missing, provide a valid one.")
             case .negativeGrandTotal:
-                return "The grand total summary item should be greater than or equal to zero."
+                return String(localized: "The grand total summary item should be greater than or equal to zero.")
             case .invalidSummaryItem:
-                return "At least one of the summary items has an invalid amount."
+                return String(localized: "At least one of the summary items has an invalid amount.")
             case .invalidCountryCode:
-                return "The country code is invalid."
+                return String(localized: "The country code is invalid.")
             case .invalidCurrencyCode:
-                return "The currency code is invalid."
+                return String(localized: "The currency code is invalid.")
             case .invalidToken:
-                return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
+                return String(localized: "The Apple Pay token is invalid. Make sure you are using a physical device, not a Simulator.")
+            case .missingConfiguration:
+                return String(localized: "No Apple Pay configuration was provided. Supply an ApplePayConfiguration via the CheckoutConfiguration DSL.")
+            case .invalidPaymentRequest:
+                return String(localized: "The Apple Pay sheet could not be presented. The payment request is invalid or incomplete.")
             }
         }
     }

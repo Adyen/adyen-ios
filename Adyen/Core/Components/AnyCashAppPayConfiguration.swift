@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes any configuration for the Cash App Pay component.
-public protocol AnyCashAppPayConfiguration {
+package protocol AnyCashAppPayConfiguration {
 
     /// The URL for Cash App to call in order to redirect back to your application.
     var redirectURL: URL { get }

@@ -1,0 +1,35 @@
+//
+// Copyright (c) 2021 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Adyen
+import Foundation
+
+/// Fall back to local regex-based detector if API not available or BIN too short.
+internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
+
+    internal func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void) {
+        // only return result out of the given supported types.
+        let result: [DetectedCardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { brand in
+
+            let cvcPolicy: DetectedCardBrand.RequirementPolicy
+            switch brand {
+            case .laser,
+                 .bcmc,
+                 .maestro,
+                 .uatp,
+                 .oasis,
+                 .karenMillen,
+                 .warehouse:
+                cvcPolicy = .optional
+            default:
+                cvcPolicy = .required
+            }
+
+            return DetectedCardBrand(brand: brand, cvcPolicy: cvcPolicy)
+        }
+        completion(BinLookupResponse(brands: result))
+    }
+}

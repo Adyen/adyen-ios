@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
-@_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenActions
 @testable import AdyenCard
 import AdyenComponents
 @testable import AdyenEncryption
 import AdyenNetworking
+@testable import AdyenSession
+import XCTest
 
 @MainActor
 class SessionTests: XCTestCase {
@@ -89,8 +89,6 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(session.state.responseConfiguration.enableStoreDetails)
         XCTAssertFalse(session.state.responseConfiguration.showRemovePaymentMethodButton)
         XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
-        XCTAssertTrue(session.isSession)
-        XCTAssertEqual(session.showStorePaymentMethodField, session.state.responseConfiguration.enableStoreDetails)
 
     }
 
@@ -219,7 +217,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -250,7 +247,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -300,7 +296,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -327,7 +322,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -378,7 +372,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -400,7 +393,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -420,7 +412,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -529,36 +520,59 @@ class SessionTests: XCTestCase {
 
     // MARK: - Component Configuration Awareness
 
-    func test_installmentConfiguration_shouldReturnSessionConfig() throws {
+    func test_componentConfiguration_shouldReturnInstallmentConfiguration() throws {
         let config = try JSONDecoder().decode(
             SessionSetupResponse.Configuration.self,
             from: XCTUnwrap(sessionConfigJson.data(using: .utf8))
         )
         sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
 
-        XCTAssertNotNil(sut.installmentConfiguration)
+        let componentConfiguration = sut.componentConfiguration
+        XCTAssertNotNil(componentConfiguration.installmentConfiguration)
         XCTAssertEqual(
-            sut.installmentConfiguration?.defaultOptions,
+            componentConfiguration.installmentConfiguration?.defaultOptions,
             .init(monthValues: [2, 3, 5], includesRevolving: false)
         )
         XCTAssertEqual(
-            sut.installmentConfiguration?.cardBasedOptions,
+            componentConfiguration.installmentConfiguration?.cardBasedOptions,
             [.visa: .init(monthValues: [3, 6, 9], includesRevolving: true)]
         )
     }
 
-    func test_showStorePaymentMethodField_shouldReflectSessionConfig() {
+    func test_componentConfiguration_withInvalidInstallmentMonthValues_shouldFilterInvalidValues() throws {
+        let json = """
+        {
+            "installmentOptions": {
+                "card": {
+                    "plans": ["regular"],
+                    "values": [0, 1, 2]
+                }
+            }
+        }
+        """
+        let config = try JSONDecoder().decode(
+            SessionSetupResponse.Configuration.self,
+            from: XCTUnwrap(json.data(using: .utf8))
+        )
+
+        XCTAssertEqual(
+            config.installmentOptions?.defaultOptions,
+            .init(monthValues: [2], includesRevolving: false)
+        )
+    }
+
+    func test_componentConfiguration_shouldReturnStorePaymentMethodVisibility() {
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,
             configuration: .init(installmentOptions: nil, enableStoreDetails: true)
         )
-        XCTAssertEqual(sut.showStorePaymentMethodField, true)
+        XCTAssertTrue(sut.componentConfiguration.showStorePaymentMethod)
 
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,
             configuration: .init(installmentOptions: nil, enableStoreDetails: false)
         )
-        XCTAssertEqual(sut.showStorePaymentMethodField, false)
+        XCTAssertFalse(sut.componentConfiguration.showStorePaymentMethod)
     }
 
     // MARK: - PaymentsRequest encoding
@@ -569,7 +583,6 @@ class SessionTests: XCTestCase {
         let installments = Installments(totalMonths: 3, plan: .regular)
         let data = PaymentComponentData(
             paymentMethodDetails: cardDetails,
-            amount: nil,
             order: nil,
             installments: installments
         )
@@ -594,7 +607,6 @@ class SessionTests: XCTestCase {
         let cardDetails = makeTestCardDetails()
         let data = PaymentComponentData(
             paymentMethodDetails: cardDetails,
-            amount: nil,
             order: nil
         )
 

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenUI
 import XCTest
 
 final class TextField_AdyenLabelStyle_Tests: XCTestCase {
@@ -146,7 +146,7 @@ final class TextField_AdyenLabelStyle_Tests: XCTestCase {
 
     func makeAdyenlabelStyle(
         font: UIFont = AdyenFonts.default.bodyEmphasized,
-        color: UIColor = AdyenColors.default.textOnDisabled,
+        color: UIColor = CheckoutColors.default.textOnDisabled,
         textAlignment: NSTextAlignment = .center
     ) -> AdyenLabelStyle {
         AdyenLabelStyle(

@@ -8,10 +8,9 @@ import Adyen
 import UIKit
 
 /// A cell in a ListViewController.
-@_spi(AdyenInternal)
-public final class ListCell: UITableViewCell {
-    
-    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+package final class ListCell: UITableViewCell {
+
+    override package init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         accessibilityTraits = .button
@@ -21,33 +20,55 @@ public final class ListCell: UITableViewCell {
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-            
-        guard let highlightedBackgroundColor = item?.style.highlightedBackgroundColor else {
-            return
+    // MARK: - Theme
+
+    /// The theme to use for styling.
+    ///
+    /// Settable rather than init-only because cells are created by `dequeueReusableCell`.
+    package var theme: CheckoutTheme = .default {
+        didSet {
+            itemView.theme = theme
+            applyTheme()
         }
-        
-        contentView.backgroundColor = highlighted ? highlightedBackgroundColor : item?.style.backgroundColor
     }
-    
+
+    private func applyTheme() {
+        backgroundColor = item.map { $0.isSelected ? theme.colors.container : theme.colors.background }
+        contentView.backgroundColor = .clear
+    }
+
     // MARK: - Item
     
     /// The item displayed in the cell cell.
-    public var item: ListItem? {
+    package var item: ListItem? {
         didSet {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
-            backgroundColor = item?.style.backgroundColor
+            applyTheme()
+            updateHorizontalInsets()
+
             resetAccessoryView()
             
             accessibilityLabel = item?.accessibilityLabel
             isAccessibilityElement = item != nil
+            updateSelectedState()
         }
+    }
+
+    private func updateSelectedState() {
+        let isSelected = item?.isSelected == true
+
+        adyen.round(
+            using: isSelected
+                ? .fixed(AdyenUIConstants.defaultCornerRadius)
+                : .none
+        )
+        clipsToBounds = isSelected
+        accessibilityMarkAsSelected(isSelected)
     }
     
     // MARK: - Internal
@@ -119,30 +140,38 @@ public final class ListCell: UITableViewCell {
     // MARK: - Item View
     
     private lazy var itemView: ListItemView = {
-        let itemView = ListItemView()
+        let itemView = ListItemView(theme: theme)
         itemView.translatesAutoresizingMaskIntoConstraints = false
-        itemView.preservesSuperviewLayoutMargins = false
-        itemView.layoutMargins = .zero
         
         return itemView
     }()
     
     // MARK: - Layout
     
-    private func configureConstraints() {
-        let layoutGuide = contentView.layoutMarginsGuide
+    private func updateHorizontalInsets() {
+        guard let inset = item?.horizontalContentInset else {
+            itemView.preservesSuperviewLayoutMargins = true
+            itemView.layoutMargins = .zero
+            return
+        }
         
+        itemView.preservesSuperviewLayoutMargins = false
+        itemView.layoutMargins = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
+    }
+    
+    private func configureConstraints() {
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
                 .adyen.with(priority: .defaultHigh)
         ]
         
         NSLayoutConstraint.activate(constraints)
+        updateHorizontalInsets()
     }
     
 }

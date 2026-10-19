@@ -12,31 +12,22 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
 
     private let theme: CheckoutTheme
     
-    private enum Constants {
-        static let chevronImageName = "chevron_down"
-    }
-    
-    private lazy var valueLabel: UILabel = {
-        let label = UILabel()
+    private lazy var valueLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.body)
         return label
     }()
     
     private lazy var chevronView: UIImageView = {
-        let image = UIImage(
-            named: Constants.chevronImageName,
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        )
-        
-        let chevronView = UIImageView(image: image)
+        let chevronView = UIImageView(image: .adyenChevronDown)
+        chevronView.tintColor = theme.colors.text
         chevronView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return chevronView
     }()
     
     /// The country code view.
-    private lazy var countryCodeLabel: UILabel = {
-        let label = UILabel()
+    private lazy var countryCodeLabel: AdyenLabel = {
+        let label = AdyenLabel()
         label.apply(theme.elements.labels.body)
         return label
     }()
@@ -61,7 +52,7 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
             
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
-                title: item.title,
+                configuration: item.configuration,
                 options: item.selectableValues
             ) { [weak topPresenter, weak self] selectedItem in
                 self?.item.value = selectedItem

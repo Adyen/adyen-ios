@@ -7,14 +7,14 @@
 import Foundation
 
 /// Describes an account balance.
-public struct Balance {
+package struct Balance {
 
     /// Indicates the available balance.
-    public let availableAmount: Amount
+    package let availableAmount: Amount
 
     /// Indicates the maximum spendable balance for a single transaction,
     /// as mandated by the account issuer, regardless of the account balance.
-    public let transactionLimit: Amount?
+    package let transactionLimit: Amount?
 
     /// Initializes a Balance.
     ///
@@ -22,7 +22,7 @@ public struct Balance {
     ///   - availableAmount: The available balance.
     ///   - transactionLimit: The maximum spendable balance for a single transaction as mandated by the account issuer,
     ///    regardless of the account balance.
-    public init(availableAmount: Amount, transactionLimit: Amount?) {
+    package init(availableAmount: Amount, transactionLimit: Amount?) {
         self.availableAmount = availableAmount
         self.transactionLimit = transactionLimit
     }

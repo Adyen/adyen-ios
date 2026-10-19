@@ -226,3 +226,5 @@ whiteList:
   - xcstrings
   - preconcurrency
   - preapplepay
+  - exclamationmark
+  - figma

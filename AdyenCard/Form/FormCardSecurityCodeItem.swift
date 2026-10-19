@@ -29,7 +29,7 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem {
     
     internal var localizationParameters: LocalizationParameters?
     
-    @AdyenObservable(nil) internal var selectedCard: CardType?
+    @AdyenObservable(nil) internal var selectedCard: CardBrand?
 
     @AdyenObservable(.required) internal var displayMode: DisplayMode {
         didSet {

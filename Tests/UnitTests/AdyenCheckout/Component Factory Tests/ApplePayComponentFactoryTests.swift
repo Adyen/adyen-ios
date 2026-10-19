@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenComponents
+@testable import AdyenUI
 import PassKit
 import XCTest
 
@@ -35,7 +35,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         // are merchant-specific and cannot be inferred. The factory must signal this
         // explicitly so callers cannot silently fall through.
         XCTAssertThrowsError(try factory.defaultConfiguration()) { error in
-            XCTAssertTrue(error is UnknownError)
+            XCTAssertEqual(error as? ApplePayComponent.Error, .missingConfiguration)
         }
     }
 
@@ -76,6 +76,64 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
         // Then
         XCTAssertTrue(component.configuration.allowOnboarding)
+    }
+
+    // MARK: - Availability Tests
+
+    func test_isAvailable_withOnboardingAllowed_shouldReturnTrue() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+
+        XCTAssertTrue(factory.isAvailable(for: paymentMethod, configuration: configuration))
+    }
+
+    func test_isAvailable_withNoSupportedNetworksAndOnboardingDisallowed_shouldMatchCreateFailure() throws {
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: [])
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        .allowOnboarding(false)
+
+        XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
+    func test_isAvailable_withNoSupportedNetworksAndOnboardingAllowed_shouldMatchCreateFailure() throws {
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: [])
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        .allowOnboarding(true)
+
+        XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
+    func test_isAvailable_shouldNotAssignSupportedNetworksToPaymentRequest() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let paymentRequest = Dummy.createTestApplePayPaymentRequest()
+        paymentRequest.supportedNetworks = []
+        let configuration = try ApplePayConfiguration(paymentRequest: paymentRequest)
+
+        XCTAssertTrue(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertTrue(paymentRequest.supportedNetworks.isEmpty)
+
+        let component = try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        XCTAssertEqual(
+            paymentRequest.supportedNetworks,
+            try ApplePayComponent.validatedSupportedNetworks(for: paymentMethod, configuration: configuration)
+        )
+        XCTAssertTrue(component.viewController is ApplePayButtonViewController)
     }
 
     // MARK: - Type Conformance Tests

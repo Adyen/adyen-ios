@@ -14,23 +14,22 @@ import Foundation
 #if canImport(TwintSDK)
     /// A component that handles Twint SDK action's.
     @MainActor
-    public final class TwintSDKActionComponent: ActionComponent {
+    package final class TwintSDKActionComponent: ActionComponent {
 
         /// The context object for this component.
-        @_spi(AdyenInternal)
-        public let context: AdyenContext
+        package let context: AdyenContext
 
-        /// Delegates `PresentableComponent`'s presentation.
-        public weak var presentationDelegate: PresentationDelegate?
+        /// Delegates view controller presentation.
+        package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
-        public weak var delegate: ActionComponentDelegate?
+        package weak var delegate: ActionComponentDelegate?
 
         private let pollingComponentBuilder: AnyPollingHandlerProvider?
 
         private var pollingComponent: AnyPollingHandler?
 
         /// The twint component configurations.
-        public var configuration: TwintActionConfiguration
+        package var configuration: TwintActionConfiguration
 
         private let twint: Twint
 
@@ -38,7 +37,7 @@ import Foundation
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter configuration: The TwintSDK component configurations.
-        public init(
+        package init(
             context: AdyenContext,
             configuration: TwintActionConfiguration
         ) {
@@ -63,8 +62,8 @@ import Foundation
         /// Handles TwintSDK action.
         ///
         /// - Parameter action: The Twint SDK action object.
-        public func handle(_ action: TwintSDKAction) {
-            AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
+        package func handle(_ action: TwintSDKAction) {
+            AdyenAssertion.assert(message: "actionPresentationDelegate is nil", condition: actionPresentationDelegate == nil)
             twint.fetchInstalledAppConfigurations(maxIssuerNumber: configuration.maxIssuerNumber) { [weak self] installedApps in
                 guard let self else { return }
 
@@ -142,8 +141,8 @@ import Foundation
                 }
             )
 
-            if let viewController = appChooserViewController, let delegate = presentationDelegate {
-                present(viewController, presentationDelegate: delegate)
+            if let viewController = appChooserViewController, let delegate = actionPresentationDelegate {
+                present(viewController, actionPresentationDelegate: delegate)
             }
         }
 
@@ -165,12 +164,8 @@ import Foundation
             pollingComponent?.handle(action)
         }
 
-        private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController
-            )
-            presentationDelegate.present(component: presentableComponent)
+        private func present(_ viewController: UIViewController, actionPresentationDelegate: ActionPresentationDelegate) {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .sdk))
         }
 
         private func handleShowError(_ errorMessage: String, componentName: String) {
@@ -192,8 +187,8 @@ import Foundation
                     }
                 )
             )
-            if let presentationDelegate {
-                self.present(alert, presentationDelegate: presentationDelegate)
+            if let actionPresentationDelegate {
+                self.present(alert, actionPresentationDelegate: actionPresentationDelegate)
             }
         }
 
@@ -213,17 +208,16 @@ import Foundation
         }
     }
 
-    @_spi(AdyenInternal)
     extension TwintSDKActionComponent: ActionComponentDelegate {
 
-        public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+        package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
             cleanup()
             delegate?.didProvide(data, from: self)
         }
 
-        public func didComplete(from component: ActionComponent) {}
+        package func didComplete(from component: ActionComponent) {}
 
-        public func didFail(with error: Error, from component: ActionComponent) {
+        package func didFail(with error: Error, from component: ActionComponent) {
             cleanup()
             delegate?.didFail(with: error, from: self)
         }

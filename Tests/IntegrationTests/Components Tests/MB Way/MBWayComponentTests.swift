@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
+@testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 

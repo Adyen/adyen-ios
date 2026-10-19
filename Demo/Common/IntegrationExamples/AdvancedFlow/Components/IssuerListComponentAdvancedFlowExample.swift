@@ -13,7 +13,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     // MARK: - Properties
 
-    internal var issuerListComponent: PresentableComponent?
+    internal var issuerListComponent: PaymentComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     
@@ -30,7 +30,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
         }
         let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
-        handler.presentationDelegate = self
+        handler.actionPresentationDelegate = self
         return handler
     }()
 
@@ -68,7 +68,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
     private func presentComponent(with paymentMethods: PaymentMethods) {
         do {
             let component = try issuerListComponent(from: paymentMethods)
-            let componentViewController = viewController(for: component)
+            let componentViewController = viewController(wrapping: component.viewController)
             presenter?.present(viewController: componentViewController, completion: nil)
             issuerListComponent = component
         } catch {
@@ -106,26 +106,11 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.isAccepted
-        let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
-        finalize(success, message)
+        dismissAndShowAlert(result.isAccepted, result.resultCode.rawValue)
     }
 
     private func finish(with error: Error) {
-        let message: String
-        if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-            message = "Cancelled"
-        } else {
-            message = error.localizedDescription
-        }
-        finalize(false, message)
-    }
-
-    private func finalize(_ success: Bool, _ message: String) {
-        issuerListComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self else { return }
-            self.dismissAndShowAlert(success, message)
-        }
+        dismissAndShowAlert(false, error.localizedDescription)
     }
     
     private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
@@ -168,7 +153,6 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
@@ -180,18 +164,18 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 }
 
-extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
-        presenter?.present(viewController: componentViewController, completion: nil)
+extension IssuerListComponentAdvancedFlowExample: ActionPresentationDelegate {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
+        let wrappedViewController = viewController(wrapping: actionViewController)
+        presenter?.present(viewController: wrappedViewController, completion: nil)
     }
 }
 
 private extension IssuerListComponentAdvancedFlowExample {
     
-    private func viewController(for component: PresentableComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
+    private func viewController(wrapping viewController: UIViewController) -> UIViewController {
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)

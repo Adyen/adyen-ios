@@ -7,17 +7,16 @@
 import Foundation
 
 /// Any component with a partial payment property.
-public protocol PartialPaymentOrderAware {
+package protocol PartialPaymentOrderAware {
 
     /// The partial payment order if any.
     var order: PartialPaymentOrder? { get set }
 
 }
 
-@_spi(AdyenInternal)
 extension PartialPaymentOrderAware {
 
-    public var order: PartialPaymentOrder? {
+    package var order: PartialPaymentOrder? {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.order) as? PartialPaymentOrder
         }

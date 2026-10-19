@@ -12,7 +12,6 @@ import Adyen
 import PassKit
 import UIKit
 
-@_spi(AdyenInternal)
 extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     
     private static let maximumDisplayedCodeLength = 10

@@ -4,13 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenActions
-@_spi(AdyenInternal) import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenActions
+@testable import AdyenCard
 import Foundation
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
-    var presentationDelegate: (any Adyen.PresentationDelegate)?
+    var actionPresentationDelegate: (any Adyen.ActionPresentationDelegate)?
     
     var threeDSRequestorAppURL: URL?
 

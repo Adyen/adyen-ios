@@ -16,6 +16,10 @@ internal struct PaymentsRequest: APIRequest {
     internal let path = "payments"
     
     internal let data: PaymentComponentData
+
+    /// The amount to charge. Defaults to the configured amount; pass the final total if it changed during checkout,
+    /// for example after Apple Pay shipping or payment method updates.
+    internal var amount = ConfigurationConstants.current.amount
     
     internal var counter: UInt = 0
     
@@ -30,10 +34,6 @@ internal struct PaymentsRequest: APIRequest {
 
         let currentConfiguration = ConfigurationConstants.current
 
-        // Important: for the demo purpose we are setting amount here.
-        // If you choose not to provide the amount to the payment component - it could be specified by your backend.
-        let amount = data.amount ?? currentConfiguration.amount
-        
         // If there is an order in the request, amount is optional
         if data.order == nil {
             try container.encode(amount, forKey: .amount)

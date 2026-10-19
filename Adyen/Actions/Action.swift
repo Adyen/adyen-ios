@@ -53,6 +53,12 @@ public enum Action: Decodable {
             self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
             self = try Self.handleQRCodeType(from: decoder)
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unknown action type \(type.rawValue)."
+            )
         }
     }
     
@@ -82,16 +88,6 @@ public enum Action: Decodable {
         } else {
             return try .await(AwaitAction(from: decoder))
         }
-    }
-
-    private enum ActionType: String, Decodable {
-        case redirect
-        case nativeRedirect
-        case threeDS2
-        case sdk
-        case qrCode
-        case `await`
-        case voucher
     }
 
     private enum CodingKeys: String, CodingKey {

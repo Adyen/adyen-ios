@@ -161,7 +161,7 @@ package struct YourComponentFactory: PaymentComponentFactory {
 }
 ```
 
-**Reference:** `AdyenComponents/BLIK/BLIKComponentConfiguration.swift`, `AdyenComponents/BLIK/BLIKComponentFactory.swift`
+**Reference:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitConfiguration.swift`, `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponentFactory.swift`
 
 ### Step 4: Register in CheckoutComponentBuilder
 
@@ -594,7 +594,7 @@ var sut: YourComponentFactory!
 
 ## References
 
-- **ACH Configuration:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponentConfiguration.swift`
+- **ACH Configuration:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitConfiguration.swift`
 - **ACH Component:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponent.swift`
 
 - **BLIK Factory:** `AdyenComponents/BLIK/BLIKComponentFactory.swift`

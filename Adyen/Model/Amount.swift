@@ -38,7 +38,7 @@ public struct Amount: Codable, Equatable {
     ///   - currencyCode: The code of the currency.
     ///   - localeIdentifier: The identifier of the locale.
     public init(value: Decimal, currencyCode: String, localeIdentifier: String? = nil) {
-        let minorUnit = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
+        let minorUnit = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode)
         
         self.init(value: minorUnit, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
     }

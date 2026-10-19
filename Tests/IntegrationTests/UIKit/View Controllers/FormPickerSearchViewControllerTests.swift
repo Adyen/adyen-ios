@@ -37,14 +37,14 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func testSetup() throws {
+    func test_picker_whenOptionSelected_shouldInvokeSelectionHandlerWithSelectedOption() throws {
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
         let expectation = expectation(description: "Selection handler was executed")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
+            configuration: .init(title: "Picker", isSearchEnabled: false),
             options: [option]
         ) { element in
             XCTAssertEqual(element.identifier, option.identifier)
@@ -69,14 +69,14 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
     
-    func testSearchSuccess() throws {
+    func test_search_withMatchingTerm_shouldReturnMatchingResults() throws {
         
         // Given
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
+            configuration: .init(title: "Picker"),
             options: [option]
         ) { _ in }
         
@@ -107,14 +107,14 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func testSearchNoResults() throws {
+    func test_search_withNonMatchingTerm_shouldShowEmptyState() throws {
         
         // Given
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
+            configuration: .init(title: "Picker"),
             options: [option]
         ) { _ in }
         
@@ -142,5 +142,499 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             
             XCTAssertEqual(searchViewController.viewModel.interfaceState.emptyStateSearchTerm, $0)
         }
+    }
+
+    func test_picker_withCustomTheme_shouldApplyThemeToItemText() throws {
+        let expectedTitleFont = UIFont.systemFont(ofSize: 19, weight: .black)
+        let expectedSubtitleFont = UIFont.systemFont(ofSize: 16, weight: .thin)
+        let expectedTitleColor: UIColor = .purple
+        let expectedSubtitleColor: UIColor = .orange
+        let colors = CheckoutColors(
+            primary: expectedTitleColor,
+            textSecondary: expectedSubtitleColor
+        )
+        var elements = AdyenElements(colors: colors)
+        elements.labels.bodyEmphasized.font = expectedTitleFont
+        elements.labels.subheadline.font = expectedSubtitleFont
+
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(colors: colors, elements: elements)
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+
+        let firstCell = try XCTUnwrap(
+            resultsListViewController.tableView.visibleCells.first as? ListCell
+        )
+        let titleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "subtitleLabel"))
+
+        XCTAssertEqual(titleLabel.font, expectedTitleFont)
+        XCTAssertEqual(titleLabel.textColor, expectedTitleColor)
+        XCTAssertEqual(subtitleLabel.font, expectedSubtitleFont)
+        XCTAssertEqual(subtitleLabel.textColor, expectedSubtitleColor)
+    }
+
+    func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
+        let options = makeOptions()
+        let selectedOption = FormPickerElement(
+            identifier: options[1].identifier,
+            title: "Different title"
+        )
+
+        let searchViewController = try makeSearchViewController(
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+        let selectedResults = results.filter(\.isSelected)
+
+        XCTAssertEqual(selectedResults.map(\.identifier), [selectedOption.identifier])
+        XCTAssertEqual(selectedResults.first?.title, options[1].title)
+    }
+
+    func test_picker_whenSelectedOptionProvided_shouldRenderSelectedCellAppearance() throws {
+        let options = makeOptions()
+        let selectedOption = options[1]
+        let selectedBackgroundColor: UIColor = .purple
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(
+                colors: CheckoutColors(container: selectedBackgroundColor)
+            ),
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+
+        let selectedCell = try XCTUnwrap(
+            resultsListViewController.tableView.visibleCells
+                .compactMap { $0 as? ListCell }
+                .first { $0.item?.identifier == selectedOption.identifier }
+        )
+        let checkmarkImageView: UIImageView = try XCTUnwrap(
+            selectedCell.findView(by: "checkmark")
+        )
+
+        XCTAssertEqual(selectedCell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(selectedCell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
+        XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertTrue(selectedCell.accessibilityTraits.contains(.selected))
+    }
+
+    func test_picker_whenSelectedOptionOmitted_shouldNotMarkAnyResultAsSelected() throws {
+        let searchViewController = try makeSearchViewController(
+            options: makeOptions(),
+            selectedOption: nil
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertFalse(results.contains(where: \.isSelected))
+    }
+
+    func test_picker_whenSelectedOptionIsNotAvailable_shouldNotMarkAnyResultAsSelected() throws {
+        let searchViewController = try makeSearchViewController(
+            options: makeOptions(),
+            selectedOption: .init(identifier: "missing", title: "Missing")
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertFalse(results.contains(where: \.isSelected))
+    }
+
+    func test_search_whenSelectedOptionFilteredOutAndRestored_shouldUpdateVisibleSelection() throws {
+        let options = makeOptions()
+        let selectedOption = options[1]
+        let searchViewController = try makeSearchViewController(
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: options[0].title
+        )
+
+        XCTAssertFalse(
+            try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+                .contains(where: \.isSelected)
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: selectedOption.title
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: ""
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+    }
+
+    func test_searchBar_whenConfigurationOmitted_shouldShowAndFocus() throws {
+        let searchViewController = try makeSearchViewController()
+
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        wait(
+            until: { searchViewController.searchBar.isFirstResponder },
+            timeout: 1
+        )
+    }
+
+    func test_picker_whenLaidOut_shouldSpaceFirstResultBelowSearchField() throws {
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first)
+        let searchFieldFrame = searchViewController.searchBar.searchTextField.convert(
+            searchViewController.searchBar.searchTextField.bounds,
+            to: searchViewController.view
+        )
+        let firstCellFrame = firstCell.convert(firstCell.bounds, to: searchViewController.view)
+
+        XCTAssertEqual(firstCellFrame.minY - searchFieldFrame.maxY, 24, accuracy: 0.5)
+    }
+
+    func test_picker_whenLaidOut_shouldInsetResultsFromScreenEdges() throws {
+        let expectedInset: CGFloat = 16
+        let searchViewController = try makeSearchViewController()
+        let resultsView = try XCTUnwrap(searchViewController.resultsListViewController.view)
+        wait(until: { resultsView.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(resultsView.frame.minX, expectedInset, accuracy: 0.5)
+        XCTAssertEqual(
+            searchViewController.view.bounds.maxX - resultsView.frame.maxX,
+            expectedInset,
+            accuracy: 0.5
+        )
+    }
+
+    func test_picker_whenResultsRendered_shouldApplyListItemContentInsets() throws {
+        let expectedInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let contentView = cell.contentView
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: contentView)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: contentView)
+
+        XCTAssertEqual(titleFrame.minX, expectedInsets.left, accuracy: 0.5)
+        XCTAssertEqual(contentView.bounds.maxX - titleFrame.maxX, expectedInsets.right, accuracy: 0.5)
+        XCTAssertEqual(titleFrame.minY, expectedInsets.top, accuracy: 1)
+        XCTAssertEqual(contentView.bounds.maxY - subtitleFrame.maxY, expectedInsets.bottom, accuracy: 1)
+        XCTAssertGreaterThanOrEqual(
+            subtitleLabel.bounds.height,
+            subtitleLabel.intrinsicContentSize.height - 0.5
+        )
+    }
+
+    func test_picker_withMultipleOptions_shouldSeparateOptionsIntoSections() throws {
+        let options: [FormPickerElement] = [
+            .init(identifier: "first", title: "First option"),
+            .init(identifier: "second", title: "Second option")
+        ]
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: options
+        )
+        let sections = searchViewController.resultsListViewController.sections
+
+        XCTAssertEqual(sections.count, options.count)
+        XCTAssertEqual(sections.map(\.items.count), [1, 1])
+        XCTAssertEqual(sections.flatMap(\.items).map(\.title), options.map(\.title))
+    }
+
+    func test_picker_withMultipleOptions_shouldSpaceRowsByTwelvePoints() throws {
+        let expectedSpacing: CGFloat = 12
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Picker", isSearchEnabled: false),
+            options: [
+                .init(identifier: "first", title: "First option"),
+                .init(identifier: "second", title: "Second option")
+            ]
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+        resultsListViewController.tableView.layoutIfNeeded()
+
+        let tableView = try XCTUnwrap(resultsListViewController.tableView)
+        let firstCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+        )
+        let secondCell = try XCTUnwrap(
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))
+        )
+
+        let firstFrame = firstCell.convert(firstCell.bounds, to: tableView)
+        let secondFrame = secondCell.convert(secondCell.bounds, to: tableView)
+
+        XCTAssertEqual(
+            secondFrame.minY - firstFrame.maxY,
+            expectedSpacing,
+            accuracy: 0.5
+        )
+    }
+
+    func test_picker_whenResultsRendered_shouldSpaceTitleAndSubtitleByTwoPoints() throws {
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: cell)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: cell)
+
+        XCTAssertEqual(subtitleFrame.minY - titleFrame.maxY, 2, accuracy: 0.5)
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
+        let title = "Installments"
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: title, isSearchEnabled: false)
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
+        XCTAssertEqual(searchViewController.title, title)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderPresent_shouldSpaceFirstResultBelowHeader() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments.",
+                isSearchEnabled: false
+            )
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let headerView = try XCTUnwrap(searchViewController.headerView)
+        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first)
+        let firstCellFrame = firstCell.convert(firstCell.bounds, to: searchViewController.view)
+
+        XCTAssertEqual(firstCellFrame.minY - headerView.frame.maxY, 24, accuracy: 0.5)
+    }
+
+    func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
+        let pickerViewController = FormPickerSearchViewController<FormPickerElement>(
+            configuration: .init(title: "Installments", isSearchEnabled: false),
+            options: []
+        ) { _ in
+            XCTFail("Selection handler should not be called")
+        }
+
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(
+            pickerViewController.viewControllers.first as? SearchViewController
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.emptyView.isHidden)
+        XCTAssertEqual(searchViewController.emptyView.searchTerm, "")
+        XCTAssertTrue(searchViewController.resultsListViewController.view.isHidden)
+    }
+
+    func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
+        XCTAssertFalse(headerView.subtitleLabel.isHidden)
+        XCTAssertTrue(headerView.isDescendant(of: searchViewController.view))
+        // Title lives in the header, so it is not duplicated in the navigation bar.
+        XCTAssertNil(searchViewController.title)
+    }
+
+    func test_pickerHeader_whenHeaderAbsent_shouldUseNavigationTitle() throws {
+        let searchViewController = try makeSearchViewController(configuration: .init(title: "Country/Region"))
+
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Country/Region")
+    }
+
+    func test_pickerHeader_whenTitleAndSubtitleEmpty_shouldUseNavigationTitle() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "", subtitle: "")
+        )
+
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "")
+    }
+
+    func test_pickerHeader_whenTitleEmptyAndSubtitleProvided_shouldUseNavigationTitle() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                title: "",
+                subtitle: "Split the total cost into monthly payments."
+            )
+        )
+
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "")
+    }
+
+    func test_pickerHeader_whenSubtitleEmpty_shouldHideSubtitleLabel() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Installments", subtitle: "")
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertTrue(headerView.subtitleLabel.isHidden)
+    }
+
+    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByFourPoints() throws {
+        let expectedSpacing: CGFloat = 4
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments."
+            )
+        )
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(
+            headerView.subtitleLabel.frame.minY - headerView.titleLabel.frame.maxY,
+            expectedSpacing,
+            accuracy: 0.5
+        )
+    }
+
+    func test_pickerHeader_shouldApplySecondaryColorToSubtitle() throws {
+        let secondaryColor: UIColor = .orange
+
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."),
+            theme: CheckoutTheme(
+                colors: CheckoutColors(
+                    primary: .purple,
+                    textSecondary: secondaryColor
+                )
+            )
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
+    }
+
+    func test_pickerHeader_whenSubtitleNil_shouldUseNavigationTitle() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Installments")
+        )
+
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Installments")
+    }
+
+    func test_pickerHeader_whenLaidOut_shouldHugContentHeight() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")
+        )
+        let headerView = try XCTUnwrap(
+            searchViewController.headerView as? FormPickerHeaderView
+        )
+
+        searchViewController.view.layoutIfNeeded()
+
+        let compressedSize = headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: headerView.bounds.width,
+                height: UIView.layoutFittingCompressedSize.height
+            ),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        XCTAssertEqual(
+            headerView.bounds.height,
+            compressedSize.height,
+            accuracy: 0.5
+        )
+        XCTAssertGreaterThan(
+            searchViewController.resultsListViewController.view.bounds.height,
+            headerView.bounds.height
+        )
+    }
+
+    // MARK: - Helpers
+
+    private func makeSearchViewController(
+        configuration: FormPickerConfiguration = .init(title: "Picker"),
+        theme: CheckoutTheme = .default,
+        options: [FormPickerElement] = [
+            .init(
+                identifier: "Identifier",
+                title: "Title",
+                subtitle: "Subtitle"
+            )
+        ],
+        selectedOption: FormPickerElement? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) throws -> SearchViewController {
+        let pickerSearchViewController = FormPickerSearchViewController(
+            configuration: configuration,
+            theme: theme,
+            options: options,
+            selectedOption: selectedOption,
+            selectionHandler: { _ in }
+        )
+
+        // Allow setup in viewDidLoad
+        setupRootViewController(pickerSearchViewController)
+
+        return try XCTUnwrap(
+            pickerSearchViewController.viewControllers.first as? SearchViewController,
+            file: file,
+            line: line
+        )
+    }
+
+    private func makeOptions() -> [FormPickerElement] {
+        [
+            .init(identifier: "first", title: "First", subtitle: "First subtitle"),
+            .init(identifier: "second", title: "Second", subtitle: "Second subtitle")
+        ]
     }
 }

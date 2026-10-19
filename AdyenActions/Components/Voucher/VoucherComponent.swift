@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@_spi(AdyenInternal) import protocol Adyen.Component
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import PassKit
 import UIKit
@@ -20,32 +19,26 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 
 /// A component that handles voucher action.
 @MainActor
-public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
+package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+    package let context: AdyenContext
 
-    public weak var delegate: ActionComponentDelegate?
-    
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
+
     /// The voucher component configurations.
-    public struct Configuration {
-        
+    package struct Configuration {
+
         /// The component UI style.
-        public var style: VoucherComponentStyle = .init()
+        package var style: VoucherComponentStyle = .init()
         
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: VoucherComponentStyle = VoucherComponentStyle()) {
+        package init(style: VoucherComponentStyle = VoucherComponentStyle()) {
             self.init(style: style, localizationParameters: nil)
         }
 
@@ -56,7 +49,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }
     
     /// The voucher component configurations.
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
     
@@ -74,7 +67,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(
+    package convenience init(
         context: AdyenContext,
         configuration: Configuration = Configuration()
     ) {
@@ -104,12 +97,12 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
-    public func didCancel() {}
+    package func didCancel() {}
 
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    public func handle(_ action: VoucherAction) {
+    package func handle(_ action: VoucherAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
@@ -118,49 +111,21 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
         self.view = view
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController,
-                navBarType: navBarType()
-            )
-            presentationDelegate.present(component: presentableComponent)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
             )
         }
     }
     
     internal let presenterViewController = UIViewController()
         
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(
-            leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
-        )
-        let style = ActionNavigationBar.Style(
-            leadingButton: configuration.style.editButton,
-            trailingButton: configuration.style.doneButton,
-            backgroundColor: configuration.style.backgroundColor
-        )
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        
-        navBar.leadingButtonHandler = {
-            navBar.onCancelHandler?()
-        }
-        
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
-    }
-    
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {
         let anyAction = action.anyAction
         let viewStyle = VoucherView.Model.Style(

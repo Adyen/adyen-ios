@@ -8,31 +8,31 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a switch item in a form.
-public struct FormToggleItemStyle: FormValueItemStyle {
-    
+package struct FormToggleItemStyle: FormValueItemStyle {
+
     /// The title style.
-    public var title = TextStyle(
+    package var title = TextStyle(
         font: .preferredFont(forTextStyle: .body),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .natural
     )
     
     /// The color of `onTintColor` of switch.
-    public var tintColor: UIColor?
-    
+    package var tintColor: UIColor?
+
     /// The color for separator element.
     /// If value is nil, the default color would be used.
-    public var separatorColor: UIColor?
-    
-    public var backgroundColor: UIColor = .clear
-    
+    package var separatorColor: UIColor?
+
+    package var backgroundColor: UIColor = .clear
+
     /// Initializes the form switch item style.
     ///
     /// - Parameter title: The title style.
-    public init(title: TextStyle) {
+    package init(title: TextStyle) {
         self.title = title
     }
     
     /// Initializes the form switch item style with the default style.
-    public init() {}
+    package init() {}
 }

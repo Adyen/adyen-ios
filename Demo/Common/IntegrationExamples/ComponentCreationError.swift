@@ -8,11 +8,11 @@ import Adyen
 import AdyenComponents
 import Foundation
 
-public enum IntegrationError: LocalizedError {
-    
+internal enum IntegrationError: LocalizedError {
+
     case paymentMethodNotAvailable(paymentMethod: PaymentMethod.Type)
     
-    public var errorDescription: String? {
+    internal var errorDescription: String? {
         switch self {
         case let .paymentMethodNotAvailable(paymentMethodType):
             return "\(String(describing: paymentMethodType)) is not available in payment methods response."

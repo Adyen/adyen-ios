@@ -5,257 +5,51 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
-import Foundation
-import PassKit
 
-// TODO: get rid of duplicate component configs inside dropin. they should be only one specified by merchant
-public extension DropInComponent {
-    
-    /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: AnyPersonalInformationConfiguration {
+/// Configuration for Drop-in behavior.
+public struct DropInConfiguration: CheckoutConfigurable {
 
-        /// Card component related configuration.
-        public var card = Card()
-        
-        /// The Apple Pay configuration.
-        public var applePay: ApplePayConfiguration?
-        
-        /// Payment methods list related configurations.
-        public var paymentMethodsList = PaymentMethodListConfiguration()
-        
-        /// Action components related configurations.
-        public var actionComponent = ActionComponentConfiguration()
-        
-        /// Shopper related information
-        public var shopperInformation: PrefilledShopperInformation?
-        
-        /// Indicates the localization parameters, leave it nil to use the default parameters.
-        package var localizationParameters: LocalizationParameters?
-        
-        /// Determines whether to enable skipping payment list step
-        /// when there is only one non-instant payment method.
-        /// Default value: `false`.
-        public var allowsSkippingPaymentList: Bool
+    /// Skipping the payment method list for one regular payment method is the v6 default behavior.
+    internal let allowsSkippingPaymentList = true
 
-        /// Determines whether to enable preselected stored payment method view step.
-        /// Default value: `true`.
-        public var allowPreselectedPaymentView: Bool
-        
-        /// Indicates the UI configuration of the drop in component.
-        public var style: DropInComponent.Style
+    package var theme: CheckoutTheme = .default
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
 
-        /// Indicates the UI style configuration of the drop in component.
-        public var theme: CheckoutTheme = .default
-
-        /// Boleto component configuration.
-        public var boleto: Boleto = .init()
-
-        /// Configuration for the Cash App Pay component
-        public var cashAppPay: CashAppPay?
-
-        /// The ACH Direct Debit configuration.
-        public var ach: ACH = .init()
-
-        /// Gift card component configuration
-        public var giftCard: GiftCard = .init()
-
-        /// Initializes the drop in configuration.
-        /// - Parameters:
-        ///   - style: The UI styles of the components.
-        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
-        ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(
-            style: Style = Style(),
-            theme: CheckoutTheme = .default,
-            allowsSkippingPaymentList: Bool = false,
-            allowPreselectedPaymentView: Bool = true
-        ) {
-            self.style = style
-            self.allowsSkippingPaymentList = allowsSkippingPaymentList
-            self.allowPreselectedPaymentView = allowPreselectedPaymentView
-            self.theme = theme
-        }
-    }
-    
-    /// Action components related configurations.
-    struct ActionComponentConfiguration {
-        
-        public init() { /* Empty initializer */ }
-        
-        /// Three DS configurations
-        public var authentication: AuthenticationConfiguration = .init()
-
-        /// Twint configurations
-        public var twint: TwintActionConfiguration?
+    // TODO: Remove this legacy adapter when Drop-in consumers use CheckoutLocalizationProvider directly.
+    package var resolvedLocalizationParameters: LocalizationParameters? {
+        guard let localizationProvider else { return nil }
+        return LocalizationParameters().withProvider(localizationProvider)
     }
 
-    /// Boleto component configuration.
-    struct Boleto {
-        /// Indicates whether to show sendCopyByEmail checkbox and email text field
-        public var showEmailAddress: Bool = true
+    /// Whether stored payment methods are hidden from the payment method list.
+    package var hideStoredPaymentMethods: Bool = false
+
+    /// Whether Drop-in starts with the most recently stored payment method.
+    package var startWithLastStoredPaymentMethod: Bool = true
+
+    /// Creates a Drop-in configuration with default behavior.
+    public init() {}
+
+    /// Sets whether stored payment methods are hidden from the payment method list.
+    ///
+    /// This setting does not affect the preselected stored payment method screen.
+    /// - Parameter hideStoredPaymentMethods: Whether to hide stored payment methods from the list.
+    /// - Returns: A modified copy of the configuration.
+    public func hideStoredPaymentMethods(_ hideStoredPaymentMethods: Bool) -> Self {
+        var copy = self
+        copy.hideStoredPaymentMethods = hideStoredPaymentMethods
+        return copy
     }
 
-    /// ACH Component configuration specific to Drop In Component.
-    struct ACH {
-        
-        /// Indicates if the field for storing the card payment method should be displayed in the form.
-        /// Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether the billing address should be displayed or not.
-        /// Defaults to `true`.
-        public var showsBillingAddress: Bool
-        
-        /// List of ISO country codes that is supported for the billing address.
-        /// Defaults to `["US", "PR"].
-        public var billingAddressCountryCodes: [String]
-        
-        /// Configuration of the ACH component.
-        ///
-        /// - Parameters:
-        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
-        ///   Defaults to `true`.
-        ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
-        ///   Defaults to `true`.
-        ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
-        ///   Defaults to `["US", "PR"].
-        public init(
-            showsStorePaymentMethodField: Bool = true,
-            showsBillingAddress: Bool = true,
-            billingAddressCountryCodes: [String] = ["US", "PR"]
-        ) {
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.showsBillingAddress = showsBillingAddress
-            self.billingAddressCountryCodes = billingAddressCountryCodes
-        }
-    }
-    
-    /// Gift card component configuration.
-    struct GiftCard {
-        /// Indicates whether to show the security code field. Defaults to true.
-        public var showsSecurityCodeField: Bool = true
-    }
-    
-    // TODO: since these will be removed, changes on card config don't need to be added here
-    /// Card Component configuration specific to Drop In Component.
-    struct Card: AnyCardComponentConfiguration {
-        
-        /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
-        public var showCardholderName: Bool
-
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showStorePaymentMethod: Bool
-
-        /// Indicates whether to show the security code field at all. Defaults to true.
-        public var showSecurityCode: Bool
-
-        /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
-        /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility
-
-        /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
-        /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility
-
-        /// Indicates whether to show the security code field for stored cards. Defaults to true.
-        public var showSecurityCodeForStoredCard: Bool
-
-        /// The list of supported card brands.  Defaults to nil.
-        /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
-        /// Use this property to enforce a custom collection of card brands.
-        public var supportedCardBrands: [CardType]?
-
-        /// Installments options to present to the user.
-        public var installmentConfiguration: InstallmentConfiguration?
-        
-        /// Configuration of Card component.
-        ///
-        /// - Parameters:
-        ///   - showCardholderName: Indicates if the field for entering the cardholder name should be displayed in the form.
-        ///   Defaults to `false`.
-        ///   - showStorePaymentMethod: Indicates if the field for storing the card payment method should be displayed in the form.
-        ///   Defaults to `true`.
-        ///   - showSecurityCode: Indicates whether to show the security code field at all.
-        ///   Defaults to `true`.
-        ///   - koreanAuthenticationVisibility: Indicates the visibility option for the security fields for South Korea issued cards.
-        ///   Defaults to `.auto`.
-        ///   - socialSecurityNumberVisibility: Indicates the visibility option for the security code field. Defaults to `.auto`
-        ///   - showSecurityCodeForStoredCard: Indicates whether to show the security code field for stored cards. Defaults to `true`.
-        ///   - supportedCardBrands: The enforced list of supported card brands.
-        ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
-        ///   - billingAddress: Billing address fields configurations.
-        public init(
-            showCardholderName: Bool = false,
-            showStorePaymentMethod: Bool = true,
-            showSecurityCode: Bool = true,
-            koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto,
-            socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto,
-            showSecurityCodeForStoredCard: Bool = true,
-            supportedCardBrands: [CardType]? = nil,
-            installmentConfiguration: InstallmentConfiguration? = nil
-        ) {
-            self.showCardholderName = showCardholderName
-            self.showSecurityCode = showSecurityCode
-            self.showStorePaymentMethod = showStorePaymentMethod
-            self.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
-            self.supportedCardBrands = supportedCardBrands
-            self.koreanAuthenticationVisibility = koreanAuthenticationVisibility
-            self.socialSecurityNumberVisibility = socialSecurityNumberVisibility
-            self.installmentConfiguration = installmentConfiguration
-        }
-        
-        internal var cardConfiguration: CardConfiguration {
-            CardConfiguration()
-        }
-        
-    }
-    
-    /// Cash App Pay component configuration.
-    struct CashAppPay: AnyCashAppPayConfiguration {
-
-        /// The URL for Cash App to call in order to redirect back to your application.
-        public let redirectURL: URL
-
-        /// A reference to your system (for example, a cart or checkout identifier).
-        public let referenceId: String?
-
-        /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether to store this payment method. Defaults to `false`.
-        /// Ignored if `showsStorePaymentMethodField` is `true`.
-        public var storePaymentMethod: Bool
-        
-        /// Initializes an instance of `CashAppPayComponent.Configuration`
-        ///
-        /// - Parameters:
-        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
-        ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
-        ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-        ///   - storePaymentMethod: Determines whether to store this payment method.
-        ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        public init(
-            redirectURL: URL,
-            referenceId: String? = nil,
-            showsStorePaymentMethodField: Bool = true,
-            storePaymentMethod: Bool = false
-        ) {
-            self.redirectURL = redirectURL
-            self.referenceId = referenceId
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.storePaymentMethod = storePaymentMethod
-        }
+    /// Sets whether Drop-in starts with the most recently stored payment method.
+    /// - Parameter startWithLastStoredPaymentMethod: Whether to start with the stored payment method.
+    /// - Returns: A modified copy of the configuration.
+    public func startWithLastStoredPaymentMethod(_ startWithLastStoredPaymentMethod: Bool) -> Self {
+        var copy = self
+        copy.startWithLastStoredPaymentMethod = startWithLastStoredPaymentMethod
+        return copy
     }
 }

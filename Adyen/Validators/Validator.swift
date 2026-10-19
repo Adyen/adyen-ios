@@ -41,7 +41,7 @@ package func && (lhs: Validator, rhs: Validator) -> Validator {
 }
 
 /// Interface to allow for two validators.
-public protocol CombinedValidator: Validator {
+package protocol CombinedValidator: Validator {
     var firstValidator: Validator { get }
     var secondValidator: Validator { get }
 }

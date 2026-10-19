@@ -48,6 +48,8 @@ public struct FormPickerElement: FormPickable {
 open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> {
     
     package let localizationParameters: LocalizationParameters?
+    /// The picker item's configuration.
+    package let configuration: FormPickerConfiguration
     public private(set) var isOptional: Bool = false
     internal private(set) weak var presenter: ViewControllerPresenter?
     
@@ -63,29 +65,29 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
 
     /// Initializes the form picker item item.
     /// - Parameters:
-    ///   - prefillValue: The value to prefill.
+    ///   - preselectedValue: The value to preselect.
     ///   - selectableValues: The selectable values.
-    ///   - title: The title of the screen
     ///   - placeholder: The placeholder of the item when the value is `nil`
     ///   - style: The `FormTextItemStyle` UI style.
     ///   - localizationParameters: The localization parameters.
+    ///   - configuration: The picker screen configuration (e.g. header).
     ///   - identifier: The item identifier
     package convenience init(
         preselectedValue: Value?,
         selectableValues: [Value],
-        title: String,
         placeholder: String,
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
+        configuration: FormPickerConfiguration,
         identifier: String? = nil
     ) {
         self.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: title,
             placeholder: placeholder,
             style: style,
             presenter: presenter,
+            configuration: configuration,
             localizationParameters: nil,
             identifier: identifier
         )
@@ -94,14 +96,15 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
     package init(
         preselectedValue: Value?,
         selectableValues: [Value],
-        title: String,
         placeholder: String,
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
+        configuration: FormPickerConfiguration,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
         self.localizationParameters = localizationParameters
+        self.configuration = configuration
         self.presenter = presenter
 
         super.init(
@@ -113,7 +116,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         self.selectableValues = selectableValues
         
         self.identifier = identifier
-        self.title = title
+        self.title = configuration.title
         
         updateValidationFailureMessage()
         updateFormattedValue()
@@ -123,7 +126,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         self.isOptional = isOptional
     }
     
-    public func resetValue() {
+    open func resetValue() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
     
@@ -150,11 +153,11 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         value == nil
     }
     
-    public func updateValidationFailureMessage() {
+    open func updateValidationFailureMessage() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
     
-    public func updateFormattedValue() {
+    open func updateFormattedValue() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
 }

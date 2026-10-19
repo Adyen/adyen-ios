@@ -10,6 +10,9 @@
     "(Requires API version 70 or higher)" : {
 
     },
+    "Actions" : {
+
+    },
     "adyen.card.stored.title" : {
       "extractionState" : "manual"
     },
@@ -25,9 +28,6 @@
       }
     },
     "Allow OnBoarding" : {
-
-    },
-    "Allow Preselected PaymentView" : {
 
     },
     "Analytics" : {
@@ -58,7 +58,7 @@
     "Apple Pay" : {
 
     },
-    "Billing Address mode" : {
+    "Billing Address" : {
 
     },
     "Card Component" : {
@@ -73,13 +73,16 @@
     "Default" : {
 
     },
-    "Displays a button to remove stored payment methods" : {
-
-    },
     "DropIn" : {
 
     },
     "Force Card RedirectAction" : {
+
+    },
+    "Hide for brands: %@" : {
+
+    },
+    "Hide Stored Payment Methods" : {
 
     },
     "Holder Name" : {
@@ -100,7 +103,13 @@
     "Korean Authentication Mode" : {
 
     },
+    "Mode" : {
+
+    },
     "onBeforeSubmit" : {
+
+    },
+    "Requests the removal button in the Session response" : {
 
     },
     "Return success from didAuthorize" : {
@@ -115,13 +124,16 @@
     "Session Callbacks" : {
 
     },
+    "Session Stored Payment Method Removal" : {
+
+    },
     "Set to country currency" : {
 
     },
-    "Skip Payment List" : {
+    "Social Security Number Mode" : {
 
     },
-    "Social Security Number Mode" : {
+    "Start With Last Stored Payment Method" : {
 
     },
     "Store Payment Method Toggle" : {
@@ -130,7 +142,7 @@
     "Stored Card" : {
 
     },
-    "Stored Payment Method Removal" : {
+    "Supported countries: %@" : {
 
     },
     "Theme" : {

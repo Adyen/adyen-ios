@@ -17,8 +17,10 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
             
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
-                title: item.title,
-                options: item.selectableValues
+                configuration: item.configuration,
+                theme: theme,
+                options: item.selectableValues,
+                selectedOption: item.value
             ) { [weak topPresenter] selectedItem in
                 item.value = selectedItem
                 topPresenter?.dismissViewController(animated: true)

@@ -17,7 +17,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.applePay)
 
-    /// Meaningless for Apple Pay (the system renders its own button); kept to satisfy the protocol.
+    /// Whether the component shows the Apple Pay button.
     package var showsSubmitButton: Bool = true
 
     package var theme: CheckoutTheme = .default
@@ -31,30 +31,32 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
     internal var allowOnboarding: Bool = true
 
+    internal var buttonAppearance = ApplePayButtonAppearance()
+
     internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
 
-    internal var onShippingContactChange: (
+    internal var onSelectShippingContact: (
         @MainActor (
             PKContact,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingContactUpdate
     )?
 
-    internal var onShippingMethodChange: (
+    internal var onSelectShippingMethod: (
         @MainActor (
             PKShippingMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingMethodUpdate
     )?
 
-    internal var onCouponCodeChange: (
+    internal var onChangeCouponCode: (
         @MainActor (
             String,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestCouponCodeUpdate
     )?
 
-    internal var onPaymentMethodChange: (
+    internal var onSelectPaymentMethod: (
         @MainActor (
             PKPaymentMethod,
             [PKPaymentSummaryItem]
@@ -107,15 +109,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         }
     }
 
-    package var currentAmount: Amount? {
-        guard let lastItem = paymentRequest.paymentSummaryItems.last else { return nil }
-        let minorUnits = AmountFormatter.minorUnitAmount(
-            from: lastItem.amount.decimalValue,
-            currencyCode: paymentRequest.currencyCode
-        )
-        return Amount(value: minorUnits, currencyCode: paymentRequest.currencyCode)
-    }
-
     package func replacing(amount: Amount) -> Self {
         let newConfig = self
         guard let lastItem = newConfig.paymentRequest.paymentSummaryItems.last else { return newConfig }
@@ -123,8 +116,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         var newItems = Array(newConfig.paymentRequest.paymentSummaryItems.dropLast())
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
         newConfig.paymentRequest.paymentSummaryItems = newItems
@@ -163,81 +155,81 @@ extension ApplePayConfiguration {
     ///
     /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
     /// and optionally updated shipping methods or errors.
-    /// - Parameter onShippingContactChange: The closure to call when the shipping contact changes.
+    /// - Parameter onSelectShippingContact: The closure to call when the shopper selects a shipping contact.
     ///   - Parameters:
     ///     - contact: The selected `PKContact` containing the shipping address and contact information.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
     ///   - Returns: A `PKPaymentRequestShippingContactUpdate` with updated summary items, shipping methods, and/or errors.
     /// - Returns: A modified copy of the configuration.
-    public func onShippingContactChange(
-        _ onShippingContactChange: @escaping @MainActor (
+    public func onSelectShippingContact(
+        _ onSelectShippingContact: @escaping @MainActor (
             PKContact,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingContactUpdate
     ) -> Self {
         var copy = self
-        copy.onShippingContactChange = onShippingContactChange
+        copy.onSelectShippingContact = onSelectShippingContact
         return copy
     }
 
     /// Sets the handler called when the shopper selects a shipping method.
     ///
     /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
-    /// - Parameter onShippingMethodChange: The closure to call when the shipping method changes.
+    /// - Parameter onSelectShippingMethod: The closure to call when the shopper selects a shipping method.
     ///   - Parameters:
     ///     - shippingMethod: The selected `PKShippingMethod` containing the shipping option details.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
     ///   - Returns: A `PKPaymentRequestShippingMethodUpdate` with updated summary items reflecting the new shipping cost.
     /// - Returns: A modified copy of the configuration.
-    public func onShippingMethodChange(
-        _ onShippingMethodChange: @escaping @MainActor (
+    public func onSelectShippingMethod(
+        _ onSelectShippingMethod: @escaping @MainActor (
             PKShippingMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingMethodUpdate
     ) -> Self {
         var copy = self
-        copy.onShippingMethodChange = onShippingMethodChange
+        copy.onSelectShippingMethod = onSelectShippingMethod
         return copy
     }
 
     /// Sets the handler called when the shopper enters or updates a coupon code.
     ///
     /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
-    /// - Parameter onCouponCodeChange: The closure to call when the coupon code changes.
+    /// - Parameter onChangeCouponCode: The closure to call when the shopper enters or updates a coupon code.
     ///   - Parameters:
     ///     - couponCode: The entered or updated coupon code string.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
     ///   - Returns: A `PKPaymentRequestCouponCodeUpdate` with updated summary items reflecting the applied discount
     ///    or errors if the code is invalid.
     /// - Returns: A modified copy of the configuration.
-    public func onCouponCodeChange(
-        _ onCouponCodeChange: @escaping @MainActor (
+    public func onChangeCouponCode(
+        _ onChangeCouponCode: @escaping @MainActor (
             String,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestCouponCodeUpdate
     ) -> Self {
         var copy = self
-        copy.onCouponCodeChange = onCouponCodeChange
+        copy.onChangeCouponCode = onChangeCouponCode
         return copy
     }
 
     /// Sets the handler called when the shopper selects a payment method.
     ///
     /// Return an updated `PKPaymentRequestPaymentMethodUpdate` with revised summary items.
-    /// - Parameter onPaymentMethodChange: The closure to call when the payment method changes.
+    /// - Parameter onSelectPaymentMethod: The closure to call when the payment method changes.
     ///   - Parameters:
     ///     - paymentMethod: The selected `PKPaymentMethod` containing the payment card details.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
     ///   - Returns: A `PKPaymentRequestPaymentMethodUpdate` with updated summary items reflecting any changes based on the payment method.
     /// - Returns: A modified copy of the configuration.
-    public func onPaymentMethodChange(
-        _ onPaymentMethodChange: @escaping @MainActor (
+    public func onSelectPaymentMethod(
+        _ onSelectPaymentMethod: @escaping @MainActor (
             PKPaymentMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestPaymentMethodUpdate
     ) -> Self {
         var copy = self
-        copy.onPaymentMethodChange = onPaymentMethodChange
+        copy.onSelectPaymentMethod = onSelectPaymentMethod
         return copy
     }
     
@@ -247,6 +239,15 @@ extension ApplePayConfiguration {
     public func allowOnboarding(_ allowOnboarding: Bool) -> Self {
         var copy = self
         copy.allowOnboarding = allowOnboarding
+        return copy
+    }
+
+    /// Sets the appearance of the Apple Pay button.
+    /// - Parameter buttonAppearance: The Apple Pay button appearance.
+    /// - Returns: A modified copy of the configuration.
+    public func buttonAppearance(_ buttonAppearance: ApplePayButtonAppearance) -> Self {
+        var copy = self
+        copy.buttonAppearance = buttonAppearance
         return copy
     }
 }

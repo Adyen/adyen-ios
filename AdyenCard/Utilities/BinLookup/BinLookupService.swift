@@ -11,12 +11,12 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// Provide cardType detection based on BinLookup API.
+/// Provide cardBrand detection based on BinLookup API.
 internal protocol AnyBinLookupService {
     
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
-    func requestCardType(for bin: String, supportedCardTypes: [CardType], completion: @escaping CompletionHandler)
+    func requestCardBrand(for bin: String, supportedCardBrands: [CardBrand], completion: @escaping CompletionHandler)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
@@ -39,9 +39,9 @@ internal final class BinLookupService: AnyBinLookupService {
         self.binLookupType = binLookupType
     }
     
-    internal func requestCardType(
+    internal func requestCardBrand(
         for bin: String,
-        supportedCardTypes: [CardType],
+        supportedCardBrands: [CardBrand],
         completion: @escaping CompletionHandler
     ) {
         if let cached = cache[bin] {
@@ -55,7 +55,7 @@ internal final class BinLookupService: AnyBinLookupService {
             return completion(.failure(error))
         }
         
-        let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes, type: binLookupType)
+        let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardBrands, type: binLookupType)
         Task { @MainActor in
             do {
                 let response: BinLookupResponse = try await apiClient.performAsync(request)

@@ -4,12 +4,20 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import AdyenUI
 import Testing
 import UIKit
 
 struct AdyenUIAssetsAccessTests {
-    @Test("Images", arguments: [UIImage.adyenLock, UIImage.systemLock])
+    @Test("Images", arguments: [
+        UIImage.adyenCheckmark,
+        UIImage.adyenChevronRight,
+        UIImage.adyenWarning,
+        UIImage.adyenChevronDown,
+        UIImage.adyenCamera,
+        UIImage.adyenSearch,
+        UIImage.adyenCross
+    ])
     func verifyImages(image: UIImage?) {
         #expect(image != nil)
     }

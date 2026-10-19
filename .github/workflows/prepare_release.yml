@@ -27,7 +27,7 @@ jobs:
     steps:
     
     # Checking out the current branch
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
     
@@ -37,13 +37,6 @@ jobs:
         Scripts/increment_version.sh ${{ env.SDK_VERSION }}
       env:
         SDK_VERSION: ${{ github.event.inputs.sdk-version }}
-        
-    # Generating Docs (will show up as changes in the PR)
-    - name: Generate Docs
-      run: |
-        Scripts/generate_docc_documentation.sh
-      env:
-        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
         
     # Sanitizing the Release Notes from the get-release-notes job
     - name: Prepare Release Notes
@@ -60,6 +53,16 @@ jobs:
         fi
 
         mkdir -p "$TMP_DIR"
+
+        LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+        SOURCE_COMMIT_SHA="${{ github.sha }}"
+        if [ -n "$LAST_TAG" ]; then
+          echo "**Changes since \`$LAST_TAG\`:** https://github.com/${{ github.repository }}/compare/${LAST_TAG}...${SOURCE_COMMIT_SHA}" >> $RELEASE_NOTES_FILE_PATH
+          echo "" >> $RELEASE_NOTES_FILE_PATH
+          echo "---" >> $RELEASE_NOTES_FILE_PATH
+          echo "" >> $RELEASE_NOTES_FILE_PATH
+        fi
+
         echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}

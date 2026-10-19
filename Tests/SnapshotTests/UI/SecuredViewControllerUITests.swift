@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
 @testable import AdyenComponents
+import Foundation
+import XCTest
 
 class SecuredViewControllerUITests: XCTestCase {
     

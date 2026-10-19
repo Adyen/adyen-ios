@@ -7,49 +7,49 @@
 import Adyen
 import UIKit
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 
 /// Contains the styling customization options for the QR code component.
-public struct QRCodeComponentStyle: ViewStyle {
+package struct QRCodeComponentStyle: ViewStyle {
     
     /// The copy button style.
-    public var copyCodeButton = ButtonStyle(
+    package var copyCodeButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
     )
 
     /// The save as image button style.
-    public var saveAsImageButton = ButtonStyle(
+    package var saveAsImageButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
     )
     
     /// The instruction label style.
-    public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
+    package var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
     
     /// The amount to pay label style.
-    public var amountToPayLabel = TextStyle(
+    package var amountToPayLabel = TextStyle(
         font: .preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
         color: UIColor.Adyen.componentLabel
     )
 
     /// The progress view style.
-    public var progressView = ProgressViewStyle(
+    package var progressView = ProgressViewStyle(
         progressTintColor: UIColor.Adyen.defaultBlue,
         trackTintColor: UIColor.Adyen.lightGray
     )
     
     /// The expiration label style.
-    public var expirationLabel = TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel)
+    package var expirationLabel = TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel)
     
     /// The corner rounding for the logo
-    public var logoCornerRounding: CornerRounding = .fixed(5)
+    package var logoCornerRounding: CornerRounding = .fixed(5)
         
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    package var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the QR code component style with the default style
-    public init() {}
+    package init() {}
 }

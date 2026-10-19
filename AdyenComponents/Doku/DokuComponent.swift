@@ -15,11 +15,11 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Doku Wallet, Doku Alfamart, and Doku Indomaret  payments.
-public final class DokuComponent: AbstractPersonalInformationComponent {
+package final class DokuComponent: AbstractPersonalInformationComponent {
 
     /// Configuration for Doku Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     private let dokuPaymentMethod: DokuPaymentMethod
 
     /// Initializes the Doku component.
@@ -27,7 +27,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: DokuPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()

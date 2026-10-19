@@ -8,13 +8,12 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
-public class SupportedPaymentMethodLogosView: UIView {
-    
-    public struct Style: ViewStyle {
-        public var backgroundColor: UIColor = .clear
-        
-        public var images: ImageStyle = .init(
+package class SupportedPaymentMethodLogosView: UIView {
+
+    package struct Style: ViewStyle {
+        package var backgroundColor: UIColor = .clear
+
+        package var images: ImageStyle = .init(
             borderColor: UIColor.Adyen.componentSeparator,
             borderWidth: 1.0 / UIScreen.main.nativeScale,
             cornerRadius: 3.0,
@@ -22,12 +21,15 @@ public class SupportedPaymentMethodLogosView: UIView {
             contentMode: .scaleAspectFit
         )
         
-        public var trailingText: TextStyle = .init(
+        /// The color of the shadow shown behind each logo. `nil` shows no shadow.
+        package var logoShadowColor: UIColor?
+
+        package var trailingText: TextStyle = .init(
             font: .preferredFont(forTextStyle: .callout),
             color: UIColor.Adyen.componentSecondaryLabel
         )
         
-        public init() {}
+        package init() {}
     }
     
     internal let imageSize: CGSize
@@ -48,7 +50,7 @@ public class SupportedPaymentMethodLogosView: UIView {
     
     @AdyenDependency(\.imageLoader) private var imageLoader
     
-    public init(
+    package init(
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
@@ -64,7 +66,7 @@ public class SupportedPaymentMethodLogosView: UIView {
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
     
-    override public func willMove(toSuperview newSuperview: UIView?) {
+    override package func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         
         if newSuperview != nil {
@@ -80,16 +82,20 @@ public class SupportedPaymentMethodLogosView: UIView {
     private func updateContent() {
         backgroundColor = style.backgroundColor
         
-        let imageViews = imageUrls.map { url in
-            let imageView = UIImageView()
-            imageView.adyen.apply(style.images)
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
-                imageView.heightAnchor.constraint(equalToConstant: imageSize.height)
-            ])
-            imageView.load(url: url, using: imageLoader)
-            return imageView
+        let imageViews = imageUrls.map { url -> UIView in
+            let logoView = PaymentLogoView(size: imageSize, imageLoader: imageLoader)
+            logoView.imageView.adyen.apply(style.images)
+            logoView.shadowColor = style.logoShadowColor
+            switch style.images.cornerRounding {
+            case let .fixed(radius):
+                logoView.cornerRadius = radius
+            case .none:
+                logoView.cornerRadius = 0
+            case let .percent(percent):
+                logoView.cornerRadius = min(imageSize.width, imageSize.height) * percent
+            }
+            logoView.load(url: url)
+            return logoView
         }
         
         let label = UILabel()

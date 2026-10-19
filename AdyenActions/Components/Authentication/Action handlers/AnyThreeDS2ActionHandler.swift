@@ -5,8 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.Component
-
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -26,7 +24,7 @@ internal protocol AnyThreeDS2ActionHandler {
 
     var threeDSRequestorAppURL: URL? { get set }
 
-    var presentationDelegate: PresentationDelegate? { get set }
+    var actionPresentationDelegate: ActionPresentationDelegate? { get set }
 }
 
 internal protocol ComponentWrapper: Component {

@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenComponents
+@testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -55,7 +55,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withValidPaymentMethod_returnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponentConfiguration()
+        let configuration = ACHDirectDebitConfiguration()
 
         // When
         let component = sut.create(
@@ -72,7 +72,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withCustomConfiguration_usesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        var configuration = ACHDirectDebitComponentConfiguration()
+        var configuration = ACHDirectDebitConfiguration()
         configuration.showsSubmitButton = false
 
         // When
@@ -90,10 +90,44 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         )
     }
 
+    func test_create_withSessionConfiguration_overridesStorePaymentMethodVisibility() throws {
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        let configuration = ACHDirectDebitConfiguration()
+            .showStorePaymentMethod(true)
+        sut = ACHDirectDebitComponentFactory(
+            sessionConfiguration: .init(
+                installmentConfiguration: nil,
+                showStorePaymentMethod: false
+            )
+        )
+
+        let component = sut.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertFalse(component.configuration.showStorePaymentMethod)
+    }
+
+    func test_create_withoutSessionConfiguration_preservesStorePaymentMethodVisibility() throws {
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        let configuration = ACHDirectDebitConfiguration()
+            .showStorePaymentMethod(false)
+
+        let component = sut.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertFalse(component.configuration.showStorePaymentMethod)
+    }
+
     func test_create_preservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponentConfiguration()
+        let configuration = ACHDirectDebitConfiguration()
 
         // When
         let component = sut.create(
@@ -117,7 +151,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponentConfiguration()
+        let configuration = ACHDirectDebitConfiguration()
 
         // When
         let component = sut.create(
@@ -136,10 +170,10 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withCustomTheme_propagatesThemeToComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        var configuration = ACHDirectDebitComponentConfiguration()
+        var configuration = ACHDirectDebitConfiguration()
 
         let customTheme = CheckoutTheme()
-            .colors(AdyenColors(primary: .systemPink))
+            .colors(CheckoutColors(primary: .systemPink))
         configuration.theme = customTheme
 
         // When
@@ -188,7 +222,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod1 = try XCTUnwrap(createACHPaymentMethod())
         let paymentMethod2 = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponentConfiguration()
+        let configuration = ACHDirectDebitConfiguration()
 
         // When
         let component1 = sut.create(

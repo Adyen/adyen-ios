@@ -6,8 +6,8 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 import Adyen3DS2
-@_spi(AdyenInternal) @testable import AdyenActions
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenActions
+@testable import AdyenCard
 import XCTest
 
 final class ThreeDS2ServiceLegacyTests: XCTestCase {

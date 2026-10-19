@@ -7,28 +7,27 @@
 import Foundation
 
 /// Contains the country-specific specifications for countries that adopt the IBAN standard.
-@_spi(AdyenInternal)
-public struct IBANSpecification {
-    
+package struct IBANSpecification {
+
     /// The highest possible length of an IBAN.
-    public static let highestMaximumLength = 32
-    
+    package static let highestMaximumLength = 32
+
     /// The code of the country to which the specifications apply.
-    public let countryCode: String
-    
+    package let countryCode: String
+
     /// The length of a valid IBAN.
-    public let length: Int
-    
+    package let length: Int
+
     /// The structure of the underlying BBAN.
-    public let structure: String
-    
+    package let structure: String
+
     /// An example of a valid IBAN.
-    public let example: String
-    
+    package let example: String
+
     /// Returns the IBAN specification for the country with the given code, or `nil` if none could be found.
     ///
     /// - Parameter countryCode: The code of the country to retrieve the IBAN specification for.
-    public init?(forCountryCode countryCode: String) {
+    package init?(forCountryCode countryCode: String) {
         guard let specification = IBANSpecification.specifications[countryCode] else {
             return nil
         }

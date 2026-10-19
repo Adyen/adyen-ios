@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 import AdyenNetworking
 #if canImport(AdyenUI)
     import AdyenUI
@@ -21,8 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-public class CardComponent: PresentableComponent,
-    PaymentMethodAware,
+package class CardComponent: PaymentComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -33,23 +31,22 @@ public class CardComponent: PresentableComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     internal let binInfoProvider: AnyBinInfoProvider
 
     /// The card payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cardPaymentMethod
     }
 
     /// The supported card types.
-    public let supportedCardTypes: [CardType]
+    package let supportedCardBrands: [CardBrand]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardConfiguration
+    package internal(set) var configuration: CardConfiguration
 
     /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
     /// attached, used for all card UI string lookups.
@@ -61,33 +58,13 @@ public class CardComponent: PresentableComponent,
     }
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            storedCardComponent?.delegate = delegate
-            // override installment config if using session (when session is set as delegate)
-            if let installmentAware = delegate as? InstallmentConfigurationAware,
-               installmentAware.isSession {
-                configuration.installmentConfiguration = installmentAware.installmentConfiguration
-            }
-
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showStorePaymentMethod = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The partial payment order if any.
-    public var order: PartialPaymentOrder? {
-        didSet {
-            storedCardComponent?.order = order
-        }
-    }
+    package var order: PartialPaymentOrder?
 
-    /// Determines whether the storedCardComponent is active
-    private var isStoredCardComponentActive: Bool {
-        storedCardComponent != nil
-    }
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// Initializes the card component.
     ///
@@ -95,7 +72,7 @@ public class CardComponent: PresentableComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init()
@@ -132,56 +109,27 @@ public class CardComponent: PresentableComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
+        self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
-        if let storedCardComponent {
-            return storedCardComponent.viewController
-        }
-        return securedViewController
+    package var viewController: UIViewController {
+        securedViewController
     }
 
-    public func stopLoading() {
-        // since storedCardComponent is instantiated through this class
-        // cardViewController should not be accessed when it's the storedCardComponent
-        // we should separate stored card component logic into its own
-        if isStoredCardComponentActive { return }
-
+    package func stopLoading() {
         cardViewController.stopLoading()
     }
-
-    // MARK: - Stored Card
-
-    package lazy var storedCardComponent: StoredPaymentComponent? = {
-        guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
-            return nil
-        }
-        // TODO: FIX StoredCard UI
-        if configuration.showSecurityCodeForStoredCard {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
-            storedComponent.localizationParameters = resolvedLocalizationParameters
-            return storedComponent
-        } else {
-            let storedComponent = StoredPaymentMethodComponent(
-                paymentMethod: paymentMethod,
-                context: context
-            )
-            storedComponent.localizationParameters = resolvedLocalizationParameters
-            return storedComponent
-        }
-    }()
 
     /// Updates the visibility of the store payment method switch.
     ///
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
-    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    package func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
 
-    public func update(storePaymentMethodFieldValue isOn: Bool) {
+    package func update(storePaymentMethodFieldValue isOn: Bool) {
         cardViewController.update(storePaymentMethodFieldValue: isOn)
     }
 
@@ -197,7 +145,7 @@ public class CardComponent: PresentableComponent,
             formStyle: configuration.style,
             amount: context.amount,
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
-            supportedCardTypes: supportedCardTypes,
+            supportedCardBrands: supportedCardBrands,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
             localizationParameters: resolvedLocalizationParameters,
@@ -219,7 +167,6 @@ public class CardComponent: PresentableComponent,
     }()
 
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
@@ -227,11 +174,11 @@ public class CardComponent: PresentableComponent,
             type: data.type
         )
         infoEvent.target = data.target
-        infoEvent.brand = data.brands?.first?.type.rawValue
+        infoEvent.brand = data.brands?.first?.brand.rawValue
 
         // Send configData only when co-badged cards are displayed
         if data.type == .displayed, infoEvent.target == .dualBrandButton {
-            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.brand.rawValue).joined(separator: ","))
         }
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)
@@ -243,6 +190,10 @@ public class CardComponent: PresentableComponent,
 
 extension CardComponent: CardViewControllerDelegate {
 
+    internal func didSelectSubmitButton() {
+        self.performSubmit()
+    }
+
     internal func didChange(pan: String) {
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
@@ -250,17 +201,18 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        binThrottler.throttle { [weak self] in
-            guard let self else { return }
-            self.configuration.onBinChange?(bin)
-        }
+        configuration.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {
-        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardBrands) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
-            self.configuration.onBinLookup?(binInfo.brands ?? [])
+            guard !binInfo.isCreatedLocally else { return }
+            let brands = (binInfo.brands ?? []).map {
+                BinLookupBrand(brand: $0.brand.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
+            }
+            self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
     }
 }
@@ -271,13 +223,12 @@ private extension CardComponent {
 
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            let supportedCountryCodes = configuration.billingAddress.countryCodes,
-            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            configuration.billingAddressMode.supports(countryCode: preferredCountry) {
             return preferredCountry
         }
 
         return
-            configuration.billingAddress.countryCodes?.first ??
+            configuration.billingAddressMode.supportedCountryCodes?.first ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
     }
@@ -295,7 +246,7 @@ private extension CardConfiguration {
         .init(
             for: .billing,
             localizationParameters: localizationParameters,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
@@ -315,24 +266,11 @@ private extension CardConfiguration {
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             handleShowSearch: nil,
             completionHandler: completionHandler
         )
-    }
-}
-
-// MARK: - SubmitCustomizable
-
-extension CardComponent: SubmittableComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        cardViewController.validate()
     }
 }
 
@@ -349,5 +287,39 @@ extension CardComponent {
         )
 
         context.analyticsProvider?.add(log: logEvent)
+    }
+}
+
+extension BillingAddressMode {
+
+    internal var supportedCountryCodes: [String]? {
+        switch self {
+        case let .full(supportedCountryCodes, _):
+            return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes
+        case .none, .postalCode, .lookup:
+            return nil
+        }
+    }
+
+    internal func supports(countryCode: String) -> Bool {
+        guard let supportedCountryCodes else { return true } // nil == all countries supported
+        return supportedCountryCodes.contains(countryCode)
+    }
+
+    internal var hideForCardBrands: Set<CardBrand> {
+        switch self {
+        case .none:
+            return []
+        case let .postalCode(hideForCardBrands):
+            return hideForCardBrands
+        case let .full(_, hideForCardBrands):
+            return hideForCardBrands
+        case let .lookup(hideForCardBrands, _, _):
+            return hideForCardBrands
+        }
+    }
+
+    internal func shouldHide(for cardBrands: [CardBrand]) -> Bool {
+        !hideForCardBrands.isDisjoint(with: cardBrands)
     }
 }

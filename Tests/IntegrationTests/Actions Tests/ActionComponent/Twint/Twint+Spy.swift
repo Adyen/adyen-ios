@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-@testable @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
+import Foundation
 
 #if canImport(TwintSDK)
 

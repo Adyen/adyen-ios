@@ -54,25 +54,17 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .billingAddressMode(
-                    .lookup(
-                        onAddressLookup: { searchTerm in
-                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        }
-                    )
-                )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
-                .onBinLookup { brands in
-                    print("Bin lookup response \(brands)")
+                .onBinLookup { data in
+                    print("Bin lookup response \(data)")
                 }
         }
         .localizationProvider(DemoLocalizationProvider())
@@ -80,16 +72,15 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onSubmit { [weak self] data in
-            guard let self else { throw CancellationError() }
-            return try await self.callPayments(with: data)
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callPayments(with: data)
         }
         .onAdditionalDetails { [weak self] data in
-            guard let self else { throw CancellationError() }
-            return try await self.callDetails(with: data)
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callDetails(with: data)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -97,7 +88,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
@@ -108,23 +99,31 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Payment response handling
 
-    private func callPayments(with data: PaymentComponentData) async throws -> SubmitResult {
-        let request = PaymentsRequest(data: data)
-        let response = try await asyncApiClient.performAsync(request)
-        if let action = response.action {
-            return .action(action)
+    private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
+        do {
+            let request = PaymentsRequest(data: data)
+            let response = try await asyncApiClient.performAsync(request)
+            if let action = response.action {
+                return .action(action)
+            }
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
         }
-        return .completion(resultCode: response.resultCode.rawValue)
     }
 
-    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        let response = try await asyncApiClient.performAsync(request)
-        return .completion(resultCode: response.resultCode.rawValue)
+    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
+        do {
+            let request = PaymentDetailsRequest(
+                details: data.details,
+                paymentData: data.paymentData,
+                merchantAccount: ConfigurationConstants.current.merchantAccount
+            )
+            let response = try await asyncApiClient.performAsync(request)
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
+        }
     }
     
     // MARK: - Private
@@ -154,8 +153,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -286,12 +286,5 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
         guard let languageCode = locale.languageCode else { return nil }
         return overrides[languageCode]?[key]
-    }
-}
-
-extension CardComponentAdvancedFlowExample: PresentationDelegate {
-   
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

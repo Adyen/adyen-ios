@@ -4,8 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 import XCTest
 
 class CardNumberFormatterTests: XCTestCase {
@@ -21,7 +20,7 @@ class CardNumberFormatterTests: XCTestCase {
     
     func testAmexFormatting() {
         let formatter = CardNumberFormatter()
-        formatter.cardType = CardType.americanExpress
+        formatter.cardBrand = CardBrand.americanExpress
         
         XCTAssertEqual(formatter.formattedValue(for: "37000"), "3700 0")
         XCTAssertEqual(formatter.formattedValue(for: "37000000000"), "3700 000000 0")

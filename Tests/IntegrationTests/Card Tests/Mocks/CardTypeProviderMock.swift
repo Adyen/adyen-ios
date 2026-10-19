@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 
 final class BinInfoProviderMock: AnyBinInfoProvider {
-    func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+    func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void) {
         onFetch?(completion)
     }
 

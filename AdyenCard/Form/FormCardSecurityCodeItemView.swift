@@ -26,7 +26,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         
         observe(item.$selectedCard) { [weak self] cardsType in
             guard let self else { return }
-            let number = cardsType == CardType.americanExpress ? "4" : "3"
+            let number = String(cardsType.expectedSecurityCodeLength)
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
             
             // Set placeholder on item - it will be shown in footer label reactively
@@ -75,6 +75,32 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
+    
+    override internal func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard !string.isEmpty else { return true }
+
+        // Multi-character replacements (e.g. paste) are allowed through here and truncated
+        // to the expected length by the formatter; a single typed keystroke is rejected
+        // once it would exceed the max length.
+        let isSingleCharacterReplacement = string.count == 1
+        guard isSingleCharacterReplacement else { return true }
+        
+        let currentText = textField.text ?? ""
+        guard let textRange = Range(range, in: currentText) else { return true }
+        
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        let digitCount = updatedText.filter(\.isNumber).count
+        
+        return digitCount <= expectedLength
+    }
+    
+    private var expectedLength: Int {
+        item.selectedCard.expectedSecurityCodeLength
+    }
 }
 
 extension FormCardSecurityCodeItemView {
@@ -100,7 +126,7 @@ extension FormCardSecurityCodeItemView {
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstraints()
-            observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
+            observe(item.$selectedCard) { [weak self] cardBrand in self?.flipCard(toFront: cardBrand == CardBrand.americanExpress) }
         }
         
         @available(*, unavailable)
@@ -145,7 +171,7 @@ extension FormCardSecurityCodeItemView {
             )
         }
         
-        override public var accessibilityIdentifier: String? {
+        override package var accessibilityIdentifier: String? {
             didSet {
                 hintImage.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "imageView")
             }

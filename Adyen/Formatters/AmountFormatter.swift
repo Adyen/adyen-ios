@@ -19,7 +19,7 @@ public final class AmountFormatter {
     ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
     /// - Returns: The formatted text formatted as currency amount.
     public static func formatted(amount: Int, currencyCode: String, localeIdentifier: String? = nil) -> String? {
-        let decimalAmount = AmountFormatter.decimalAmount(amount, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
+        let decimalAmount = AmountFormatter.decimalAmount(amount, currencyCode: currencyCode)
         let formatter = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier)
         return formatter.string(from: decimalAmount)
     }
@@ -29,9 +29,8 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - majorUnitAmount: The amount in major currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
-    public static func minorUnitAmount(from majorUnitAmount: Double, currencyCode: String, localeIdentifier: String? = nil) -> Int {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+    public static func minorUnitAmount(from majorUnitAmount: Double, currencyCode: String) -> Int {
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         
         return Int(majorUnitAmount * pow(Double(10), Double(maximumFractionDigits)))
     }
@@ -41,9 +40,8 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - majorUnitAmount: The amount in major currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
-    public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String, localeIdentifier: String? = nil) -> Int {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+    public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String) -> Int {
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         
         let roundTowardsZero = NSDecimalNumberHandler(
             roundingMode: majorUnitAmount.isSignMinus ? .up : .down,
@@ -64,9 +62,8 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - amount: The amount in minor currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
-    public static func decimalAmount(_ amount: Int, currencyCode: String, localeIdentifier: String? = nil) -> NSDecimalNumber {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+    public static func decimalAmount(_ amount: Int, currencyCode: String) -> NSDecimalNumber {
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         let decimalMinorAmount = NSDecimalNumber(value: amount)
         return decimalMinorAmount.multiplying(byPowerOf10: Int16(-maximumFractionDigits))
     }
@@ -78,27 +75,12 @@ public final class AmountFormatter {
         if let localeIdentifier {
             formatter.locale = Locale(identifier: localeIdentifier)
         }
-        if let maxDigits = maximumFractionDigits(for: currencyCode, localeIdentifier: localeIdentifier) {
-            formatter.maximumFractionDigits = maxDigits
-        }
+        formatter.maximumFractionDigits = minorDigits(for: currencyCode)
         return formatter
     }
     
-    private static func maximumFractionDigits(for currencyCode: String, localeIdentifier: String?) -> Int? {
-        // For some currency codes iOS returns the wrong number of minor units.
-        // The below overrides are obtained from https://en.wikipedia.org/wiki/ISO_4217
-        
-        switch currencyCode {
-        case "ISK", "CLP", "COP", "MRU", "RSD", "GHS", "HUF":
-            // iOS returns 0, which is in accordance with ISO-4217, but conflicts with the Adyen backend.
-            // iOS 26.4 Beta: Returns 0 for HUF (not accordant with ISO-4217)
-            return 2
-        case "CVE", "IDR":
-            // iOS returns 2 instead.
-            return 0
-        default:
-            return nil
-        }
+    private static func minorDigits(for currencyCode: String) -> Int {
+        CurrencyMinorDigitsProvider().minorDigits(for: currencyCode)
     }
 
 }

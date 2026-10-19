@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public extension UIView {
+package extension UIView {
     
     /// Marks the element as selected/not-selected by inserting/removing `.selected` into/from the `accessibilityTraits`
     ///

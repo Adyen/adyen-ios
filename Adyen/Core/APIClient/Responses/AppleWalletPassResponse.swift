@@ -9,16 +9,16 @@ import Foundation
 
 package struct AppleWalletPassResponse: Response {
 
-    public let passData: Data
+    package let passData: Data
 
-    public init(passBase64String: String) throws {
+    package init(passBase64String: String) throws {
         guard let passData = Data(base64Encoded: passBase64String) else {
             throw AppleWalletError.failedToAddToAppleWallet
         }
         self.passData = passData
     }
     
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let passBase64String = try container.decode(String.self, forKey: .passBase64String)
         

@@ -17,20 +17,26 @@ package protocol AnyPersonalInformationConfiguration {
 }
 
 /// Any component's most basic configuration.
-public struct BasicComponentConfiguration {
+package struct BasicComponentConfiguration: CheckoutComponentConfiguration {
+
+    /// `BasicComponentConfiguration` is shared across multiple different payment method types,
+    /// so this value is not tied to a specific `PaymentMethodType`. It is only used as a fallback
+    /// key when no explicit per-payment-method-type configuration has been registered.
+    package var componentType: CheckoutComponentType = .payment(.other(""))
 
     /// The UI style of the component.
-    public var style: FormComponentStyle
+    package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
     package var theme: CheckoutTheme = .init()
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    @_spi(AdyenInternal)
-    public private(set) var showsSubmitButton: Bool
+    package var showsSubmitButton: Bool
 
     /// Indicates the localization parameters, leave it nil to use the default parameters.
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
 
     /// Initializes a new instance of `BasicComponentConfiguration`
     ///
@@ -39,7 +45,7 @@ public struct BasicComponentConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
-    public init(
+    package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true
     ) {
@@ -63,20 +69,19 @@ public struct BasicComponentConfiguration {
 }
 
 /// The concrete configuration of any component that can contain shopper information.
-public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
+package struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
 
     /// The UI style of the component.
-    public var style: FormComponentStyle
+    package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
     package var theme: CheckoutTheme = .init()
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    @_spi(AdyenInternal)
-    public let showsSubmitButton: Bool
+    package let showsSubmitButton: Bool
 
-    public var shopperInformation: PrefilledShopperInformation?
-    
+    package var shopperInformation: PrefilledShopperInformation?
+
     package var localizationParameters: LocalizationParameters?
 
     /// Initializes a new instance of `PersonalInformationConfiguration`
@@ -87,7 +92,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
-    public init(
+    package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil

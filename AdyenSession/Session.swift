@@ -13,20 +13,12 @@ import Foundation
 
 /// ``Session`` manages the checkout session lifecycle, handling
 /// `/payments`, `/payment/details`, and partial payment calls internally.
-public final class Session: SessionProtocol {
-
+package final class Session: SessionProtocol {
+    
     /// The session context information.
-    public internal(set) var state: Session.State
-
-    /// The presentation delegate.
-    package weak var presentationDelegate: PresentationDelegate?
+    package internal(set) var state: Session.State
     
     internal let context: AdyenContext
-    
-    package var currentResult: CheckoutResult? {
-        guard let resultCode = state.resultCode else { return nil }
-        return CheckoutResult(resultCode: resultCode, sessionResult: state.sessionResult)
-    }
     
     package var showRemovePaymentMethodButton: Bool {
         state.responseConfiguration.showRemovePaymentMethodButton
@@ -52,11 +44,9 @@ public final class Session: SessionProtocol {
     internal init(
         state: Session.State,
         baseAPIClient: AsyncAPIClientProtocol,
-        context: AdyenContext,
-        presentationDelegate: PresentationDelegate? = nil
+        context: AdyenContext
     ) {
         self.state = state
-        self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
         self.context = context
     }
@@ -230,8 +220,8 @@ private extension Session {
 extension Session {
     
     /// Current state/information of session that gets updated after each internal call.
-    public struct State {
-
+    package struct State {
+        
         /// The session data.
         package internal(set) var data: String
         
@@ -248,38 +238,27 @@ extension Session {
         package let amount: Amount
         
         /// The payment methods
-        public let paymentMethods: PaymentMethods
+        package let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
-        internal var resultCode: CheckoutResultCode?
+        package internal(set) var resultCode: CheckoutResultCode?
         
         /// Encoded result string from the latest API call
-        internal var sessionResult: String?
+        package internal(set) var sessionResult: String?
         
         /// Component related configuration object
         internal let responseConfiguration: SessionSetupResponse.Configuration
     }
 }
 
-// MARK: - Component Configuration Awareness
+// MARK: - Component Configuration
 
-extension Session: AdyenSessionAware {
-    
-    package nonisolated var isSession: Bool {
-        true
-    }
-}
+extension Session {
 
-extension Session: InstallmentConfigurationAware {
-    
-    package var installmentConfiguration: InstallmentConfiguration? {
-        state.responseConfiguration.installmentOptions
-    }
-}
-
-extension Session: StorePaymentMethodFieldAware {
-    
-    package var showStorePaymentMethodField: Bool? {
-        state.responseConfiguration.enableStoreDetails
+    package var componentConfiguration: SessionComponentConfiguration {
+        .init(
+            installmentConfiguration: state.responseConfiguration.installmentOptions,
+            showStorePaymentMethod: state.responseConfiguration.enableStoreDetails
+        )
     }
 }
