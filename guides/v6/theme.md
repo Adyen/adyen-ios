@@ -77,5 +77,4 @@ Start from `CheckoutColors.default` and override only the tokens you need.
 - [v6 foundations](README.md)
 - [Card component overview](card.md)
 - [Card component: session flow](card-session-flow.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 - [Migration notes](../../MIGRATION.md)

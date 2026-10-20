@@ -2,7 +2,7 @@
 
 This guide covers the v6 checkout entry points and the shared concepts used by all payment method docs.
 
-For card-specific configuration and flow guides, see [card.md](card.md), [card-session-flow.md](card-session-flow.md), and [card-advanced-flow.md](card-advanced-flow.md). For theme customization, see [theme.md](theme.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
+For card-specific configuration and flow guides, see [card.md](card.md) and [card-session-flow.md](card-session-flow.md). For theme customization, see [theme.md](theme.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
 
 ## Overview
 
@@ -11,7 +11,7 @@ The public integration surface is centered around four concepts:
 - `Checkout.setup(...)` is the entry point for checkout flows.
 - `CheckoutConfiguration` is the shared configuration container.
 - Flow callbacks are configured with closures.
-- Payment components are created from `SessionCheckout` or `AdvancedCheckout`.
+- Payment components are created from `SessionCheckout`.
 
 ## Installation
 
@@ -26,7 +26,7 @@ import AdyenUI
 import UIKit
 ```
 
-`AdyenCheckout` provides the setup APIs for session, advanced, and action-only flows.
+`AdyenCheckout` provides the setup APIs for session and action-only flows. The advanced flow is not available in this release.
 
 ## CheckoutConfiguration
 
@@ -89,46 +89,6 @@ For card-specific session-controlled settings such as `showStorePaymentMethod(_:
 
 - create an individual payment component with `createPaymentComponent(for:)`
 - let you inspect or patch shopper data before submit with `onBeforeSubmit(_:)`
-
-## Advanced flow
-
-Use the advanced flow when your backend starts checkout with `/paymentMethods` and handles `/payments` and `/payments/details`.
-
-```swift
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    clientKey: clientKey
-) {
-    CardConfiguration()
-}
-
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration
-)
-.onSubmit { data in
-    try await callPayments(with: data)
-}
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
-
-`AdvancedCheckout` can:
-
-- create an individual payment component with `createPaymentComponent(for:)`
-- expose `onSubmit(_:)` for `/payments`
-- expose `onAdditionalDetails(_:)` for `/payments/details`
 
 ## Action-only flow
 
@@ -258,6 +218,5 @@ It is safe to pass all incoming URLs; any URL not belonging to an active checkou
 
 - [Card component overview](card.md)
 - [Card component: session flow](card-session-flow.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 - [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)

@@ -3,7 +3,6 @@
 This guide covers the shared card component API in v6. For flow-specific setup, use:
 
 - [Card component: session flow](card-session-flow.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 
 For the shared v6 concepts, see [README.md](README.md).
 
@@ -82,7 +81,6 @@ let configuration = try CheckoutConfiguration(
 ## Flow guides
 
 - Use [card-session-flow.md](card-session-flow.md) when your backend starts checkout with `/sessions`.
-- Use [card-advanced-flow.md](card-advanced-flow.md) when your backend starts checkout with `/paymentMethods` and handles `/payments` and `/payments/details`.
 
 ## Stored cards
 
@@ -107,6 +105,5 @@ For stored cards:
 
 - [v6 foundations](README.md)
 - [Card component: session flow](card-session-flow.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 - [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)

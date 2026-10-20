@@ -10,7 +10,6 @@ The entry points for integrating the SDK.
 - ``BaseCheckout``
 - ``PaymentCheckout``
 - ``SessionCheckout``
-- ``AdvancedCheckout``
 - ``ActionOnlyCheckout``
 - ``CheckoutPaymentComponent``
 
@@ -37,11 +36,7 @@ The entry points for integrating the SDK.
 - ``SessionResponse``
 - ``BeforeSubmitData``
 - ``BeforeSubmitResult``
-- ``CheckoutBeforeSubmitHandler``
-- ``SubmitResult``
-- ``CheckoutSubmitHandler``
 - ``AdditionalDetailsResult``
-- ``CheckoutAdditionalDetailsHandler``
 - ``DelegatedAuthenticationData``
 
 ## Payment Methods
@@ -223,7 +218,6 @@ The entry points for integrating the SDK.
 - ``AdyenContext``
 - ``Amount``
 - ``Environment``
-- ``PartialPayment``
 - ``PartialPaymentOrder``
 - ``PaymentComponentData``
 - ``ActionComponentData``

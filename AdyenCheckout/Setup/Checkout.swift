@@ -41,7 +41,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     /// - Returns: An advanced checkout instance exposing advanced-flow APIs.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
-    public static func setup(
+    package static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration
     ) async throws -> AdvancedCheckout {
