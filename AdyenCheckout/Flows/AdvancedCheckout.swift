@@ -9,7 +9,7 @@ import Foundation
 
 /// Checkout flow for integrations handling `/payments` and `/payments/details` themselves.
 @MainActor
-public final class AdvancedCheckout: PaymentCheckout {
+package final class AdvancedCheckout: PaymentCheckout {
 
     package let callbackStore: AdvancedCheckoutCallbackStore
 
@@ -22,7 +22,7 @@ public final class AdvancedCheckout: PaymentCheckout {
     /// - Parameter handler: Callback invoked with the final checkout result.
     ///   - result: The ``AdvancedCheckoutResult`` containing the payment ``AdvancedCheckoutResult/resultCode``
     ///     indicating the outcome of the payment.
-    public func onComplete(_ handler: @escaping @MainActor (_ result: AdvancedCheckoutResult) -> Void) -> Self {
+    package func onComplete(_ handler: @escaping @MainActor (_ result: AdvancedCheckoutResult) -> Void) -> Self {
         callbackStore.onComplete = handler
         return self
     }
@@ -33,7 +33,7 @@ public final class AdvancedCheckout: PaymentCheckout {
     ///   any shopper or browser information collected by the component.
     /// - Returns: A `SubmitResult` describing how checkout should continue, such as completion,
     /// presenting an action, retry, or partial payment handling.
-    public func onSubmit(_ handler: @escaping CheckoutSubmitHandler) -> Self {
+    package func onSubmit(_ handler: @escaping CheckoutSubmitHandler) -> Self {
         callbackStore.onSubmit = handler
         return self
     }
@@ -43,7 +43,7 @@ public final class AdvancedCheckout: PaymentCheckout {
     ///   - data: The `ActionComponentData` containing the action `details` and
     ///   optional `paymentData` returned by the previous `/payments` response.
     /// - Returns: An `AdditionalDetailsResult` describing how checkout should continue after the details are submitted.
-    public func onAdditionalDetails(_ handler: @escaping CheckoutAdditionalDetailsHandler) -> Self {
+    package func onAdditionalDetails(_ handler: @escaping CheckoutAdditionalDetailsHandler) -> Self {
         callbackStore.onAdditionalDetails = handler
         return self
     }

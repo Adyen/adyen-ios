@@ -29,8 +29,7 @@ let configuration = try CheckoutConfiguration(
 `hideStoredPaymentMethods` affects only the payment method list. It remains independent from
 `startWithLastStoredPaymentMethod`, so Drop-in can start with a stored method while hiding the stored section from the list.
 
-Stored payment method removal is available only through Session Checkout when enabled by the session response. Advanced Checkout
-does not expose stored payment method removal.
+Stored payment method removal is available only through Session Checkout when enabled by the session response.
 
 Drop-in now always skips the payment method list when exactly one presentable regular payment method is available. The former
 `allowsSkippingPaymentList` merchant setting has been removed, and its previous default of `false` no longer applies.
@@ -146,56 +145,14 @@ let checkout = try await Checkout.setup(
 
 #### Advanced flow
 
-##### Before (v5)
-
-```swift
-let apiContext = try APIContext(environment: .test, clientKey: clientKey)
-let context = AdyenContext(apiContext: apiContext, payment: payment)
-
-let component = CardComponent(
-    paymentMethod: paymentMethod,
-    context: context,
-    configuration: cardConfiguration
-)
-
-component.delegate = self
-```
-
-`PaymentComponentDelegate` handled `/payments`, and a separate action component handled `/payments/details` and redirects.
-
-##### After (v6)
-
-```swift
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    clientKey: clientKey
-) {
-    CardConfiguration()
-}
-
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration
-)
-.onSubmit { data in
-    try await callPayments(with: data)
-}
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
-.onComplete { result in
-    print(result.resultCode)
-}
-.onError { error in
-    print(error.localizedDescription)
-}
-```
-
-`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
+The advanced flow is not available in this release. Use the session flow for payment components.
+The `Checkout.setup(with: PaymentMethods, configuration:)` overload, `AdvancedCheckout`, `CheckoutSubmitHandler`,
+`SubmitResult` and `PartialPayment` are now package-only and cannot be used by merchant integrations.
+`AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Available payment methods
 
-`SessionCheckout` and `AdvancedCheckout` expose non-optional regular and stored payment-method arrays:
+`SessionCheckout` exposes non-optional regular and stored payment-method arrays:
 
 ```swift
 let paymentMethods = checkout.paymentMethods
@@ -206,7 +163,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 #### Payment method availability
 
-In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `SessionCheckout` and `AdvancedCheckout` let you check first:
+In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `SessionCheckout` lets you check first:
 
 ```swift
 if checkout.isPaymentMethodAvailable(for: .applePay) {
@@ -218,7 +175,7 @@ if checkout.isPaymentMethodAvailable(for: .applePay) {
 
 #### Action presentation
 
-Every checkout flow — `SessionCheckout`, `AdvancedCheckout` and `ActionOnlyCheckout` — exposes `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
+Both public checkout flows, `SessionCheckout` and `ActionOnlyCheckout`, expose `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
 
 ```swift
 .onAction { actionData, actionViewController in
@@ -238,12 +195,12 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
-- `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
+- `SessionCheckout` creates payment components for the active flow. The advanced flow is not available in this release.
 - `isPaymentMethodAvailable(for:)` checks whether a payment method can be used on the device before creating its component.
 - `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
-- Callback closure typealiases are prefixed with `Checkout` to avoid name collisions: `CheckoutSubmitHandler`, `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`.
+- Callback handler typealiases, including `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`, are now package-only. Public callback methods declare the closure signature inline. If your integration explicitly names a handler typealias, replace it with the corresponding closure type; closure-based calls remain unchanged.
 - `FinalizableComponent` and `Component.finalizeIfNeeded(with:completion:)` are no longer public, and `DropInComponent` no longer conforms to `FinalizableComponent`. Checkout ends the payment in the component itself and then reports the result through `onComplete` or `onFailure`.
 
 ### Card component
@@ -301,43 +258,6 @@ let checkout = try await Checkout.setup(
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
-
-#### Advanced flow
-
-##### Before (v5)
-
-```swift
-guard let paymentMethod = paymentMethods
-    .paymentMethod(ofType: CardPaymentMethod.self) else { return }
-
-let component = CardComponent(
-    paymentMethod: paymentMethod,
-    context: context,
-    configuration: cardConfiguration
-)
-
-component.cardComponentDelegate = self
-component.delegate = self
-```
-
-##### After (v6)
-
-```swift
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration
-)
-.onSubmit { data in
-    try await callPayments(with: data)
-}
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
 #### Callback migration
 

@@ -12,6 +12,7 @@ import Adyen
     import AdyenSession
 #endif
 import Foundation
+import UIKit
 
 /// Base checkout that supports action handling and final result callbacks.
 @MainActor
@@ -47,7 +48,9 @@ public class BaseCheckout {
     /// - Parameter handler: Callback invoked before the action is presented.
     ///   - actionData: The ``ActionData`` describing the action, including its ``ActionData/type``.
     ///   - actionViewController: The `UIViewController` the SDK built for the action.
-    public func onAction(_ handler: @escaping CheckoutActionHandler) -> Self {
+    public func onAction(
+        _ handler: @escaping @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
+    ) -> Self {
         resultCallbacks.onAction = handler
         return self
     }

@@ -67,6 +67,5 @@ Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConf
 ## Related docs
 
 - [Card component overview](card.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 - [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)

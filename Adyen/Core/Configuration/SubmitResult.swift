@@ -7,7 +7,7 @@
 import Foundation
 
 /// Result returned by `onSubmit` callback in the advanced flow.
-public enum SubmitResult: Sendable {
+package enum SubmitResult {
     
     /// The `/payments` call completed and carries a final `resultCode`.
     case completion(resultCode: String)
@@ -28,16 +28,16 @@ public enum SubmitResult: Sendable {
 
 /// Payload carried on `SubmitResult.partialPayment`, describing the partial-payment continuation.
 /// TODO: Revisit whether this should be nested in `SubmitResult` when adding Drop-in support.
-public struct PartialPayment: Sendable {
+package struct PartialPayment {
     
     /// The partial-payment order. `remainingAmount` is reachable via `order.remainingAmount`.
-    public let order: PartialPaymentOrder
+    package let order: PartialPaymentOrder
     
     /// Updated payment methods for the continuation flow. Callers must always provide an updated
     /// list when returning a partial-payment continuation.
-    public let paymentMethods: PaymentMethods
+    package let paymentMethods: PaymentMethods
     
-    public init(order: PartialPaymentOrder, paymentMethods: PaymentMethods) {
+    package init(order: PartialPaymentOrder, paymentMethods: PaymentMethods) {
         self.order = order
         self.paymentMethods = paymentMethods
     }
