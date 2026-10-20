@@ -12,6 +12,7 @@ import Adyen
     import AdyenSession
 #endif
 import Foundation
+import UIKit
 
 /// Base checkout that supports action handling and final result callbacks.
 @MainActor
