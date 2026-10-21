@@ -1654,6 +1654,95 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
     }
 
+    func test_installmentsField_withPreselectedValue_shouldPreselectMatchingOption() throws {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3], preselectedValue: 3)
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.formattedValue, "3 Installments")
+        XCTAssertEqual(sut.cardViewController.installments, Installments(totalMonths: 3, plan: .regular))
+    }
+
+    func test_installmentsField_withUnavailablePreselectedValue_shouldFallBackToOneTime() throws {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3], preselectedValue: 5)
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_whenCardBrandChanges_shouldPreselectBrandPreselectedValue() throws {
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
+            .visa: InstallmentOptions(values: [2, 3], preselectedValue: 2),
+            .americanExpress: InstallmentOptions(values: [2, 3])
+        ]
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            binProvider: BinInfoProviderMock()
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        // The preselected value of the detected brand is selected
+        installmentsItem.update(cardBrand: .visa)
+        XCTAssertEqual(installmentsItem.formattedValue, "2 Installments")
+        XCTAssertEqual(sut.cardViewController.installments, Installments(totalMonths: 2, plan: .regular))
+
+        // Switching to a brand without a preselected value resets the selection to one-time
+        installmentsItem.update(cardBrand: .americanExpress)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_submit_withPreselectedInstallment_shouldIncludeInstallmentsInPaymentData() throws {
+        let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3, 6], preselectedValue: preselectedInstallments.totalMonths)
+        ))
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+
+        let submission = expectation(description: "Card submits the pre-selected installment")
+        delegate.onDidSubmit = { data, _ in
+            XCTAssertEqual(data.installments, preselectedInstallments)
+            submission.fulfill()
+        }
+
+        let view = try XCTUnwrap(sut.viewController.view)
+        fillCard(on: view, with: Dummy.visaCard)
+        tapSubmitButton(on: view)
+
+        waitForExpectations(timeout: 10)
+    }
+
     func test_supportedCardLogos_whenFieldActiveOrInactive_shouldUpdateVisibility() throws {
 
         let sut = CardComponent(
@@ -2105,6 +2194,12 @@ extension CardComponentTests {
             configuration: configuration,
             binProvider: BinInfoProviderMock()
         )
+    }
+
+    private func makeSUT(installmentConfiguration: InstallmentConfiguration) -> CardComponent {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = installmentConfiguration
+        return makeSUT(configuration: configuration)
     }
 
     func fillCard(on view: UIView, with card: Card) {

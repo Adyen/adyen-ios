@@ -39,6 +39,14 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
     }()
 
+    /// The element to select when the available options change.
+    /// Preselects the installment count specified by `preselectedValue` if it is an available option,
+    /// and falls back to the one-time payment option otherwise.
+    private var preselectedElement: InstallmentElement {
+        guard let preselectedValue = currentInstallmentOptions?.preselectedValue else { return oneTimePaymentElement }
+        return additionalPickerElements.first { $0.identifier == String(preselectedValue) } ?? oneTimePaymentElement
+    }
+
     /// Creates the picker values to display in addition to `oneTimePaymentElement`
     private var additionalPickerElements: [InstallmentElement] {
         guard let currentInstallmentOptions else { return [] }
@@ -100,7 +108,7 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
     private func updatePickerContent() {
         // Reset the selection whenever the available options change (e.g. a card brand switch),
         // so a previously picked option is never shown when it is no longer selectable.
-        value = oneTimePaymentElement
+        value = preselectedElement
         // if there is no installment for the current card type then hide and clear the picker
         guard !additionalPickerElements.isEmpty else {
             selectableValues = [oneTimePaymentElement]
@@ -113,7 +121,7 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
     }
 
     override internal func resetValue() {
-        value = oneTimePaymentElement
+        value = preselectedElement
     }
 
     override internal func updateValidationFailureMessage() {
