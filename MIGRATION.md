@@ -162,15 +162,25 @@ The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `
 
 Pass callbacks to `Checkout.setup(..., callbacks:)` rather than chaining them on the returned checkout.
 `CheckoutCallbacks(onComplete:onFailure:)` requires both result handlers for session checkout. Session setup now returns
-`PaymentCheckout`; `SessionCheckout` has been removed, and `SessionCheckoutResult` is renamed to `CheckoutResult`.
+`Checkout`; `SessionCheckout` has been removed, and `SessionCheckoutResult` is renamed to `CheckoutResult`.
 Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavior. Modifiers return a copy, so retain the returned value.
 
 Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
 modifiers are optional. All handlers are supplied before setup, and callbacks cannot be changed on an active checkout.
 
+#### Checkout instances
+
+`Checkout` is now a final instance class as well as the setup entry point. Replace `PaymentCheckout` type annotations
+with `Checkout`; static calls such as `Checkout.setup(...)` and `Checkout.handleReturn(url:)` keep their names.
+`ActionOnlyCheckout` remains a separate final class and does not expose payment component or Drop-in creation.
+
+`BaseCheckout` is removed. The two checkout types no longer share a public superclass; update helpers, extensions,
+and stored properties that previously used it. Each checkout owns its core directly, and flow-specific callback
+requirements remain unchanged.
+
 #### Available payment methods
 
-`PaymentCheckout` exposes non-optional regular and stored payment-method arrays:
+`Checkout` exposes non-optional regular and stored payment-method arrays:
 
 ```swift
 let paymentMethods = checkout.paymentMethods
@@ -181,7 +191,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 #### Payment method availability
 
-In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `PaymentCheckout` lets you check first:
+In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `Checkout` lets you check first:
 
 ```swift
 if checkout.isPaymentMethodAvailable(for: .applePay) {
@@ -213,7 +223,7 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
-- `PaymentCheckout` creates payment components for the active flow. The advanced flow is not available in this release.
+- `Checkout` creates payment components for the active flow. The advanced flow is not available in this release.
 - `isPaymentMethodAvailable(for:)` checks whether a payment method can be used on the device before creating its component.
 - `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.

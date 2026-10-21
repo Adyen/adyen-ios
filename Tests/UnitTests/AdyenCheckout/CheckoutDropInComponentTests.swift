@@ -33,7 +33,7 @@ final class CheckoutDropInComponentTests: XCTestCase {
             callbacks: .test()
         )
         weak var weakCore = core
-        var checkout: PaymentCheckout? = try PaymentCheckout(core: XCTUnwrap(core))
+        var checkout: Checkout? = try Checkout(core: XCTUnwrap(core))
         let dropIn = try XCTUnwrap(checkout).createDropIn()
 
         checkout = nil
@@ -189,14 +189,14 @@ final class CheckoutDropInComponentTests: XCTestCase {
     private func makeCheckout(
         paymentMethods: PaymentMethods?,
         configuration: CheckoutConfiguration? = nil
-    ) -> PaymentCheckout {
+    ) -> Checkout {
         let callbacks = AdvancedCheckoutCallbacks.test()
         let core = makeCore(
             paymentMethods: paymentMethods,
             configuration: configuration,
             callbacks: callbacks
         )
-        return PaymentCheckout(core: core)
+        return Checkout(core: core)
     }
 
     private func makeCore(

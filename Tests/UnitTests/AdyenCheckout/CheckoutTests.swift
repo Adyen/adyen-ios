@@ -93,10 +93,10 @@ final class CheckoutTests: XCTestCase {
         XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
         XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
         XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
-        XCTAssertNotNil(checkout.session)
-        XCTAssertTrue(checkout.session === expectedSession)
-        XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
-        XCTAssertEqual(checkout.session?.state.data, "test_session_data")
+        XCTAssertNotNil(checkout.core.session)
+        XCTAssertTrue(checkout.core.session === expectedSession)
+        XCTAssertEqual(checkout.core.session?.state.identifier, "test_session_id")
+        XCTAssertEqual(checkout.core.session?.state.data, "test_session_data")
         XCTAssertTrue(mockProvider.setupSessionCalled)
     }
 
@@ -131,7 +131,7 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
 
-        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.core.session)
         XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
         XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
         XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
@@ -209,7 +209,7 @@ final class CheckoutTests: XCTestCase {
         .onAction { _, _ in }
         mockProvider.setupWithSessionResult = .success(makeSessionCheckoutCore(session: makeSessionMock()))
 
-        let checkout: PaymentCheckout = try await Checkout.setup(
+        let checkout: Checkout = try await Checkout.setup(
             with: SessionResponse(id: "session-id", sessionData: "session-data"),
             configuration: configuration,
             callbacks: callbacks,
@@ -224,7 +224,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(completed)
         XCTAssertTrue(failed)
         XCTAssertNotNil(received.onAction)
-        XCTAssertNotNil(checkout.session)
+        XCTAssertNotNil(checkout.core.session)
     }
 
     func test_setupAdvanced_shouldForwardRequiredSubmissionCallbacksToProvider() async throws {
@@ -238,7 +238,7 @@ final class CheckoutTests: XCTestCase {
         )
         mockProvider.setupWithPaymentMethodsResult = .success(makeAdvancedCheckoutCore(paymentMethods: paymentMethods))
 
-        let checkout: PaymentCheckout = try await Checkout.setup(
+        let checkout: Checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             callbacks: callbacks,
@@ -289,7 +289,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(completed)
         XCTAssertTrue(failed)
         XCTAssertNotNil(received.onAction)
-        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.core.session)
     }
 
     // MARK: - payment component delegate
@@ -666,7 +666,7 @@ final class CheckoutTests: XCTestCase {
         )
         
         // Then
-        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.core.session)
         XCTAssertTrue(mockProvider.setupActionOnlyCalled)
     }
     

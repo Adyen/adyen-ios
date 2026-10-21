@@ -7,8 +7,6 @@ The Adyen Checkout SDK API Reference.
 The entry points for integrating the SDK.
 
 - ``Checkout``
-- ``BaseCheckout``
-- ``PaymentCheckout``
 - ``ActionOnlyCheckout``
 - ``CheckoutPaymentComponent``
 

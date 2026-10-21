@@ -14,7 +14,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: PaymentCheckout?
+    private var checkout: Checkout?
     private var dropInComponent: CheckoutDropInComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()

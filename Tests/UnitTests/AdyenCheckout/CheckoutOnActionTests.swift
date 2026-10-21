@@ -29,6 +29,44 @@ final class CheckoutOnActionTests: XCTestCase {
         super.tearDown()
     }
 
+    func test_checkoutHandle_shouldForwardActionAndRetainCoreUntilReleased() {
+        var checkout: Checkout? = Checkout(core: makeCore(resultCallbacks: CheckoutCallbacks.test()))
+        weak var core = checkout?.core as? CheckoutCore
+        let actionHandler = ActionHandlingComponentMock()
+        var receivedRedirect = false
+        actionHandler.onAction = { action in
+            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            receivedRedirect = true
+        }
+        core?.actionHandlingComponent = actionHandler
+
+        XCTAssertNotNil(core)
+        checkout?.handle(action: Dummy.redirectAction)
+
+        XCTAssertTrue(receivedRedirect)
+        checkout = nil
+        XCTAssertNil(core)
+    }
+
+    func test_actionOnlyHandle_shouldForwardActionAndRetainCoreUntilReleased() {
+        var checkout: ActionOnlyCheckout? = ActionOnlyCheckout(core: makeCore(resultCallbacks: ActionOnlyCheckoutCallbacks.test()))
+        weak var core = checkout?.core as? CheckoutCore
+        let actionHandler = ActionHandlingComponentMock()
+        var receivedRedirect = false
+        actionHandler.onAction = { action in
+            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            receivedRedirect = true
+        }
+        core?.actionHandlingComponent = actionHandler
+
+        XCTAssertNotNil(core)
+        checkout?.handle(action: Dummy.redirectAction)
+
+        XCTAssertTrue(receivedRedirect)
+        checkout = nil
+        XCTAssertNil(core)
+    }
+
     func test_onAction_isAvailableOnEveryCallbacksValue_andDoesNotChangeTheOriginal() {
         let session = CheckoutCallbacks.test()
         let advanced = AdvancedCheckoutCallbacks.test()

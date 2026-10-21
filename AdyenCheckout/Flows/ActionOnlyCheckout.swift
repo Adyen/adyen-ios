@@ -9,4 +9,16 @@ import Foundation
 
 /// Checkout flow for integrations that only need to handle actions.
 @MainActor
-public final class ActionOnlyCheckout: BaseCheckout {}
+public final class ActionOnlyCheckout {
+
+    package let core: CheckoutCoreProtocol
+
+    package init(core: CheckoutCoreProtocol) {
+        self.core = core
+    }
+
+    /// Handles an action received from a payment or payment details response.
+    public func handle(action: Action) {
+        core.handle(action: action)
+    }
+}

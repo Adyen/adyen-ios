@@ -13,9 +13,22 @@ import Adyen
 #endif
 import Foundation
 
-/// The entry point for setting up an Adyen Checkout flow.
+/// A checkout that creates payment components and handles payment actions.
+///
+/// Use `Checkout.setup` to create a checkout or an `ActionOnlyCheckout`.
 @MainActor
-public enum Checkout {
+public final class Checkout {
+
+    package let core: CheckoutCoreProtocol
+
+    package init(core: CheckoutCoreProtocol) {
+        self.core = core
+    }
+
+    /// Handles an action received from a payment or payment details response.
+    public func handle(action: Action) {
+        core.handle(action: action)
+    }
 
     /// Sets up checkout for the session flow.
     /// - Parameters:
@@ -29,7 +42,7 @@ public enum Checkout {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbacks: CheckoutCallbacks
-    ) async throws -> PaymentCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: sessionResponse,
             configuration: configuration,
@@ -49,7 +62,7 @@ public enum Checkout {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbacks: AdvancedCheckoutCallbacks
-    ) async throws -> PaymentCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
@@ -120,13 +133,13 @@ internal extension Checkout {
         configuration: CheckoutConfiguration,
         callbacks: CheckoutCallbacks,
         provider: CheckoutProviding
-    ) async throws -> PaymentCheckout {
+    ) async throws -> Checkout {
         let core = try await provider.setup(
             with: sessionResponse,
             configuration: configuration,
             callbacks: callbacks
         )
-        return PaymentCheckout(core: core)
+        return Checkout(core: core)
     }
 
     static func setup(
@@ -134,13 +147,13 @@ internal extension Checkout {
         configuration: CheckoutConfiguration,
         callbacks: AdvancedCheckoutCallbacks,
         provider: CheckoutProviding
-    ) async throws -> PaymentCheckout {
+    ) async throws -> Checkout {
         let core = try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
             callbacks: callbacks
         )
-        return PaymentCheckout(core: core)
+        return Checkout(core: core)
     }
 
     static func setup(

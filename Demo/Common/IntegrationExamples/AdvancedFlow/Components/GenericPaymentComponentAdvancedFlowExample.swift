@@ -16,7 +16,7 @@ internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: PaymentCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()

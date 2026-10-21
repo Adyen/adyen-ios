@@ -11,7 +11,7 @@ The public integration surface is centered around four concepts:
 - `Checkout.setup(...)` is the entry point for checkout flows.
 - `CheckoutConfiguration` is the shared configuration container.
 - Flow callbacks are supplied in a `CheckoutCallbacks` or `ActionOnlyCheckoutCallbacks` value.
-- Payment components are created from `PaymentCheckout`.
+- Payment components are created from `Checkout`.
 
 ## Installation
 
@@ -92,7 +92,7 @@ In session flow, the SDK gets the `amount` from the `/sessions` response.
 For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and
 `showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
 
-`PaymentCheckout` can:
+`Checkout` can:
 
 - create an individual payment component with `createPaymentComponent(for:)`
 - use `CheckoutCallbacks.onBeforeSubmit(_:)` to inspect or patch shopper data before submit

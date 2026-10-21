@@ -16,7 +16,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: PaymentCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
     private var latestApplePayAmount = ConfigurationConstants.current.amount
 
