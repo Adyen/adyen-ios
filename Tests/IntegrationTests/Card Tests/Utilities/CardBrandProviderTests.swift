@@ -54,4 +54,54 @@ class CardBrandProviderTests: XCTestCase {
         }
     }
 
+    func test_fallbackBinInfoProvider_shouldReturnUnreliableBrands() {
+        let completion = expectation(description: "Fallback provider completes")
+        FallbackBinInfoProvider().provide(for: "4111", supportedTypes: [.visa]) { response in
+            XCTAssertEqual(response.brands?.map(\.brand), [.visa])
+            XCTAssertEqual(response.brands?.map(\.isReliable), [false])
+            completion.fulfill()
+        }
+        wait(for: [completion], timeout: 1)
+    }
+
+    func test_provide_whenBinLookupFails_shouldReturnUnreliableBrands() {
+        apiClientMock.mockedResults = [.failure(Dummy.error)]
+        let completion = expectation(description: "Provider completes with fallback brands")
+
+        sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { response in
+            XCTAssertTrue(response.isCreatedLocally)
+            XCTAssertEqual(response.brands?.map(\.brand), [.maestro])
+            XCTAssertEqual(response.brands?.map(\.isReliable), [false])
+            completion.fulfill()
+        }
+
+        wait(for: [completion], timeout: 1)
+        XCTAssertEqual(apiClientMock.counter, 1)
+    }
+
+    func test_detectedCardBrand_whenDecodedFromBinLookupResponse_shouldBeReliable() throws {
+        let json = """
+        {
+            "requestId": "request_id",
+            "issuingCountryCode": "US",
+            "brands": [
+                {
+                    "brand": "visa",
+                    "supported": true,
+                    "cvcPolicy": "required",
+                    "expiryDatePolicy": "required",
+                    "enableLuhnCheck": true,
+                    "showSocialSecurityNumber": false
+                }
+            ]
+        }
+        """
+
+        let response = try JSONDecoder().decode(BinLookupResponse.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        XCTAssertFalse(response.isCreatedLocally)
+        XCTAssertEqual(response.brands?.map(\.brand), [.visa])
+        XCTAssertEqual(response.brands?.map(\.isReliable), [true])
+    }
+
 }

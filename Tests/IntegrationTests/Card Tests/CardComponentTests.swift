@@ -1721,6 +1721,77 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(sut.cardViewController.installments)
     }
 
+    func test_installmentsField_withLocallyDetectedBrand_shouldNotShowCardBasedOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_whenBinLookupConfirmsLocallyDetectedBrand_shouldShowCardBasedOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+
+        // Same brand with otherwise identical properties, now confirmed by `/binLookup`
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+    }
+
+    func test_installmentsField_whenBrandFallsBackToLocalDetection_shouldShowDefaultOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2]),
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3, 6])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        XCTAssertEqual(installmentsItem.selectableValues.count, 4)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 2)
+    }
+
+    func test_installmentsField_whenDualBrandSelectionChanges_shouldUpdateOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3], preselectedValue: 3)]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        let visa = DetectedCardBrand(brand: .visa)
+        let carteBancaire = DetectedCardBrand(brand: .carteBancaire)
+        let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
+
+        sut.cardViewController.update(
+            binInfo: BinLookupResponse(brands: [visa, carteBancaire], issuingCountryCode: "FR", isCreatedLocally: false)
+        )
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
+
+        sut.cardViewController.handleSelection(carteBancaire)
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+        XCTAssertNil(sut.cardViewController.installments)
+
+        sut.cardViewController.handleSelection(visa)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+        XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
+    }
+
     func test_submit_withPreselectedInstallment_shouldIncludeInstallmentsInPaymentData() throws {
         let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
         let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
