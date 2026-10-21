@@ -59,16 +59,20 @@ let configuration = try CheckoutConfiguration(
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+)
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
 
 let dropIn = try checkout.createDropIn()
 present(dropIn.viewController, animated: true)
@@ -128,31 +132,45 @@ let configuration = try CheckoutConfiguration(
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
-let checkout = try await Checkout.setup(
-    with: sessionResponse,
-    configuration: configuration
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
 )
 .onBeforeSubmit { data in
     .proceed(data: data, sessionData: nil)
 }
-.onComplete { result in
-    print(result.resultCode)
-}
-.onError { error in
-    print(error.localizedDescription)
-}
+
+let checkout = try await Checkout.setup(
+    with: sessionResponse,
+    configuration: configuration,
+    callbacks: callbacks
+)
 ```
 
 #### Advanced flow
 
 The advanced flow is not available in this release. Use the session flow for payment components.
-The `Checkout.setup(with: PaymentMethods, configuration:)` overload, `AdvancedCheckout`, `CheckoutSubmitHandler`,
-`SubmitResult` and `PartialPayment` are now package-only and cannot be used by merchant integrations.
+The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
+`CheckoutSubmitHandler`, `SubmitResult` and `PartialPayment` are package-only and cannot be used by merchant integrations.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
+
+#### Checkout callbacks
+
+Pass callbacks to `Checkout.setup(..., callbacks:)` rather than chaining them on the returned checkout.
+`CheckoutCallbacks(onComplete:onFailure:)` requires both result handlers for session checkout. Session setup now returns
+`PaymentCheckout`; `SessionCheckout` has been removed, and `SessionCheckoutResult` is renamed to `CheckoutResult`.
+Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavior. Modifiers return a copy, so retain the returned value.
+
+Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
+modifiers are optional. All handlers are supplied before setup, and callbacks cannot be changed on an active checkout.
 
 #### Available payment methods
 
-`SessionCheckout` exposes non-optional regular and stored payment-method arrays:
+`PaymentCheckout` exposes non-optional regular and stored payment-method arrays:
 
 ```swift
 let paymentMethods = checkout.paymentMethods
@@ -163,7 +181,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 #### Payment method availability
 
-In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `SessionCheckout` lets you check first:
+In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `PaymentCheckout` lets you check first:
 
 ```swift
 if checkout.isPaymentMethodAvailable(for: .applePay) {
@@ -175,7 +193,7 @@ if checkout.isPaymentMethodAvailable(for: .applePay) {
 
 #### Action presentation
 
-Both public checkout flows, `SessionCheckout` and `ActionOnlyCheckout`, expose `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
+Both `CheckoutCallbacks` and `ActionOnlyCheckoutCallbacks` expose the optional `onAction(_:)` modifier, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
 
 ```swift
 .onAction { actionData, actionViewController in
@@ -195,12 +213,12 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
-- `SessionCheckout` creates payment components for the active flow. The advanced flow is not available in this release.
+- `PaymentCheckout` creates payment components for the active flow. The advanced flow is not available in this release.
 - `isPaymentMethodAvailable(for:)` checks whether a payment method can be used on the device before creating its component.
 - `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
-- Callback handler typealiases, including `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`, are now package-only. Public callback methods declare the closure signature inline. If your integration explicitly names a handler typealias, replace it with the corresponding closure type; closure-based calls remain unchanged.
+- Callback handler typealiases, including `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`, are now package-only. Public callback methods declare the closure signature inline. If your integration explicitly names a handler typealias, replace it with the corresponding closure type; move closure-based calls onto the callbacks value passed to setup.
 - `FinalizableComponent` and `Component.finalizeIfNeeded(with:completion:)` are no longer public, and `DropInComponent` no longer conforms to `FinalizableComponent`. Checkout ends the payment in the component itself and then reports the result through `onComplete` or `onFailure`.
 
 ### Card component
@@ -251,9 +269,19 @@ component.delegate = session
 ##### After (v6)
 
 ```swift
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+)
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
 
 let component = try checkout.createPaymentComponent(for: .scheme)

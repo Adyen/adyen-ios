@@ -4,16 +4,20 @@ The entry point for setting up an Adyen Checkout flow.
 
 ## Overview
 
-Use ``Checkout`` to set up a checkout for the session flow or for action handling only. Each `setup` variant returns a flow object that exposes the APIs relevant to that integration.
+Use ``Checkout`` to set up a checkout for the session flow or for action handling only. Pass the flow's callbacks value to `setup`: `CheckoutCallbacks` for a session or `ActionOnlyCheckoutCallbacks` for action handling. Session setup returns `PaymentCheckout`; action-only setup returns `ActionOnlyCheckout`.
 
 ## Topics
 
 ### Setting up a checkout
 
-- ``SessionCheckout``
+- ``PaymentCheckout``
 - ``ActionOnlyCheckout``
 - ``BaseCheckout``
-- ``PaymentCheckout``
+
+### Callbacks
+
+- ``CheckoutCallbacks``
+- ``ActionOnlyCheckoutCallbacks``
 
 ### Configuration
 

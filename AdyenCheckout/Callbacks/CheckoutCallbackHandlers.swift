@@ -42,16 +42,16 @@ package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
 
     private let handler: any CheckoutCallbackHandling
     private let session: SessionProtocol
-    private let callbackStore: SessionCheckoutCallbackStore
+    private let callbacks: CheckoutCallbacks
 
     package init(
         handler: any CheckoutCallbackHandling,
         session: SessionProtocol,
-        callbackStore: SessionCheckoutCallbackStore
+        callbacks: CheckoutCallbacks
     ) {
         self.handler = handler
         self.session = session
-        self.callbackStore = callbackStore
+        self.callbacks = callbacks
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
@@ -64,7 +64,7 @@ package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
     }
 
     private func handleBeforeSubmit(for data: PaymentComponentData) async throws -> PaymentComponentData {
-        guard let onBeforeSubmit = callbackStore.onBeforeSubmit else {
+        guard let onBeforeSubmit = callbacks.onBeforeSubmit else {
             return data
         }
 
@@ -90,29 +90,27 @@ package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
 
 @MainActor
 package final class AdvancedCallbackHandler: CheckoutCallbackHandling {
-    private let callbackStore: AdvancedCheckoutCallbackStore
+    private let callbacks: AdvancedCheckoutCallbacks
 
-    package init(callbackStore: AdvancedCheckoutCallbackStore) {
-        self.callbackStore = callbackStore
+    package init(callbacks: AdvancedCheckoutCallbacks) {
+        self.callbacks = callbacks
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
-        guard let onSubmit = callbackStore.onSubmit else { throw CallbackError.missingSubmitHandler }
-        return await onSubmit(data)
+        await callbacks.onSubmit(data)
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
-        return await onAdditionalDetails(data)
+        await callbacks.onAdditionalDetails(data)
     }
 }
 
 @MainActor
 package final class ActionOnlyCallbackHandler: CheckoutCallbackHandling {
-    private let callbackStore: ActionOnlyCheckoutCallbackStore
+    private let callbacks: ActionOnlyCheckoutCallbacks
 
-    package init(callbackStore: ActionOnlyCheckoutCallbackStore) {
-        self.callbackStore = callbackStore
+    package init(callbacks: ActionOnlyCheckoutCallbacks) {
+        self.callbacks = callbacks
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
@@ -120,7 +118,6 @@ package final class ActionOnlyCallbackHandler: CheckoutCallbackHandling {
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
-        return await onAdditionalDetails(data)
+        await callbacks.onAdditionalDetails(data)
     }
 }

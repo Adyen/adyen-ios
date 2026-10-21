@@ -15,7 +15,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: PaymentCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -70,27 +70,31 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         .localizationProvider(DemoLocalizationProvider())
         .theme(selectedTheme.theme)
 
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        )
+
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
 
         self.checkout = checkout
 

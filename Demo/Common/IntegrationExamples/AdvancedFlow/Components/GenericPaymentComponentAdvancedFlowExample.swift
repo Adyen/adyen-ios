@@ -16,7 +16,7 @@ internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: PaymentCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -61,30 +61,34 @@ internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
             // No component-specific configuration needed for generic payments
         }
 
-        let checkout = try await Checkout.setup(
-            with: paymentMethods,
-            configuration: configuration
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
         )
         .onAction { [weak self] _, actionViewController in
             self?.presenter?.present(viewController: actionViewController, completion: nil)
         }
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            callbacks: callbacks
+        )
 
         self.checkout = checkout
 

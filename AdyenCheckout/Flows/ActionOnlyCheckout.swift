@@ -9,32 +9,4 @@ import Foundation
 
 /// Checkout flow for integrations that only need to handle actions.
 @MainActor
-public final class ActionOnlyCheckout: BaseCheckout {
-
-    package let callbackStore: ActionOnlyCheckoutCallbackStore
-
-    package init(core: CheckoutCoreProtocol, callbackStore: ActionOnlyCheckoutCallbackStore) {
-        self.callbackStore = callbackStore
-        super.init(core: core, resultCallbacks: callbackStore)
-    }
-
-    /// Sets the callback invoked when checkout completes successfully.
-    /// - Parameter handler: Callback invoked with the final checkout result.
-    ///   - result: The ``AdvancedCheckoutResult`` containing the payment ``AdvancedCheckoutResult/resultCode``
-    ///     indicating the outcome of the payment.
-    public func onComplete(_ handler: @escaping @MainActor (_ result: AdvancedCheckoutResult) -> Void) -> Self {
-        callbackStore.onComplete = handler
-        return self
-    }
-
-    /// Sets the callback invoked when additional action details are submitted.
-    /// - Parameter handler: Callback invoked when an action component provides data for `/payments/details`.
-    ///   - data: The `ActionComponentData` containing the action `details` and optional `paymentData` returned by the previous `/payments` response.
-    /// - Returns: An `AdditionalDetailsResult` describing how checkout should continue after the details are submitted.
-    public func onAdditionalDetails(
-        _ handler: @escaping @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
-    ) -> Self {
-        callbackStore.onAdditionalDetails = handler
-        return self
-    }
-}
+public final class ActionOnlyCheckout: BaseCheckout {}

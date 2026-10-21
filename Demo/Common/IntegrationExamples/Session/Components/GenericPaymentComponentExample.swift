@@ -15,7 +15,7 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: SessionCheckout?
+    private var checkout: PaymentCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -60,23 +60,27 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
             // No component-specific configuration needed for generic payments
         }
 
-        let checkout = try await Checkout.setup(
-            with: sessionResponse,
-            configuration: configuration
+        let callbacks = CheckoutCallbacks(
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
         )
         .onAction { [weak self] _, actionViewController in
             self?.presenter?.hideLoadingIndicator()
             self?.presenter?.present(viewController: actionViewController, completion: nil)
         }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
+
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            callbacks: callbacks
+        )
 
         self.checkout = checkout
 

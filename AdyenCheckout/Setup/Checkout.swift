@@ -21,16 +21,19 @@ public enum Checkout {
     /// - Parameters:
     ///   - sessionResponse: The response from the `/sessions` call.
     ///   - configuration: The checkout configuration.
-    /// - Returns: A session checkout instance exposing session-compatible APIs.
+    ///   - callbacks: The callbacks for this checkout flow.
+    /// - Returns: A checkout instance that can create payment components and Drop-in.
     /// - Throws: ``CheckoutError`` if the checkout session cannot be established.
     ///   Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration
-    ) async throws -> SessionCheckout {
+        configuration: CheckoutConfiguration,
+        callbacks: CheckoutCallbacks
+    ) async throws -> PaymentCheckout {
         try await setup(
             with: sessionResponse,
             configuration: configuration,
+            callbacks: callbacks,
             provider: CheckoutProvider.default
         )
     }
@@ -39,15 +42,18 @@ public enum Checkout {
     /// - Parameters:
     ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
     ///   - configuration: The checkout configuration.
-    /// - Returns: An advanced checkout instance exposing advanced-flow APIs.
+    ///   - callbacks: The callbacks for this checkout flow.
+    /// - Returns: A checkout instance that can create payment components and Drop-in.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     package static func setup(
         with paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration
-    ) async throws -> AdvancedCheckout {
+        configuration: CheckoutConfiguration,
+        callbacks: AdvancedCheckoutCallbacks
+    ) async throws -> PaymentCheckout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
+            callbacks: callbacks,
             provider: CheckoutProvider.default
         )
     }
@@ -55,13 +61,16 @@ public enum Checkout {
     /// Sets up checkout for action handling only.
     /// - Parameters:
     ///   - configuration: The checkout configuration.
+    ///   - callbacks: The callbacks for this checkout flow.
     /// - Returns: An action-only checkout instance exposing action handling APIs.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        callbacks: ActionOnlyCheckoutCallbacks
     ) async throws -> ActionOnlyCheckout {
         try await setup(
             configuration: configuration,
+            callbacks: callbacks,
             provider: CheckoutProvider.default
         )
     }
@@ -109,80 +118,40 @@ internal extension Checkout {
     static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbacks: CheckoutCallbacks,
         provider: CheckoutProviding
-    ) async throws -> SessionCheckout {
-        let callbackStore = SessionCheckoutCallbackStore()
-        let core = try await setup(
+    ) async throws -> PaymentCheckout {
+        let core = try await provider.setup(
             with: sessionResponse,
             configuration: configuration,
-            callbackStore: callbackStore,
-            provider: provider
+            callbacks: callbacks
         )
-        return SessionCheckout(core: core, callbackStore: callbackStore)
+        return PaymentCheckout(core: core)
     }
 
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbacks: AdvancedCheckoutCallbacks,
         provider: CheckoutProviding
-    ) async throws -> AdvancedCheckout {
-        let callbackStore = AdvancedCheckoutCallbackStore()
-        let core = try await setup(
+    ) async throws -> PaymentCheckout {
+        let core = try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
-            callbackStore: callbackStore,
-            provider: provider
+            callbacks: callbacks
         )
-        return AdvancedCheckout(core: core, callbackStore: callbackStore)
+        return PaymentCheckout(core: core)
     }
 
     static func setup(
         configuration: CheckoutConfiguration,
+        callbacks: ActionOnlyCheckoutCallbacks,
         provider: CheckoutProviding
     ) async throws -> ActionOnlyCheckout {
-        let callbackStore = ActionOnlyCheckoutCallbackStore()
-        let core = try await setup(
+        let core = try await provider.setup(
             configuration: configuration,
-            callbackStore: callbackStore,
-            provider: provider
+            callbacks: callbacks
         )
-        return ActionOnlyCheckout(core: core, callbackStore: callbackStore)
-    }
-
-    static func setup(
-        with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore,
-        provider: CheckoutProviding = CheckoutProvider.default
-    ) async throws -> CheckoutCoreProtocol {
-        try await provider.setup(
-            with: sessionResponse,
-            configuration: configuration,
-            callbackStore: callbackStore
-        )
-    }
-
-    static func setup(
-        with paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore,
-        provider: CheckoutProviding = CheckoutProvider.default
-    ) async throws -> CheckoutCoreProtocol {
-        try await provider.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            callbackStore: callbackStore
-        )
-    }
-
-    static func setup(
-        configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore,
-        provider: CheckoutProviding = CheckoutProvider.default
-    ) async throws -> CheckoutCoreProtocol {
-        try await provider.setup(
-            configuration: configuration,
-            callbackStore: callbackStore
-        )
+        return ActionOnlyCheckout(core: core)
     }
 }
