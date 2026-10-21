@@ -33,7 +33,7 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
 
     func test_cardComponent_sessionFlow_installmentConfiguration_appliedFromSession() throws {
         let installments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 6)
         )
         let sut = makeSessionCheckoutCore(installmentOptions: installments)
 
@@ -63,7 +63,7 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
 
     func test_cardComponent_advancedFlow_merchantInstallments_notClobbered() throws {
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 12, includesRevolving: true)
+            defaultOptions: InstallmentOptions(maxInstallments: 12, plans: [.regular, .revolving])
         )
         configuration.configurations[.payment(.scheme)] = CardConfiguration()
             .installmentConfiguration(merchantInstallments)

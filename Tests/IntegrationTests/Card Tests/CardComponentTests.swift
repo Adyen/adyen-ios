@@ -1147,14 +1147,14 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withDefaultAndCardBasedOptions_shouldShowCorrectOptions() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let defaultInstallmentOptions = InstallmentOptions(values: [3, 6, 9, 12])
 
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(
-            cardBasedOptions: cardBasedInstallmentOptions,
-            defaultOptions: defaultInstallmentOptions
+            defaultOptions: defaultInstallmentOptions,
+            cardBasedOptions: cardBasedInstallmentOptions
         )
         let cardBrandProviderMock = BinInfoProviderMock()
 
@@ -1205,7 +1205,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_whenSelectionChanges_shouldUpdateFooterWithSelectedSubtitle() throws {
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(monthValues: [2], includesRevolving: true)
+            defaultOptions: InstallmentOptions(values: [2], plans: [.regular, .revolving])
         )
 
         let sut = CardComponent(
@@ -1367,7 +1367,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.localizationProvider = provider
         configuration.installmentConfiguration = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(monthValues: [2], includesRevolving: true),
+            defaultOptions: InstallmentOptions(values: [2], plans: [.regular, .revolving]),
             showInstallmentAmount: true
         )
 
@@ -1400,7 +1400,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsSection_whenBrandOptionsChange_shouldToggleEntireSectionVisibility() throws {
         // Given a configuration where one brand has installment options and another brand has none.
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+            .visa: InstallmentOptions(values: [2, 3])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1450,7 +1450,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func test_installmentsField_withDefaultOptions_shouldShowDefaultOptions() throws {
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let defaultInstallmentOptions = InstallmentOptions(values: [3, 6, 9, 12])
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
         let cardBrandProviderMock = BinInfoProviderMock()
@@ -1488,7 +1488,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withCardBasedOptions_shouldShowCardSpecificOptions() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1539,7 +1539,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withAmountShown_shouldDisplayInstallmentAmounts() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
 
         var configuration = CardConfiguration()
@@ -1597,8 +1597,8 @@ class CardComponentTests: XCTestCase {
 
     func test_installmentsField_whenCardBrandChanges_shouldResetSelectionToOneTime() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true),
-            .americanExpress: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            .visa: InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving]),
+            .americanExpress: InstallmentOptions(maxInstallments: 3)
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1628,7 +1628,7 @@ class CardComponentTests: XCTestCase {
 
     func test_installmentsField_whenSameCardBrandReassigned_shouldKeepSelection() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+            .visa: InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
