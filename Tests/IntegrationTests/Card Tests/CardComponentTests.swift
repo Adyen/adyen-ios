@@ -1692,6 +1692,21 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(sut.cardViewController.installments)
     }
 
+    func test_installmentsField_withMaxInstallmentsOfTwo_shouldOfferOneTimeAndTwoInstallments() throws {
+        let options = InstallmentOptions(maxInstallments: 2)
+        XCTAssertEqual(options.values, [2])
+
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(defaultOptions: options))
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(
+            installmentsItem.selectableValues.map(\.installmentValue),
+            [nil, Installments(totalMonths: 2, plan: .regular)]
+        )
+    }
+
     func test_installmentsField_whenCardBrandChanges_shouldPreselectBrandPreselectedValue() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa: InstallmentOptions(values: [2, 3], preselectedValue: 2),

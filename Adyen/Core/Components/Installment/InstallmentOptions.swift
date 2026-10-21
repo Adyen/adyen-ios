@@ -51,7 +51,8 @@ public struct InstallmentOptions: Equatable, Codable {
     ///   - preselectedValue: The installment count pre-selected in the UI.
     public init(maxInstallments: Int, plans: [Plan] = [.regular], preselectedValue: Int? = nil) {
         assert(maxInstallments > 1, "Must provide a valid max amount greater than 1.")
-        self.init(values: Array(2...maxInstallments), plans: plans, preselectedValue: preselectedValue)
+        let values = maxInstallments > 1 ? Array(2...maxInstallments) : []
+        self.init(values: values, plans: plans, preselectedValue: preselectedValue)
     }
 
     @_spi(AdyenInternal)
