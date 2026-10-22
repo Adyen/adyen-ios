@@ -85,6 +85,7 @@ final class CheckoutTests: XCTestCase {
                 sessionData: "sessionData"
             ),
             configuration: configuration,
+            callbacks: CheckoutCallbacks.test(),
             provider: mockProvider
         )
         
@@ -92,10 +93,10 @@ final class CheckoutTests: XCTestCase {
         XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
         XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
         XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
-        XCTAssertNotNil(checkout.session)
-        XCTAssertTrue(checkout.session === expectedSession)
-        XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
-        XCTAssertEqual(checkout.session?.state.data, "test_session_data")
+        XCTAssertNotNil(checkout.core.session)
+        XCTAssertTrue(checkout.core.session === expectedSession)
+        XCTAssertEqual(checkout.core.session?.state.identifier, "test_session_id")
+        XCTAssertEqual(checkout.core.session?.state.data, "test_session_data")
         XCTAssertTrue(mockProvider.setupSessionCalled)
     }
 
@@ -109,6 +110,7 @@ final class CheckoutTests: XCTestCase {
                     sessionData: "sessionData"
                 ),
                 configuration: configuration,
+                callbacks: CheckoutCallbacks.test(),
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -125,10 +127,11 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
+            callbacks: AdvancedCheckoutCallbacks.test(),
             provider: mockProvider
         )
 
-        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.core.session)
         XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
         XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
         XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
@@ -143,6 +146,7 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
+            callbacks: AdvancedCheckoutCallbacks.test(),
             provider: mockProvider
         )
 
@@ -157,6 +161,7 @@ final class CheckoutTests: XCTestCase {
             _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
+                callbacks: AdvancedCheckoutCallbacks.test(),
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -193,10 +198,103 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
+    func test_setupSession_shouldForwardRequiredAndOptionalCallbacksToProvider() async throws {
+        var completed = false
+        var failed = false
+        let callbacks = CheckoutCallbacks(
+            onComplete: { _ in completed = true },
+            onFailure: { _ in failed = true }
+        )
+        .onBeforeSubmit { _ in .abort }
+        .onAction { _, _ in }
+        mockProvider.setupWithSessionResult = .success(makeSessionCheckoutCore(session: makeSessionMock()))
+
+        let checkout: Checkout = try await Checkout.setup(
+            with: SessionResponse(id: "session-id", sessionData: "session-data"),
+            configuration: configuration,
+            callbacks: callbacks,
+            provider: mockProvider
+        )
+
+        let received = try XCTUnwrap(mockProvider.sessionCallbacks)
+        received.handleCompletion(resultCode: .authorised, sessionId: "id", sessionResult: "result")
+        received.onFailure(CheckoutError(code: .cancelled, message: "Cancelled"))
+        let result = await received.onBeforeSubmit?(BeforeSubmitData())
+        guard case .abort = result else { return XCTFail("Expected the supplied before-submit callback") }
+        XCTAssertTrue(completed)
+        XCTAssertTrue(failed)
+        XCTAssertNotNil(received.onAction)
+        XCTAssertNotNil(checkout.core.session)
+    }
+
+    func test_setupAdvanced_shouldForwardRequiredSubmissionCallbacksToProvider() async throws {
+        var completed = false
+        var failed = false
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { _ in .retry() },
+            onAdditionalDetails: { _ in .completion(resultCode: "Authorised") },
+            onComplete: { _ in completed = true },
+            onFailure: { _ in failed = true }
+        )
+        mockProvider.setupWithPaymentMethodsResult = .success(makeAdvancedCheckoutCore(paymentMethods: paymentMethods))
+
+        let checkout: Checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            callbacks: callbacks,
+            provider: mockProvider
+        )
+
+        let received = try XCTUnwrap(mockProvider.advancedCallbacks)
+        let paymentMethod = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let data = PaymentComponentData(paymentMethodDetails: BLIKDetails(paymentMethod: paymentMethod, blikCode: "code"), order: nil)
+        guard case .retry = await received.onSubmit(data) else { return XCTFail("Expected retry") }
+        let details = ActionComponentData(details: AwaitActionDetails(payload: "payload"), paymentData: "data")
+        guard case let .completion(resultCode) = await received.onAdditionalDetails(details) else {
+            return XCTFail("Expected completion")
+        }
+        XCTAssertEqual(resultCode, "Authorised")
+        received.handleCompletion(resultCode: .authorised, sessionId: nil, sessionResult: nil)
+        received.onFailure(CheckoutError(code: .cancelled, message: "Cancelled"))
+        XCTAssertTrue(completed)
+        XCTAssertTrue(failed)
+        XCTAssertFalse(checkout.paymentMethods.isEmpty)
+    }
+
+    func test_setupActionOnly_shouldForwardRequiredAndOptionalCallbacksToProvider() async throws {
+        var completed = false
+        var failed = false
+        let callbacks = ActionOnlyCheckoutCallbacks(
+            onAdditionalDetails: { _ in .completion(resultCode: "Authorised") },
+            onFailure: { _ in failed = true }
+        )
+        .onComplete { _ in completed = true }
+        .onAction { _, _ in }
+        mockProvider.setupActionOnlyResult = .success(makeActionOnlyCheckoutCore())
+
+        let checkout: ActionOnlyCheckout = try await Checkout.setup(
+            configuration: configuration,
+            callbacks: callbacks,
+            provider: mockProvider
+        )
+
+        let received = try XCTUnwrap(mockProvider.actionOnlyCallbacks)
+        let details = ActionComponentData(details: AwaitActionDetails(payload: "payload"), paymentData: "data")
+        guard case let .completion(resultCode) = await received.onAdditionalDetails(details) else {
+            return XCTFail("Expected completion")
+        }
+        XCTAssertEqual(resultCode, "Authorised")
+        received.handleCompletion(resultCode: .authorised, sessionId: nil, sessionResult: nil)
+        received.onFailure(CheckoutError(code: .cancelled, message: "Cancelled"))
+        XCTAssertTrue(completed)
+        XCTAssertTrue(failed)
+        XCTAssertNotNil(received.onAction)
+        XCTAssertNil(checkout.core.session)
+    }
+
     // MARK: - payment component delegate
     
     func test_didSubmit_withSessionAndMissingOnSubmit_shouldPerformSubmit() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
@@ -206,13 +304,13 @@ final class CheckoutTests: XCTestCase {
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
         session.state.sessionResult = "test-session-result"
-        callbackStore.onComplete = { result in
+        let onComplete: CheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             XCTAssertEqual(result.sessionId, "test_session_id")
             XCTAssertEqual(result.sessionResult, "test-session-result")
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete))
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onCompleteExpectation], timeout: 1)
@@ -222,7 +320,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_withSessionPerformSubmitError_shouldCallOnFailure() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onFailureExpectation = expectation(description: "onFailure called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
@@ -231,10 +328,10 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .failure(TestError())
-        callbackStore.onFailure = { _ in
+        let onFailure: CheckoutFailureHandler = { _ in
             onFailureExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onFailure: onFailure))
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onFailureExpectation], timeout: 1)
@@ -246,7 +343,6 @@ final class CheckoutTests: XCTestCase {
     // MARK: - onBeforeSubmit
     
     func test_didSubmit_withNoOnBeforeSubmit_shouldPerformSubmitDirectly() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
@@ -256,10 +352,10 @@ final class CheckoutTests: XCTestCase {
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
         session.state.sessionResult = "test-session-result"
-        callbackStore.onComplete = { _ in
+        let onComplete: CheckoutCompletionHandler = { _ in
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete))
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onCompleteExpectation], timeout: 1)
@@ -269,7 +365,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_withOnBeforeSubmitProceed_shouldApplyModifiedData() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
@@ -281,16 +376,16 @@ final class CheckoutTests: XCTestCase {
         session.state.sessionResult = "test-session-result"
         
         let modifiedName = ShopperName(firstName: "Modified", lastName: "Name")
-        callbackStore.onBeforeSubmit = { data in
+        let onBeforeSubmit: CheckoutBeforeSubmitHandler = { data in
             var modified = data
             modified.shopperName = modifiedName
             modified.shopperEmail = "modified@test.com"
             return .proceed(data: modified, sessionData: nil)
         }
-        callbackStore.onComplete = { _ in
+        let onComplete: CheckoutCompletionHandler = { _ in
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete).onBeforeSubmit(onBeforeSubmit))
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onCompleteExpectation], timeout: 1)
@@ -300,7 +395,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_withOnBeforeSubmitProceedAndSessionData_shouldRefreshSession() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
@@ -311,13 +405,13 @@ final class CheckoutTests: XCTestCase {
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
         session.state.sessionResult = "test-session-result"
         
-        callbackStore.onBeforeSubmit = { data in
+        let onBeforeSubmit: CheckoutBeforeSubmitHandler = { data in
             .proceed(data: data, sessionData: "patched_session_data")
         }
-        callbackStore.onComplete = { _ in
+        let onComplete: CheckoutCompletionHandler = { _ in
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete).onBeforeSubmit(onBeforeSubmit))
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onCompleteExpectation], timeout: 1)
@@ -328,7 +422,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnFailure() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onFailureExpectation = expectation(description: "onFailure should NOT be called")
         onFailureExpectation.isInverted = true
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -338,14 +431,14 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         
-        callbackStore.onBeforeSubmit = { _ in
+        let onBeforeSubmit: CheckoutBeforeSubmitHandler = { _ in
             .abort
         }
-        callbackStore.onFailure = { _ in
+        let onFailure: CheckoutFailureHandler = { _ in
             onFailureExpectation.fulfill()
         }
         let component = PresentablePaymentComponentMock(paymentMethod: blik, viewController: UIViewController())
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onFailure: onFailure).onBeforeSubmit(onBeforeSubmit))
         
         sut.didSubmit(paymentData, from: component)
         await fulfillment(of: [onFailureExpectation], timeout: 0.5)
@@ -382,7 +475,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_callsOnSubmit_whenSet() async throws {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let expectation = expectation(description: "onSubmit called")
         var didCallSubmit = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -395,7 +487,7 @@ final class CheckoutTests: XCTestCase {
             order: nil
         )
         
-        callbackStore.onSubmit = { data in
+        let onSubmit: CheckoutSubmitHandler = { data in
             didCallSubmit = true
             XCTAssertEqual(data.paymentMethod.sdkData, paymentData.paymentMethod.sdkData)
             let details = data.paymentMethod as! BLIKDetails
@@ -406,7 +498,7 @@ final class CheckoutTests: XCTestCase {
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onSubmit: onSubmit))
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [expectation], timeout: 1)
         
@@ -470,6 +562,7 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
+            callbacks: AdvancedCheckoutCallbacks.test(),
             provider: mockProvider
         )
 
@@ -568,11 +661,12 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
+            callbacks: ActionOnlyCheckoutCallbacks.test(),
             provider: mockProvider
         )
         
         // Then
-        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.core.session)
         XCTAssertTrue(mockProvider.setupActionOnlyCalled)
     }
     
@@ -584,6 +678,7 @@ final class CheckoutTests: XCTestCase {
         do {
             _ = try await Checkout.setup(
                 configuration: configuration,
+                callbacks: ActionOnlyCheckoutCallbacks.test(),
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -600,6 +695,7 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
+            callbacks: ActionOnlyCheckoutCallbacks.test(),
             provider: mockProvider
         )
         
@@ -609,7 +705,6 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didSubmit_responseWithoutAction_callsOnComplete() async throws {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let onSubmitExpectation = expectation(description: "onSubmit called")
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -618,16 +713,16 @@ final class CheckoutTests: XCTestCase {
             order: nil
         )
         
-        callbackStore.onSubmit = { _ in
+        let onSubmit: CheckoutSubmitHandler = { _ in
             onSubmitExpectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
-        callbackStore.onComplete = { result in
+        let onComplete: AdvancedCheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
         
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onSubmit: onSubmit, onComplete: onComplete))
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onSubmitExpectation, onCompleteExpectation], timeout: 1)
     }
@@ -635,7 +730,6 @@ final class CheckoutTests: XCTestCase {
     // MARK: - action component delegate
     
     func test_didProvide_withSessionAndMissingOnAdditionalDetails_shouldPerformAdditionalDetails() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentComponent = PaymentComponentMock(paymentMethod: blik)
@@ -646,11 +740,11 @@ final class CheckoutTests: XCTestCase {
         let session = makeSessionMock()
         session.performAdditionalDetailsResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
         session.state.sessionResult = "test-session-result"
-        callbackStore.onComplete = { result in
+        let onComplete: CheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete))
         sut.pendingPaymentComponent = paymentComponent
         
         sut.didProvide(actionData, from: ActionComponentMock())
@@ -661,17 +755,16 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didComplete_withSessionCurrentResult_shouldCallOnComplete() async throws {
-        let callbackStore = SessionCheckoutCallbackStore()
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let session = makeSessionMock()
         session.state.resultCode = .authorised
         session.state.sessionResult = "test-session-result"
-        callbackStore.onComplete = { result in
+        let onComplete: CheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
-        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        let sut = makeSessionCheckoutCore(session: session, callbacks: .test(onComplete: onComplete))
         sut.pendingPaymentComponent = PaymentComponentMock(paymentMethod: blik)
         
         sut.didComplete(from: ActionComponentMock())
@@ -679,47 +772,44 @@ final class CheckoutTests: XCTestCase {
     }
     
     func test_didProvide_callsOnAdditionalDetails_whenSet() async {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let expectation = expectation(description: "onAdditionalDetails called")
         let actionData = ActionComponentData(
             details: AwaitActionDetails(payload: "payload"),
             paymentData: "data"
         )
         
-        callbackStore.onAdditionalDetails = { data in
+        let onAdditionalDetails: CheckoutAdditionalDetailsHandler = { data in
             XCTAssertEqual(data.paymentData, "data")
             XCTAssertNotNil(data.details as? AwaitActionDetails)
             expectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onAdditionalDetails: onAdditionalDetails))
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [expectation], timeout: 1)
     }
     
     func test_didProvide_actionOnlyCallsOnAdditionalDetails_whenSet() async {
-        let callbackStore = ActionOnlyCheckoutCallbackStore()
         let expectation = expectation(description: "onAdditionalDetails called")
         let actionData = ActionComponentData(
             details: AwaitActionDetails(payload: "payload"),
             paymentData: "data"
         )
 
-        callbackStore.onAdditionalDetails = { data in
+        let onAdditionalDetails: CheckoutAdditionalDetailsHandler = { data in
             XCTAssertEqual(data.paymentData, "data")
             XCTAssertNotNil(data.details as? AwaitActionDetails)
             expectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
 
-        let sut = makeActionOnlyCheckoutCore(callbackStore: callbackStore)
+        let sut = makeActionOnlyCheckoutCore(callbacks: .test(onAdditionalDetails: onAdditionalDetails))
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [expectation], timeout: 1)
     }
     
     func test_didProvide_returnsFinished_callsOnComplete() async {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
         let onCompleteExpectation = expectation(description: "onComplete called")
         let actionData = ActionComponentData(
@@ -727,22 +817,21 @@ final class CheckoutTests: XCTestCase {
             paymentData: "data"
         )
         
-        callbackStore.onAdditionalDetails = { _ in
+        let onAdditionalDetails: CheckoutAdditionalDetailsHandler = { _ in
             onAdditionalDetailsExpectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
-        callbackStore.onComplete = { result in
+        let onComplete: AdvancedCheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
         
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onAdditionalDetails: onAdditionalDetails, onComplete: onComplete))
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
     }
     
     func test_didSubmit_withErrorResultCode_callsOnComplete() async throws {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let onSubmitExpectation = expectation(description: "onSubmit called")
         let onCompleteExpectation = expectation(description: "onComplete called")
         var onFailureCalled = false
@@ -752,24 +841,23 @@ final class CheckoutTests: XCTestCase {
             order: nil
         )
 
-        callbackStore.onSubmit = { _ in
+        let onSubmit: CheckoutSubmitHandler = { _ in
             onSubmitExpectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.refused.rawValue)
         }
-        callbackStore.onComplete = { result in
+        let onComplete: AdvancedCheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onFailure = { _ in onFailureCalled = true }
+        let onFailure: CheckoutFailureHandler = { _ in onFailureCalled = true }
 
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onSubmit: onSubmit, onComplete: onComplete, onFailure: onFailure))
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onSubmitExpectation, onCompleteExpectation], timeout: 1)
         XCTAssertFalse(onFailureCalled)
     }
 
     func test_didProvide_withErrorResultCode_callsOnComplete() async {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
         let onCompleteExpectation = expectation(description: "onComplete called")
         var onFailureCalled = false
@@ -778,17 +866,17 @@ final class CheckoutTests: XCTestCase {
             paymentData: "data"
         )
 
-        callbackStore.onAdditionalDetails = { _ in
+        let onAdditionalDetails: CheckoutAdditionalDetailsHandler = { _ in
             onAdditionalDetailsExpectation.fulfill()
             return .completion(resultCode: CheckoutResultCode.refused.rawValue)
         }
-        callbackStore.onComplete = { result in
+        let onComplete: AdvancedCheckoutCompletionHandler = { result in
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onFailure = { _ in onFailureCalled = true }
+        let onFailure: CheckoutFailureHandler = { _ in onFailureCalled = true }
 
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onAdditionalDetails: onAdditionalDetails, onComplete: onComplete, onFailure: onFailure))
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
         XCTAssertFalse(onFailureCalled)
@@ -836,42 +924,42 @@ final class CheckoutTests: XCTestCase {
 
     private func makeSessionCheckoutCore(
         session: SessionProtocol,
-        callbackStore: SessionCheckoutCallbackStore = SessionCheckoutCallbackStore()
+        callbacks: CheckoutCallbacks = CheckoutCallbacks.test()
     ) -> CheckoutCore {
         CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
+            resultCallbacks: callbacks,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
                 session: session,
-                callbackStore: callbackStore
+                callbacks: callbacks
             )
         )
     }
 
     private func makeAdvancedCheckoutCore(
-        callbackStore: AdvancedCheckoutCallbackStore = AdvancedCheckoutCallbackStore(),
+        callbacks: AdvancedCheckoutCallbacks = AdvancedCheckoutCallbacks.test(),
         paymentMethods: PaymentMethods? = nil
     ) -> CheckoutCore {
         CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
         )
     }
 
     private func makeActionOnlyCheckoutCore(
-        callbackStore: ActionOnlyCheckoutCallbackStore = ActionOnlyCheckoutCallbackStore()
+        callbacks: ActionOnlyCheckoutCallbacks = ActionOnlyCheckoutCallbacks.test()
     ) -> CheckoutCore {
         CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: ActionOnlyCallbackHandler(callbacks: callbacks)
         )
     }
 

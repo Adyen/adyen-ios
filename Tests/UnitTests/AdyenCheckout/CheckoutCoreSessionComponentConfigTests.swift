@@ -128,29 +128,29 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
                 enableStoreDetails: enableStoreDetails
             )
         ))
-        let callbackStore = SessionCheckoutCallbackStore()
+        let callbacks = CheckoutCallbacks.test()
         return CheckoutCore(
             configuration: configuration,
             session: session,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
+            resultCallbacks: callbacks,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
                 session: session,
-                callbackStore: callbackStore
+                callbacks: callbacks
             )
         )
     }
 
     private func makeAdvancedCheckoutCore() -> CheckoutCore {
-        let callbackStore = AdvancedCheckoutCallbackStore()
+        let callbacks = AdvancedCheckoutCallbacks.test()
         return CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
         )
     }
 }

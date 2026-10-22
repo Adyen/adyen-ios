@@ -58,8 +58,14 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
             )
         ) {}
 
-        return try await Checkout.setup(
-            configuration: configuration
+        let callbacks = ActionOnlyCheckoutCallbacks(
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
         )
         .onAction { [weak self] _, actionViewController in
             // Wrap in a navigation controller with a cancel button so the action can be dismissed
@@ -73,13 +79,11 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
             )
             self?.presenter?.present(viewController: navigationController, completion: nil)
         }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
+
+        return try await Checkout.setup(
+            configuration: configuration,
+            callbacks: callbacks
+        )
     }
 
     private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
