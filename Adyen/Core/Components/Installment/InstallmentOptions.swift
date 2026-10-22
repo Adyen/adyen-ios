@@ -21,13 +21,13 @@ public struct InstallmentOptions: Equatable, Codable {
     }
 
     /// List of available installment counts (e.g. [2, 3, 6]).
-    package let values: [Int]
+    public let values: [Int]
 
     /// The plan types to offer. Defaults to `[.regular]`.
-    package let plans: [Plan]
+    public let plans: [Plan]
 
     /// The installment count pre-selected in the UI.
-    package let preselectedValue: Int?
+    public let preselectedValue: Int?
 
     /// Creates a new instance of installment options.
     /// - Parameters:
@@ -35,7 +35,11 @@ public struct InstallmentOptions: Equatable, Codable {
     ///   Must not be empty and values must be greater than 1.
     ///   - plans: The plan types to offer. Defaults to `[.regular]`.
     ///   - preselectedValue: The installment count pre-selected in the UI.
-    public init(values: [Int], plans: [Plan] = [.regular], preselectedValue: Int? = nil) {
+    public init(
+        values: [Int],
+        plans: [Plan] = [.regular],
+        preselectedValue: Int? = nil
+    ) {
         let values = values.filter { $0 > 1 }
         assert(!values.isEmpty, "Values must not be empty and must be greater than 1")
         self.values = values
@@ -49,7 +53,11 @@ public struct InstallmentOptions: Equatable, Codable {
     ///   Resulting `values` array will be `[2 , 3...maxInstallments]`. Must be greater than 1.
     ///   - plans: The plan types to offer. Defaults to `[.regular]`.
     ///   - preselectedValue: The installment count pre-selected in the UI.
-    public init(maxInstallments: Int, plans: [Plan] = [.regular], preselectedValue: Int? = nil) {
+    public init(
+        maxInstallments: Int,
+        plans: [Plan] = [.regular],
+        preselectedValue: Int? = nil
+    ) {
         assert(maxInstallments > 1, "Must provide a valid max amount greater than 1.")
         let values = maxInstallments > 1 ? Array(2...maxInstallments) : []
         self.init(values: values, plans: plans, preselectedValue: preselectedValue)

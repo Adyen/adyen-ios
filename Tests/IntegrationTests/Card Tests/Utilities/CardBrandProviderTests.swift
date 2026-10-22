@@ -54,7 +54,7 @@ class CardBrandProviderTests: XCTestCase {
         }
     }
 
-    func test_fallbackBinInfoProvider_shouldReturnUnreliableBrands() {
+    func test_fallbackBinInfoProvider_whenDetectingBrandLocally_shouldReturnUnreliableBrands() {
         let completion = expectation(description: "Fallback provider completes")
         FallbackBinInfoProvider().provide(for: "4111", supportedTypes: [.visa]) { response in
             XCTAssertEqual(response.brands?.map(\.brand), [.visa])
