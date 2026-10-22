@@ -26,6 +26,10 @@ package final class SecuredViewController<ChildViewController: UIViewController>
 
     package weak var delegate: ViewControllerDelegate?
 
+    /// Presenter injected by the drop in to push secondary screens
+    /// onto its navigation stack. `nil` keeps modal presentation.
+    package var secondaryScreenPresenter: ViewControllerPresenter?
+
     override public var preferredContentSize: CGSize {
         get { childViewController.preferredContentSize }
         set { childViewController.preferredContentSize = newValue }
@@ -164,3 +168,5 @@ package final class SecuredViewController<ChildViewController: UIViewController>
         )
     }
 }
+
+extension SecuredViewController: SecondaryScreenNavigable {}

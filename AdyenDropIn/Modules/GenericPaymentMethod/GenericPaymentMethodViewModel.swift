@@ -35,6 +35,8 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
         localizationParameters: LocalizationParameters
     ) {
         self.component = component
+        (component.viewController as? SecondaryScreenNavigable)?.secondaryScreenPresenter =
+            SecondaryScreenPushPresenter(source: component.viewController)
         self.dropInFlowManager = dropInFlowManager
         self.logoUrlProvider = logoUrlProvider
         self.localizationParameters = localizationParameters

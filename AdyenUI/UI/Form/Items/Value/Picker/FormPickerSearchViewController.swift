@@ -88,8 +88,15 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
 
         super.init(rootViewController: searchViewController)
         searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
+    }
+    
+    override package func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        searchViewController.navigationItem.leftBarButtonItem = .init(
+        // The cancel item belongs to the modal presentation only. When the
+        // content view controller is pushed instead (secondary screen in the
+        // drop in), this wrapper never appears and the system back button is used.
+        topViewController?.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(dismissTapped)
