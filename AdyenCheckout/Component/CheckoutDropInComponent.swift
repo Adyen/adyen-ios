@@ -11,7 +11,7 @@ import UIKit
 
 /// A component that presents the complete Drop-in payment flow.
 ///
-/// Create instances using ``PaymentCheckout/createDropIn()``. Retain both the checkout flow and
+/// Create instances using ``Checkout/createDropIn()``. Retain both the checkout flow and
 /// this component while its view controller is presented.
 ///
 /// ```swift

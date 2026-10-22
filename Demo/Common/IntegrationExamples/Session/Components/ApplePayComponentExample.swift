@@ -15,7 +15,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: SessionCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
     private var latestApplePayAmount = ConfigurationConstants.current.amount
 
@@ -126,9 +126,16 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 )
         }
 
-        let checkout = try await Checkout.setup(
-            with: sessionResponse,
-            configuration: configuration
+        let callbacks = CheckoutCallbacks(
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
         )
         .onBeforeSubmit { [weak self] data in
             guard let self else { return .abort }
@@ -154,15 +161,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 }
             }
         }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
+
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            callbacks: callbacks
+        )
 
         self.checkout = checkout
 

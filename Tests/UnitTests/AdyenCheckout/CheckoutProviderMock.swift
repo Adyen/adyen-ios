@@ -12,6 +12,10 @@ import AdyenNetworking
 @testable import AdyenSession
 
 internal class CheckoutProviderMock: CheckoutProviding {
+    var sessionCallbacks: CheckoutCallbacks?
+    var advancedCallbacks: AdvancedCheckoutCallbacks?
+    var actionOnlyCallbacks: ActionOnlyCheckoutCallbacks?
+
     var setupSessionCalled = false
     var setupWithSessionResult: Result<CheckoutCoreProtocol, Error>?
     
@@ -44,9 +48,10 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore
+        callbacks: CheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
         setupSessionCalled = true
+        sessionCallbacks = callbacks
         
         switch setupWithSessionResult {
         case let .success(checkout):
@@ -61,9 +66,10 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore
+        callbacks: AdvancedCheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
         setupPaymentMethodsCalled = true
+        advancedCallbacks = callbacks
         
         switch setupWithPaymentMethodsResult {
         case let .success(checkout):
@@ -77,9 +83,10 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     func setup(
         configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore
+        callbacks: ActionOnlyCheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
         setupActionOnlyCalled = true
+        actionOnlyCallbacks = callbacks
         
         switch setupActionOnlyResult {
         case let .success(checkout):

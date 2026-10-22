@@ -116,7 +116,7 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 
 ## Getting started
 
-The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, closure-based flow callbacks, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
+The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, callbacks supplied as a value before setup, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
 
 > **Note:** Drop-in is not part of the v6 alpha yet. The v6 alpha exposes individual payment components; Drop-in support is planned for a later release.
 
@@ -139,16 +139,20 @@ let configuration = try CheckoutConfiguration(
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+)
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
@@ -160,21 +164,25 @@ In session flow the effective `amount` comes from the `/sessions` response, and 
 If your app only needs to handle actions, set up checkout without a `SessionResponse` or `PaymentMethods`, and call `checkout.handle(action:)` when your backend returns an action.
 
 ```swift
-let checkout = try await Checkout.setup(
-    configuration: configuration
+let callbacks = ActionOnlyCheckoutCallbacks(
+    onAdditionalDetails: { data in
+        try await callDetails(with: data)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
 )
 .onAction { actionData, actionViewController in
     present(actionViewController, animated: true)
 }
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
 .onComplete { result in
     print(result.resultCode)
 }
-.onFailure { error in
-    print(error.localizedDescription)
-}
+
+let checkout = try await Checkout.setup(
+    configuration: configuration,
+    callbacks: callbacks
+)
 ```
 
 ### Presenting a payment component
@@ -188,6 +196,8 @@ present(UINavigationController(rootViewController: viewController), animated: tr
 ```
 
 ### Presenting actions
+
+Set `.onAction` on the callbacks value before passing it to `Checkout.setup`.
 
 Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action.
 

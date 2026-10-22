@@ -44,7 +44,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     package let configuration: CheckoutConfiguration
     package let adyenContext: AdyenContext
-    package let resultCallbacks: any CheckoutResultCallbackStore
+    package let resultCallbacks: any CheckoutResultCallbacks
     package let callbackHandler: any CheckoutCallbackHandling
 
     internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
@@ -83,7 +83,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
-        resultCallbacks: any CheckoutResultCallbackStore,
+        resultCallbacks: any CheckoutResultCallbacks,
         callbackHandler: any CheckoutCallbackHandling
     ) {
         self.configuration = configuration

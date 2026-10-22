@@ -186,7 +186,7 @@ private extension CheckoutCore {
                 sessionResult: session?.state.sessionResult
             )
         case let .failed(error):
-            resultCallbacks.onFailure?(CheckoutError(error: error))
+            resultCallbacks.onFailure(CheckoutError(error: error))
         }
     }
 
