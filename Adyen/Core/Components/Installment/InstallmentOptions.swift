@@ -109,7 +109,7 @@ public struct InstallmentConfiguration: Decodable, Equatable {
     ///  and default options for the rest of the card types.
     /// - Parameters:
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
-    ///   - cardBasedOptions: Options based on the card brand. Must not be empty.
+    ///   - cardBasedOptions: Options based on the card brand.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
         defaultOptions: InstallmentOptions,
