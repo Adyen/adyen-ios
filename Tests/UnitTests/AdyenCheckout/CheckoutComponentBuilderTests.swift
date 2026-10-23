@@ -395,10 +395,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withSessionConfiguration_appliesSessionOverridesToCardComponent() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 3)
         )
         let sessionInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: true)
+            defaultOptions: InstallmentOptions(maxInstallments: 6, plans: [.regular, .revolving])
         )
         checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
             .installmentConfiguration(merchantInstallments)

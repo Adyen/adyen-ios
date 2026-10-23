@@ -89,7 +89,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
 
         var cardConfiguration = CardConfiguration()
         cardConfiguration.installmentConfiguration = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+            defaultOptions: InstallmentOptions(values: [2, 3])
         )
 
         let sut = try makeSUT(

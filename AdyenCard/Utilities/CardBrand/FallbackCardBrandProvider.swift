@@ -28,7 +28,7 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
                 cvcPolicy = .required
             }
 
-            return DetectedCardBrand(brand: brand, cvcPolicy: cvcPolicy)
+            return DetectedCardBrand(brand: brand, cvcPolicy: cvcPolicy, isReliable: false)
         }
         completion(BinLookupResponse(brands: result))
     }

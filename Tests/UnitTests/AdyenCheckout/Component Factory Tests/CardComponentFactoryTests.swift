@@ -26,10 +26,10 @@ final class CardComponentFactoryTests: XCTestCase {
     func test_create_withSessionConfiguration_appliesSessionOverrides() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 3)
         )
         let sessionInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: true)
+            defaultOptions: InstallmentOptions(maxInstallments: 6, plans: [.regular, .revolving])
         )
         let configuration = CardConfiguration()
             .showStorePaymentMethod(true)
@@ -54,7 +54,7 @@ final class CardComponentFactoryTests: XCTestCase {
     func test_create_withoutSessionConfiguration_preservesConfiguration() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 3)
         )
         let configuration = CardConfiguration()
             .showStorePaymentMethod(false)

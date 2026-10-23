@@ -303,6 +303,43 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 - card brand detection callbacks -> `CardConfiguration.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
+#### Installments configuration
+
+The installments public API is aligned across the Adyen SDKs. `InstallmentOptions` takes `values` and a typed `plans`
+list instead of `monthValues` and an `includesRevolving` flag, and gains an optional `preselectedValue`.
+
+##### Before (v5)
+
+```swift
+let options = InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+var configuration = CardComponent.Configuration()
+configuration.installmentConfiguration = InstallmentConfiguration(
+    cardBasedOptions: [.visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)],
+    defaultOptions: options
+)
+```
+
+##### After (v6)
+
+```swift
+let options = InstallmentOptions(values: [2, 3])
+let configuration = CardConfiguration()
+    .installmentConfiguration(
+        InstallmentConfiguration(
+            defaultOptions: options,
+            cardBasedOptions: [.visa: InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])]
+        )
+    )
+```
+
+- `monthValues` is renamed to `values`, and values are `Int` instead of `UInt`.
+- `maxInstallmentMonth` is renamed to `maxInstallments`.
+- `includesRevolving: Bool` is replaced by `plans: [InstallmentOptions.Plan]`, defaulting to `[.regular]`.
+- `InstallmentOptions` gains an optional `preselectedValue`, the installment count pre-selected in the UI.
+- The `regularInstallmentMonths` property is renamed to `values`, and the `includesRevolving` property is replaced by `plans`.
+- The `InstallmentConfiguration` initializer parameters are reordered to
+  `(defaultOptions, cardBasedOptions, showInstallmentAmount)`.
+
 ### Apple Pay component
 
 In v5, Apple Pay's `viewController` was the Apple Pay sheet, and the component could only be used once. `PreApplePayComponent`

@@ -215,16 +215,16 @@ internal struct DemoAppSettings: Codable {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
     }
 
-    internal static let installmentMonthValues: [UInt] = [2, 3]
-    internal static let installmentPreselectedValue: UInt = 2
+    internal static let installmentMonthValues: [Int] = [2, 3]
+    internal static let installmentPreselectedValue: Int = 2
 
     internal var installmentConfiguration: InstallmentConfiguration? {
         let mode = cardSettings.resolvedInstallmentOptionsMode
         guard mode.isEnabled else { return nil }
 
         let options = InstallmentOptions(
-            monthValues: Self.installmentMonthValues,
-            includesRevolving: mode == .defaultWithRevolving
+            values: Self.installmentMonthValues,
+            plans: mode == .defaultWithRevolving ? [.regular, .revolving] : [.regular]
         )
         if mode == .cardBasedVisa {
             return InstallmentConfiguration(

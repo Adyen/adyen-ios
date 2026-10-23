@@ -323,7 +323,9 @@ extension CardViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
-        items.installmentsItem?.update(cardBrand: brand?.brand)
+        // Card-based installment options only apply to brands confirmed by `/binLookup`.
+        let reliableBrand = brand?.isReliable == true ? brand?.brand : nil
+        items.installmentsItem?.update(cardBrand: reliableBrand)
     }
     
     // MARK: Private methods
