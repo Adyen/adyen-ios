@@ -52,7 +52,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
-        let plainPaymentSheet = ConfigurationConstants.current.applePaySettings.plainPaymentSheet
+        let plainPaymentSheet = ExternalConfigurationReader.readFromLaunchArguments()?.applePay?.plainPaymentSheet ?? false
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             clientKey: ConfigurationConstants.clientKey,

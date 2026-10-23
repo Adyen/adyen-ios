@@ -177,7 +177,6 @@ internal struct ApplePaySettings: Codable {
     internal var allowOnboarding: Bool = false
     internal var didAuthorizeSuccessful: Bool = true
     internal var onBeforeSubmitMode: OnBeforeSubmitMode = .updateData
-    internal var plainPaymentSheet: Bool = false
 
     internal enum OnBeforeSubmitMode: String, Codable, CaseIterable {
         case updateData

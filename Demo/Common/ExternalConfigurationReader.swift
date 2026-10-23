@@ -97,11 +97,6 @@ internal extension DemoAppSettings {
             dropInSettings.startWithLastStoredPaymentMethod = startWithLastStoredPaymentMethod
         }
 
-        var applePaySettings = applePaySettings
-        if let plainPaymentSheet = external.applePay?.plainPaymentSheet {
-            applePaySettings.plainPaymentSheet = plainPaymentSheet
-        }
-
         return DemoAppSettings(
             countryCode: countryCode,
             value: value,

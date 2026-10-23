@@ -179,21 +179,11 @@ final class DemoConfigurationTests: XCTestCase {
         XCTAssertEqual(result?.applePay?.plainPaymentSheet, true)
     }
 
-    func test_applying_withApplePayConfiguration_shouldOverridePlainPaymentSheet() {
-        let external = ExternalConfiguration(
-            applePay: ExternalApplePayConfiguration(plainPaymentSheet: true)
-        )
+    func test_externalConfigurationReader_withEmptyApplePayConfiguration_shouldPreserveNilOptional() {
+        let encodedPayload = base64Encode(ExternalConfiguration(applePay: ExternalApplePayConfiguration()))
 
-        let configuration = defaultConfiguration.applying(external)
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
 
-        XCTAssertTrue(configuration.applePaySettings.plainPaymentSheet)
-        XCTAssertEqual(configuration.applePaySettings.merchantIdentifier, defaultConfiguration.applePaySettings.merchantIdentifier)
-        XCTAssertEqual(configuration.applePaySettings.onBeforeSubmitMode, defaultConfiguration.applePaySettings.onBeforeSubmitMode)
-    }
-
-    func test_applying_withoutApplePayConfiguration_shouldKeepFullPaymentSheet() {
-        let configuration = defaultConfiguration.applying(ExternalConfiguration())
-
-        XCTAssertFalse(configuration.applePaySettings.plainPaymentSheet)
+        XCTAssertNil(result?.applePay?.plainPaymentSheet)
     }
 }
