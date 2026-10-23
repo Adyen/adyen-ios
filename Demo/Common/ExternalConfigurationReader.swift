@@ -36,15 +36,22 @@ internal enum ExternalConfigurationReader {
 internal struct ExternalConfiguration: Codable {
     internal let card: ExternalCardConfiguration?
     internal let dropIn: ExternalDropInConfiguration?
+    internal let applePay: ExternalApplePayConfiguration?
 
-    internal init(card: ExternalCardConfiguration? = nil, dropIn: ExternalDropInConfiguration? = nil) {
+    internal init(
+        card: ExternalCardConfiguration? = nil,
+        dropIn: ExternalDropInConfiguration? = nil,
+        applePay: ExternalApplePayConfiguration? = nil
+    ) {
         self.card = card
         self.dropIn = dropIn
+        self.applePay = applePay
     }
 
     private enum CodingKeys: String, CodingKey {
         case card = "CARD_CONFIGURATION"
         case dropIn = "DROP_IN_CONFIGURATION"
+        case applePay = "APPLE_PAY_CONFIGURATION"
     }
 }
 
@@ -66,6 +73,14 @@ internal struct ExternalDropInConfiguration: Codable {
     }
 }
 
+internal struct ExternalApplePayConfiguration: Codable {
+    internal let plainPaymentSheet: Bool?
+
+    internal init(plainPaymentSheet: Bool? = nil) {
+        self.plainPaymentSheet = plainPaymentSheet
+    }
+}
+
 internal extension DemoAppSettings {
 
     func applying(_ external: ExternalConfiguration) -> DemoAppSettings {
@@ -80,6 +95,11 @@ internal extension DemoAppSettings {
         }
         if let startWithLastStoredPaymentMethod = external.dropIn?.startWithLastStoredPaymentMethod {
             dropInSettings.startWithLastStoredPaymentMethod = startWithLastStoredPaymentMethod
+        }
+
+        var applePaySettings = applePaySettings
+        if let plainPaymentSheet = external.applePay?.plainPaymentSheet {
+            applePaySettings.plainPaymentSheet = plainPaymentSheet
         }
 
         return DemoAppSettings(
