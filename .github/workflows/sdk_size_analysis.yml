@@ -15,6 +15,9 @@ concurrency:
 
 jobs:
   sdk-size-analysis:
+    # Fork PRs get a read-only GITHUB_TOKEN, so the PR comment step cannot succeed.
+    # Skipping at job level reports "Skipped", which satisfies the required check.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: macos-26-xlarge
     steps:
       - uses: actions/checkout@v7
