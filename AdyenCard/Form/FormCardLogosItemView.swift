@@ -29,6 +29,8 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
         flowLayout.scrollDirection = .vertical
         let collectionView = CardLogoCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
+        collectionView.allowsSelection = false
+        collectionView.allowsFocus = false
         return collectionView
     }()
     
@@ -118,8 +120,8 @@ extension FormCardLogosItemView {
             logoView.shadowColor = shadowColor
             
             logoView.imageView.isAccessibilityElement = true
-            logoView.imageView.accessibilityValue = altText
-            logoView.imageView.accessibilityTraits.insert(.image)
+            logoView.imageView.accessibilityLabel = altText
+            logoView.imageView.accessibilityTraits = .image
             
             updateIcon()
         }

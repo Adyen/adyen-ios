@@ -60,15 +60,25 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
         XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
+
+    func test_accessibilityLabel_whenValidationFails_shouldKeepFormatAndAddError() {
+        let item = FormCardExpiryDateItem()
+        item.title = "Expiry date"
+        let sut = makeSUT(item: item)
+
+        item.value = "13"
+        sut.showValidation()
+
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
+        let error = item.validationFailureMessage ?? ""
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format), \(error)")
+    }
 }
 
 extension FormCardExpiryDateItemViewTests {
     private func makeSUT(item: FormCardExpiryDateItem) -> FormTextInputItemView {
         let view = FormTextInputItemView(item: item)
-        view.observe(item.$title) { _ in
-            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
-        }
-        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        view.accessibilityInputFormat = localizedString(.cardExpiryItemAccessibilityLabel, item.localizationParameters)
         return view
     }
 }
