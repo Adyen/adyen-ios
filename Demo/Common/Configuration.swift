@@ -177,9 +177,6 @@ internal struct ApplePaySettings: Codable {
     internal var allowOnboarding: Bool = false
     internal var didAuthorizeSuccessful: Bool = true
     internal var onBeforeSubmitMode: OnBeforeSubmitMode = .updateData
-
-    /// Presents a plain Apple Pay sheet: no shipping or billing fields and no callbacks that change the total,
-    /// so the sheet total stays equal to the session amount.
     internal var plainPaymentSheet: Bool = false
 
     internal enum OnBeforeSubmitMode: String, Codable, CaseIterable {
