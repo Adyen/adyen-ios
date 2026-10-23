@@ -41,6 +41,7 @@ package final class FormToggleItemView: FormItemView<FormToggleItem> {
         let switchControl = UISwitch()
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
+        switchControl.accessibilityLabel = item.title
         switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -59,11 +60,13 @@ package final class FormToggleItemView: FormItemView<FormToggleItem> {
         configure()
 
         isAccessibilityElement = false
+        accessibilityLabel = item.title
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
 
         setupObservation()
         addSubviews()
+        onVoiceOverStatusUpdate()
     }
 
     /// Initializes the switch item view with default theme.
@@ -115,6 +118,7 @@ private extension FormToggleItemView {
         observe(item.$title) { [weak self] value in
             self?.label.text = value
             self?.accessibilityLabel = value
+            self?.switchControl.accessibilityLabel = value
         }
         
         observe(item.publisher) { [weak self] value in

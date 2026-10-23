@@ -13,10 +13,15 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     FormValueItemView<ValueType, FormTextItemStyle, ItemType>,
     AnyFormValidatableValueItemView {
 
+    package var accessibilityInputFormat: String? {
+        didSet { updateAccessibility(state: item.validationState) }
+    }
+
     public required init(item: ItemType, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
         setupValidationObserver()
         updateFooterDisplay(state: item.validationState, animated: false)
+        updateAccessibility(state: item.validationState)
     }
 
     // MARK: - Views
@@ -45,6 +50,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         observe(item.$placeholder) { [weak self] _ in
             guard let self else { return }
             self.updateFooterDisplay(state: self.item.validationState, animated: true)
+        }
+
+        observe(item.$title) { [weak self] _ in
+            guard let self else { return }
+            self.updateAccessibility(state: self.item.validationState)
         }
     }
 
@@ -92,14 +102,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     private func updateAccessibility(state: ValidationState) {
-        if let errorMessage = state.errorMessage {
-            accessibilityLabelView?.accessibilityLabel = [
-                item.title,
-                errorMessage
-            ].compactMap { $0 }.joined(separator: ", ")
-        } else {
-            accessibilityLabelView?.accessibilityLabel = item.title
-        }
+        accessibilityLabelView?.accessibilityLabel = [
+            item.title,
+            accessibilityInputFormat,
+            state.errorMessage
+        ].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ", ")
     }
 
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {

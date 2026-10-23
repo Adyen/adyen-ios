@@ -31,7 +31,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             
             // Set placeholder on item - it will be shown in footer label reactively
             self.item.placeholder = localizedPlaceholder
-            self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
+            self.accessibilityInputFormat = localizedPlaceholder
         }
 
         observe(item.$displayMode) { [weak self] _ in
@@ -188,10 +188,5 @@ extension FormCardSecurityCodeItemView {
             in: self.bundle,
             compatibleWith: nil
         ))
-    }
-
-    private func accessibilityLabel(placeholder: String) -> String {
-        let title = item.title ?? ""
-        return title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }

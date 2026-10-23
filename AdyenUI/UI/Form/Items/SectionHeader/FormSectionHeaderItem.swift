@@ -66,6 +66,7 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
         let label = AdyenLabel()
         label.apply(theme.elements.labels.subtitle)
         label.numberOfLines = 0
+        label.accessibilityTraits.insert(.header)
         return label
     }()
 
