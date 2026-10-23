@@ -74,7 +74,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     }
                 }
                 .applying(if: !plainPaymentSheet) {
-                    $0.onSelectShippingContact { contact, summaryItems in
+                    $0.onSelectShippingContact { [weak self] contact, summaryItems in
+                        guard let self else { return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: summaryItems) }
                         let cityLabel = contact.postalAddress?.city ?? "Somewhere"
                         let items = self.updatedSummaryItems(
                             from: summaryItems,
@@ -88,7 +89,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         self.updateLatestApplePayAmount(using: items)
                         return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                     }
-                    .onSelectShippingMethod { shippingMethod, summaryItems in
+                    .onSelectShippingMethod { [weak self] shippingMethod, summaryItems in
+                        guard let self else { return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems) }
                         let items = self.updatedSummaryItems(
                             from: summaryItems,
                             appending: [shippingMethod]
@@ -96,7 +98,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         self.updateLatestApplePayAmount(using: items)
                         return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
                     }
-                    .onChangeCouponCode { _, summaryItems in
+                    .onChangeCouponCode { [weak self] _, summaryItems in
+                        guard let self else { return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: summaryItems) }
                         // make sure your backend's amount and apple pay sheet amount are the same
                         let items = self.updatedSummaryItems(
                             from: summaryItems,
@@ -105,7 +108,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         self.updateLatestApplePayAmount(using: items)
                         return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                     }
-                    .onSelectPaymentMethod { paymentMethod, summaryItems in
+                    .onSelectPaymentMethod { [weak self] paymentMethod, summaryItems in
+                        guard let self else { return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: summaryItems) }
                         // Example: Add a processing fee based on card type
                         let cardType = paymentMethod.displayName ?? "Card"
                         let items = self.updatedSummaryItems(
