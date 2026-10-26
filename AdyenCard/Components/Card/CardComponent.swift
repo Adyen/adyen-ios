@@ -78,7 +78,7 @@ package class CardComponent: PaymentComponent,
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init(),
-        callbacks: CardCallbacks = .init()
+        callbacks: CardCallbacks
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),

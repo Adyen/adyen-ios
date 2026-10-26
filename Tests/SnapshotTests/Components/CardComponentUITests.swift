@@ -26,7 +26,8 @@ class CardComponentUITests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: paymentMethod,
             context: Dummy.context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: CardCallbacks()
         )
         
         verifyViewControllerImage(matching: sut.viewController, named: "CardComponentUITests.\(#function)")
@@ -40,7 +41,8 @@ class CardComponentUITests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: paymentMethod,
             context: Dummy.context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: CardCallbacks()
         )
         
         verifyViewControllerImage(matching: sut.viewController, named: "CardComponentUITests.\(#function)")
@@ -56,7 +58,8 @@ class CardComponentUITests: XCTestCase {
             let sut = CardComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context,
-                configuration: configuration
+                configuration: configuration,
+                callbacks: CardCallbacks()
             )
             
             verifyViewControllerImage(

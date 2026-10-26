@@ -85,12 +85,13 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
         self.showSupportedCardBrandLogos = true
     }
 
-    /// Whether the checkout callbacks must include `AddressCallbacks`.
-    package var requiresAddressCallbacks: Bool {
-        if case .lookup = billingAddressMode {
-            return true
-        }
-        return false
+    /// Throws when address lookup is enabled and the callbacks contain no `AddressCallbacks`.
+    package func validate(_ callbacks: AdditionalCallbacksStore) throws {
+        guard case .lookup = billingAddressMode, callbacks.callbacks(of: AddressCallbacks.self) == nil else { return }
+        throw CheckoutError(
+            code: .invalidConfiguration,
+            message: "Address lookup requires AddressCallbacks in the checkout callbacks."
+        )
     }
 
     internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
