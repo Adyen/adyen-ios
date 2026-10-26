@@ -95,6 +95,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             style: style.title
         )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
+        item.accessibilityTraits = .header
         return item
     }()
     

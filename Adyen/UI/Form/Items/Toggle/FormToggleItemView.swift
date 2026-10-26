@@ -36,6 +36,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
+        switchControl.accessibilityLabel = item.title
         switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -55,11 +56,13 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         backgroundColor = item.style.backgroundColor
 
         isAccessibilityElement = false
+        accessibilityLabel = item.title
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
-        
+
         setupObservation()
         addSubviews()
+        onVoiceOverStatusUpdate()
     }
     
     // MARK: - Public
@@ -90,6 +93,7 @@ private extension FormToggleItemView {
         observe(item.$title) { [weak self] value in
             self?.label.text = value
             self?.accessibilityLabel = value
+            self?.switchControl.accessibilityLabel = value
         }
         
         observe(item.publisher) { [weak self] value in

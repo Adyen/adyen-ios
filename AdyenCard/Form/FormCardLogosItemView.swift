@@ -23,6 +23,10 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
         flowLayout.scrollDirection = .vertical
         let collectionView = CardLogoCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
+        collectionView.allowsSelection = false
+        if #available(iOS 15.0, *) {
+            collectionView.allowsFocus = false
+        }
         return collectionView
     }()
     
@@ -110,8 +114,8 @@ extension FormCardLogosItemView {
             self.imageLoader = imageLoader
             
             cardTypeImageView.isAccessibilityElement = true
-            cardTypeImageView.accessibilityValue = altText
-            cardTypeImageView.accessibilityTraits.insert(.image)
+            cardTypeImageView.accessibilityLabel = altText
+            cardTypeImageView.accessibilityTraits = .image
             
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
