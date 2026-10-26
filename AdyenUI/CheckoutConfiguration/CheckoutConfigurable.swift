@@ -25,6 +25,9 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
 
+    /// Throws when the additional callbacks lack a callback this configuration requires.
+    func validate(_ callbacks: AdditionalCallbacksStore) throws
+
     //  var style: FormComponentStyle { get }
 
     var theme: CheckoutTheme { get set }
@@ -37,4 +40,10 @@ package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     package init(configurations: [CheckoutConfigurable]) {
         self.configurations = configurations
     }
+}
+
+extension CheckoutComponentConfiguration {
+
+    /// Accepts any callbacks, for components that require none.
+    package func validate(_: AdditionalCallbacksStore) throws {}
 }

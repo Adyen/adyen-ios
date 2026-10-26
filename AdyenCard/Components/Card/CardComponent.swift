@@ -80,7 +80,7 @@ package class CardComponent: PaymentComponent,
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init(),
-        callbacks: CardCallbacks = .init(),
+        callbacks: CardCallbacks,
         addressCallbacks: AddressCallbacks? = nil
     ) {
         let binInfoProvider = BinInfoProvider(

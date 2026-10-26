@@ -5,8 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
+#if canImport(AdyenUI)
+    import AdyenUI
 #endif
 
 internal extension CheckoutConfiguration {
@@ -15,16 +15,8 @@ internal extension CheckoutConfiguration {
     ///
     /// - Throws: `CheckoutError` with ``CheckoutError/Code/invalidConfiguration`` when a required callback is missing.
     func validate(additionalCallbacks: AdditionalCallbacksStore) throws {
-        #if canImport(AdyenCard)
-            let requiresAddressCallbacks = configurations.values.contains {
-                ($0 as? CardConfiguration)?.requiresAddressCallbacks == true
-            }
-            if requiresAddressCallbacks, additionalCallbacks.callbacks(of: AddressCallbacks.self) == nil {
-                throw CheckoutError(
-                    code: .invalidConfiguration,
-                    message: "Address lookup requires AddressCallbacks in the checkout callbacks."
-                )
-            }
-        #endif
+        for componentConfiguration in configurations.values {
+            try componentConfiguration.validate(additionalCallbacks)
+        }
     }
 }

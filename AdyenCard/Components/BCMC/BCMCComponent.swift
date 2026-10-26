@@ -21,7 +21,7 @@ package final class BCMCComponent: CardComponent {
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init(),
-        callbacks: CardCallbacks = .init(),
+        callbacks: CardCallbacks,
         addressCallbacks: AddressCallbacks? = nil
     ) {
         let configuration = configuration.bcmcConfiguration()
