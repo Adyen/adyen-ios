@@ -12,8 +12,8 @@ import UIKit
 
 internal struct DemoSessionInstallmentOptions: Encodable, Equatable {
     internal let plans: [String]
-    internal let preselectedValue: UInt
-    internal let values: [UInt]
+    internal let preselectedValue: Int
+    internal let values: [Int]
 }
 
 internal extension DemoAppSettings {

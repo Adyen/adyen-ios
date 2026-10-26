@@ -158,4 +158,32 @@ final class DemoConfigurationTests: XCTestCase {
             defaultConfiguration.dropInSettings.showRemovePaymentMethodButton
         )
     }
+
+    func test_externalConfigurationReader_withApplePayConfiguration_shouldDecodePlainPaymentSheet() {
+        let configuration = ExternalConfiguration(
+            applePay: ExternalApplePayConfiguration(plainPaymentSheet: true)
+        )
+        let encodedPayload = base64Encode(configuration)
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.applePay?.plainPaymentSheet, true)
+    }
+
+    func test_externalConfigurationReader_withApplePayConfigurationJSON_shouldUseApplePayConfigurationKey() {
+        let json = #"{"APPLE_PAY_CONFIGURATION":{"plainPaymentSheet":true}}"#
+        let encodedPayload = Data(json.utf8).base64EncodedString()
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.applePay?.plainPaymentSheet, true)
+    }
+
+    func test_externalConfigurationReader_withEmptyApplePayConfiguration_shouldPreserveNilOptional() {
+        let encodedPayload = base64Encode(ExternalConfiguration(applePay: ExternalApplePayConfiguration()))
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertNil(result?.applePay?.plainPaymentSheet)
+    }
 }

@@ -52,6 +52,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+        let plainPaymentSheet = ExternalConfigurationReader.readFromLaunchArguments()?.applePay?.plainPaymentSheet ?? false
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             clientKey: ConfigurationConstants.clientKey,
@@ -59,8 +60,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            try ConfigurationConstants.current
-                .applePayConfiguration(using: .demoWithShippingFields)
+            let applePay = try ConfigurationConstants.current
+                .applePayConfiguration(using: plainPaymentSheet ? .demo : .demoWithShippingFields)
                 .onAuthorize { payment in
                     if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
                         return PKPaymentAuthorizationResult(status: .success, errors: nil)
@@ -71,52 +72,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         )
                         return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
                     }
-                }.onSelectShippingContact { contact, summaryItems in
-                    let cityLabel = contact.postalAddress?.city ?? "Somewhere"
-                    let items = self.updatedSummaryItems(
-                        from: summaryItems,
-                        appending: [
-                            .init(
-                                label: "Shipping \(cityLabel)",
-                                amount: NSDecimalNumber(value: 5.0)
-                            )
-                        ]
-                    )
-                    self.updateLatestApplePayAmount(using: items)
-                    return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                 }
-                .onSelectShippingMethod { shippingMethod, summaryItems in
-                    let items = self.updatedSummaryItems(
-                        from: summaryItems,
-                        appending: [shippingMethod]
-                    )
-                    self.updateLatestApplePayAmount(using: items)
-                    return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
-                }
-                .onChangeCouponCode { _, summaryItems in
-                    // make sure your backend's amount and apple pay sheet amount are the same
-                    let items = self.updatedSummaryItems(
-                        from: summaryItems,
-                        appending: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))]
-                    )
-                    self.updateLatestApplePayAmount(using: items)
-                    return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
-                }
-                .onSelectPaymentMethod { paymentMethod, summaryItems in
-                    // Example: Add a processing fee based on card type
-                    let cardType = paymentMethod.displayName ?? "Card"
-                    let items = self.updatedSummaryItems(
-                        from: summaryItems,
-                        appending: [
-                            .init(
-                                label: "Processing Fee (\(cardType))",
-                                amount: NSDecimalNumber(value: 1.0)
-                            )
-                        ]
-                    )
-                    self.updateLatestApplePayAmount(using: items)
-                    return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
-                }
+            addingSheetUpdateCallbacks(to: applePay, plainPaymentSheet: plainPaymentSheet)
                 .buttonAppearance(
                     .init(
                         buttonType: .donate,
@@ -171,6 +128,65 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         self.checkout = checkout
 
         return try checkout.createPaymentComponent(for: .applePay)
+    }
+
+    private func addingSheetUpdateCallbacks(
+        to configuration: ApplePayConfiguration,
+        plainPaymentSheet: Bool
+    ) -> ApplePayConfiguration {
+        guard !plainPaymentSheet else { return configuration }
+
+        return configuration
+            .onSelectShippingContact { [weak self] contact, summaryItems in
+                guard let self else { return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: summaryItems) }
+                let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+                let items = self.updatedSummaryItems(
+                    from: summaryItems,
+                    appending: [
+                        .init(
+                            label: "Shipping \(cityLabel)",
+                            amount: NSDecimalNumber(value: 5.0)
+                        )
+                    ]
+                )
+                self.updateLatestApplePayAmount(using: items)
+                return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
+            }
+            .onSelectShippingMethod { [weak self] shippingMethod, summaryItems in
+                guard let self else { return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems) }
+                let items = self.updatedSummaryItems(
+                    from: summaryItems,
+                    appending: [shippingMethod]
+                )
+                self.updateLatestApplePayAmount(using: items)
+                return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
+            }
+            .onChangeCouponCode { [weak self] _, summaryItems in
+                guard let self else { return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: summaryItems) }
+                // make sure your backend's amount and apple pay sheet amount are the same
+                let items = self.updatedSummaryItems(
+                    from: summaryItems,
+                    appending: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))]
+                )
+                self.updateLatestApplePayAmount(using: items)
+                return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
+            }
+            .onSelectPaymentMethod { [weak self] paymentMethod, summaryItems in
+                guard let self else { return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: summaryItems) }
+                // Example: Add a processing fee based on card type
+                let cardType = paymentMethod.displayName ?? "Card"
+                let items = self.updatedSummaryItems(
+                    from: summaryItems,
+                    appending: [
+                        .init(
+                            label: "Processing Fee (\(cardType))",
+                            amount: NSDecimalNumber(value: 1.0)
+                        )
+                    ]
+                )
+                self.updateLatestApplePayAmount(using: items)
+                return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
+            }
     }
 
     private func startLoading() {

@@ -6,101 +6,125 @@
 
 import Foundation
 
-/// Details to configure Installment Options.
-/// These always include regular monthly installments,
-/// but in some countries `revolving` option may be added.
+/// Defines the installment options available for a specific card brand or as a default.
+///
+/// All values in `values` must be greater than 1.
 public struct InstallmentOptions: Equatable, Codable {
-    
-    /// Month options for regular installments.
-    package let regularInstallmentMonths: [UInt]
 
-    /// Determines if revolving installment is an option.
-    package let includesRevolving: Bool
+    /// An installment plan type.
+    public enum Plan: String {
+        /// Regular installment payments.
+        case regular
+
+        /// Revolving plan, specific to some countries.
+        case revolving
+    }
+
+    /// List of available installment counts (e.g. [2, 3, 6]).
+    public let values: [Int]
+
+    /// The plan types to offer. Defaults to `[.regular]`.
+    public let plans: [Plan]
+
+    /// The installment count pre-selected in the UI.
+    public let preselectedValue: Int?
 
     /// Creates a new instance of installment options.
     /// - Parameters:
-    ///   - monthValues: Allowed installment month values, such as `[2, 3]` or `[3, 6, 9]` etc.
+    ///   - values: Allowed installment counts, such as `[2, 3]` or `[3, 6, 9]` etc.
     ///   Must not be empty and values must be greater than 1.
-    ///   - includesRevolving: Determines if revolving installment is an option.
-    public init(monthValues: [UInt], includesRevolving: Bool) {
-        let monthValues = monthValues.filter { $0 > 1 }
-        assert(!monthValues.isEmpty, "Month values must not be empty and must be greater than 1")
-        regularInstallmentMonths = monthValues
-        self.includesRevolving = includesRevolving
+    ///   - plans: The plan types to offer. Defaults to `[.regular]`.
+    ///   - preselectedValue: The installment count pre-selected in the UI.
+    public init(
+        values: [Int],
+        plans: [Plan] = [.regular],
+        preselectedValue: Int? = nil
+    ) {
+        let values = values.filter { $0 > 1 }
+        assert(!values.isEmpty, "Values must not be empty and must be greater than 1")
+        self.values = values
+        self.plans = plans
+        self.preselectedValue = preselectedValue
     }
-    
-    /// Convenience  initializer to specify the maximum allowed installment month directly,
-    /// creating a serial installment options of 2 to `maxInstallmentMonth`.
+
+    /// Convenience initializer that generates values in `[2, 3 ... maxInstallments]`.
     /// - Parameters:
-    ///   - maxInstallmentMonth: Maximum allowed installment month.
-    ///   Resulting `monthValues` array will be `[2 , 3...maxInstallmentMonth]`. Must be greater than 1.
-    ///   - includesRevolving: Determines if revolving installment is an option.
-    public init(maxInstallmentMonth: UInt, includesRevolving: Bool) {
-        assert(maxInstallmentMonth > 1, "Must provide a valid max amount greater than 1.")
-        self.init(monthValues: Array(2...maxInstallmentMonth), includesRevolving: includesRevolving)
+    ///   - maxInstallments: Maximum allowed installment count.
+    ///   Resulting `values` array will be `[2 , 3...maxInstallments]`. Must be greater than 1.
+    ///   - plans: The plan types to offer. Defaults to `[.regular]`.
+    ///   - preselectedValue: The installment count pre-selected in the UI.
+    public init(
+        maxInstallments: Int,
+        plans: [Plan] = [.regular],
+        preselectedValue: Int? = nil
+    ) {
+        assert(maxInstallments > 1, "Must provide a valid max amount greater than 1.")
+        let values = maxInstallments > 1 ? Array(2...maxInstallments) : []
+        self.init(values: values, plans: plans, preselectedValue: preselectedValue)
     }
-    
+
     @_spi(AdyenInternal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let monthValues = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
-        self.regularInstallmentMonths = monthValues.filter { $0 > 1 }
-        let plans = try container.decode([String].self, forKey: .plans)
-        self.includesRevolving = plans.contains(Installments.Plan.revolving.rawValue)
+        let values = try container.decodeIfPresent([Int].self, forKey: .values) ?? []
+        self.values = values.filter { $0 > 1 }
+        let planStrings = try container.decode([String].self, forKey: .plans)
+        self.plans = planStrings.compactMap { Plan(rawValue: $0) }
+        self.preselectedValue = try container.decodeIfPresent(Int.self, forKey: .preselectedValue)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
+        case values
         case plans
-        case regularInstallmentMonths = "values"
+        case preselectedValue
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        var plans = [Installments.Plan.regular.rawValue]
-        if includesRevolving {
-            plans.append(Installments.Plan.revolving.rawValue)
-        }
-        
-        try container.encode(plans, forKey: .plans)
-        try container.encode(regularInstallmentMonths, forKey: .regularInstallmentMonths)
+
+        try container.encode(plans.map(\.rawValue), forKey: .plans)
+        try container.encode(values, forKey: .values)
+        try container.encodeIfPresent(preselectedValue, forKey: .preselectedValue)
     }
 }
 
-/// Configuration type to specify installment options.
+/// Installment configuration for the Card Component. Defines which installment plans are available
+/// to the shopper.
+///
+/// `defaultOptions` applies to all card brands unless overridden by `cardBasedOptions`.
 public struct InstallmentConfiguration: Decodable, Equatable {
-    
-    /// The option that apply to all card types, unless included `cardTypeBased` options.
+
+    /// Options applied to all card brands not present in `cardBasedOptions`.
     package let defaultOptions: InstallmentOptions?
 
-    /// Options that are specific to given card types
+    /// Brand-specific options. Overrides `defaultOptions` for matching brands.
     package let cardBasedOptions: [CardBrand: InstallmentOptions]?
 
-    /// Determines whether to show the amount next to the installment value.
-    /// For example, `3 months X 500 USD` or `3 months`.
+    /// Whether to show the per-installment amount in the installment dropdown.
+    /// For example, `3 monthly payments of US$ 500` or `3 monthly payments`.
     /// Amount is calculated by simple division.
     package var showInstallmentAmount: Bool
 
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.
     /// - Parameters:
-    ///   - cardBasedOptions: Options based on the card brand. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
+    ///   - cardBasedOptions: Options based on the card brand.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
-        cardBasedOptions: [CardBrand: InstallmentOptions],
         defaultOptions: InstallmentOptions,
+        cardBasedOptions: [CardBrand: InstallmentOptions]? = nil,
         showInstallmentAmount: Bool = false
     ) {
-        assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
-        self.cardBasedOptions = cardBasedOptions
+        assert(cardBasedOptions?.isEmpty != true, "This dictionary must not be empty.")
         self.defaultOptions = defaultOptions
+        self.cardBasedOptions = cardBasedOptions
         self.showInstallmentAmount = showInstallmentAmount
     }
-    
+
     /// Creates a new installment configuration by providing the card based options.
     /// - Parameters:
-    ///   - cardBasedOptions:  Options based on the card brand. Must not be empty.
+    ///   - cardBasedOptions: Options based on the card brand. Must not be empty.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
         cardBasedOptions: [CardBrand: InstallmentOptions],
@@ -111,20 +135,7 @@ public struct InstallmentConfiguration: Decodable, Equatable {
         self.cardBasedOptions = cardBasedOptions
         self.showInstallmentAmount = showInstallmentAmount
     }
-    
-    /// Creates a new installment configuration by providing the default options.
-    /// - Parameters:
-    ///   - defaultOptions: Default options to apply to all card types.
-    ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
-    public init(
-        defaultOptions: InstallmentOptions,
-        showInstallmentAmount: Bool = false
-    ) {
-        self.defaultOptions = defaultOptions
-        self.cardBasedOptions = nil
-        self.showInstallmentAmount = showInstallmentAmount
-    }
-    
+
     @_spi(AdyenInternal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
@@ -153,11 +164,11 @@ public struct InstallmentConfiguration: Decodable, Equatable {
 private struct DynamicKey: CodingKey {
     internal var intValue: Int?
     internal var stringValue: String
-    
+
     internal init?(intValue: Int) {
         nil
     }
-    
+
     internal init?(stringValue: String) {
         self.stringValue = stringValue
     }
