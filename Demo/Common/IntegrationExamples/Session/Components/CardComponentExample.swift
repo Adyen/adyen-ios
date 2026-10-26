@@ -56,12 +56,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .onBinChange { bin in
-                    print("Here is the bin \(bin)")
-                }
-                .onBinLookup { data in
-                    print("Bin lookup response \(data)")
-                }
             AuthenticationConfiguration()
                 .requestorAppURL(ConfigurationConstants.returnUrl)
         }
@@ -76,7 +70,18 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             onFailure: { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
             }
-        )
+        ) {
+            CardCallbacks()
+                .onBinChange { bin in
+                    print("Here is the bin \(bin)")
+                }
+                .onBinLookup { data in
+                    print("Bin lookup response \(data)")
+                }
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
+        }
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,

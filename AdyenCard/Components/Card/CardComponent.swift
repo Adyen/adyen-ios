@@ -47,6 +47,8 @@ package class CardComponent: PaymentComponent,
 
     /// Card component configuration.
     package internal(set) var configuration: CardConfiguration
+    package let callbacks: CardCallbacks
+    package let addressCallbacks: AddressCallbacks?
 
     /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
     /// attached, used for all card UI string lookups.
@@ -72,10 +74,14 @@ package class CardComponent: PaymentComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
+    ///   - callbacks: The optional card event handlers.
+    ///   - addressCallbacks: The address lookup handlers, when address lookup is configured.
     package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init()
+        configuration: CardConfiguration = .init(),
+        callbacks: CardCallbacks = .init(),
+        addressCallbacks: AddressCallbacks? = nil
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -87,7 +93,9 @@ package class CardComponent: PaymentComponent,
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            binProvider: binInfoProvider
+            binProvider: binInfoProvider,
+            callbacks: callbacks,
+            addressCallbacks: addressCallbacks
         )
     }
 
@@ -98,16 +106,22 @@ package class CardComponent: PaymentComponent,
     ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
     ///   - binProvider: Any object capable to provide a BinInfo.
+    ///   - callbacks: The optional card event handlers.
+    ///   - addressCallbacks: The address lookup handlers.
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration,
-        binProvider: AnyBinInfoProvider
+        binProvider: AnyBinInfoProvider,
+        callbacks: CardCallbacks = .init(),
+        addressCallbacks: AddressCallbacks? = nil
     ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
         self.binInfoProvider = binProvider
+        self.callbacks = callbacks
+        self.addressCallbacks = addressCallbacks
 
         self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
@@ -152,7 +166,8 @@ package class CardComponent: PaymentComponent,
             theme: configuration.theme,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
-            }
+            },
+            addressCallbacks: addressCallbacks
         )
 
         formViewController.delegate = self
@@ -201,7 +216,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        configuration.onBinChange?(bin)
+        callbacks.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {
@@ -212,7 +227,7 @@ extension CardComponent: CardViewControllerDelegate {
             let brands = (binInfo.brands ?? []).map {
                 BinLookupBrand(brand: $0.brand.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
             }
-            self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
+            self.callbacks.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
     }
 }
@@ -229,7 +244,7 @@ private extension CardComponent {
 
         return
             configuration.billingAddressMode.supportedCountryCodes?.first ??
-            Locale.current.regionCode ??
+            Locale.current.region?.identifier ??
             CardComponent.Constant.defaultCountryCode
     }
 }
@@ -314,7 +329,7 @@ extension BillingAddressMode {
             return hideForCardBrands
         case let .full(_, hideForCardBrands):
             return hideForCardBrands
-        case let .lookup(hideForCardBrands, _, _):
+        case let .lookup(hideForCardBrands):
             return hideForCardBrands
         }
     }

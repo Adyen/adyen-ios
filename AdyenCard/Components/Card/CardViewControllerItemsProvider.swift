@@ -35,6 +35,7 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         private let addressMode: BillingAddressMode
         private let scanCardHandler: (() -> Void)?
+        private let addressCallbacks: AddressCallbacks?
 
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
@@ -52,7 +53,8 @@ extension CardViewController {
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
             addressMode: BillingAddressMode,
-            scanCardHandler: (() -> Void)?
+            scanCardHandler: (() -> Void)?,
+            addressCallbacks: AddressCallbacks? = nil
         ) {
             self.formStyle = formStyle
             self.amount = amount
@@ -66,15 +68,19 @@ extension CardViewController {
             self.presenter = .init(presenter)
             self.addressMode = addressMode
             self.scanCardHandler = scanCardHandler
+            self.addressCallbacks = addressCallbacks
             self.theme = theme
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(_, onLookup, onAddressSelected):
+            case .lookup:
+                if addressCallbacks == nil {
+                    AdyenAssertion.assertionFailure(message: "Address lookup requires AddressCallbacks in the checkout callbacks.")
+                }
                 let provider = AsyncAddressLookupProvider(
-                    onLookup: onLookup,
-                    onAddressSelected: onAddressSelected
+                    onLookup: addressCallbacks?.onAddressLookup ?? { _ in [] },
+                    onAddressSelected: addressCallbacks?.onAddressSelected
                 )
                 return billingAddressPickerItem(with: provider)
             case .full:

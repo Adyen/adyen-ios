@@ -66,12 +66,6 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     /// Indicates whether or not to show the supported card brand logos under the card number item
     internal var showSupportedCardBrandLogos: Bool
     
-    /// Called when the BIN value changes (first 6-8 digits of the card number).
-    internal var onBinChange: ((String) -> Void)?
-    
-    /// Called when card brand(s) are detected from the entered card number.
-    internal var onBinLookup: ((BinLookupData) -> Void)?
-    
     // TODO: Add onFieldValidationChange closure that provides field validation
     // updates including last 4 digits, or add it here after deciding on alignment.
 
@@ -89,6 +83,14 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
         self.socialSecurityNumberVisibility = .auto
         self.binLookupType = .card
         self.showSupportedCardBrandLogos = true
+    }
+
+    /// Whether the checkout callbacks must include `AddressCallbacks`.
+    package var requiresAddressCallbacks: Bool {
+        if case .lookup = billingAddressMode {
+            return true
+        }
+        return false
     }
 
     internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
@@ -193,24 +195,6 @@ extension CardConfiguration {
         return copy
     }
     
-    /// Sets the handler to be called when the BIN value changes.
-    /// The BIN is the first 6-8 digits of the card number.
-    /// - Parameter onBinChange: The closure to call with the BIN value.
-    /// - Returns: A modified copy of the configuration.
-    public func onBinChange(_ onBinChange: @escaping (String) -> Void) -> Self {
-        var copy = self
-        copy.onBinChange = onBinChange
-        return copy
-    }
-    
-    /// Sets the handler to be called when card brand(s) are detected.
-    /// - Parameter onBinLookup: The closure to call with the BIN lookup result.
-    /// - Returns: A modified copy of the configuration.
-    public func onBinLookup(_ onBinLookup: @escaping (BinLookupData) -> Void) -> Self {
-        var copy = self
-        copy.onBinLookup = onBinLookup
-        return copy
-    }
 }
 
 extension CardConfiguration {

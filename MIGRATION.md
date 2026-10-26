@@ -299,9 +299,49 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 
 #### Callback migration
 
-- `CardComponentDelegate.didChangeBIN` -> `CardConfiguration.onBinChange(_:)`
-- card brand detection callbacks -> `CardConfiguration.onBinLookup(_:)`
+- `CardComponentDelegate.didChangeBIN` -> `CardCallbacks.onBinChange(_:)`
+- card brand detection callbacks -> `CardCallbacks.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
+
+The interim `CardConfiguration.onBinChange(_:)` and `onBinLookup(_:)` modifiers have been removed.
+Put `CardCallbacks` in the additional callbacks block of `CheckoutCallbacks`, not in `CheckoutConfiguration`
+or a trailing block on `Checkout.setup`:
+
+```swift
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    CardCallbacks()
+        .onBinChange { bin in
+            print(bin)
+        }
+        .onBinLookup { data in
+            print(data.brands)
+        }
+}
+```
+
+The block is optional and supports conditional entries. When a callback type appears more than once,
+the last whole value replaces the earlier value. Additional callbacks apply to both standalone components
+and components created inside Drop-in. Action-only callbacks do not accept an additional callbacks block.
+
+#### Address lookup callbacks
+
+`BillingAddressMode.lookup` now accepts only `hideForCardBrands`. Move its former `onAddressLookup` closure
+into `AddressCallbacks(onAddressLookup:)`, and its optional `onAddressSelected` closure into the
+`AddressCallbacks.onAddressSelected(_:)` modifier. Include that value in the same checkout callbacks block
+as `CardCallbacks`. Configure the UI separately with `CardConfiguration().billingAddressMode(.lookup())`.
+
+The lookup closure still receives a search term and asynchronously returns `[AddressLookupResult]`.
+The selection closure still receives the selected result and asynchronously returns a `PostalAddress`,
+or throws. Without the selection handler, the result's postal address is used as-is.
+When a card configuration uses `.lookup()` and the checkout callbacks contain no `AddressCallbacks`,
+`Checkout.setup` throws `CheckoutError` with the `.invalidConfiguration` code before making any network request.
 
 ### Apple Pay component
 
