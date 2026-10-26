@@ -43,15 +43,17 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return try createComponent(
-                    using: ACHDirectDebitComponentFactory(sessionConfiguration: sessionConfiguration),
+                    using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -61,6 +63,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: bacsPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -70,6 +73,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: applePayPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -79,6 +83,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: genericPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -88,10 +93,11 @@ package enum CheckoutComponentBuilder {
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
                 return try createComponent(
-                    using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
+                    using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -107,6 +113,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: twintPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
@@ -257,9 +264,12 @@ package enum CheckoutComponentBuilder {
 
     // swiftlint:enable function_body_length
 
-    /// Resolves the component configuration and asks the factory whether the component is available.
+    /// Looks up the merchant's component configuration and asks the factory whether the component is available.
     ///
-    /// - Returns: `false` if the configuration can't be resolved or the factory reports the component as unavailable.
+    /// The factory gets the merchant's configuration, or its default, as is. The settings the flow provides
+    /// (session, theme, localization, build policy) only apply when the component is created.
+    ///
+    /// - Returns: `false` if no configuration can be found or the factory reports the component as unavailable.
     @MainActor
     internal static func isAvailable<Factory: PaymentComponentFactory>(
         using factory: Factory,
@@ -267,10 +277,9 @@ package enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration
     ) -> Bool where Factory.Configuration: CheckoutComponentConfiguration {
         do {
-            let componentConfiguration = try resolveConfiguration(
+            let componentConfiguration = try configuration.configuration(
                 for: paymentMethod,
-                defaultValue: factory.defaultConfiguration(),
-                configuration: configuration
+                defaultValue: factory.defaultConfiguration()
             )
             return factory.isAvailable(for: paymentMethod, configuration: componentConfiguration)
         } catch {
@@ -292,6 +301,7 @@ extension CheckoutComponentBuilder {
     ///   - paymentMethod: The payment method to create a component for.
     ///   - configuration: The checkout configuration.
     ///   - policy: The settings chosen by the flow that shows the component.
+    ///   - sessionConfiguration: The session-owned settings, if the flow uses a session.
     ///   - additionalCallbacks: Additional callbacks provided, resolved by the factory.
     /// - Returns: A configured payment component.
     @MainActor
@@ -301,6 +311,7 @@ extension CheckoutComponentBuilder {
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
+        sessionConfiguration: SessionComponentConfiguration?,
         additionalCallbacks: AdditionalCallbacksStore,
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
@@ -308,8 +319,10 @@ extension CheckoutComponentBuilder {
         let componentConfiguration = try resolveConfiguration(
             for: paymentMethod,
             defaultValue: factory.defaultConfiguration(),
-            configuration: configuration
-        ).applying(policy)
+            configuration: configuration,
+            sessionConfiguration: sessionConfiguration,
+            policy: policy
+        )
 
         return try factory.create(
             with: paymentMethod,
@@ -331,8 +344,10 @@ extension CheckoutComponentBuilder {
         let componentConfiguration = try resolveConfiguration(
             for: storedPaymentMethod,
             defaultValue: factory.defaultConfiguration(),
-            configuration: configuration
-        ).applying(policy)
+            configuration: configuration,
+            sessionConfiguration: nil,
+            policy: policy
+        )
 
         return factory.create(
             with: storedPaymentMethod,
@@ -359,11 +374,14 @@ extension CheckoutComponentBuilder {
         return component
     }
     
+    /// Looks up the merchant's component configuration, or the default, and applies the settings the flow provides.
     @MainActor
     private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
         for paymentMethod: PaymentMethod,
         defaultValue: @autoclosure () throws -> Configuration,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        sessionConfiguration: SessionComponentConfiguration?,
+        policy: ComponentBuildPolicy
     ) throws -> Configuration {
 
         var componentConfiguration = try configuration.configuration(
@@ -371,11 +389,15 @@ extension CheckoutComponentBuilder {
             defaultValue: defaultValue()
         )
 
+        if let sessionConfiguration {
+            componentConfiguration = componentConfiguration.applying(sessionConfiguration)
+        }
+
         componentConfiguration.theme = configuration.theme
         componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
             mergingExistingParameters: componentConfiguration.localizationParameters
         )
 
-        return componentConfiguration
+        return componentConfiguration.applying(policy)
     }
 }

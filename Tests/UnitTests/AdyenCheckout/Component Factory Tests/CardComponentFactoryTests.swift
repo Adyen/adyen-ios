@@ -23,36 +23,7 @@ final class CardComponentFactoryTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_create_withSessionConfiguration_appliesSessionOverrides() throws {
-        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
-        let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallments: 3)
-        )
-        let sessionInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallments: 6, plans: [.regular, .revolving])
-        )
-        let configuration = CardConfiguration()
-            .showStorePaymentMethod(true)
-            .installmentConfiguration(merchantInstallments)
-        let factory = CardComponentFactory<CardPaymentMethod>(
-            sessionConfiguration: .init(
-                installmentConfiguration: sessionInstallments,
-                showStorePaymentMethod: false
-            )
-        )
-
-        let component = factory.create(
-            with: paymentMethod,
-            context: context,
-            configuration: configuration,
-            callbacks: nil
-        )
-
-        XCTAssertFalse(component.configuration.showStorePaymentMethod)
-        XCTAssertEqual(component.configuration.installmentConfiguration, sessionInstallments)
-    }
-
-    func test_create_withoutSessionConfiguration_preservesConfiguration() throws {
+    func test_create_passesConfigurationToComponent() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         let merchantInstallments = InstallmentConfiguration(
             defaultOptions: InstallmentOptions(maxInstallments: 3)

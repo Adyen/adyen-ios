@@ -28,6 +28,19 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     //  var style: FormComponentStyle { get }
 
     var theme: CheckoutTheme { get set }
+
+    /// Returns a copy of the configuration with the session-owned settings applied.
+    ///
+    /// Only configurations that need to update from session values override it.
+    func applying(_ session: SessionComponentConfiguration) -> Self
+}
+
+extension CheckoutComponentConfiguration {
+
+    /// Returns the configuration unchanged, for components without session-owned settings.
+    package func applying(_: SessionComponentConfiguration) -> Self {
+        self
+    }
 }
 
 package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
