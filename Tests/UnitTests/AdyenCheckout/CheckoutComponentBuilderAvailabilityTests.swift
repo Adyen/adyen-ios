@@ -234,9 +234,10 @@ private final class AvailabilitySpyFactory: PaymentComponentFactory {
     func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BLIKComponent {
-        BLIKComponentFactory().create(with: paymentMethod, context: context, configuration: configuration)
+        BLIKComponentFactory().create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
     }
 
     func defaultConfiguration() -> BasicComponentConfiguration {

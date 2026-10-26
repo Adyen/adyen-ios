@@ -61,7 +61,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -79,7 +80,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -104,7 +106,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         XCTAssertFalse(component.configuration.showStorePaymentMethod)
@@ -118,7 +121,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         XCTAssertFalse(component.configuration.showStorePaymentMethod)
@@ -133,7 +137,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -157,7 +162,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: customContext,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -180,7 +186,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then - Theme should be preserved in configuration
@@ -207,7 +214,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let component = sut.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then - Verify types through their properties
@@ -226,10 +234,12 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
 
         // When
         let component1 = sut.create(
-            with: paymentMethod1, context: context, configuration: configuration
+            with: paymentMethod1, context: context, configuration: configuration,
+            callbacks: nil
         )
         let component2 = sut.create(
-            with: paymentMethod2, context: context, configuration: configuration
+            with: paymentMethod2, context: context, configuration: configuration,
+            callbacks: nil
         )
 
         // Then - Components should be independent instances

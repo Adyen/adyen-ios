@@ -688,12 +688,14 @@ struct CardComponentBillingAddressModeTests {
                 brands: [.visa, .americanExpress, .masterCard]
             )
 
+            var callbacks = CardCallbacks()
+            callbacks.addressCallbacks = addressCallbacks
             let component = CardComponent(
                 paymentMethod: method,
                 context: Dummy.context,
                 configuration: configuration,
                 binProvider: binProvider,
-                addressCallbacks: addressCallbacks
+                callbacks: callbacks
             )
 
             proxy = CardComponentProxy(component: component)

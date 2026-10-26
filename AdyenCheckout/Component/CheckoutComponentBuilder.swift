@@ -43,6 +43,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
@@ -51,6 +52,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             case let bacsPaymentMethod as BACSDirectDebitPaymentMethod:
@@ -59,6 +61,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: bacsPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
@@ -67,6 +70,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: applePayPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             case let genericPaymentMethod as GenericPaymentMethod:
@@ -75,6 +79,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: genericPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
         #endif
@@ -83,14 +88,11 @@ package enum CheckoutComponentBuilder {
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
                 return try createComponent(
-                    using: CardComponentFactory(
-                        sessionConfiguration: sessionConfiguration,
-                        callbacks: additionalCallbacks.callbacks(of: CardCallbacks.self) ?? .init(),
-                        addressCallbacks: additionalCallbacks.callbacks(of: AddressCallbacks.self)
-                    ),
+                    using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
                 // TODO: add other card methods like stored or write a generic one.
@@ -105,6 +107,7 @@ package enum CheckoutComponentBuilder {
                     paymentMethod: twintPaymentMethod,
                     configuration: configuration,
                     policy: policy,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
         #endif
@@ -289,13 +292,16 @@ extension CheckoutComponentBuilder {
     ///   - paymentMethod: The payment method to create a component for.
     ///   - configuration: The checkout configuration.
     ///   - policy: The settings chosen by the flow that shows the component.
+    ///   - additionalCallbacks: Additional callbacks provided, resolved by the factory.
     /// - Returns: A configured payment component.
     @MainActor
+    // swiftlint:disable:next function_parameter_count
     private static func createComponent<Factory: PaymentComponentFactory>(
         using factory: Factory,
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
+        additionalCallbacks: AdditionalCallbacksStore,
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
@@ -308,7 +314,8 @@ extension CheckoutComponentBuilder {
         return try factory.create(
             with: paymentMethod,
             context: context,
-            configuration: componentConfiguration
+            configuration: componentConfiguration,
+            callbacks: factory.callbacks(from: additionalCallbacks)
         )
     }
 

@@ -27,6 +27,10 @@ public struct CardCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditi
     package private(set) var onBinChange: ((String) -> Void)?
     package private(set) var onBinLookup: ((BinLookupData) -> Void)?
 
+    /// The address callbacks, which merchants supply as a separate entry.
+    /// The card component factory attaches them.
+    internal var addressCallbacks: AddressCallbacks?
+
     /// Creates a CardCallbacks instance without optional handlers.
     public init() {}
 
