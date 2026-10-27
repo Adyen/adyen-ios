@@ -1,5 +1,28 @@
 #  Migration Notes
 
+## 5.27.0
+- CocoaPods is no longer supported. `5.26.0` is the last version available on CocoaPods. To get newer versions, remove the `Adyen` and `AdyenCardScanner` pods from your `Podfile` and add `https://github.com/Adyen/adyen-ios` with Swift Package Manager (or use Carthage). Pick the products that match the pods you used:
+
+| CocoaPods | Swift Package Manager product |
+|---|---|
+| `pod 'Adyen'` | `AdyenDropIn` and `AdyenSession` |
+| `pod 'Adyen/Core'` | `Adyen` |
+| `pod 'Adyen/Session'` | `AdyenSession` |
+| `pod 'Adyen/Card'` | `AdyenCard` |
+| `pod 'Adyen/Components'` | `AdyenComponents` |
+| `pod 'Adyen/Actions'` | `AdyenActions` |
+| `pod 'Adyen/Encryption'` | `AdyenEncryption` |
+| `pod 'Adyen/DropIn'` | `AdyenDropIn` |
+| `pod 'Adyen/WeChatPay'` | `AdyenWeChatPay` |
+| `pod 'Adyen/CashAppPay'` | `AdyenCashAppPay` |
+| `pod 'Adyen/AdyenTwint'` | `AdyenTwint` |
+| `pod 'Adyen/SwiftUI'` | `AdyenSwiftUI` |
+| `pod 'Adyen/DelegatedAuthentication'` | `AdyenDelegatedAuthentication` |
+| `pod 'Adyen/CardScanner'`, `pod 'AdyenCardScanner'` | `AdyenCardScanner` |
+
+- With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenDropIn`, `import AdyenSession`, `import AdyenCard`) next to `import Adyen`.
+
+
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
 
