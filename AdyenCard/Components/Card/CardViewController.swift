@@ -5,10 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenEncryption
 import UIKit
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)

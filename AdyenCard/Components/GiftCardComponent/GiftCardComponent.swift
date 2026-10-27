@@ -5,9 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
 import UIKit
 
 /// A component that provides a form for gift card payments.

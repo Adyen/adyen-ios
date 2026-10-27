@@ -5,15 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
-#endif
-#if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) import AdyenComponents
+@_spi(AdyenInternal) import AdyenActions
 #if canImport(AdyenCashAppPay)
     import AdyenCashAppPay
 #endif

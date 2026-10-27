@@ -5,15 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
-#if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
-#endif
+import AdyenComponents
+@_spi(AdyenInternal) import AdyenActions
+@_spi(AdyenInternal) import AdyenCard
 import AdyenNetworking
 import UIKit
 
