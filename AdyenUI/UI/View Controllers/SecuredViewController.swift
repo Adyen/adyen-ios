@@ -99,6 +99,11 @@ package final class SecuredViewController<ChildViewController: UIViewController>
 
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if navigationController != nil,
+           let childNavigationController = childViewController as? UINavigationController {
+            childNavigationController.setNavigationBarHidden(true, animated: false)
+            navigationItem.rightBarButtonItems = childNavigationController.topViewController?.navigationItem.rightBarButtonItems
+        }
         delegate?.viewWillAppear(viewController: self)
     }
 
