@@ -33,11 +33,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
     
-    /// Initial brand set after detection before any user interaction
-    @AdyenObservable(nil) internal private(set) var initialBrand: DetectedCardBrand?
-    
-    /// Brand selected in dual branded cards, set after user selection.
-    @AdyenObservable(nil) internal private(set) var selectedDualBrand: DetectedCardBrand?
+    /// The active brand, set from BIN detection or from the user selection in dual-brand mode.
+    @AdyenObservable(nil) internal private(set) var selectedBrand: DetectedCardBrand?
     
     /// Detected brand logo(s) for the entered bin.
     @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardBrandLogo]
@@ -57,13 +54,25 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         scanCardHandler != nil
     }
     
-    /// Returns the initial brand for single brand cases
-    /// or `selectedDualBrand` for dual brand cases
-    internal var currentBrand: DetectedCardBrand? {
-        isDualBranded ? selectedDualBrand : initialBrand
+    internal enum BrandDisplayMode: Equatable {
+        case single
+        case dualUnselectable
+        case dualSelectable
     }
     
-    internal var isDualBranded: Bool = false
+    /// Returns the brand to include in the payment request.
+    /// Returns `nil` for locally detected brands and in `.dualUnselectable` mode.
+    internal var currentBrand: DetectedCardBrand? {
+        guard !isBrandDetectedLocally else { return nil }
+        return brandDisplayMode == .dualUnselectable ? nil : selectedBrand
+    }
+    
+    internal var brandDisplayMode: BrandDisplayMode = .single
+    
+    /// Whether the detected brand came from local (regex) detection rather than a `/binLookup` response.
+    internal var isBrandDetectedLocally = false
+    
+    internal var onUserBrandSelection: ((DetectedCardBrand) -> Void)?
 
     /// Initializes the form card number item.
     internal init(
@@ -171,24 +180,22 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     }
     
     /// Updates the item with the detected brands.
-    /// and sets the first supported one as the `initialBrand`.
+    /// Sets the first supported one as `selectedBrand`.
     internal func update(brands: [DetectedCardBrand]) {
         detectedBrands = brands
         
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
-            update(initialBrand: brands.first)
+            updateSelectedBrand(brands.first)
         case let (2, .some(firstSupportedBrand)):
-            update(initialBrand: firstSupportedBrand)
+            updateSelectedBrand(firstSupportedBrand)
         case (2, nil):
             // if there are 2 brands and neither is supported,
             // need to show unsupported text
-            update(initialBrand: nil, defaultSupportedValue: false)
+            updateSelectedBrand(nil, defaultSupportedValue: false)
         default:
-            update(initialBrand: nil)
+            updateSelectedBrand(nil)
         }
-        
-        isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
         
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
@@ -196,17 +203,18 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             }
     }
 
-    /// Changes the selected dual brand with the given cardBrand to trigger updates
-    /// for the observing objects.
-    internal func selectBrand(cardBrand: DetectedCardBrand) {
-        updateValidation(for: cardBrand)
-        self.selectedDualBrand = cardBrand
+    /// Selects a brand from the segmented picker by index.
+    internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
+        guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
+        updateValidation(for: brand)
+        selectedBrand = brand
+        onUserBrandSelection?(brand)
     }
 
-    /// Updates the initial brand and the related validation checks.
-    private func update(initialBrand: DetectedCardBrand?, defaultSupportedValue: Bool = true) {
-        updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)
-        self.initialBrand = initialBrand
+    /// Updates the selected brand and the related validation checks.
+    private func updateSelectedBrand(_ brand: DetectedCardBrand?, defaultSupportedValue: Bool = true) {
+        updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
+        selectedBrand = brand
         updateBINIfNeeded()
     }
     

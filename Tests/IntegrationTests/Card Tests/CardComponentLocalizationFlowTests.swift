@@ -70,14 +70,15 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
 
     func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderCoBadgedSelectorStrings() throws {
         let provider = CardComponentLocalizationFlowProviderMock(values: [
-            .cardDualBrandSelectorTitle: "Pick your card",
             .cardDualBrandSelectorDescription: "Choose the brand for this payment"
         ])
 
         let sut = try makeSUT(globalProvider: provider)
 
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.title, "Pick your card")
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.subtitle, "Choose the brand for this payment")
+        XCTAssertEqual(
+            sut.cardViewController.items.numberContainerItem.brandDescriptionItem.text,
+            "Choose the brand for this payment"
+        )
     }
 
     func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderInstallmentsStrings() throws {

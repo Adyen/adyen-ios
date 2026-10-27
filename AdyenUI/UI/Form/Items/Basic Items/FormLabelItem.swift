@@ -45,6 +45,9 @@ package class FormLabelItem: FormItem {
     /// The labelStyle from the adyen theme
     internal var labelStyle: AdyenLabelStyle = .init()
 
+    /// The theme label style applied to the label.
+    package var themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
+
     package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormLabelItemView(item: self, theme: builder.theme)
     }
@@ -69,8 +72,9 @@ internal final class FormLabelItemView: AdyenLabel, AnyFormItemView {
         text = item.text
         numberOfLines = 0
         accessibilityIdentifier = item.identifier
+        isHidden = item.isHidden.wrappedValue
 
-        apply(theme.elements.labels.body)
+        apply(theme.elements.labels[keyPath: item.themeLabelStyle])
     }
 
     // MARK: - AnyFormItemView

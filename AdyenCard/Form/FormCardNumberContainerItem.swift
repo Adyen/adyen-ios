@@ -5,6 +5,7 @@
 //
 
 import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
 #endif
@@ -29,7 +30,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     private let scanCardHandler: (() -> Void)?
    
     internal lazy var subitems: [FormItem] = {
-        var subItems: [FormItem] = [numberItem]
+        var subItems: [FormItem] = [numberItem, brandDescriptionItem]
         if showSupportedCardBrandLogos {
             subItems.append(supportedCardLogosItem)
         }
@@ -44,6 +45,18 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
             scanCardHandler: scanCardHandler
         )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
+        return item
+    }()
+    
+    /// Description shown below the field while the shopper can select a brand of a co-badged card.
+    internal lazy var brandDescriptionItem: FormLabelItem = {
+        let item = FormLabelItem(
+            text: localizedString(.creditCardDualBrandDescription, localizationParameters),
+            style: TextStyle(font: .preferredFont(forTextStyle: .footnote), color: .label)
+        )
+        item.themeLabelStyle = \.footnote
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
+        item.isHidden.wrappedValue = true
         return item
     }()
     
@@ -66,10 +79,11 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         self.style = style
         self.scanCardHandler = scanCardHandler
         
+        observe(numberItem.$isActive) { [weak self] _ in
+            self?.updateLogosVisibility()
+            self?.updateBrandDescriptionVisibility()
+        }
         if showSupportedCardBrandLogos {
-            observe(numberItem.$isActive) { [weak self] _ in
-                self?.updateLogosVisibility()
-            }
             observe(numberItem.$validationState) { [weak self] state in
                 self?.updateLogosVisibility(state: state)
             }
@@ -96,6 +110,13 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         numberItem.update(brands: brands)
         
         updateLogosVisibility()
+        updateBrandDescriptionVisibility()
+    }
+    
+    private func updateBrandDescriptionVisibility() {
+        let isDualSelectable = numberItem.brandDisplayMode == .dualSelectable
+        let shouldShow = isDualSelectable && (numberItem.isActive || numberItem.isValid())
+        brandDescriptionItem.isHidden.wrappedValue = !shouldShow
     }
     
     internal func setCardNumber(_ cardNumber: String) {
