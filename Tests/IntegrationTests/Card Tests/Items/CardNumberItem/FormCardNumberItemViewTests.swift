@@ -19,6 +19,23 @@ class FormCardNumberItemViewTests: XCTestCase {
             super.run()
         }
     }
+
+    func testCardLogosExposeBrandNamesWithoutSelectionOrKeyboardFocus() throws {
+        let logo = try FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa)
+        let item = FormCardLogosItem(cardLogos: [logo], style: FormTextItemStyle())
+        let view = FormCardLogosItemView(item: item)
+        let collection = try XCTUnwrap(view.subviews.first as? UICollectionView)
+
+        XCTAssertFalse(collection.allowsSelection)
+        if #available(iOS 15.0, *) {
+            XCTAssertFalse(collection.allowsFocus)
+        }
+        let cell = view.collectionView(collection, cellForItemAt: IndexPath(item: 0, section: 0))
+        let image = try XCTUnwrap(cell.contentView.subviews.first as? UIImageView)
+        XCTAssertTrue(image.isAccessibilityElement)
+        XCTAssertEqual(image.accessibilityLabel, CardType.visa.name)
+        XCTAssertEqual(image.accessibilityTraits, .image)
+    }
     
     func testCustomAccessoryViewWhenValueIsEmpty() {
         let sut = setupSut()

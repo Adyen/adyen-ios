@@ -12,6 +12,12 @@ import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
 internal final class ModalViewController: UIViewController {
+    private enum Constants {
+        static let navigationBarHeight: CGFloat = 63
+        static var separatorHeight: CGFloat {
+            1.0 / UIScreen.main.scale
+        }
+    }
     
     internal let style: NavigationStyle
 
@@ -19,9 +25,17 @@ internal final class ModalViewController: UIViewController {
 
     internal weak var delegate: ViewControllerDelegate?
 
-    private let navigationBarHeight: CGFloat = 63.0
+    private var navigationBarHeight: CGFloat {
+        switch navBarType {
+        case .regular:
+            return max(Constants.navigationBarHeight, navBar.intrinsicContentSize.height + Constants.separatorHeight)
+        case .custom:
+            return Constants.navigationBarHeight
+        }
+    }
     
     private let navBarType: NavigationBarType
+    private var toolbarHeightConstraint: NSLayoutConstraint?
 
     // MARK: - Initializing
     
@@ -76,7 +90,7 @@ internal final class ModalViewController: UIViewController {
             let innerSize = innerController.preferredContentSize
             return CGSize(
                 width: innerSize.width,
-                height: navigationBarHeight + innerSize.height + (1.0 / UIScreen.main.scale)
+                height: navigationBarHeight + innerSize.height + Constants.separatorHeight
             )
         }
         
@@ -92,6 +106,11 @@ internal final class ModalViewController: UIViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
+        let height = toolbarHeight
+        if let constraint = toolbarHeightConstraint, constraint.constant != height {
+            constraint.constant = height
+            (navigationController as? PreferredContentSizeConsumer)?.didUpdatePreferredContentSize()
+        }
     }
     
     // MARK: - View elements
@@ -149,16 +168,17 @@ internal final class ModalViewController: UIViewController {
     // MARK: - Private
     
     private var toolbarHeight: CGFloat {
-        navigationBarHeight - (1.0 / UIScreen.main.scale)
+        navigationBarHeight - Constants.separatorHeight
     }
 
     private func arrangeConstraints() {
-        let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
+        let heightConstraint = navBarHeightConstraint
+        toolbarHeightConstraint = heightConstraint
 
         stackView.adyen.anchor(inside: view)
         NSLayoutConstraint.activate([
-            navBarHeightConstraint,
-            separator.heightAnchor.constraint(equalToConstant: separatorHeight)
+            heightConstraint,
+            separator.heightAnchor.constraint(equalToConstant: Constants.separatorHeight)
         ])
     }
 

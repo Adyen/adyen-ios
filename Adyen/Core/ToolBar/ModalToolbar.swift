@@ -8,6 +8,13 @@ import UIKit
 
 @_spi(AdyenInternal)
 public class ModalToolbar: UIView, AnyNavigationBar {
+    private enum Constants {
+        static let minimumCancelButtonSize: CGFloat = 44
+        static let titleButtonSpacing: CGFloat = 16
+        static let titleVerticalPadding: CGFloat = 16
+        static let minimumTitleWidth: CGFloat = 1
+    }
+
     private let style: NavigationStyle
     public var onCancelHandler: (() -> Void)?
     private let title: String?
@@ -33,14 +40,20 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         label.textAlignment = style.barTitle.textAlignment
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = title ?? ""
+        label.numberOfLines = 0
+        label.accessibilityTraits.insert(.header)
         return label
     }()
 
     internal lazy var cancelButton: UIButton = {
         let button = createCancelButton()
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
+        button.accessibilityLabel = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
+        button.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumCancelButtonSize).isActive = true
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumCancelButtonSize).isActive = true
         return button
     }()
 
@@ -50,7 +63,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         stack.alignment = .center
         stack.distribution = .fill
         stack.axis = .horizontal
-        stack.spacing = 16
+        stack.spacing = Constants.titleButtonSpacing
         stack.semanticContentAttribute = stackViewSemanticAttribute
         stack.layoutMargins = .init(top: 0, left: paddingWithMarginCorrection, bottom: 0, right: paddingWithMarginCorrection)
         stack.isLayoutMarginsRelativeArrangement = true
@@ -71,6 +84,28 @@ public class ModalToolbar: UIView, AnyNavigationBar {
 
     @objc internal func didCancel() {
         onCancelHandler?()
+    }
+
+    override public var intrinsicContentSize: CGSize {
+        let buttonWidth = max(Constants.minimumCancelButtonSize, cancelButton.intrinsicContentSize.width)
+        let buttonSpace = buttonWidth + Constants.titleButtonSpacing
+        let titleInset = 2 * paddingWithMarginCorrection + buttonSpace
+        let width = bounds.width > 0 ? bounds.width : Dimensions.expectedWidth(for: window)
+        let titleSize = titleLabel.sizeThatFits(CGSize(
+            width: max(Constants.minimumTitleWidth, width - safeAreaInsets.left - safeAreaInsets.right - titleInset),
+            height: .greatestFiniteMagnitude
+        ))
+        return CGSize(
+            width: UIView.noIntrinsicMetric,
+            height: max(titleSize.height + 2 * Constants.titleVerticalPadding, cancelButton.intrinsicContentSize.height)
+        )
+    }
+
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory else { return }
+        invalidateIntrinsicContentSize()
+        adyen.updatePreferredContentSize()
     }
 
     // MARK: - View setup
@@ -95,40 +130,31 @@ public class ModalToolbar: UIView, AnyNavigationBar {
     private func setupStyle() {
         backgroundColor = style.backgroundColor
         cancelButton.tintColor = style.tintColor
-        guard let title = titleLabel.text, !title.isEmpty else { return }
-        titleLabel.attributedText = NSAttributedString(
-            string: title,
-            attributes: [
-                NSAttributedString.Key.font: style.barTitle.font,
-                NSAttributedString.Key.foregroundColor: style.barTitle.color,
-                NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor
-            ]
-        )
+        titleLabel.adyen.apply(style.barTitle)
     }
 
     private func setupLayoutForCenteredMode() {
-        let titleLeadingAnchor = style.toolbarMode == .natural ? titleLabel.leadingAnchor : titleLabel.leftAnchor
-        let titleTrailingAnchor = style.toolbarMode == .natural ? titleLabel.trailingAnchor : titleLabel.rightAnchor
+        let centerConstraint = titleLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+        centerConstraint.priority = .defaultLow
+        let cancelOnLeft = style.toolbarMode == .leftCancel
+            || (style.toolbarMode == .natural && effectiveUserInterfaceLayoutDirection == .rightToLeft)
+        let titleButtonSpacing = cancelOnLeft
+            ? titleLabel.leftAnchor.constraint(greaterThanOrEqualTo: cancelButton.rightAnchor, constant: Constants.titleButtonSpacing)
+            : titleLabel.rightAnchor.constraint(lessThanOrEqualTo: cancelButton.leftAnchor, constant: -Constants.titleButtonSpacing)
 
         NSLayoutConstraint.activate([
             safeAreaLayoutGuide.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            safeAreaLeadingAnchor.constraint(equalTo: titleLeadingAnchor, constant: -paddingWithMarginCorrection),
-            safeAreaTrailingAnchor.constraint(equalTo: titleTrailingAnchor, constant: paddingWithMarginCorrection),
+            titleLabel.leftAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.leftAnchor, constant: paddingWithMarginCorrection),
+            titleLabel.rightAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.rightAnchor, constant: -paddingWithMarginCorrection),
+            centerConstraint,
+            titleButtonSpacing,
             
             safeAreaLayoutGuide.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
             safeAreaLayoutGuide.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor),
             cancelPositionConstraint
         ])
     }
-
-    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor = {
-        style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
-    }()
-
-    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor = {
-        style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
-    }()
 
     private lazy var cancelPositionConstraint: NSLayoutConstraint = {
         let cancelPositionConstraint: NSLayoutConstraint
@@ -160,9 +186,11 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         let button: UIButton
 
         func legacy() -> UIButton {
-            let button = UIButton(type: UIButton.ButtonType.system)
+            let button = FocusableCancelButton(type: .system)
             let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
             button.setTitle(cancelText, for: .normal)
+            button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.setTitleColor(style.tintColor, for: .normal)
             return button
         }
@@ -171,11 +199,11 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         case .legacy:
             return legacy()
         case let .custom(image):
-            button = UIButton(type: UIButton.ButtonType.custom)
+            button = FocusableCancelButton(type: .custom)
             button.setImage(image, for: .normal)
         default:
             if #available(iOS 13.0, *) {
-                button = UIButton(type: UIButton.ButtonType.close)
+                button = FocusableCancelButton(type: .close)
                 button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
             } else {
                 return legacy()
@@ -183,5 +211,11 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         }
 
         return button
+    }
+}
+
+private final class FocusableCancelButton: UIButton {
+    override var canBecomeFocused: Bool {
+        isEnabled && isUserInteractionEnabled && !isHidden && alpha > 0
     }
 }

@@ -29,16 +29,15 @@ public class FormLabelItem: FormItem {
     /// The text of the label.
     public var text: String
 
+    internal var accessibilityTraits: UIAccessibilityTraits = .staticText
+
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()
         label.text = text
         label.numberOfLines = 0
         label.accessibilityIdentifier = identifier
-        label.font = style.font
-        label.textColor = style.color
-        label.textAlignment = style.textAlignment
-        label.backgroundColor = style.backgroundColor
-        label.adyen.round(using: style.cornerRounding)
+        label.adyen.apply(style)
+        label.accessibilityTraits = accessibilityTraits
         label.isHidden = isHidden.wrappedValue
         return label
     }

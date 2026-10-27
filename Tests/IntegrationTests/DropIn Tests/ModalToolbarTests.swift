@@ -10,6 +10,13 @@
 import XCTest
 
 class ModalToolbarTests: XCTestCase {
+    private enum Constants {
+        static let compactWidth: CGFloat = 320
+        static let accessibilityFontSize: CGFloat = 64
+        static let navigationBarHeight: CGFloat = 63
+        static let traitChangeTimeout: TimeInterval = 2
+        static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
+    }
 
     var sut: ModalToolbar!
 
@@ -59,7 +66,7 @@ class ModalToolbarTests: XCTestCase {
 
         let cancelConstraint = sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor }
         XCTAssertEqual(cancelConstraint?.firstAnchor, sut.safeAreaLayoutGuide.leftAnchor)
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor && $0.relation == .equal })
         XCTAssertNotNil(sut.constraints.first {
             $0.firstAnchor == sut.safeAreaLayoutGuide.centerYAnchor && $0.secondAnchor == sut.cancelButton.centerYAnchor
         })
@@ -72,7 +79,7 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style)
 
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor && $0.relation == .equal })
         let cancelConstraint = sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor }
         XCTAssertEqual(cancelConstraint?.firstAnchor, sut.safeAreaLayoutGuide.rightAnchor)
         XCTAssertNotNil(sut.constraints.first {
@@ -141,4 +148,64 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertEqual(sut.cancelButton.image(for: .normal), customImage)
     }
 
+    func testAllCloseButtonStylesAreLabeledAndFocusable() {
+        for buttonStyle in [CancelButtonStyle.system, .legacy, .custom(UIImage())] {
+            var style = NavigationStyle()
+            style.cancelButton = buttonStyle
+            let toolbar = ModalToolbar(title: "Credit Card", style: style)
+            XCTAssertTrue(toolbar.cancelButton.canBecomeFocused)
+            let label = toolbar.cancelButton.accessibilityLabel ?? toolbar.cancelButton.title(for: .normal)
+            XCTAssertFalse(label?.isEmpty ?? true)
+
+            var cancelled = false
+            toolbar.onCancelHandler = { cancelled = true }
+            toolbar.cancelButton.sendActions(for: .touchUpInside)
+            XCTAssertTrue(cancelled)
+            toolbar.cancelButton.isEnabled = false
+            XCTAssertFalse(toolbar.cancelButton.canBecomeFocused)
+        }
+    }
+
+    func testTitleIsADynamicTypeHeadingAndHeaderCanGrow() {
+        let toolbar = ModalToolbar(title: "Credit Card", style: NavigationStyle())
+        toolbar.bounds.size.width = Constants.compactWidth
+        XCTAssertTrue(toolbar.titleLabel.accessibilityTraits.contains(.header))
+        XCTAssertTrue(toolbar.titleLabel.adjustsFontForContentSizeCategory)
+        toolbar.titleLabel.font = .systemFont(ofSize: Constants.accessibilityFontSize)
+
+        XCTAssertGreaterThan(toolbar.intrinsicContentSize.height, Constants.navigationBarHeight)
+    }
+
+    func testCenteredTitleAndCloseButtonDoNotOverlapAtAccessibilityTextSizes() {
+        var style = NavigationStyle()
+        style.barTitle.textAlignment = .center
+        style.cancelButton = .legacy
+        style.toolbarMode = .rightCancel
+        let toolbar = ModalToolbar(title: "Credit Card", style: style)
+        let child = UIViewController()
+        child.view.addSubview(toolbar)
+        let parent = UIViewController()
+        parent.addChild(child)
+        parent.view.addSubview(child.view)
+        child.didMove(toParent: parent)
+        setupRootViewController(parent)
+        let initialFontSize = toolbar.titleLabel.font.pointSize
+
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge), forChild: child)
+        wait(
+            until: { toolbar.titleLabel.font.pointSize > initialFontSize },
+            timeout: Constants.traitChangeTimeout,
+            retryInterval: Constants.traitChangeRetryInterval
+        )
+        toolbar.bounds.size.width = Constants.compactWidth
+        toolbar.frame = CGRect(
+            origin: .zero,
+            size: CGSize(width: Constants.compactWidth, height: max(Constants.navigationBarHeight, toolbar.intrinsicContentSize.height))
+        )
+        toolbar.setNeedsLayout()
+        toolbar.layoutIfNeeded()
+
+        XCTAssertFalse(toolbar.titleLabel.frame.intersects(toolbar.cancelButton.frame))
+        XCTAssertGreaterThan(toolbar.frame.height, Constants.navigationBarHeight)
+    }
 }

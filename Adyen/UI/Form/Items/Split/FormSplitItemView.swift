@@ -26,15 +26,25 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     override internal var childItemViews: [AnyFormItemView] {
         views
     }
+
+    override internal func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory else { return }
+        stackView.axis = traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
+        stackView.alignment = stackView.axis == .vertical ? .fill : .top
+        stackView.distribution = stackView.axis == .vertical ? .fill : .fillEqually
+        invalidateIntrinsicContentSize()
+        adyen.updatePreferredContentSize()
+    }
     
     // MARK: - Layout
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: childItemViews)
         stackView.preservesSuperviewLayoutMargins = true
-        stackView.axis = .horizontal
-        stackView.alignment = .top
-        stackView.distribution = .fillEqually
+        stackView.axis = traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
+        stackView.alignment = stackView.axis == .vertical ? .fill : .top
+        stackView.distribution = stackView.axis == .vertical ? .fill : .fillEqually
         stackView.spacing = 0
         return stackView
     }()

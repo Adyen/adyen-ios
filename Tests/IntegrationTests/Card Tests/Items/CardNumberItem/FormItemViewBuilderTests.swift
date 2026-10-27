@@ -8,6 +8,10 @@
 import XCTest
 
 class FormItemViewBuilderTests: XCTestCase {
+    private enum Constants {
+        static let traitChangeTimeout: TimeInterval = 2
+        static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
+    }
     
     func testFormPhoneExtensionPickerItemView() {
         let presenter = UIViewController()
@@ -55,6 +59,66 @@ class FormItemViewBuilderTests: XCTestCase {
         
         XCTAssertNotNil(view as? FormToggleItemView)
     }
+
+    func testToggleExposesOnlyTheLabeledNativeSwitch() throws {
+        let item = FormToggleItem()
+        item.title = "Remember for next time"
+        item.identifier = "toggle"
+        let view = FormToggleItemView(item: item)
+        let label = try XCTUnwrap(view.findView(with: "toggle.titleLabel") as UILabel?)
+
+        XCTAssertFalse(view.isAccessibilityElement)
+        XCTAssertFalse(label.isAccessibilityElement)
+        XCTAssertTrue(view.switchControl.isAccessibilityElement)
+        XCTAssertEqual(view.switchControl.accessibilityLabel, item.title)
+
+        NotificationCenter.default.post(name: UIAccessibility.voiceOverStatusDidChangeNotification, object: nil)
+        XCTAssertFalse(view.isAccessibilityElement)
+        XCTAssertTrue(view.switchControl.isAccessibilityElement)
+
+        item.title = "Save card"
+        item.value = true
+        XCTAssertEqual(view.switchControl.accessibilityLabel, "Save card")
+        XCTAssertTrue(view.switchControl.isOn)
+        XCTAssertEqual(view.accessibilityValue, view.switchControl.accessibilityValue)
+
+        XCTAssertTrue(view.accessibilityActivate())
+        XCTAssertFalse(item.value)
+        item.value = true
+        view.reset()
+        XCTAssertFalse(view.switchControl.isOn)
+        XCTAssertEqual(view.accessibilityValue, view.switchControl.accessibilityValue)
+    }
+
+    func testToggleDoesNotActivateWhenDisabled() {
+        let item = FormToggleItem()
+        let view = FormToggleItemView(item: item)
+        view.switchControl.isEnabled = false
+
+        XCTAssertFalse(view.accessibilityActivate())
+        XCTAssertFalse(item.value)
+    }
+
+    func testTextFieldHasInitialAccessibilityLabel() {
+        let item = FormTextInputItem()
+        item.title = "Card number"
+        let view = FormTextInputItemView(item: item)
+
+        XCTAssertEqual(view.textField.accessibilityLabel, item.title)
+    }
+
+    func testAddressHeaderIsAnAccessibleHeading() {
+        let item = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        let header = item.headerItem.build(with: FormItemViewBuilder())
+
+        XCTAssertTrue(header.accessibilityTraits.contains(.header))
+        XCTAssertTrue((header as? UILabel)?.adjustsFontForContentSizeCategory == true)
+    }
     
     func testFormSplitItemView() {
         let item = FormSplitItem(items: FormTextInputItem(), FormTextInputItem(), style: FormTextItemStyle())
@@ -62,6 +126,31 @@ class FormItemViewBuilderTests: XCTestCase {
         
         XCTAssertNotNil(view as? FormSplitItemView)
         XCTAssertEqual(view.childItemViews.count, 2)
+    }
+
+    func testSplitFieldsReflowAtAccessibilityTextSizes() throws {
+        let item = FormSplitItem(items: FormTextInputItem(), FormTextInputItem(), style: FormTextItemStyle())
+        let view = FormSplitItemView(item: item)
+        let child = UIViewController()
+        child.view = view
+        let parent = UIViewController()
+        parent.addChild(child)
+        parent.view.addSubview(view)
+        child.didMove(toParent: parent)
+        setupRootViewController(parent)
+        let stack = try XCTUnwrap(view.subviews.first as? UIStackView)
+
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge), forChild: child)
+        wait(until: { stack.axis == .vertical }, timeout: Constants.traitChangeTimeout, retryInterval: Constants.traitChangeRetryInterval)
+        XCTAssertEqual(stack.axis, .vertical)
+        XCTAssertEqual(stack.alignment, .fill)
+        XCTAssertEqual(stack.distribution, .fill)
+
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .large), forChild: child)
+        wait(until: { stack.axis == .horizontal }, timeout: Constants.traitChangeTimeout, retryInterval: Constants.traitChangeRetryInterval)
+        XCTAssertEqual(stack.axis, .horizontal)
+        XCTAssertEqual(stack.alignment, .top)
+        XCTAssertEqual(stack.distribution, .fillEqually)
     }
     
     func testFormPhoneNumberItemView() {

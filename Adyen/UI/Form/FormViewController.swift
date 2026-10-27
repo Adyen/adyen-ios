@@ -100,6 +100,15 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         delegate?.viewWillAppear(viewController: self)
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard isViewLoaded,
+              previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory else { return }
+        formView.invalidateIntrinsicContentSize()
+        view.setNeedsLayout()
+        view.adyen.updatePreferredContentSize()
+    }
+
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)

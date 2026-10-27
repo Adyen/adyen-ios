@@ -10,6 +10,10 @@
 import XCTest
 
 class ModalViewControllerTests: XCTestCase {
+    private enum Constants {
+        static let accessibilityFontSize: CGFloat = 64
+        static let navigationBarHeight: CGFloat = 63
+    }
     
     var sut: ModalViewController!
     lazy var viewController: UIViewController = {
@@ -40,7 +44,7 @@ class ModalViewControllerTests: XCTestCase {
             self.sut.view.layoutIfNeeded()
 
             let separatorHeight = 1.0 / UIScreen.main.scale
-            let expectedHeight = 63.0 - separatorHeight + self.sut.view.safeAreaInsets.top
+            let expectedHeight = Constants.navigationBarHeight - separatorHeight + self.sut.view.safeAreaInsets.top
             XCTAssertEqual(self.sut.navBar.frame.height, expectedHeight, accuracy: 0.5)
         }
     }
@@ -52,8 +56,21 @@ class ModalViewControllerTests: XCTestCase {
             self.sut.view.layoutIfNeeded()
 
             let separatorHeight = 1.0 / UIScreen.main.scale
-            XCTAssertEqual(self.sut.navBar.frame.height, 63.0 - separatorHeight, accuracy: 0.5)
+            XCTAssertEqual(self.sut.navBar.frame.height, Constants.navigationBarHeight - separatorHeight, accuracy: 0.5)
         }
+    }
+
+    func testNavigationBarHeightGrowsWithItsTitle() throws {
+        loadAndRunTests(for: NavigationStyle()) {}
+        let toolbar = try XCTUnwrap(sut.navBar as? ModalToolbar)
+        let originalSize = sut.preferredContentSize
+        toolbar.titleLabel.font = .systemFont(ofSize: Constants.accessibilityFontSize)
+        sut.view.setNeedsLayout()
+        sut.view.layoutIfNeeded()
+        sut.view.layoutIfNeeded()
+
+        XCTAssertGreaterThan(sut.navBar.frame.height - sut.view.safeAreaInsets.top, Constants.navigationBarHeight)
+        XCTAssertGreaterThan(sut.preferredContentSize.height, originalSize.height)
     }
 
     func testFormContentAlignsWithToolbar() throws {
