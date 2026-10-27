@@ -50,7 +50,7 @@ internal final class DualBrandAccessoryView: UIView {
 
     internal var onBrandSelection: ((BrandSelection) -> Void)?
 
-    private var displayMode: FormCardNumberItem.BrandDisplayMode = .single {
+    private var displayMode: BrandDisplayMode = .single {
         didSet {
             guard displayMode != oldValue else { return }
             applyDisplayMode()
@@ -122,11 +122,17 @@ internal final class DualBrandAccessoryView: UIView {
 
     internal func updateCurrentLogos(
         _ logos: [FormCardLogosItem.CardBrandLogo],
-        mode: FormCardNumberItem.BrandDisplayMode = .single
+        mode: BrandDisplayMode = .single
     ) {
         resetState()
         guard !logos.isEmpty else { return }
         setupLogoViews(from: logos, mode: mode)
+    }
+
+    /// Updates the selection without notifying `onBrandSelection`.
+    internal func updateSelection(with selection: BrandSelection) {
+        currentSelection = selection
+        updateSelectionAppearance()
     }
 
     /// Hit test for the part of the segmented picker that is drawn outside the parent's bounds.
@@ -220,11 +226,11 @@ internal final class DualBrandAccessoryView: UIView {
         select(.secondary)
     }
 
-    private func select(_ brand: BrandSelection) {
-        guard currentSelection != brand else { return }
-        currentSelection = brand
+    private func select(_ selection: BrandSelection) {
+        guard currentSelection != selection else { return }
+        currentSelection = selection
         UIView.animate(withDuration: Constants.animationDuration) { self.updateSelectionAppearance() }
-        onBrandSelection?(brand)
+        onBrandSelection?(selection)
     }
 
     private func updateSelectionAppearance() {
@@ -249,7 +255,7 @@ internal final class DualBrandAccessoryView: UIView {
 
     private func setupLogoViews(
         from logos: [FormCardLogosItem.CardBrandLogo],
-        mode: FormCardNumberItem.BrandDisplayMode
+        mode: BrandDisplayMode
     ) {
         guard let firstLogo = logos.first else { return }
         let secondLogo = logos.adyen[safeIndex: 1]
@@ -386,5 +392,13 @@ extension DualBrandAccessoryView {
             view.layer.shadowOpacity = 0
             view.layer.borderWidth = 0
         }
+    }
+}
+
+extension DualBrandAccessoryView {
+    internal enum BrandDisplayMode: Equatable {
+        case single
+        case dualUnselectable
+        case dualSelectable
     }
 }

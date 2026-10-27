@@ -160,6 +160,35 @@ final class DualBrandAccessoryViewTests: XCTestCase {
 
     // MARK: - Overflow hit test
 
+    func test_updateSelection_withSecondary_shouldUpdateCurrentSelection() {
+        sut.updateCurrentLogos(makeDualBrandLogos(), mode: .dualSelectable)
+        XCTAssertEqual(sut.currentSelection, .primary)
+
+        sut.updateSelection(with: .secondary)
+
+        XCTAssertEqual(sut.currentSelection, .secondary)
+    }
+
+    func test_updateSelection_withSecondary_shouldNotCallOnBrandSelection() {
+        var callCount = 0
+        sut.onBrandSelection = { _ in callCount += 1 }
+        sut.updateCurrentLogos(makeDualBrandLogos(), mode: .dualSelectable)
+
+        sut.updateSelection(with: .secondary)
+
+        XCTAssertEqual(callCount, 0)
+    }
+
+    func test_updateSelection_fromSecondaryToPrimary_shouldUpdateCurrentSelection() {
+        sut.updateCurrentLogos(makeDualBrandLogos(), mode: .dualSelectable)
+        sut.updateSelection(with: .secondary)
+        XCTAssertEqual(sut.currentSelection, .secondary)
+
+        sut.updateSelection(with: .primary)
+
+        XCTAssertEqual(sut.currentSelection, .primary)
+    }
+
     func test_overflowHitTest_inSingleMode_shouldReturnNil() {
         sut.updateCurrentLogos(makeSingleBrandLogo())
         layout(sut)

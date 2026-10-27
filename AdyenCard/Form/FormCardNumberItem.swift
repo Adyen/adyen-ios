@@ -54,12 +54,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         scanCardHandler != nil
     }
     
-    internal enum BrandDisplayMode: Equatable {
-        case single
-        case dualUnselectable
-        case dualSelectable
-    }
-    
     /// Returns the brand to include in the payment request.
     /// Returns `nil` for locally detected brands and in `.dualUnselectable` mode.
     internal var currentBrand: DetectedCardBrand? {
@@ -67,7 +61,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         return brandDisplayMode == .dualUnselectable ? nil : selectedBrand
     }
     
-    internal var brandDisplayMode: BrandDisplayMode = .single
+    internal var brandDisplayMode: DualBrandAccessoryView.BrandDisplayMode = .single
+
+    /// The picker segment matching `selectedBrand`.
+    @AdyenObservable(.primary) internal var brandSelection: DualBrandAccessoryView.BrandSelection
     
     /// Whether the detected brand came from local (regex) detection rather than a `/binLookup` response.
     internal var isBrandDetectedLocally = false
@@ -200,6 +197,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
         guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
         updateValidation(for: brand)
+        brandSelection = selection
         selectedBrand = brand
         onUserBrandSelection?(brand)
     }
@@ -207,10 +205,22 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Updates the selected brand and the related validation checks.
     private func updateSelectedBrand(_ brand: DetectedCardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
+        updateBrandSelection(with: brand)
         selectedBrand = brand
         updateBINIfNeeded()
     }
     
+    private func updateBrandSelection(with brand: DetectedCardBrand?) {
+        guard let brand,
+              let index = detectedBrands.firstIndex(where: { $0.brand == brand.brand }),
+              let selection = DualBrandAccessoryView.BrandSelection(rawValue: index) else {
+            brandSelection = .primary
+            return
+        }
+
+        brandSelection = selection
+    }
+
     private func updateValidation(for brand: DetectedCardBrand?, defaultSupportedValue: Bool = true) {
         // validation message will change based on if brand is supported or not
         // if brand is not supported, allow validation while editing to show the error instantly.
