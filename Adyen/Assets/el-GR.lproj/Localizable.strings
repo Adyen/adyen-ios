@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
 "adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
 "adyen.creditCard.dualBrand.title" = "Επωνυμία κάρτας";
-"adyen.creditCard.dualBrand.description" = "Επιλέξτε την επωνυμία της κάρτας με την οποία προτιμάτε να πληρώσετε. Αυτό είναι προαιρετικό.";
+"adyen.creditCard.dualBrand.description" = "Μπορείτε να επιλέξετε την επωνυμία της κάρτας με την οποία προτιμάτε να πληρώσετε. Αυτό είναι προαιρετικό.";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";

@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
 "adyen.card.scanYourCardButton" = "カードをスキャンしてください";
 "adyen.creditCard.dualBrand.title" = "カードブランド";
-"adyen.creditCard.dualBrand.description" = "お支払いに使用するカードブランドをお選びください。これは任意です。";
+"adyen.creditCard.dualBrand.description" = "お支払いに使用するカードブランドを選択できます。これは任意です。";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";

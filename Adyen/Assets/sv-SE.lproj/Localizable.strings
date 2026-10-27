@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Den angivna kortutgivaren stöds inte";
 "adyen.card.scanYourCardButton" = "Skanna ditt kort";
 "adyen.creditCard.dualBrand.title" = "Kortmärke";
-"adyen.creditCard.dualBrand.description" = "Välj det kortmärke du föredrar att betala med. Detta är valfritt.";
+"adyen.creditCard.dualBrand.description" = "Du kan välja det kortmärke du föredrar att betala med. Detta är valfritt.";
 "adyen.dropIn.stored.title" = "Bekräfta %@-betalning";
 "adyen.dropIn.preselected.openAll.title" = "Ändra betalningssätt";
 "adyen.continueTo" = "Fortsätt till %@";
