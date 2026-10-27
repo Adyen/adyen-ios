@@ -76,7 +76,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         let sut = try makeSUT(globalProvider: provider)
 
         XCTAssertEqual(
-            sut.cardViewController.items.numberContainerItem.brandDescriptionItem.text,
+            sut.cardViewController.items.numberContainerItem.brandDescriptionItem.content.text,
             "Choose the brand for this payment"
         )
     }

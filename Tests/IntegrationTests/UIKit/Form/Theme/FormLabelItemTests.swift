@@ -94,8 +94,7 @@ final class FormLabelItemTests: XCTestCase {
         identifier: String? = "testLabel",
         themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
     ) -> UILabel {
-        let item = FormLabelItem(text: text, style: TextStyle(font: .systemFont(ofSize: 16), color: .black), identifier: identifier)
-        item.themeLabelStyle = themeLabelStyle
+        let item = FormLabelItem(text: text, identifier: identifier, themeLabelStyle: themeLabelStyle)
         let builder = FormItemViewBuilder(theme: theme)
         let view = item.build(with: builder)
         guard let label = view as? UILabel else {

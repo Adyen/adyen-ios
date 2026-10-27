@@ -18,6 +18,7 @@ package class FormLabelItem: FormItem {
     package init(text: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
+        self.themeLabelStyle = \.body
         self.text = text
         self.labelStyle = AdyenLabelStyle()
     }
@@ -30,8 +31,22 @@ package class FormLabelItem: FormItem {
         self.identifier = identifier
         self.text = text
         self.labelStyle = labelStyle
+        self.themeLabelStyle = \.body
         // TODO: TO remove later
         self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
+    }
+
+    package init(
+        text: String,
+        identifier: String? = nil,
+        themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
+    ) {
+        self.identifier = identifier
+        self.text = text
+        self.themeLabelStyle = themeLabelStyle
+        // TODO: TO remove later
+        self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
+        self.labelStyle = AdyenLabelStyle()
     }
 
     package var identifier: String?
@@ -46,7 +61,7 @@ package class FormLabelItem: FormItem {
     internal var labelStyle: AdyenLabelStyle = .init()
 
     /// The theme label style applied to the label.
-    package var themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
+    package let themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle>
 
     package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormLabelItemView(item: self, theme: builder.theme)

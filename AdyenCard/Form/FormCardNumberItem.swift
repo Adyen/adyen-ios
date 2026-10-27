@@ -81,14 +81,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         localizationParameters: LocalizationParameters? = nil,
         scanCardHandler: (() -> Void)? = nil
     ) {
-        // these 4 US debit brands are not to be displayed
-        // but should be supported so it's done here for now
-        self.cardBrandLogos = cardBrandLogos.filter { logo in
-            logo.brand != .accel &&
-                logo.brand != .pulse &&
-                logo.brand != .star &&
-                logo.brand != .nyce
-        }
+        self.cardBrandLogos = cardBrandLogos
         self.supportedCardBrands = cardBrandLogos.map(\.brand)
         self.localizationParameters = localizationParameters
         self.scanCardHandler = scanCardHandler

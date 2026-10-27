@@ -50,6 +50,40 @@ class CardComponentTests: XCTestCase {
         }
     }
     
+    func test_supportedCardBrands_whenPaymentMethodBrandsIncludeUSDebitBrands_shouldExcludeUSDebitBrands() {
+        let usDebitBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
+        let expectedBrands: [CardBrand] = [.visa, .masterCard]
+        let paymentMethod = CardPaymentMethod(
+            type: .bcmc,
+            name: "Test name",
+            fundingSource: .credit,
+            brands: expectedBrands + usDebitBrands
+        )
+
+        let sut = CardComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        XCTAssertEqual(sut.supportedCardBrands, expectedBrands)
+    }
+
+    func test_supportedCardBrands_whenConfiguredBrandsIncludeUSDebitBrands_shouldExcludeUSDebitBrands() {
+        let usDebitBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
+        let expectedBrands: [CardBrand] = [.visa, .masterCard]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = expectedBrands + usDebitBrands
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertEqual(sut.supportedCardBrands, expectedBrands)
+    }
+
     func test_cardViewController_shouldRequireKeyboardInput() throws {
         // Given
         let sut = CardComponent(
