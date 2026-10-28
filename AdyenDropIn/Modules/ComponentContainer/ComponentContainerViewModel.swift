@@ -68,6 +68,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.delegate = self
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
+        (component.viewController as? SecondaryScreenNavigable)?.secondaryScreenPresenter =
+            SecondaryScreenPushPresenter(source: component.viewController)
     }
         
     private func stopLoading() {

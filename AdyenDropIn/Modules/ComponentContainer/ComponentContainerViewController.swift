@@ -46,6 +46,12 @@ internal class ComponentContainerViewController: UIViewController {
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         componentViewController.resignFirstResponder()
+        if let navigationController,
+           navigationController.viewControllers.contains(self),
+           !isBeingDismissed,
+           !navigationController.isBeingDismissed {
+            return
+        }
         viewModel.cancel()
     }
     

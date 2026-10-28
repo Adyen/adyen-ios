@@ -11,6 +11,10 @@ import UIKit
 @objc(ADYFormViewController)
 @_spi(AdyenInternal)
 open class FormViewController: UIViewController, AdyenObserver {
+    
+    /// Presenter injected by the drop in to push secondary screens
+    /// onto its navigation stack. `nil` keeps modal presentation.
+    package var secondaryScreenPresenter: ViewControllerPresenter?
 
     private enum Animations {
         static let keyboardBottomInset = "keyboardBottomInset"
@@ -352,3 +356,5 @@ extension FormViewController: FormTextItemViewDelegate {
     }
 
 }
+
+extension FormViewController: SecondaryScreenNavigable {}

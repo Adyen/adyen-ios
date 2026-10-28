@@ -19,6 +19,13 @@ extension AdyenScope where Base: UIViewController {
         return topController
     }
     
+    /// The content view controller to use when a secondary screen is pushed into
+    /// a navigation stack. Navigation controller wrappers (e.g. picker screens)
+    /// are unwrapped to their content, as a navigation controller cannot be pushed.
+    package var secondaryScreenContent: UIViewController {
+        (base as? UINavigationController)?.viewControllers.first ?? base
+    }
+    
 }
 
 extension UIResponder: AdyenCompatible {}
