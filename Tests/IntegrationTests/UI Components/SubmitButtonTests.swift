@@ -9,9 +9,10 @@ import XCTest
 
 final class SubmitButtonTests: XCTestCase {
     private enum Constants {
-        static let accessibilityFontSize: CGFloat = 48
         static let constrainedWidth: CGFloat = 220
         static let minimumHeight: CGFloat = 50
+        static let traitChangeTimeout: TimeInterval = 2
+        static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
     }
 
     private let style = ButtonStyle(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
@@ -61,12 +62,10 @@ final class SubmitButtonTests: XCTestCase {
         let target = SubmitButtonActionTarget()
         sut.addTarget(target, action: #selector(SubmitButtonActionTarget.submit), for: .touchUpInside)
 
-        XCTAssertTrue(sut.canBecomeFocused)
         XCTAssertTrue(sut.accessibilityActivate())
         XCTAssertEqual(target.count, 1)
 
         sut.showsActivityIndicator = true
-        XCTAssertFalse(sut.canBecomeFocused)
         XCTAssertFalse(sut.accessibilityActivate())
         XCTAssertEqual(target.count, 1)
 
@@ -75,35 +74,52 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertEqual(target.count, 2)
 
         sut.isUserInteractionEnabled = false
-        XCTAssertFalse(sut.canBecomeFocused)
         XCTAssertFalse(sut.accessibilityActivate())
     }
 
-    func testButtonGrowsToFitLargeMultilineText() throws {
-        let (sut, _) = try makeSUT("Confirm this payment")
-        sut.titleLabel.font = .systemFont(ofSize: Constants.accessibilityFontSize)
-        let size = sut.systemLayoutSizeFitting(
-            CGSize(width: Constants.constrainedWidth, height: UIView.layoutFittingCompressedSize.height),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel
+    func testButtonKeepsSingleLineAndMinimumHeightAtDefaultTextSize() throws {
+        let (sut, parent, child) = try makeHostedSUT("Confirm this payment")
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .large), forChild: child)
+        child.view.layoutIfNeeded()
+
+        XCTAssertEqual(sut.titleLabel.numberOfLines, 1)
+        XCTAssertEqual(fittingHeight(of: sut), Constants.minimumHeight, accuracy: 0.5)
+    }
+
+    func testButtonGrowsToFitMultilineTextAtAccessibilityTextSizes() throws {
+        let (sut, parent, child) = try makeHostedSUT("Confirm this payment")
+        parent.setOverrideTraitCollection(
+            UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge),
+            forChild: child
+        )
+        wait(
+            until: { sut.titleLabel.numberOfLines == 0 },
+            timeout: Constants.traitChangeTimeout,
+            retryInterval: Constants.traitChangeRetryInterval
         )
 
-        XCTAssertGreaterThan(size.height, Constants.minimumHeight)
-        XCTAssertEqual(sut.titleLabel.numberOfLines, 0)
+        XCTAssertGreaterThan(fittingHeight(of: sut), Constants.minimumHeight)
         XCTAssertTrue(sut.titleLabel.adjustsFontForContentSizeCategory)
     }
 
-    func testKeyboardSelectActivatesButton() throws {
-        let (sut, _) = try makeSUT()
-        let target = SubmitButtonActionTarget()
-        sut.addTarget(target, action: #selector(SubmitButtonActionTarget.submit), for: .touchUpInside)
+    private func makeHostedSUT(_ title: String) throws -> (SubmitButton, UIViewController, UIViewController) {
+        let (sut, _) = try makeSUT(title)
+        let child = UIViewController()
+        child.view.addSubview(sut)
+        let parent = UIViewController()
+        parent.addChild(child)
+        parent.view.addSubview(child.view)
+        child.didMove(toParent: parent)
+        setupRootViewController(parent)
+        return (sut, parent, child)
+    }
 
-        sut.pressesEnded([SubmitButtonSelectPress()], with: nil)
-        XCTAssertEqual(target.count, 1)
-
-        sut.isEnabled = false
-        sut.pressesEnded([SubmitButtonSelectPress()], with: nil)
-        XCTAssertEqual(target.count, 1)
+    private func fittingHeight(of sut: SubmitButton) -> CGFloat {
+        sut.systemLayoutSizeFitting(
+            CGSize(width: Constants.constrainedWidth, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
     }
 
     func makeSUT(_ title: String = "Submit") throws -> (SubmitButton, UIActivityIndicatorView) {
@@ -120,11 +136,5 @@ private final class SubmitButtonActionTarget: NSObject {
 
     @objc func submit() {
         count += 1
-    }
-}
-
-private final class SubmitButtonSelectPress: UIPress {
-    override var type: UIPress.PressType {
-        .select
     }
 }

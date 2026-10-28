@@ -13,6 +13,15 @@ class ModalViewControllerTests: XCTestCase {
     private enum Constants {
         static let accessibilityFontSize: CGFloat = 64
         static let navigationBarHeight: CGFloat = 63
+        static let compactSize = CGSize(width: 320, height: 800)
+        static let regularSize = CGSize(width: 704, height: 800)
+        static let additionalTopInset: CGFloat = 24
+        static let longTitle = "Credit or debit card payment details"
+        static let traitChangeTimeout: TimeInterval = 2
+        static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
+        static var separatorHeight: CGFloat {
+            1.0 / UIScreen.main.scale
+        }
     }
     
     var sut: ModalViewController!
@@ -73,6 +82,49 @@ class ModalViewControllerTests: XCTestCase {
         XCTAssertGreaterThan(sut.preferredContentSize.height, originalSize.height)
     }
 
+    func testNavigationBarHeightStaysDefaultAtDefaultTextSize() throws {
+        try hostAtTextSize(.large)
+        sut.view.frame = CGRect(origin: .zero, size: Constants.compactSize)
+        sut.view.layoutIfNeeded()
+
+        XCTAssertEqual(laidOutToolbarHeight(), Constants.navigationBarHeight - Constants.separatorHeight, accuracy: 0.5)
+        XCTAssertEqual(sut.preferredContentSize.height, Constants.navigationBarHeight + Constants.separatorHeight, accuracy: 0.5)
+    }
+
+    func testNavigationBarHeightFollowsWidthAtAccessibilityTextSizes() throws {
+        try hostAtTextSize(.accessibilityExtraExtraExtraLarge)
+
+        sut.view.frame = CGRect(origin: .zero, size: Constants.compactSize)
+        sut.view.layoutIfNeeded()
+        let compactToolbarHeight = laidOutToolbarHeight()
+        let compactPreferredHeight = sut.preferredContentSize.height
+
+        sut.view.frame = CGRect(origin: .zero, size: Constants.regularSize)
+        sut.view.layoutIfNeeded()
+        let regularToolbarHeight = laidOutToolbarHeight()
+
+        XCTAssertGreaterThan(compactToolbarHeight, Constants.navigationBarHeight)
+        XCTAssertGreaterThan(compactToolbarHeight, regularToolbarHeight)
+        XCTAssertEqual(compactPreferredHeight, compactToolbarHeight + 2 * Constants.separatorHeight, accuracy: 0.5)
+        XCTAssertEqual(sut.preferredContentSize.height, regularToolbarHeight + 2 * Constants.separatorHeight, accuracy: 0.5)
+    }
+
+    func testPreferredContentSizeExcludesTopSafeAreaInsetAtAccessibilityTextSizes() throws {
+        try hostAtTextSize(.accessibilityExtraExtraExtraLarge)
+        sut.view.frame = CGRect(origin: .zero, size: Constants.compactSize)
+        sut.view.layoutIfNeeded()
+        let preferredHeight = sut.preferredContentSize.height
+        let toolbarHeight = laidOutToolbarHeight()
+
+        sut.additionalSafeAreaInsets.top = Constants.additionalTopInset
+        sut.view.setNeedsLayout()
+        sut.view.layoutIfNeeded()
+
+        XCTAssertEqual(sut.preferredContentSize.height, preferredHeight, accuracy: 0.5)
+        XCTAssertEqual(laidOutToolbarHeight(), toolbarHeight, accuracy: 0.5)
+        XCTAssertEqual(sut.navBar.frame.height, toolbarHeight + sut.view.safeAreaInsets.top, accuracy: 0.5)
+    }
+
     func testFormContentAlignsWithToolbar() throws {
         let formStyle = FormComponentStyle()
         let formController = FormViewController(scrollEnabled: true, style: formStyle, localizationParameters: nil)
@@ -108,6 +160,28 @@ class ModalViewControllerTests: XCTestCase {
         }
     }
     
+    private func hostAtTextSize(_ category: UIContentSizeCategory) throws {
+        viewController.title = Constants.longTitle
+        sut = ModalViewController(rootViewController: viewController, navBarType: .regular)
+        let parent = UIViewController()
+        parent.addChild(sut)
+        parent.view.addSubview(sut.view)
+        sut.didMove(toParent: parent)
+        setupRootViewController(parent)
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: category), forChild: sut)
+        let toolbar = try XCTUnwrap(sut.navBar as? ModalToolbar)
+        let expectsWrapping = category > .large
+        wait(
+            until: { (toolbar.titleLabel.numberOfLines == 0) == expectsWrapping },
+            timeout: Constants.traitChangeTimeout,
+            retryInterval: Constants.traitChangeRetryInterval
+        )
+    }
+
+    private func laidOutToolbarHeight() -> CGFloat {
+        sut.navBar.frame.height - sut.view.safeAreaInsets.top
+    }
+
     fileprivate func loadAndRunTests(
         for style: NavigationStyle,
         navBarType: NavigationBarType = .regular,

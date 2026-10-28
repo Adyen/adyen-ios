@@ -57,23 +57,12 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         backgroundColor = item.style.backgroundColor
 
         isAccessibilityElement = false
-        accessibilityLabel = item.title
-        accessibilityTraits = switchControl.accessibilityTraits
-        accessibilityValue = switchControl.accessibilityValue
         
         setupObservation()
         addSubviews()
     }
     
     // MARK: - Public
-
-    @discardableResult
-    override public func accessibilityActivate() -> Bool {
-        guard switchControl.isEnabled, switchControl.isUserInteractionEnabled else { return false }
-        switchControl.isOn.toggle()
-        switchControlValueChanged()
-        return true
-    }
 
     override public func reset() {
         item.value = false
@@ -93,21 +82,15 @@ private extension FormToggleItemView {
     func setupObservation() {
         observe(item.$title) { [weak self] value in
             self?.label.text = value
-            self?.accessibilityLabel = value
             self?.switchControl.accessibilityLabel = value
         }
         
         observe(item.publisher) { [weak self] value in
-            guard let self else { return }
-            self.switchControl.isOn = value
-            self.accessibilityValue = self.switchControl.accessibilityValue
-            self.accessibilityTraits = self.switchControl.accessibilityTraits
+            self?.switchControl.isOn = value
         }
     }
 
     @objc func switchControlValueChanged() {
-        accessibilityValue = switchControl.accessibilityValue
-        accessibilityTraits = switchControl.accessibilityTraits
         item.value = switchControl.isOn
     }
 }

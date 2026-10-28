@@ -12,7 +12,6 @@ import XCTest
 class ModalToolbarTests: XCTestCase {
     private enum Constants {
         static let compactWidth: CGFloat = 320
-        static let accessibilityFontSize: CGFloat = 64
         static let navigationBarHeight: CGFloat = 63
         static let traitChangeTimeout: TimeInterval = 2
         static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
@@ -148,12 +147,11 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertEqual(sut.cancelButton.image(for: .normal), customImage)
     }
 
-    func testAllCloseButtonStylesAreLabeledAndFocusable() {
+    func testAllCloseButtonStylesAreLabeled() {
         for buttonStyle in [CancelButtonStyle.system, .legacy, .custom(UIImage())] {
             var style = NavigationStyle()
             style.cancelButton = buttonStyle
             let toolbar = ModalToolbar(title: "Credit Card", style: style)
-            XCTAssertTrue(toolbar.cancelButton.canBecomeFocused)
             let label = toolbar.cancelButton.accessibilityLabel ?? toolbar.cancelButton.title(for: .normal)
             XCTAssertFalse(label?.isEmpty ?? true)
 
@@ -161,19 +159,53 @@ class ModalToolbarTests: XCTestCase {
             toolbar.onCancelHandler = { cancelled = true }
             toolbar.cancelButton.sendActions(for: .touchUpInside)
             XCTAssertTrue(cancelled)
-            toolbar.cancelButton.isEnabled = false
-            XCTAssertFalse(toolbar.cancelButton.canBecomeFocused)
         }
     }
 
-    func testTitleIsADynamicTypeHeadingAndHeaderCanGrow() {
-        let toolbar = ModalToolbar(title: "Credit Card", style: NavigationStyle())
-        toolbar.bounds.size.width = Constants.compactWidth
-        XCTAssertTrue(toolbar.titleLabel.accessibilityTraits.contains(.header))
-        XCTAssertTrue(toolbar.titleLabel.adjustsFontForContentSizeCategory)
-        toolbar.titleLabel.font = .systemFont(ofSize: Constants.accessibilityFontSize)
+    func testLegacyCancelButtonKeepsItsDefaultFontSize() {
+        var style = NavigationStyle()
+        style.cancelButton = .legacy
+        let toolbar = ModalToolbar(title: "Credit Card", style: style)
+        let (parent, child) = host(toolbar)
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .large), forChild: child)
+        child.view.layoutIfNeeded()
 
-        XCTAssertGreaterThan(toolbar.intrinsicContentSize.height, Constants.navigationBarHeight)
+        let defaultFontSize = UIButton(type: .system).titleLabel?.font.pointSize ?? 0
+        XCTAssertEqual(toolbar.cancelButton.titleLabel?.font.pointSize ?? 0, defaultFontSize, accuracy: 0.1)
+        XCTAssertTrue(toolbar.cancelButton.titleLabel?.adjustsFontForContentSizeCategory == true)
+    }
+
+    func testTitleKeepsSingleLineAtDefaultTextSize() {
+        let toolbar = ModalToolbar(title: "Credit Card", style: NavigationStyle())
+        let (parent, child) = host(toolbar)
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .large), forChild: child)
+        child.view.layoutIfNeeded()
+
+        XCTAssertTrue(toolbar.titleLabel.accessibilityTraits.contains(.header))
+        XCTAssertEqual(toolbar.titleLabel.numberOfLines, 1)
+        XCTAssertLessThanOrEqual(fittingHeight(of: toolbar), Constants.navigationBarHeight)
+    }
+
+    func testTitleWrapsAndHeaderGrowsAtAccessibilityTextSizes() {
+        for alignment in [NSTextAlignment.natural, .center] {
+            var style = NavigationStyle()
+            style.barTitle.textAlignment = alignment
+            let toolbar = ModalToolbar(title: "Credit Card", style: style)
+            let (parent, child) = host(toolbar)
+            let initialFontSize = toolbar.titleLabel.font.pointSize
+
+            parent.setOverrideTraitCollection(
+                UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge),
+                forChild: child
+            )
+            wait(
+                until: { toolbar.titleLabel.font.pointSize > initialFontSize && toolbar.titleLabel.numberOfLines == 0 },
+                timeout: Constants.traitChangeTimeout,
+                retryInterval: Constants.traitChangeRetryInterval
+            )
+
+            XCTAssertGreaterThan(fittingHeight(of: toolbar), Constants.navigationBarHeight)
+        }
     }
 
     func testCenteredTitleAndCloseButtonDoNotOverlapAtAccessibilityTextSizes() {
@@ -182,13 +214,7 @@ class ModalToolbarTests: XCTestCase {
         style.cancelButton = .legacy
         style.toolbarMode = .rightCancel
         let toolbar = ModalToolbar(title: "Credit Card", style: style)
-        let child = UIViewController()
-        child.view.addSubview(toolbar)
-        let parent = UIViewController()
-        parent.addChild(child)
-        parent.view.addSubview(child.view)
-        child.didMove(toParent: parent)
-        setupRootViewController(parent)
+        let (parent, child) = host(toolbar)
         let initialFontSize = toolbar.titleLabel.font.pointSize
 
         parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge), forChild: child)
@@ -197,15 +223,34 @@ class ModalToolbarTests: XCTestCase {
             timeout: Constants.traitChangeTimeout,
             retryInterval: Constants.traitChangeRetryInterval
         )
-        toolbar.bounds.size.width = Constants.compactWidth
         toolbar.frame = CGRect(
             origin: .zero,
-            size: CGSize(width: Constants.compactWidth, height: max(Constants.navigationBarHeight, toolbar.intrinsicContentSize.height))
+            size: CGSize(width: Constants.compactWidth, height: max(Constants.navigationBarHeight, fittingHeight(of: toolbar)))
         )
         toolbar.setNeedsLayout()
         toolbar.layoutIfNeeded()
 
         XCTAssertFalse(toolbar.titleLabel.frame.intersects(toolbar.cancelButton.frame))
         XCTAssertGreaterThan(toolbar.frame.height, Constants.navigationBarHeight)
+    }
+
+    private func host(_ toolbar: ModalToolbar) -> (parent: UIViewController, child: UIViewController) {
+        let child = UIViewController()
+        child.view.addSubview(toolbar)
+        let parent = UIViewController()
+        parent.addChild(child)
+        parent.view.addSubview(child.view)
+        child.didMove(toParent: parent)
+        setupRootViewController(parent)
+        return (parent, child)
+    }
+
+    private func fittingHeight(of toolbar: ModalToolbar) -> CGFloat {
+        let size = toolbar.systemLayoutSizeFitting(
+            CGSize(width: Constants.compactWidth, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        return size.height - toolbar.safeAreaInsets.top - toolbar.safeAreaInsets.bottom
     }
 }

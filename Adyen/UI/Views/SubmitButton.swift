@@ -11,8 +11,7 @@ import UIKit
 public final class SubmitButton: UIControl {
     private enum Constants {
         static let minimumHeight: CGFloat = 50
-        static let verticalPadding: CGFloat = 12
-        static let horizontalPadding: CGFloat = 16
+        static let largestSingleLineContentSize: UIContentSizeCategory = .large
     }
     
     private let style: ButtonStyle
@@ -69,7 +68,6 @@ public final class SubmitButton: UIControl {
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false
-        titleLabel.numberOfLines = 0
         
         return titleLabel
     }()
@@ -128,25 +126,16 @@ public final class SubmitButton: UIControl {
         self.adyen.round(using: style.cornerRounding)
     }
 
-    override public var canBecomeFocused: Bool {
-        isEnabled && isUserInteractionEnabled && !isHidden && alpha > 0
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // Wrapping only above the default text size keeps the default appearance unchanged.
+        titleLabel.numberOfLines = traitCollection.preferredContentSizeCategory > Constants.largestSingleLineContentSize ? 0 : 1
     }
 
     override public func accessibilityActivate() -> Bool {
-        guard canBecomeFocused else { return false }
+        guard isEnabled, isUserInteractionEnabled else { return false }
         sendActions(for: .touchUpInside)
         return true
-    }
-
-    override public func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        let selectionPresses = presses.filter { $0.type == .select }
-        if !selectionPresses.isEmpty {
-            accessibilityActivate()
-        }
-        let remainingPresses = presses.subtracting(selectionPresses)
-        if !remainingPresses.isEmpty {
-            super.pressesEnded(remainingPresses, with: event)
-        }
     }
     
     private func configureConstraints() {
@@ -155,11 +144,11 @@ public final class SubmitButton: UIControl {
         let heightConstraint = heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumHeight)
         
         let labelConstraints = [
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.verticalPadding)
-        ]
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ].map { $0.adyen.with(priority: .defaultHigh) }
         
         let spinnerConstraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),

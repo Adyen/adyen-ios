@@ -10,6 +10,44 @@ import AdyenNetworking
 import XCTest
 
 class FormViewControllerTests: XCTestCase {
+    private enum Constants {
+        static let traitChangeTimeout: TimeInterval = 2
+        static let traitChangeRetryInterval: DispatchTimeInterval = .milliseconds(10)
+    }
+
+    func test_textSizeChange_growsAndReportsPreferredContentSize() {
+        for scrollEnabled in [true, false] {
+            let style = FormComponentStyle()
+            let sut = FormViewController(scrollEnabled: scrollEnabled, style: style, localizationParameters: nil)
+            let item = FormTextInputItem(style: style.textField)
+            item.title = "Card number"
+            sut.append(item)
+            let container = PreferredContentSizeConsumerSpy()
+            container.addChild(sut)
+            container.view.addSubview(sut.view)
+            sut.didMove(toParent: container)
+            setupRootViewController(container)
+            container.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory: .large), forChild: sut)
+            sut.view.layoutIfNeeded()
+            // A non-scrolling form reports no intrinsic size, so its fitting size is measured instead.
+            let contentHeight = { scrollEnabled ? sut.preferredContentSize.height : sut.view.adyen.minimalSize.height }
+            let initialHeight = contentHeight()
+            container.didUpdateCount = 0
+
+            container.setOverrideTraitCollection(
+                UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge),
+                forChild: sut
+            )
+            wait(
+                until: { container.didUpdateCount > 0 && contentHeight() > initialHeight },
+                timeout: Constants.traitChangeTimeout,
+                retryInterval: Constants.traitChangeRetryInterval
+            )
+
+            XCTAssertGreaterThan(container.didUpdateCount, 0)
+            XCTAssertGreaterThan(contentHeight(), initialHeight)
+        }
+    }
     
     func test_moving_firstResponders() throws {
         
@@ -134,5 +172,15 @@ class FormViewControllerTests: XCTestCase {
                 }
             }
         }
+    }
+}
+
+private final class PreferredContentSizeConsumerSpy: UIViewController, PreferredContentSizeConsumer {
+    var didUpdateCount = 0
+
+    func willUpdatePreferredContentSize() {}
+
+    func didUpdatePreferredContentSize() {
+        didUpdateCount += 1
     }
 }

@@ -26,16 +26,20 @@ internal final class ModalViewController: UIViewController {
     internal weak var delegate: ViewControllerDelegate?
 
     private var navigationBarHeight: CGFloat {
-        switch navBarType {
-        case .regular:
-            return max(Constants.navigationBarHeight, navBar.intrinsicContentSize.height + Constants.separatorHeight)
-        case .custom:
-            return Constants.navigationBarHeight
-        }
+        guard case .regular = navBarType else { return Constants.navigationBarHeight }
+        let currentWidth = viewIfLoaded?.bounds.width ?? 0
+        let width = currentWidth > 0 ? currentWidth : Dimensions.expectedWidth(for: viewIfLoaded?.window)
+        let fittingHeight = navBar.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        let toolbarContentHeight = fittingHeight - navBar.safeAreaInsets.top - navBar.safeAreaInsets.bottom
+        return max(Constants.navigationBarHeight, toolbarContentHeight + Constants.separatorHeight)
     }
     
     private let navBarType: NavigationBarType
-    private var toolbarHeightConstraint: NSLayoutConstraint?
+    private var laidOutToolbarHeight: CGFloat?
 
     // MARK: - Initializing
     
@@ -106,11 +110,7 @@ internal final class ModalViewController: UIViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
-        let height = toolbarHeight
-        if let constraint = toolbarHeightConstraint, constraint.constant != height {
-            constraint.constant = height
-            (navigationController as? PreferredContentSizeConsumer)?.didUpdatePreferredContentSize()
-        }
+        notifyToolbarHeightChangeIfNeeded()
     }
     
     // MARK: - View elements
@@ -167,27 +167,42 @@ internal final class ModalViewController: UIViewController {
     
     // MARK: - Private
     
-    private var toolbarHeight: CGFloat {
-        navigationBarHeight - Constants.separatorHeight
+    private var minimumToolbarHeight: CGFloat {
+        Constants.navigationBarHeight - Constants.separatorHeight
     }
 
     private func arrangeConstraints() {
-        let heightConstraint = navBarHeightConstraint
-        toolbarHeightConstraint = heightConstraint
-
         stackView.adyen.anchor(inside: view)
-        NSLayoutConstraint.activate([
-            heightConstraint,
+        NSLayoutConstraint.activate(navBarHeightConstraints + [
             separator.heightAnchor.constraint(equalToConstant: Constants.separatorHeight)
         ])
     }
 
-    private var navBarHeightConstraint: NSLayoutConstraint {
+    private var navBarHeightConstraints: [NSLayoutConstraint] {
         switch navBarType {
         case .regular:
-            return navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: toolbarHeight)
+            let preferredHeight = navBar.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: minimumToolbarHeight
+            )
+            // The toolbar content uses required priorities, so it can grow past the default height at large text sizes.
+            preferredHeight.priority = .required - 1
+            return [
+                preferredHeight,
+                navBar.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: minimumToolbarHeight)
+            ]
         case .custom:
-            return navBar.heightAnchor.constraint(equalToConstant: toolbarHeight)
+            return [navBar.heightAnchor.constraint(equalToConstant: minimumToolbarHeight)]
         }
+    }
+
+    private func notifyToolbarHeightChangeIfNeeded() {
+        guard case .regular = navBarType else { return }
+        let height = navBar.frame.maxY - view.safeAreaInsets.top
+        guard height != laidOutToolbarHeight else { return }
+        let isInitialLayout = laidOutToolbarHeight == nil
+        laidOutToolbarHeight = height
+        guard !isInitialLayout else { return }
+        (navigationController as? PreferredContentSizeConsumer)?.didUpdatePreferredContentSize()
     }
 }

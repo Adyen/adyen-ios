@@ -9,10 +9,9 @@ import UIKit
 @_spi(AdyenInternal)
 public class ModalToolbar: UIView, AnyNavigationBar {
     private enum Constants {
-        static let minimumCancelButtonSize: CGFloat = 44
         static let titleButtonSpacing: CGFloat = 16
         static let titleVerticalPadding: CGFloat = 16
-        static let minimumTitleWidth: CGFloat = 1
+        static let largestSingleLineContentSize: UIContentSizeCategory = .large
     }
 
     private let style: NavigationStyle
@@ -40,8 +39,8 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         label.textAlignment = style.barTitle.textAlignment
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = title ?? ""
-        label.numberOfLines = 0
         label.accessibilityTraits.insert(.header)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }()
 
@@ -49,11 +48,10 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         let button = createCancelButton()
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .vertical)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
         button.accessibilityLabel = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
-        button.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumCancelButtonSize).isActive = true
-        button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumCancelButtonSize).isActive = true
         return button
     }()
 
@@ -86,26 +84,10 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         onCancelHandler?()
     }
 
-    override public var intrinsicContentSize: CGSize {
-        let buttonWidth = max(Constants.minimumCancelButtonSize, cancelButton.intrinsicContentSize.width)
-        let buttonSpace = buttonWidth + Constants.titleButtonSpacing
-        let titleInset = 2 * paddingWithMarginCorrection + buttonSpace
-        let width = bounds.width > 0 ? bounds.width : Dimensions.expectedWidth(for: window)
-        let titleSize = titleLabel.sizeThatFits(CGSize(
-            width: max(Constants.minimumTitleWidth, width - safeAreaInsets.left - safeAreaInsets.right - titleInset),
-            height: .greatestFiniteMagnitude
-        ))
-        return CGSize(
-            width: UIView.noIntrinsicMetric,
-            height: max(titleSize.height + 2 * Constants.titleVerticalPadding, cancelButton.intrinsicContentSize.height)
-        )
-    }
-
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory else { return }
-        invalidateIntrinsicContentSize()
-        adyen.updatePreferredContentSize()
+        // Wrapping only above the default text size keeps the default appearance unchanged.
+        titleLabel.numberOfLines = traitCollection.preferredContentSizeCategory > Constants.largestSingleLineContentSize ? 0 : 1
     }
 
     // MARK: - View setup
@@ -119,6 +101,10 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         default:
             addSubview(stackView)
             stackView.adyen.anchor(inside: safeAreaLayoutGuide)
+            titleLabel.topAnchor.constraint(
+                greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor,
+                constant: Constants.titleVerticalPadding
+            ).isActive = true
         }
         
         self.accessibilityIdentifier = "adyen.ModalToolbar"
@@ -130,7 +116,16 @@ public class ModalToolbar: UIView, AnyNavigationBar {
     private func setupStyle() {
         backgroundColor = style.backgroundColor
         cancelButton.tintColor = style.tintColor
-        titleLabel.adyen.apply(style.barTitle)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        guard let title = titleLabel.text, !title.isEmpty else { return }
+        titleLabel.attributedText = NSAttributedString(
+            string: title,
+            attributes: [
+                NSAttributedString.Key.font: style.barTitle.font,
+                NSAttributedString.Key.foregroundColor: style.barTitle.color,
+                NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor
+            ]
+        )
     }
 
     private func setupLayoutForCenteredMode() {
@@ -143,8 +138,8 @@ public class ModalToolbar: UIView, AnyNavigationBar {
             : titleLabel.rightAnchor.constraint(lessThanOrEqualTo: cancelButton.leftAnchor, constant: -Constants.titleButtonSpacing)
 
         NSLayoutConstraint.activate([
-            safeAreaLayoutGuide.topAnchor.constraint(equalTo: titleLabel.topAnchor),
-            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor, constant: Constants.titleVerticalPadding),
             titleLabel.leftAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.leftAnchor, constant: paddingWithMarginCorrection),
             titleLabel.rightAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.rightAnchor, constant: -paddingWithMarginCorrection),
             centerConstraint,
@@ -186,10 +181,13 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         let button: UIButton
 
         func legacy() -> UIButton {
-            let button = FocusableCancelButton(type: .system)
+            let button = UIButton(type: UIButton.ButtonType.system)
             let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
             button.setTitle(cancelText, for: .normal)
-            button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+            if let defaultFont = button.titleLabel?.font {
+                // Scaling the system default font keeps its size at the default text size.
+                button.titleLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: defaultFont)
+            }
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.setTitleColor(style.tintColor, for: .normal)
             return button
@@ -199,11 +197,11 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         case .legacy:
             return legacy()
         case let .custom(image):
-            button = FocusableCancelButton(type: .custom)
+            button = UIButton(type: UIButton.ButtonType.custom)
             button.setImage(image, for: .normal)
         default:
             if #available(iOS 13.0, *) {
-                button = FocusableCancelButton(type: .close)
+                button = UIButton(type: UIButton.ButtonType.close)
                 button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
             } else {
                 return legacy()
@@ -211,11 +209,5 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         }
 
         return button
-    }
-}
-
-private final class FocusableCancelButton: UIButton {
-    override var canBecomeFocused: Bool {
-        isEnabled && isUserInteractionEnabled && !isHidden && alpha > 0
     }
 }

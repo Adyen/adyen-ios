@@ -80,23 +80,9 @@ class FormItemViewBuilderTests: XCTestCase {
         item.value = true
         XCTAssertEqual(view.switchControl.accessibilityLabel, "Save card")
         XCTAssertTrue(view.switchControl.isOn)
-        XCTAssertEqual(view.accessibilityValue, view.switchControl.accessibilityValue)
 
-        XCTAssertTrue(view.accessibilityActivate())
-        XCTAssertFalse(item.value)
-        item.value = true
         view.reset()
         XCTAssertFalse(view.switchControl.isOn)
-        XCTAssertEqual(view.accessibilityValue, view.switchControl.accessibilityValue)
-    }
-
-    func testToggleDoesNotActivateWhenDisabled() {
-        let item = FormToggleItem()
-        let view = FormToggleItemView(item: item)
-        view.switchControl.isEnabled = false
-
-        XCTAssertFalse(view.accessibilityActivate())
-        XCTAssertFalse(item.value)
     }
 
     func testTextFieldHasInitialAccessibilityLabel() {
