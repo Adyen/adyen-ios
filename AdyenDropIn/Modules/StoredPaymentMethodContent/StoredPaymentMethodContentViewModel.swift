@@ -69,6 +69,17 @@ internal final class StoredPaymentMethodContentViewModel: ObservableObject {
         dropInFlowManager.cancel(component: component)
         router?.dismiss()
     }
+
+    // MARK: - Private
+
+    private func observePaymentProgress() {
+        dropInFlowManager.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                self?.isPaymentInProgress = isPaymentInProgress
+            }
+            .store(in: &cancellables)
+    }
 }
 
 extension StoredPaymentMethodContentViewModel: PaymentComponentDelegate {
