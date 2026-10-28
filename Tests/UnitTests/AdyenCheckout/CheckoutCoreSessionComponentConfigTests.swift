@@ -33,7 +33,7 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
 
     func test_cardComponent_sessionFlow_installmentConfiguration_appliedFromSession() throws {
         let installments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 6)
         )
         let sut = makeSessionCheckoutCore(installmentOptions: installments)
 
@@ -63,7 +63,7 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
 
     func test_cardComponent_advancedFlow_merchantInstallments_notClobbered() throws {
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 12, includesRevolving: true)
+            defaultOptions: InstallmentOptions(maxInstallments: 12, plans: [.regular, .revolving])
         )
         configuration.configurations[.payment(.scheme)] = CardConfiguration()
             .installmentConfiguration(merchantInstallments)
@@ -128,29 +128,29 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
                 enableStoreDetails: enableStoreDetails
             )
         ))
-        let callbackStore = SessionCheckoutCallbackStore()
+        let callbacks = CheckoutCallbacks.test()
         return CheckoutCore(
             configuration: configuration,
             session: session,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
+            resultCallbacks: callbacks,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
                 session: session,
-                callbackStore: callbackStore
+                callbacks: callbacks
             )
         )
     }
 
     private func makeAdvancedCheckoutCore() -> CheckoutCore {
-        let callbackStore = AdvancedCheckoutCallbackStore()
+        let callbacks = AdvancedCheckoutCallbacks.test()
         return CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
         )
     }
 }

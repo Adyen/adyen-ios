@@ -12,6 +12,7 @@ import Foundation
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
+// TODO: Decide to make package
 public struct PaymentComponentData {
 
     /// The payment method details submitted by the payment component.

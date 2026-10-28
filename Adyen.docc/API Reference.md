@@ -7,10 +7,6 @@ The Adyen Checkout SDK API Reference.
 The entry points for integrating the SDK.
 
 - ``Checkout``
-- ``BaseCheckout``
-- ``PaymentCheckout``
-- ``SessionCheckout``
-- ``AdvancedCheckout``
 - ``ActionOnlyCheckout``
 - ``CheckoutPaymentComponent``
 
@@ -30,18 +26,16 @@ The entry points for integrating the SDK.
 
 ## Checkout Results and Callbacks
 
+- ``CheckoutCallbacks``
+- ``ActionOnlyCheckoutCallbacks``
 - ``CheckoutResultCode``
 - ``CheckoutError``
 - ``AdvancedCheckoutResult``
-- ``SessionCheckoutResult``
+- ``CheckoutResult``
 - ``SessionResponse``
 - ``BeforeSubmitData``
 - ``BeforeSubmitResult``
-- ``CheckoutBeforeSubmitHandler``
-- ``SubmitResult``
-- ``CheckoutSubmitHandler``
 - ``AdditionalDetailsResult``
-- ``CheckoutAdditionalDetailsHandler``
 - ``DelegatedAuthenticationData``
 
 ## Payment Methods
@@ -223,7 +217,6 @@ The entry points for integrating the SDK.
 - ``AdyenContext``
 - ``Amount``
 - ``Environment``
-- ``PartialPayment``
 - ``PartialPaymentOrder``
 - ``PaymentComponentData``
 - ``ActionComponentData``

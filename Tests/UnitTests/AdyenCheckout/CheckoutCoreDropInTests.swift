@@ -144,11 +144,10 @@ final class CheckoutCoreDropInTests: XCTestCase {
     }
 
     func test_dropInSubmit_whenAdvancedHandlerReturnsAction_shouldRouteActionBackToDropIn() async throws {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let awaitAction = AwaitAction(paymentData: "payment-data", paymentMethodType: .blik)
         let action = Action.await(awaitAction)
-        callbackStore.onSubmit = { _ in .action(action) }
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore, paymentMethods: paymentMethods)
+        let onSubmit: CheckoutSubmitHandler = { _ in .action(action) }
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onSubmit: onSubmit), paymentMethods: paymentMethods)
         let dropIn = ActionHandlingDropInMock()
         let handledAction = expectation(description: "Drop-in handled action")
         dropIn.onHandle = { receivedAction in
@@ -172,20 +171,19 @@ final class CheckoutCoreDropInTests: XCTestCase {
     }
 
     func test_dropInAdditionalDetails_shouldReachAdvancedHandlerAndCompleteOnce() async {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let detailsHandled = expectation(description: "Additional details handled")
         let completed = expectation(description: "Checkout completed")
         var completionCount = 0
-        callbackStore.onAdditionalDetails = { data in
+        let onAdditionalDetails: CheckoutAdditionalDetailsHandler = { data in
             XCTAssertEqual(data.paymentData, "payment-data")
             detailsHandled.fulfill()
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
-        callbackStore.onComplete = { _ in
+        let onComplete: AdvancedCheckoutCompletionHandler = { _ in
             completionCount += 1
             completed.fulfill()
         }
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore, paymentMethods: paymentMethods)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onAdditionalDetails: onAdditionalDetails, onComplete: onComplete), paymentMethods: paymentMethods)
         let data = ActionComponentData(
             details: AwaitActionDetails(payload: "payload"),
             paymentData: "payment-data"
@@ -198,14 +196,13 @@ final class CheckoutCoreDropInTests: XCTestCase {
     }
 
     func test_dropInPaymentFailure_shouldReachFailureHandlerOnce() async {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         let failed = expectation(description: "onFailure called")
         var failureCount = 0
-        callbackStore.onFailure = { _ in
+        let onFailure: CheckoutFailureHandler = { _ in
             failureCount += 1
             failed.fulfill()
         }
-        let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore, paymentMethods: paymentMethods)
+        let sut = makeAdvancedCheckoutCore(callbacks: .test(onFailure: onFailure), paymentMethods: paymentMethods)
         let paymentMethod = paymentMethods.regular[0]
 
         sut.didFail(
@@ -230,29 +227,29 @@ final class CheckoutCoreDropInTests: XCTestCase {
     }
 
     private func makeAdvancedCheckoutCore(
-        callbackStore: AdvancedCheckoutCallbackStore = AdvancedCheckoutCallbackStore(),
+        callbacks: AdvancedCheckoutCallbacks = AdvancedCheckoutCallbacks.test(),
         paymentMethods: PaymentMethods?
     ) -> CheckoutCore {
         CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
         )
     }
 
     private func makeSessionCheckoutCore(session: AdyenSessionMock) -> CheckoutCore {
-        let callbackStore = SessionCheckoutCallbackStore()
+        let callbacks = CheckoutCallbacks.test()
         return CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
+            resultCallbacks: callbacks,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
                 session: session,
-                callbackStore: callbackStore
+                callbacks: callbacks
             )
         )
     }

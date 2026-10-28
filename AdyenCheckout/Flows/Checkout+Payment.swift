@@ -10,9 +10,7 @@ import Adyen
 #endif
 import Foundation
 
-/// Base checkout that can create payment method components.
-@MainActor
-public class PaymentCheckout: BaseCheckout {
+extension Checkout {
 
     /// The payment methods available for this checkout flow.
     public var paymentMethods: [PaymentMethod] {

@@ -99,6 +99,26 @@ internal enum ConfigurationConstants {
     // swiftlint:enable line_length
 }
 
+internal enum CardInstallmentOptionsMode: String, Codable, CaseIterable, Hashable {
+    case none
+    case defaultOptions
+    case defaultWithRevolving
+    case cardBasedVisa
+
+    internal var isEnabled: Bool {
+        self != .none
+    }
+
+    internal var displayName: String {
+        switch self {
+        case .none: return "None"
+        case .defaultOptions: return "Default installment options"
+        case .defaultWithRevolving: return "Default options with revolving"
+        case .cardBasedVisa: return "Card based options (VISA)"
+        }
+    }
+}
+
 internal struct CardSettings: Codable {
     internal var showCardholderName = false
     internal var showStorePaymentMethod = true
@@ -107,8 +127,14 @@ internal struct CardSettings: Codable {
     internal var billingAddress: BillingAddressModeDemoSetting = .none
     internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
+    // Kept to resolve settings persisted before installmentOptionsMode was introduced.
     internal var enableInstallments = false
+    internal var installmentOptionsMode: CardInstallmentOptionsMode? = nil
     internal var showsInstallmentAmount = false
+
+    internal var resolvedInstallmentOptionsMode: CardInstallmentOptionsMode {
+        installmentOptionsMode ?? (enableInstallments ? .defaultOptions : .none)
+    }
 }
 
 /// The demo app's billing address configuration, selected in the card settings.
@@ -189,15 +215,26 @@ internal struct DemoAppSettings: Codable {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
     }
 
-    private var installmentConfiguration: InstallmentConfiguration? {
-        guard cardSettings.enableInstallments else {
-            return nil
+    internal static let installmentMonthValues: [Int] = [2, 3]
+    internal static let installmentPreselectedValue: Int = 2
+
+    internal var installmentConfiguration: InstallmentConfiguration? {
+        let mode = cardSettings.resolvedInstallmentOptionsMode
+        guard mode.isEnabled else { return nil }
+
+        let options = InstallmentOptions(
+            values: Self.installmentMonthValues,
+            plans: mode == .defaultWithRevolving ? [.regular, .revolving] : [.regular]
+        )
+        if mode == .cardBasedVisa {
+            return InstallmentConfiguration(
+                cardBasedOptions: [.visa: options],
+                showInstallmentAmount: cardSettings.showsInstallmentAmount
+            )
         }
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [2, 3, 4], includesRevolving: true)
-        let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
+
         return InstallmentConfiguration(
-            cardBasedOptions: [.visa: visaInstallmentOptions],
-            defaultOptions: defaultInstallmentOptions,
+            defaultOptions: options,
             showInstallmentAmount: cardSettings.showsInstallmentAmount
         )
     }

@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "(Example values for installments)" : {
-
-    },
     "(Requires API version 70 or higher)" : {
 
     },
@@ -94,7 +91,7 @@
     "Installment Amount" : {
 
     },
-    "Installments" : {
+    "Installment options" : {
 
     },
     "isEnabled" : {

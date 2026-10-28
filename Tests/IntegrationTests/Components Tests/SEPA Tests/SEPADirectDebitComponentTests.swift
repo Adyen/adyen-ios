@@ -68,7 +68,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: zeroAmount, localizationParameters: sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(.submitButtonSaveDetails, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.submitButtonLabelSaveDetails, sut.configuration.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {

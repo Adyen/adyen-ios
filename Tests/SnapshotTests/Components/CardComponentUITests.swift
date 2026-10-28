@@ -88,14 +88,14 @@ private extension CardConfiguration {
         configuration.koreanAuthenticationVisibility = .show
         configuration.socialSecurityNumberVisibility = .show
         configuration.installmentConfiguration = .init(
-            cardBasedOptions: [.bcmc: .init(
-                monthValues: [2, 3, 4],
-                includesRevolving: true
-            )],
             defaultOptions: .init(
-                monthValues: [2, 3, 4],
-                includesRevolving: true
+                values: [2, 3, 4],
+                plans: [.regular, .revolving]
             ),
+            cardBasedOptions: [.bcmc: .init(
+                values: [2, 3, 4],
+                plans: [.regular, .revolving]
+            )],
             showInstallmentAmount: true
         )
         return configuration

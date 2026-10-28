@@ -49,20 +49,14 @@ internal final class StoredPaymentMethodContentViewModel: ObservableObject {
 
     // MARK: - Content
 
-    internal var title: String {
-        displayInformation.title
-    }
-
-    internal var subtitle: String {
-        AmountAwarePaymentStringsPolicy.storedPaymentMethodSubtitle(
-            for: component.paymentMethod.name,
-            with: component.context.amount,
-            localizationParameters: localizationParameters
+    internal var header: PaymentMethodContentHeaderViewModel {
+        PaymentMethodContentHeaderViewModel(
+            paymentMethod: component.paymentMethod,
+            context: component.context,
+            localizationParameters: localizationParameters,
+            theme: theme,
+            logoURLProvider: logoURLProvider
         )
-    }
-
-    internal var paymentMethodLogoURL: URL {
-        logoURLProvider.logoURL(withName: displayInformation.logoName)
     }
 
     internal var componentViewController: UIViewController {
@@ -74,21 +68,6 @@ internal final class StoredPaymentMethodContentViewModel: ObservableObject {
     internal func cancel() {
         dropInFlowManager.cancel(component: component)
         router?.dismiss()
-    }
-
-    // MARK: - Private
-
-    private var displayInformation: DisplayInformation {
-        component.paymentMethod.displayInformation(using: localizationParameters)
-    }
-
-    private func observePaymentProgress() {
-        dropInFlowManager.paymentInProgressPublisher
-            .removeDuplicates()
-            .sink { [weak self] isPaymentInProgress in
-                self?.isPaymentInProgress = isPaymentInProgress
-            }
-            .store(in: &cancellables)
     }
 }
 

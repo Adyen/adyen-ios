@@ -1,20 +1,23 @@
 # ``Checkout``
 
-The entry point for setting up an Adyen Checkout flow.
+A checkout that creates payment components and handles payment actions.
 
 ## Overview
 
-Use ``Checkout`` to set up a checkout for the session flow, the advanced flow, or for action handling only. Each `setup` variant returns a flow object that exposes the APIs relevant to that integration.
+Use ``Checkout`` to set up and retain a checkout instance. Pass `CheckoutCallbacks` and a session response to create a `Checkout`, or `ActionOnlyCheckoutCallbacks` to create an `ActionOnlyCheckout`. The two types expose the operations for their integration and own their core directly.
 
 ## Topics
 
 ### Setting up a checkout
 
-- ``SessionCheckout``
-- ``AdvancedCheckout``
+- ``setup(with:configuration:callbacks:)``
+- ``setup(configuration:callbacks:)``
 - ``ActionOnlyCheckout``
-- ``BaseCheckout``
-- ``PaymentCheckout``
+
+### Callbacks
+
+- ``CheckoutCallbacks``
+- ``ActionOnlyCheckoutCallbacks``
 
 ### Configuration
 
