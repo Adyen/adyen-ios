@@ -74,7 +74,7 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        if isMovingFromParent || isBeingDismissed || navigationController?.isBeingDismissed == true {
+        if isLeavingScreen {
             onDismissFromNavigation?()
         }
     }

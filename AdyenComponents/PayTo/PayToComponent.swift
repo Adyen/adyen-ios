@@ -14,7 +14,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
+package final class PayToComponent: SecondaryScreenPresentingComponent, AdyenObserver, LoadingComponent {
 
     /// The context object for this component.
     package var context: AdyenContext
@@ -49,6 +49,11 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
         child: formViewController,
         style: configuration.style
     )
+
+    /// Set by whoever routes this component, like Drop-in's router. `nil` presents secondary screens modally.
+    package weak var secondaryScreenPresenter: ViewControllerPresenter?
+
+    package private(set) lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: viewController)
 
     // MARK: Component specific
 
@@ -241,17 +246,6 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
 extension PayToComponent: ViewControllerDelegate {}
 
 extension PayToComponent: TrackableComponent {}
-
-extension PayToComponent: ViewControllerPresenter {
-
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
-    }
-}
 
 // MARK: - Event Handling
 

@@ -17,7 +17,7 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
-package final class ACHDirectDebitComponent: PaymentComponent,
+package final class ACHDirectDebitComponent: SecondaryScreenPresentingComponent,
     LoadingComponent {
     
     private enum ViewIdentifier {
@@ -49,6 +49,11 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
+
+    /// Set by whoever routes this component, like Drop-in's router. `nil` presents secondary screens modally.
+    package weak var secondaryScreenPresenter: ViewControllerPresenter?
+
+    package private(set) lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: viewController)
 
     private var defaultCountryCode: String {
         configuration.billingAddressCountryCodes.first ?? "US"
@@ -308,16 +313,5 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-    }
-}
-
-extension ACHDirectDebitComponent: ViewControllerPresenter {
-    
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-    
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
     }
 }

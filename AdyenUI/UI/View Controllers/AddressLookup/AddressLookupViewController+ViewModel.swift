@@ -29,6 +29,10 @@ package extension AddressLookupViewController {
         
         internal let addressType: FormAddressPickerItem.AddressType
         
+        /// Shows the secondary screens opened from the form, like the country picker.
+        /// It is the presenter that showed the address lookup, so they appear the same way: pushed or modal.
+        internal private(set) weak var secondaryScreenPresenter: ViewControllerPresenter?
+        
         @AdyenObservable(nil)
         internal private(set) var prefillAddress: PostalAddress?
         
@@ -52,6 +56,7 @@ package extension AddressLookupViewController {
         ///   - initialCountry: The initially selected country.
         ///   - prefillAddress: The address to prefill the form with. If `nil` the search screen is shown on first appearance.
         ///   - lookupProvider: A closure providing addresses based on a search term
+        ///   - secondaryScreenPresenter: Shows the secondary screens opened from the form, like the country picker.
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
         package init(
@@ -63,6 +68,7 @@ package extension AddressLookupViewController {
             initialCountry: String,
             prefillAddress: PostalAddress? = nil,
             lookupProvider: AddressLookupProvider,
+            secondaryScreenPresenter: ViewControllerPresenter? = nil,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
             self.addressType = addressType
@@ -71,6 +77,7 @@ package extension AddressLookupViewController {
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes
             self.lookupProvider = lookupProvider
+            self.secondaryScreenPresenter = secondaryScreenPresenter
             self.completionHandler = completionHandler
             self.initialCountry = initialCountry
             self.prefillAddress = prefillAddress

@@ -30,6 +30,10 @@ extension AddressInputFormViewController {
         private let showSearchHandler: ShowSearchHandler?
         private let completionHandler: (PostalAddress?) -> Void
         
+        /// Shows the secondary screens opened from the form, like the country picker.
+        /// `nil` presents them modally from the form itself.
+        internal private(set) weak var secondaryScreenPresenter: ViewControllerPresenter?
+        
         /// Initializes a view model for ``AddressInputFormViewController``
         ///
         /// - Parameters:
@@ -40,6 +44,8 @@ extension AddressInputFormViewController {
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
         ///   - addressViewModelBuilder: A closure providing addresses based on a search term
         ///   - handleShowSearch: An optional closure that handles showing search - if provided, a search bar is shown
+        ///   - secondaryScreenPresenter: Shows the secondary screens opened from the form, like the country picker.
+        ///    It is the presenter that showed the form, so they appear the same way: pushed or modal.
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
         package init(
@@ -52,6 +58,7 @@ extension AddressInputFormViewController {
             supportedCountryCodes: [String]?,
             addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
             handleShowSearch: ShowSearchHandler? = nil,
+            secondaryScreenPresenter: ViewControllerPresenter? = nil,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
             self.addressType = addressType
@@ -62,6 +69,7 @@ extension AddressInputFormViewController {
             self.supportedCountryCodes = supportedCountryCodes
             self.addressViewModelBuilder = addressViewModelBuilder
             self.showSearchHandler = handleShowSearch
+            self.secondaryScreenPresenter = secondaryScreenPresenter
             self.localizationParameters = localizationParameters
             self.completionHandler = completionHandler
         }
@@ -76,10 +84,6 @@ extension AddressInputFormViewController {
         
         internal func handleSubmit(validAddress: PostalAddress) {
             completionHandler(validAddress)
-        }
-        
-        internal func handleDismiss() {
-            completionHandler(nil)
         }
     }
 }

@@ -13,6 +13,13 @@ package class AddressInputFormViewController: FormViewController {
 
     private let viewModel: ViewModel
     
+    /// Used when the view model has no secondary screen presenter, as when the form is used on its own.
+    private lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: self)
+    
+    private var secondaryScreenPresenter: ViewControllerPresenter {
+        viewModel.secondaryScreenPresenter ?? modalSecondaryScreenPresenter
+    }
+    
     package init(viewModel: ViewModel) {
         self.viewModel = viewModel
         
@@ -80,7 +87,7 @@ package class AddressInputFormViewController: FormViewController {
                 showsHeader: false
             ),
             identifier: identifier,
-            presenter: self,
+            presenter: secondaryScreenPresenter,
             addressViewModelBuilder: viewModel.addressViewModelBuilder
         )
         viewModel.prefillAddress.map { item.value = $0 }
@@ -97,22 +104,12 @@ extension AddressInputFormViewController {
         guard validate() else { return }
         viewModel.handleSubmit(validAddress: addressItem.value)
     }
-    
-    @objc
-    internal func dismissAddressLookup() {
-        viewModel.handleDismiss()
-    }
 }
 
 private extension AddressInputFormViewController {
     
     func setupNavigationItems() {
         
-        navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(dismissAddressLookup)
-        )
         navigationItem.rightBarButtonItem = .init(
             barButtonSystemItem: .done,
             target: self,

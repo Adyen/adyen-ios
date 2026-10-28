@@ -20,7 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PaymentComponent,
+package class CardComponent: SecondaryScreenPresentingComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -118,6 +118,11 @@ package class CardComponent: PaymentComponent,
         securedViewController
     }
 
+    /// Set by whoever routes this component, like Drop-in's router. `nil` presents secondary screens modally.
+    package weak var secondaryScreenPresenter: ViewControllerPresenter?
+
+    package private(set) lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: viewController)
+
     package func stopLoading() {
         cardViewController.stopLoading()
     }
@@ -150,6 +155,7 @@ package class CardComponent: PaymentComponent,
             scope: String(describing: self),
             localizationParameters: resolvedLocalizationParameters,
             theme: configuration.theme,
+            secondaryScreenPresenter: WeakReferenceViewControllerPresenter(self),
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
             }

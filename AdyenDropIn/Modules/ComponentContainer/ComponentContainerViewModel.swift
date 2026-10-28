@@ -17,7 +17,8 @@ import UIKit
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
-    func cancel()
+    /// - Parameter isLeavingScreen: `true` when the shopper left the payment form, `false` when it is only covered by another screen.
+    func viewDidDisappear(isLeavingScreen: Bool)
 }
 
 @MainActor
@@ -55,14 +56,20 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.viewController
     }
 
-    internal func cancel() {
+    internal func viewDidDisappear(isLeavingScreen: Bool) {
+        // Being covered by a pushed screen, like a secondary screen or an action, is not leaving the payment method.
+        guard isLeavingScreen else { return }
+        cancel()
+    }
+
+    // MARK: - Private
+
+    private func cancel() {
         dropInFlowManager.cancel(component: component)
         
         stopLoading()
         router?.dismiss(completion: nil)
     }
-
-    // MARK: - Private
 
     private func setupComponent() {
         component.delegate = self

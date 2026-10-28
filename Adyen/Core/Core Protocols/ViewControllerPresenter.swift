@@ -6,21 +6,14 @@
 
 import UIKit
 
+/// Shows and closes secondary screens, like pickers or the address lookup.
+///
+/// Form items call it without knowing how the screen appears: whoever routes the component decides,
+/// see ``SecondaryScreenPresentingComponent``.
 package protocol ViewControllerPresenter: AnyObject {
     
     func presentViewController(_ viewController: UIViewController, animated: Bool)
     func dismissViewController(animated: Bool)
-}
-
-extension UIViewController: ViewControllerPresenter {
-    
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.adyen.topPresenter.present(viewController, animated: animated)
-    }
-    
-    package func dismissViewController(animated: Bool) {
-        self.dismiss(animated: animated)
-    }
 }
 
 /// Wrapper class that holds onto a weak reference of ``ViewControllerPresenter``.

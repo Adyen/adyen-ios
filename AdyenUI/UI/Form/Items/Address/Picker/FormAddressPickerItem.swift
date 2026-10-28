@@ -165,6 +165,7 @@ extension FormAddressPickerItem {
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
+                presenter: presenter,
                 style: style,
                 completionHandler: { [weak presenter] address in
                     completion(address)
@@ -185,6 +186,7 @@ extension FormAddressPickerItem {
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
+        presenter: ViewControllerPresenter,
         style: FormComponentStyle,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> UIViewController {
@@ -202,12 +204,11 @@ extension FormAddressPickerItem {
                 supportedCountryCodes: supportedCountryCodes,
                 addressViewModelBuilder: addressViewModelBuilder,
                 handleShowSearch: nil,
+                secondaryScreenPresenter: presenter,
                 completionHandler: completionHandler
             )
 
-            return UINavigationController(
-                rootViewController: AddressInputFormViewController(viewModel: viewModel)
-            )
+            return AddressInputFormViewController(viewModel: viewModel)
         }
 
         let viewModel = AddressLookupViewController.ViewModel(
@@ -219,6 +220,7 @@ extension FormAddressPickerItem {
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
+            secondaryScreenPresenter: presenter,
             completionHandler: completionHandler
         )
 

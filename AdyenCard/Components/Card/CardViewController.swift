@@ -35,6 +35,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+    private let secondaryScreenPresenter: WeakReferenceViewControllerPresenter
 
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
@@ -71,7 +72,7 @@ internal class CardViewController: FormViewController {
             initialCountryCode: initialCountryCode,
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
-            presenter: self,
+            presenter: secondaryScreenPresenter,
             addressMode: configuration.billingAddressMode,
             scanCardHandler: scanCardHandler
         )
@@ -91,6 +92,8 @@ internal class CardViewController: FormViewController {
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     ///   - theme: The theme to use for styling.
+    ///   - secondaryScreenPresenter: Shows the secondary screens, like the installments picker or the address lookup.
+    ///    Given by the component, which decides how they appear.
     internal init(
         configuration: CardConfiguration,
         shopperInformation: PrefilledShopperInformation?,
@@ -102,6 +105,7 @@ internal class CardViewController: FormViewController {
         scope: String,
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
+        secondaryScreenPresenter: WeakReferenceViewControllerPresenter,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration
@@ -112,6 +116,7 @@ internal class CardViewController: FormViewController {
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
+        self.secondaryScreenPresenter = secondaryScreenPresenter
 
         self.cardLogos = supportedCardBrands.map {
             .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)

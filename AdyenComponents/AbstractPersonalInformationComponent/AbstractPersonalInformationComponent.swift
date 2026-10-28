@@ -16,7 +16,7 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-package class AbstractPersonalInformationComponent: PaymentComponent {
+package class AbstractPersonalInformationComponent: SecondaryScreenPresentingComponent {
 
     package typealias Configuration = PersonalInformationConfiguration
 
@@ -33,6 +33,11 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
         child: formViewController,
         style: configuration.style
     )
+
+    /// Set by whoever routes this component, like Drop-in's router. `nil` presents secondary screens modally.
+    package weak var secondaryScreenPresenter: ViewControllerPresenter?
+
+    package private(set) lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: viewController)
 
     package let type: PaymentComponentType = .regular
     package let requiresUserInteraction: Bool = true
@@ -269,17 +274,6 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
         shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
-    }
-}
-
-extension AbstractPersonalInformationComponent: ViewControllerPresenter {
-    
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-    
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
     }
 }
 

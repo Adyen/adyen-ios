@@ -58,6 +58,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
+            component: component,
             listener: listener
         )
         viewModel.router = router

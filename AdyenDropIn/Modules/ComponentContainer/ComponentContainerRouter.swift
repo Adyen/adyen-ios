@@ -37,10 +37,14 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
 
     internal init(
         viewController: ComponentContainerViewController,
+        component: PaymentComponent,
         listener: ComponentContainerRouterListener
     ) {
         self.viewController = viewController
         self.listener = listener
+        // This router owns the navigation below the payment form,
+        // so it also decides how the component's secondary screens appear.
+        (component as? SecondaryScreenPresentingComponent)?.secondaryScreenPresenter = self
     }
 
     // MARK: - Router
@@ -60,5 +64,24 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
         rootViewController.dismiss(animated: true) { [weak self] in
             self?.listener?.didDismissComponentContainer(completion: completion)
         }
+    }
+}
+
+// MARK: - ViewControllerPresenter
+
+/// Secondary screens are entries of Drop-in's navigation stack:
+/// they slide in with a back arrow, and the payment form below keeps its state.
+extension ComponentContainerRouter: ViewControllerPresenter {
+
+    internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        rootViewController.navigationController?.pushViewController(viewController, animated: animated)
+    }
+
+    /// Closes the newest secondary screen.
+    /// Does nothing once the shopper is back on the payment form, for example after tapping back.
+    internal func dismissViewController(animated: Bool) {
+        guard let navigationController = rootViewController.navigationController,
+              navigationController.topViewController !== rootViewController else { return }
+        navigationController.popViewController(animated: animated)
     }
 }
