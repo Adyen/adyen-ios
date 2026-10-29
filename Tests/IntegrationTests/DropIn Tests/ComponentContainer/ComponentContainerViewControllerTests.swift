@@ -183,6 +183,12 @@ struct ComponentContainerViewControllerTests {
         }
     }
 
+    private final class NonAnimatedNavigationController: UINavigationController {
+        override func popViewController(animated: Bool) -> UIViewController? {
+            super.popViewController(animated: false)
+        }
+    }
+
     // MARK: - Helper
 
     private func makeSUT(theme: CheckoutTheme = CheckoutTheme()) async -> (
@@ -202,7 +208,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     private func makeNavigationController(pushing sut: ComponentContainerViewController) -> UINavigationController {
-        let navigationController = UINavigationController(rootViewController: UIViewController())
+        let navigationController = NonAnimatedNavigationController(rootViewController: UIViewController())
         navigationController.loadViewIfNeeded()
         navigationController.pushViewController(sut, animated: false)
         sut.loadViewIfNeeded()
