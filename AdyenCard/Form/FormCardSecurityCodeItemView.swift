@@ -21,7 +21,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
 
             if let textField = self?.textField {
                 textField.apply(placeholderText: localizedPlaceholder, with: item.style.placeholderText)
-                textField.accessibilityLabel = self?.accessibilityLabel(placeholder: localizedPlaceholder)
+                self?.accessibilityInputFormat = localizedPlaceholder
             }
         }
 
@@ -179,10 +179,5 @@ extension FormCardSecurityCodeItemView {
             in: self.bundle,
             compatibleWith: nil
         ))
-    }
-
-    private func accessibilityLabel(placeholder: String) -> String {
-        let title = item.title ?? ""
-        return title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }

@@ -55,6 +55,51 @@ class FormItemViewBuilderTests: XCTestCase {
         
         XCTAssertNotNil(view as? FormToggleItemView)
     }
+
+    func testToggleExposesOnlyTheLabeledNativeSwitch() throws {
+        let item = FormToggleItem()
+        item.title = "Remember for next time"
+        item.identifier = "toggle"
+        let view = FormToggleItemView(item: item)
+        let label = try XCTUnwrap(view.findView(with: "toggle.titleLabel") as UILabel?)
+
+        XCTAssertFalse(view.isAccessibilityElement)
+        XCTAssertFalse(label.isAccessibilityElement)
+        XCTAssertTrue(view.switchControl.isAccessibilityElement)
+        XCTAssertEqual(view.switchControl.accessibilityLabel, item.title)
+
+        NotificationCenter.default.post(name: UIAccessibility.voiceOverStatusDidChangeNotification, object: nil)
+        XCTAssertFalse(view.isAccessibilityElement)
+        XCTAssertTrue(view.switchControl.isAccessibilityElement)
+
+        item.title = "Save card"
+        item.value = true
+        XCTAssertEqual(view.switchControl.accessibilityLabel, "Save card")
+        XCTAssertTrue(view.switchControl.isOn)
+
+        view.reset()
+        XCTAssertFalse(view.switchControl.isOn)
+    }
+
+    func testTextFieldHasInitialAccessibilityLabel() {
+        let item = FormTextInputItem()
+        item.title = "Card number"
+        let view = FormTextInputItemView(item: item)
+
+        XCTAssertEqual(view.textField.accessibilityLabel, item.title)
+    }
+
+    func testAddressHeaderIsAnAccessibleHeading() {
+        let item = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        let header = item.headerItem.build(with: FormItemViewBuilder())
+
+        XCTAssertTrue(header.accessibilityTraits.contains(.header))
+    }
     
     func testFormSplitItemView() {
         let item = FormSplitItem(items: FormTextInputItem(), FormTextInputItem(), style: FormTextItemStyle())

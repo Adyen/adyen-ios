@@ -16,6 +16,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         let label = UILabel(style: item.style.title)
         label.text = item.title
         label.numberOfLines = 0
+        label.isAccessibilityElement = false
         label.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
         }
@@ -35,6 +36,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         let switchControl = UISwitch()
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
+        switchControl.accessibilityLabel = item.title
         switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
@@ -55,21 +57,12 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         backgroundColor = item.style.backgroundColor
 
         isAccessibilityElement = false
-        accessibilityTraits = switchControl.accessibilityTraits
-        accessibilityValue = switchControl.accessibilityValue
         
         setupObservation()
         addSubviews()
     }
     
     // MARK: - Public
-
-    @discardableResult
-    override public func accessibilityActivate() -> Bool {
-        switchControl.isOn.toggle()
-        switchControlValueChanged()
-        return true
-    }
 
     override public func reset() {
         item.value = false
@@ -89,29 +82,15 @@ private extension FormToggleItemView {
     func setupObservation() {
         observe(item.$title) { [weak self] value in
             self?.label.text = value
-            self?.accessibilityLabel = value
+            self?.switchControl.accessibilityLabel = value
         }
         
         observe(item.publisher) { [weak self] value in
             self?.switchControl.isOn = value
         }
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(onVoiceOverStatusUpdate),
-            name: UIAccessibility.voiceOverStatusDidChangeNotification,
-            object: nil
-        )
     }
 
     @objc func switchControlValueChanged() {
-        accessibilityValue = switchControl.accessibilityValue
-        accessibilityTraits = switchControl.accessibilityTraits
         item.value = switchControl.isOn
-    }
-    
-    @objc private func onVoiceOverStatusUpdate() {
-        switchControl.isAccessibilityElement = !UIAccessibility.isVoiceOverRunning
-        self.isAccessibilityElement = UIAccessibility.isVoiceOverRunning
     }
 }
