@@ -76,7 +76,7 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         installmentConfiguration: InstallmentConfiguration,
         style: FormTextItemStyle,
         amount: Amount?,
-        presenter: ViewControllerPresenter?,
+        presenter: ViewControllerPresenter,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.installmentConfiguration = installmentConfiguration

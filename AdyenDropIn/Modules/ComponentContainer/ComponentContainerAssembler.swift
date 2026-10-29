@@ -61,6 +61,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             listener: listener
         )
         viewModel.router = router
+        // The router owns the navigation below the payment form, so it is responsible to show the component's secondary screens.
+        router.routeSecondaryScreens(of: component)
         return router
     }
 }

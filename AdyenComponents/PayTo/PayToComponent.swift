@@ -14,7 +14,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
+package final class PayToComponent: SecondaryScreenPresentingComponent, AdyenObserver, LoadingComponent {
 
     /// The context object for this component.
     package var context: AdyenContext
@@ -40,7 +40,7 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
             style: configuration.style,
             localizationParameters: configuration.localizationParameters,
             scope: String(describing: self),
-            presenter: .init(self)
+            presenter: presenter
         )
     }()
 
@@ -48,6 +48,10 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
+    )
+
+    package private(set) lazy var presenter = RoutablePresenter(
+        default: ModalSecondaryScreenPresenter { [weak self] in self?.viewController }
     )
 
     // MARK: Component specific
@@ -241,17 +245,6 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
 extension PayToComponent: ViewControllerDelegate {}
 
 extension PayToComponent: TrackableComponent {}
-
-extension PayToComponent: ViewControllerPresenter {
-
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
-    }
-}
 
 // MARK: - Event Handling
 

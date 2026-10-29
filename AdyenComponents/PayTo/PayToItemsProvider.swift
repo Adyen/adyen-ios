@@ -76,12 +76,12 @@ internal class PayToItemsProvider: PayToItemsProviding {
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters?,
         scope: String,
-        presenter: WeakReferenceViewControllerPresenter
+        presenter: ViewControllerPresenter
     ) {
         self.style = style
         self.localizationParameters = localizationParameters
         self.scope = scope
-        self.presenter = presenter
+        self.presenter = .init(presenter)
     }
     
     /// The payment flow selection title  label item.

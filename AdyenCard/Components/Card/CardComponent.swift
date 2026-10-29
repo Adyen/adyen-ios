@@ -20,7 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PaymentComponent,
+package class CardComponent: SecondaryScreenPresentingComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -118,6 +118,10 @@ package class CardComponent: PaymentComponent,
         securedViewController
     }
 
+    package private(set) lazy var presenter = RoutablePresenter(
+        default: ModalSecondaryScreenPresenter { [weak self] in self?.viewController }
+    )
+
     package func stopLoading() {
         cardViewController.stopLoading()
     }
@@ -150,6 +154,7 @@ package class CardComponent: PaymentComponent,
             scope: String(describing: self),
             localizationParameters: resolvedLocalizationParameters,
             theme: configuration.theme,
+            secondaryScreenPresenter: presenter,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
             }
@@ -231,46 +236,6 @@ private extension CardComponent {
             configuration.billingAddressMode.supportedCountryCodes?.first ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
-    }
-}
-
-private extension CardConfiguration {
-
-    func addressLookupViewModel(
-        with initialCountry: String,
-        prefillAddress: PostalAddress?,
-        lookupProvider: AddressLookupProvider,
-        completionHandler: @escaping (PostalAddress?) -> Void
-    ) -> AddressLookupViewController.ViewModel {
-
-        .init(
-            for: .billing,
-            localizationParameters: localizationParameters,
-            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
-            initialCountry: initialCountry,
-            prefillAddress: prefillAddress,
-            lookupProvider: lookupProvider,
-            completionHandler: completionHandler
-        )
-    }
-
-    func addressInputFormViewModel(
-        with initialCountry: String,
-        prefillAddress: PostalAddress?,
-        completionHandler: @escaping (PostalAddress?) -> Void
-    ) -> AddressInputFormViewController.ViewModel {
-
-        .init(
-            for: .billing,
-            style: style,
-            localizationParameters: localizationParameters,
-            initialCountry: initialCountry,
-            prefillAddress: prefillAddress,
-            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder(),
-            handleShowSearch: nil,
-            completionHandler: completionHandler
-        )
     }
 }
 

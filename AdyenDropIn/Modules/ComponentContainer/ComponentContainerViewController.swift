@@ -46,7 +46,7 @@ internal class ComponentContainerViewController: UIViewController {
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         componentViewController.resignFirstResponder()
-        viewModel.cancel()
+        viewModel.viewDidDisappear(isLeavingScreen: isLeavingScreen)
     }
     
     // MARK: - Internal
