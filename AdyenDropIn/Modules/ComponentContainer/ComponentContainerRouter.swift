@@ -60,3 +60,7 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
         }
     }
 }
+
+// MARK: - DropInSecondaryScreenRouting
+
+extension ComponentContainerRouter: DropInSecondaryScreenRouting {}

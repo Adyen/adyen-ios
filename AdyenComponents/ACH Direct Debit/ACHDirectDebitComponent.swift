@@ -13,7 +13,7 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
-package final class ACHDirectDebitComponent: PaymentComponent,
+package final class ACHDirectDebitComponent: SecondaryScreenPresentingComponent,
     LoadingComponent {
     
     private enum ViewIdentifier {
@@ -44,6 +44,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
+    )
+
+    package private(set) lazy var presenter = RoutablePresenter(
+        default: ModalSecondaryScreenPresenter { [weak self] in self?.viewController }
     )
 
     private var defaultCountryCode: String {
@@ -231,7 +235,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters,
             identifier: identifier,
-            presenter: self
+            presenter: presenter
         )
     }()
     
@@ -297,16 +301,5 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-    }
-}
-
-extension ACHDirectDebitComponent: ViewControllerPresenter {
-    
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-    
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
     }
 }
