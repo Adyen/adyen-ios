@@ -42,7 +42,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
-        button.accessibilityLabel = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
+        button.accessibilityLabel = localizedString(.cancelButton, nil)
         return button
     }()
 

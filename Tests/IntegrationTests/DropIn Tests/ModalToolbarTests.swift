@@ -152,8 +152,7 @@ class ModalToolbarTests: XCTestCase {
             var style = NavigationStyle()
             style.cancelButton = buttonStyle
             let toolbar = ModalToolbar(title: "Credit Card", style: style)
-            let label = toolbar.cancelButton.accessibilityLabel ?? toolbar.cancelButton.title(for: .normal)
-            XCTAssertFalse(label?.isEmpty ?? true)
+            XCTAssertEqual(toolbar.cancelButton.accessibilityLabel, localizedString(.cancelButton, nil))
 
             var cancelled = false
             toolbar.onCancelHandler = { cancelled = true }
