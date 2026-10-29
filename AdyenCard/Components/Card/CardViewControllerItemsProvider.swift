@@ -78,11 +78,7 @@ extension CardViewController {
                 if addressCallbacks == nil {
                     AdyenAssertion.assertionFailure(message: "Address lookup requires AddressCallbacks in the checkout callbacks.")
                 }
-                let provider = AsyncAddressLookupProvider(
-                    onLookup: addressCallbacks?.onAddressLookup ?? { _ in [] },
-                    onAddressSelected: addressCallbacks?.onAddressSelected
-                )
-                return billingAddressPickerItem(with: provider)
+                return billingAddressPickerItem(with: AsyncAddressLookupProvider(callbacks: addressCallbacks))
             case .full:
                 return billingAddressPickerItem(with: nil)
             case .postalCode, .none:
