@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
 "adyen.card.scanYourCardButton" = "Skenējiet savu karti";
 "adyen.creditCard.dualBrand.title" = "Kartes zīmols";
-"adyen.creditCard.dualBrand.description" = "Jūs varat izvēlēties kartes zīmolu, ar kuru vēlaties norēķināties. Tas nav obligāti.";
+"adyen_checkout_card_dual_brand_selector_description" = "Jūs varat izvēlēties kartes zīmolu, ar kuru vēlaties norēķināties. Tas nav obligāti.";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";

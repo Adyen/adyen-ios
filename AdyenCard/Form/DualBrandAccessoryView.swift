@@ -6,8 +6,7 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.AnyFormItemView
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 
@@ -43,8 +42,6 @@ internal final class DualBrandAccessoryView: UIView {
     private var secondaryLogoUrl: URL?
     private let imageLoader: ImageLoading
     private var imageLoadingTasks = [AdyenCancellable]()
-
-    internal let childItemViews: [any AnyFormItemView] = []
 
     internal private(set) var currentSelection: BrandSelection = .primary
 
@@ -290,11 +287,11 @@ internal final class DualBrandAccessoryView: UIView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
-        // The segmented background is intentionally not pinned to the top so it can overflow the parent's bounds.
+        // The picker is taller than the logo slot, so it is centered on it and overflows equally above and below.
         dualBrandConstraints = [
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.containerPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.containerPadding),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.containerPadding),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             segmentedBackground.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Layout.containerPadding),
             segmentedBackground.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Layout.containerPadding),

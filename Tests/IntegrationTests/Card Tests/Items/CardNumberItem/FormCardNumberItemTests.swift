@@ -345,6 +345,31 @@ class FormCardNumberItemTests: XCTestCase {
 
     // MARK: - Brand selection sync
 
+    func test_update_withSameDualBrandsAfterUserSelection_shouldKeepSelectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let brands = [DetectedCardBrand(brand: .carteBancaire), DetectedCardBrand(brand: .visa)]
+        sut.brandDisplayMode = .dualSelectable
+
+        sut.update(brands: brands)
+        sut.selectBrand(from: .secondary)
+        sut.update(brands: brands)
+
+        XCTAssertEqual(sut.currentBrand?.brand, .visa)
+        XCTAssertEqual(sut.brandSelection, .secondary)
+    }
+
+    func test_update_withDifferentDualBrandsAfterUserSelection_shouldSelectFirstBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        sut.brandDisplayMode = .dualSelectable
+
+        sut.update(brands: [DetectedCardBrand(brand: .carteBancaire), DetectedCardBrand(brand: .visa)])
+        sut.selectBrand(from: .secondary)
+        sut.update(brands: [DetectedCardBrand(brand: .bcmc), DetectedCardBrand(brand: .masterCard)])
+
+        XCTAssertEqual(sut.currentBrand?.brand, .bcmc)
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
     func test_brandSelection_shouldDefaultToPrimary() {
         let sut = FormCardNumberItem(cardBrandLogos: [])
 

@@ -156,4 +156,19 @@ final class FormCardNumberContainerItemTests: XCTestCase {
         XCTAssertEqual(label.frame.minX, containerView.bounds.minX + 8)
         XCTAssertEqual(label.frame.maxX, containerView.bounds.maxX - 8)
     }
+
+    func test_brandDescriptionItem_whenBuilt_shouldMatchTextFieldHintFontAndColor() throws {
+        let theme = CheckoutTheme.default
+        let sut = makeContainerItem()
+        sut.brandDescriptionItem.isHidden.wrappedValue = false
+
+        let stackItemView = sut.build(with: FormItemViewBuilder(theme: theme))
+        let containerView: UIView = try XCTUnwrap(
+            stackItemView.findView(with: "AdyenCard.FormCardNumberContainerItem.brandDescriptionItem")
+        )
+        let label = try XCTUnwrap(containerView.subviews.first as? UILabel)
+
+        XCTAssertEqual(label.font, theme.elements.labels.subheadline.font)
+        XCTAssertEqual(label.textColor, theme.colors.textSecondary)
+    }
 }

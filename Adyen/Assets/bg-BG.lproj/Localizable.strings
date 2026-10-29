@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Въведената марка на картата не се поддържа";
 "adyen.card.scanYourCardButton" = "Сканирайте Вашата карта";
 "adyen.creditCard.dualBrand.title" = "Марка на картата";
-"adyen.creditCard.dualBrand.description" = "Можете да изберете марката на картата, с която предпочитате да плащате. Това не е задължително.";
+"adyen_checkout_card_dual_brand_selector_description" = "Можете да изберете марката на картата, с която предпочитате да плащате. Това не е задължително.";
 "adyen.dropIn.stored.title" = "Потвърди %@ плащането";
 "adyen.dropIn.preselected.openAll.title" = "Промяна на начина на плащане";
 "adyen.continueTo" = "Продължете към %@";

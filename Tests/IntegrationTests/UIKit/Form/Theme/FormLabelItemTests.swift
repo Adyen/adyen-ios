@@ -74,16 +74,24 @@ final class FormLabelItemTests: XCTestCase {
         XCTAssertTrue(view.isHidden)
     }
 
-    func test_formLabelItem_withFootnoteThemeLabelStyle_shouldApplyFootnoteThemeAttributes() {
+    func test_formLabelItem_withFootnoteLabelStyle_shouldApplyFootnoteThemeAttributes() {
         let customTheme = CheckoutTheme()
             .footnoteLabel(
                 font: UIFont.systemFont(ofSize: 13, weight: .bold),
                 color: .purple
             )
-        let sut = makeSUT(theme: customTheme, themeLabelStyle: \.footnote)
+        let sut = makeSUT(theme: customTheme) { $0.elements.labels.footnote }
 
         XCTAssertEqual(sut.font, UIFont.systemFont(ofSize: 13, weight: .bold))
         XCTAssertEqual(sut.textColor, .purple)
+    }
+
+    func test_formLabelItem_withColorOverride_shouldOverrideLabelStyleColor() {
+        let customTheme = CheckoutTheme(colors: CheckoutColors(textSecondary: .orange))
+        let sut = makeSUT(theme: customTheme) { $0.elements.labels.subheadline.color($0.colors.textSecondary) }
+
+        XCTAssertEqual(sut.font, customTheme.elements.labels.subheadline.font)
+        XCTAssertEqual(sut.textColor, .orange)
     }
 
     // MARK: - SUT Factory
@@ -92,9 +100,13 @@ final class FormLabelItemTests: XCTestCase {
         text: String = "Test Label",
         theme: CheckoutTheme = .default,
         identifier: String? = "testLabel",
-        themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
+        labelStyle: @escaping (CheckoutTheme) -> AdyenLabelStyle = { $0.elements.labels.body }
     ) -> UILabel {
-        let item = FormLabelItem(text: text, identifier: identifier, themeLabelStyle: themeLabelStyle)
+        let item = FormLabelItem(
+            text: text,
+            identifier: identifier,
+            labelStyle: labelStyle
+        )
         let builder = FormItemViewBuilder(theme: theme)
         let view = item.build(with: builder)
         guard let label = view as? UILabel else {

@@ -18,35 +18,20 @@ package class FormLabelItem: FormItem {
     package init(text: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
-        self.themeLabelStyle = \.body
         self.text = text
-        self.labelStyle = AdyenLabelStyle()
+        self.labelStyle = { $0.elements.labels.body }
     }
 
     package init(
         text: String,
         identifier: String? = nil,
-        labelStyle: AdyenLabelStyle
+        labelStyle: @escaping (CheckoutTheme) -> AdyenLabelStyle = { $0.elements.labels.body }
     ) {
         self.identifier = identifier
         self.text = text
         self.labelStyle = labelStyle
-        self.themeLabelStyle = \.body
         // TODO: TO remove later
         self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
-    }
-
-    package init(
-        text: String,
-        identifier: String? = nil,
-        themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle> = \.body
-    ) {
-        self.identifier = identifier
-        self.text = text
-        self.themeLabelStyle = themeLabelStyle
-        // TODO: TO remove later
-        self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
-        self.labelStyle = AdyenLabelStyle()
     }
 
     package var identifier: String?
@@ -57,11 +42,8 @@ package class FormLabelItem: FormItem {
     /// The text of the label.
     package var text: String
 
-    /// The labelStyle from the adyen theme
-    internal var labelStyle: AdyenLabelStyle = .init()
-
-    /// The theme label style applied to the label.
-    package let themeLabelStyle: KeyPath<AdyenLabelStyles, AdyenLabelStyle>
+    /// Picks the label style from the form's theme when the view is built.
+    package let labelStyle: (CheckoutTheme) -> AdyenLabelStyle
 
     package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormLabelItemView(item: self, theme: builder.theme)
@@ -89,7 +71,7 @@ internal final class FormLabelItemView: AdyenLabel, AnyFormItemView {
         accessibilityIdentifier = item.identifier
         isHidden = item.isHidden.wrappedValue
 
-        apply(theme.elements.labels[keyPath: item.themeLabelStyle])
+        apply(item.labelStyle(theme))
     }
 
     // MARK: - AnyFormItemView

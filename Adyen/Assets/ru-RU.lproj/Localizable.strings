@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Карты введенной платежной системы не поддерживаются";
 "adyen.card.scanYourCardButton" = "Отсканируйте свою карту";
 "adyen.creditCard.dualBrand.title" = "Платежная система карты";
-"adyen.creditCard.dualBrand.description" = "Можно выбрать платежную систему карты по умолчанию. Это необязательно.";
+"adyen_checkout_card_dual_brand_selector_description" = "Можно выбрать платежную систему карты по умолчанию. Это необязательно.";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";

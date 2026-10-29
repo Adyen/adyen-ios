@@ -43,7 +43,7 @@
 "adyen.card.numberItem.unknownBrand" = "The entered card brand isn't supported";
 "adyen.card.scanYourCardButton" = "Scan your card";
 "adyen.creditCard.dualBrand.title" = "Card Brand";
-"adyen.creditCard.dualBrand.description" = "You can select the card brand you prefer to pay with. This is optional.";
+"adyen_checkout_card_dual_brand_selector_description" = "You can select the card brand you prefer to pay with. This is optional.";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
 "adyen_checkout_dropin_payment_method_list_description_complete_payment" = "Select your preferred payment option and complete the payment";

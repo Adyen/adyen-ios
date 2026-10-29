@@ -90,8 +90,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
         identifier: ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
-        ),
-        labelStyle: configuration.theme.elements.labels.body
+        )
     )
 
     /// The BLIK code item.

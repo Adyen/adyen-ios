@@ -100,8 +100,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         item.isActive = false
     }
     
+    // overridden to detect the touches on the clipped part of the dual brand view
     override internal func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        // overridden to detect the touches on the clipped part of the dual brand view
         let convertedPoint = convert(point, to: detectedBrandsView)
         if let hitView = detectedBrandsView.overflowHitTest(point: convertedPoint, with: event) {
             return hitView

@@ -55,7 +55,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal lazy var brandDescriptionItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
             text: localizedString(.creditCardDualBrandDescription, localizationParameters),
-            themeLabelStyle: \.footnote
+            labelStyle: { $0.elements.labels.subheadline.color($0.colors.textSecondary) }
         )
         let containerItem = item.padding(Constants.brandDescriptionInsets)
         containerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")

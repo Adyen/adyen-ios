@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Die eingegebene Kartenmarke wird nicht unterstützt";
 "adyen.card.scanYourCardButton" = "Scannen Sie Ihre Karte";
 "adyen.creditCard.dualBrand.title" = "Kartenmarke";
-"adyen.creditCard.dualBrand.description" = "Sie können die Kartenmarke auswählen, mit der Sie bezahlen möchten. Dies ist optional.";
+"adyen_checkout_card_dual_brand_selector_description" = "Sie können die Kartenmarke auswählen, mit der Sie bezahlen möchten. Dies ist optional.";
 "adyen.dropIn.stored.title" = "Bestätige %@ Zahlung";
 "adyen.dropIn.preselected.openAll.title" = "Zahlungsmethode wechseln";
 "adyen.continueTo" = "Weiter zu %@";

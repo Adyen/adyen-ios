@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Het ingevoerde kaartmerk wordt niet ondersteund";
 "adyen.card.scanYourCardButton" = "Scan uw kaart";
 "adyen.creditCard.dualBrand.title" = "Merk van kaart";
-"adyen.creditCard.dualBrand.description" = "U kunt het merk van de kaart selecteren waarmee u het liefst wilt betalen. Dit is optioneel.";
+"adyen_checkout_card_dual_brand_selector_description" = "U kunt het merk van de kaart selecteren waarmee u het liefst wilt betalen. Dit is optioneel.";
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";

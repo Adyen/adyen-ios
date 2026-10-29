@@ -172,13 +172,15 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Updates the item with the detected brands.
     /// Sets the first supported one as `selectedBrand`.
     internal func update(brands: [DetectedCardBrand]) {
+        // Keep the shopper's choice when the picker shows the same brands again.
+        let keepsSelection = brandDisplayMode == .dualSelectable && brands == detectedBrands
         detectedBrands = brands
         
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
             updateSelectedBrand(brands.first)
         case let (2, .some(firstSupportedBrand)):
-            updateSelectedBrand(firstSupportedBrand)
+            updateSelectedBrand(keepsSelection ? (selectedBrand ?? firstSupportedBrand) : firstSupportedBrand)
         case (2, nil):
             // if there are 2 brands and neither is supported,
             // need to show unsupported text
