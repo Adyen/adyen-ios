@@ -301,10 +301,11 @@ final class CheckoutCoreFinishTests: XCTestCase {
 
     func test_dropInSubmitCompletion_shouldEndTheDropInPaymentAttempt() async {
         let dropIn = DropInComponentMock()
-        callbackStore.onSubmit = { _ in .completion(resultCode: CheckoutResultCode.authorised.rawValue) }
+        onSubmit = { _ in .completion(resultCode: CheckoutResultCode.authorised.rawValue) }
         let completed = expectation(description: "onComplete called")
-        callbackStore.onComplete = { _ in completed.fulfill() }
+        onComplete = { _ in completed.fulfill() }
 
+        let sut = makeCheckout()
         sut.didSubmit(makePaymentData(), from: PaymentComponentMock(paymentMethod: paymentMethod), in: dropIn)
 
         await fulfillment(of: [completed], timeout: 1)
@@ -316,14 +317,15 @@ final class CheckoutCoreFinishTests: XCTestCase {
         let component = PaymentComponentMock(paymentMethod: paymentMethod)
         let (submitGate, openSubmitGate) = AsyncStream<Void>.makeStream()
         let submitStarted = expectation(description: "onSubmit started")
-        callbackStore.onSubmit = { _ in
+        onSubmit = { _ in
             submitStarted.fulfill()
             for await _ in submitGate {}
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         let failed = expectation(description: "onFailure called")
-        callbackStore.onFailure = { _ in failed.fulfill() }
+        onFailure = { _ in failed.fulfill() }
 
+        let sut = makeCheckout()
         sut.didSubmit(makePaymentData(), from: component, in: dropIn)
         await fulfillment(of: [submitStarted], timeout: 1)
         sut.didFail(with: TestError(), from: component, in: dropIn)
@@ -339,8 +341,9 @@ final class CheckoutCoreFinishTests: XCTestCase {
         component.releaseFinalize()
         let finalized = expectation(description: "finalize called")
         component.onFinalize = { finalized.fulfill() }
-        callbackStore.onSubmit = { _ in .retry() }
+        onSubmit = { _ in .retry() }
 
+        let sut = makeCheckout()
         sut.didSubmit(makePaymentData(), from: component, in: dropIn)
 
         await fulfillment(of: [finalized], timeout: 1)
@@ -351,8 +354,9 @@ final class CheckoutCoreFinishTests: XCTestCase {
         let dropIn = DropInComponentMock()
         let actionHandled = expectation(description: "action handled")
         dropIn.onHandle = { _ in actionHandled.fulfill() }
-        callbackStore.onSubmit = { _ in .action(.await(AwaitAction(paymentData: "payment-data", paymentMethodType: .blik))) }
+        onSubmit = { _ in .action(.await(AwaitAction(paymentData: "payment-data", paymentMethodType: .blik))) }
 
+        let sut = makeCheckout()
         sut.didSubmit(makePaymentData(), from: PaymentComponentMock(paymentMethod: paymentMethod), in: dropIn)
 
         await fulfillment(of: [actionHandled], timeout: 1)
