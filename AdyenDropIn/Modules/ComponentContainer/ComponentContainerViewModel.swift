@@ -17,7 +17,7 @@ import UIKit
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
-    func cancel()
+    func viewDidDisappear(isLeavingScreen: Bool)
 }
 
 @MainActor
@@ -55,14 +55,19 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.viewController
     }
 
-    internal func cancel() {
+    internal func viewDidDisappear(isLeavingScreen: Bool) {
+        guard isLeavingScreen else { return }
+        cancel()
+    }
+
+    // MARK: - Private
+
+    private func cancel() {
         dropInFlowManager.cancel(component: component)
         
         stopLoading()
         router?.dismiss(completion: nil)
     }
-
-    // MARK: - Private
 
     private func setupComponent() {
         component.delegate = self

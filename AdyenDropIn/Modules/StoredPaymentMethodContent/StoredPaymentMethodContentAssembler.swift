@@ -64,6 +64,8 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
             listener: listener
         )
         viewModel.router = router
+        // The router owns the navigation below the stored payment form, so it shows the component's secondary screens.
+        router.routeSecondaryScreens(of: component)
         return router
     }
 
