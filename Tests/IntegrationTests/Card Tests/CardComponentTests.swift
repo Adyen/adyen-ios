@@ -723,7 +723,8 @@ class CardComponentTests: XCTestCase {
         fillCard(on: view, with: Dummy.visaCard)
 
         let storeDetailsItemView: FormToggleItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
-        storeDetailsItemView.accessibilityActivate()
+        storeDetailsItemView.switchControl.isOn = true
+        storeDetailsItemView.switchControl.sendActions(for: .valueChanged)
 
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "AdyenCard.CardComponent.billingAddress"))
         billingAddressView.item.value = expectedVerificationAddress

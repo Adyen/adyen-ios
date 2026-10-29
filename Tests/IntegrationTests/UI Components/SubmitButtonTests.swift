@@ -51,11 +51,39 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
     }
 
+    func testAccessibilityActivationHonorsEnabledAndLoadingStates() throws {
+        let (sut, _) = try makeSUT()
+        let target = SubmitButtonActionTarget()
+        sut.addTarget(target, action: #selector(SubmitButtonActionTarget.submit), for: .touchUpInside)
+
+        XCTAssertTrue(sut.accessibilityActivate())
+        XCTAssertEqual(target.count, 1)
+
+        sut.showsActivityIndicator = true
+        XCTAssertFalse(sut.accessibilityActivate())
+        XCTAssertEqual(target.count, 1)
+
+        sut.showsActivityIndicator = false
+        XCTAssertTrue(sut.accessibilityActivate())
+        XCTAssertEqual(target.count, 2)
+
+        sut.isUserInteractionEnabled = false
+        XCTAssertFalse(sut.accessibilityActivate())
+    }
+
     func makeSUT(_ title: String = "Submit") throws -> (SubmitButton, UIActivityIndicatorView) {
         let sut = SubmitButton(style: style)
         sut.title = title
         let activityIndicatorView: UIActivityIndicatorView = try XCTUnwrap(sut.findView(by: "activityIndicator"))
 
         return (sut, activityIndicatorView)
+    }
+}
+
+private final class SubmitButtonActionTarget: NSObject {
+    var count = 0
+
+    @objc func submit() {
+        count += 1
     }
 }

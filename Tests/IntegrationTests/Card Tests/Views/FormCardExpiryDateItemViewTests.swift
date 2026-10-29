@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenCard
+@testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
 class FormCardExpiryDateItemViewTests: XCTestCase {
@@ -59,15 +59,27 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
         XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
+
+    func testAccessibilityFormatSurvivesValidationAndReset() {
+        let item = FormCardExpiryDateItem()
+        let sut = makeSUT(item: item)
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
+        item.value = "13"
+        sut.showValidation()
+
+        let expected = [item.title, format, item.validationFailureMessage].compactMap { $0 }.joined(separator: ", ")
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, expected)
+
+        item.title = "Expiration"
+        XCTAssertTrue(sut.accessibilityLabelView?.accessibilityLabel?.contains(format) == true)
+
+        sut.reset()
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiration, \(format)")
+    }
 }
 
 extension FormCardExpiryDateItemViewTests {
     private func makeSUT(item: FormCardExpiryDateItem) -> FormTextInputItemView {
-        let view = FormTextInputItemView(item: item)
-        view.observe(item.$title) { _ in
-            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
-        }
-        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
-        return view
+        FormItemViewBuilder().build(with: item)
     }
 }

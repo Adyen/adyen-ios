@@ -141,4 +141,25 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertEqual(sut.cancelButton.image(for: .normal), customImage)
     }
 
+    func testTitleIsAccessibleHeading() {
+        sut = ModalToolbar(title: "Credit Card", style: NavigationStyle())
+
+        XCTAssertTrue(sut.titleLabel.accessibilityTraits.contains(.header))
+    }
+
+    func testAllCloseButtonStylesAreLabeled() {
+        for buttonStyle in [CancelButtonStyle.system, .legacy, .custom(UIImage())] {
+            var style = NavigationStyle()
+            style.cancelButton = buttonStyle
+            let toolbar = ModalToolbar(title: "Credit Card", style: style)
+            let label = toolbar.cancelButton.accessibilityLabel ?? toolbar.cancelButton.title(for: .normal)
+            XCTAssertFalse(label?.isEmpty ?? true)
+
+            var cancelled = false
+            toolbar.onCancelHandler = { cancelled = true }
+            toolbar.cancelButton.sendActions(for: .touchUpInside)
+            XCTAssertTrue(cancelled)
+        }
+    }
+
 }

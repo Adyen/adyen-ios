@@ -13,6 +13,12 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     AnyFormValidatableValueItemView {
     
     private var itemObserver: Observation?
+    private var isShowingValidationError = false
+
+    /// Describes the expected input format without losing it when validation changes.
+    public var accessibilityInputFormat: String? {
+        didSet { updateAccessibilityLabel() }
+    }
         
     public required init(item: ItemType) {
         super.init(item: item)
@@ -47,6 +53,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         observe(item.$validationFailureMessage) { [weak self] in
             self?.alertLabel.text = $0
+            self?.updateAccessibilityLabel()
+        }
+
+        observe(item.$title) { [weak self] _ in
+            self?.updateAccessibilityLabel()
         }
     }
     
@@ -76,7 +87,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
             hideAlertLabel(true)
             isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
-            accessibilityLabelView?.accessibilityLabel = item.title
+            updateAccessibilityLabel()
             return
         }
         
@@ -84,19 +95,24 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
             hideAlertLabel(true)
             highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
-            accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
-            accessibilityLabelView?.accessibilityLabel = [
-                item.title,
-                item.validationFailureMessage
-            ].compactMap { $0 }.joined(separator: ", ")
         }
+        updateAccessibilityLabel()
+    }
+
+    private func updateAccessibilityLabel() {
+        accessibilityLabelView?.accessibilityLabel = [
+            item.title,
+            accessibilityInputFormat,
+            isShowingValidationError ? item.validationFailureMessage : nil
+        ].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ", ")
     }
     
     private func hideAlertLabel(_ shouldHide: Bool, animated: Bool = true) {
+        isShowingValidationError = !shouldHide && item.validationFailureMessage != nil
         guard shouldHide || alertLabel.text != nil else { return }
         if !shouldHide {
             triggerValidationErrorIfNeeded()
@@ -115,7 +131,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()
         titleLabel.textColor = defaultTitleColor
-        accessibilityLabelView?.accessibilityLabel = item.title
+        updateAccessibilityLabel()
     }
 }
 
