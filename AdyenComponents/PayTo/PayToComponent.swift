@@ -50,10 +50,9 @@ package final class PayToComponent: SecondaryScreenPresentingComponent, AdyenObs
         style: configuration.style
     )
 
-    /// Set by whoever routes this component, like Drop-in's router. `nil` presents secondary screens modally.
-    package weak var secondaryScreenPresenter: ViewControllerPresenter?
-
-    package private(set) lazy var modalSecondaryScreenPresenter = ModalSecondaryScreenPresenter(source: viewController)
+    /// Shows the screens this component opens, like pickers or the address lookup.
+    /// Modal by default, replaced by whoever routes this component, like Drop-in's router.
+    package lazy var presenter: ViewControllerPresenter = ModalSecondaryScreenPresenter(source: viewController)
 
     // MARK: Component specific
 

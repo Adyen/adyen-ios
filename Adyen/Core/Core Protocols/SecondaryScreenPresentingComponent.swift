@@ -8,30 +8,24 @@ import UIKit
 
 /// A component whose form opens secondary screens, like the installments, country and phone prefix pickers or the address lookup.
 ///
-/// Whoever routes the component decides how those screens appear:
-/// - Drop-in's router sets itself as ``secondaryScreenPresenter`` and pushes them onto Drop-in's navigation stack.
-/// - Left `nil`, as for a standalone component, they are presented modally by ``modalSecondaryScreenPresenter``.
+/// Whoever routes the component decides how those screens appear, by setting ``presenter``:
+/// - A standalone component routes itself and presents them modally, as it does not know where the merchant shows it.
+/// - Drop-in's router replaces it to push them onto Drop-in's navigation stack.
 @MainActor
 package protocol SecondaryScreenPresentingComponent: PaymentComponent, ViewControllerPresenter {
 
-    /// The presenter set by whoever routes the component. `nil` presents secondary screens modally.
-    var secondaryScreenPresenter: ViewControllerPresenter? { get set }
-
-    /// The presenter used when ``secondaryScreenPresenter`` is `nil`.
-    var modalSecondaryScreenPresenter: ModalSecondaryScreenPresenter { get }
+    /// Shows the screens this component opens, like pickers or the address lookup.
+    /// Modal by default, replaced by whoever routes the component.
+    var presenter: ViewControllerPresenter { get set }
 }
 
 extension SecondaryScreenPresentingComponent {
 
     package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        routingPresenter.presentViewController(viewController, animated: animated)
+        presenter.presentViewController(viewController, animated: animated)
     }
 
     package func dismissViewController(animated: Bool) {
-        routingPresenter.dismissViewController(animated: animated)
-    }
-
-    private var routingPresenter: ViewControllerPresenter {
-        secondaryScreenPresenter ?? modalSecondaryScreenPresenter
+        presenter.dismissViewController(animated: animated)
     }
 }
