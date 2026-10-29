@@ -37,15 +37,10 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
 
     internal init(
         viewController: ComponentContainerViewController,
-        component: PaymentComponent,
         listener: ComponentContainerRouterListener
     ) {
         self.viewController = viewController
         self.listener = listener
-        // This router owns the navigation below the payment form,
-        // so it also decides how the component's secondary screens appear.
-        // The router is held weakly, as it already owns the component through the view controller.
-        (component as? SecondaryScreenPresentingComponent)?.presenter = WeakReferenceViewControllerPresenter(self)
     }
 
     // MARK: - Router

@@ -58,10 +58,11 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
-            component: component,
             listener: listener
         )
         viewModel.router = router
+        // The router owns the navigation below the payment form, so it is responsible to show the component's secondary screens.
+        (component as? SecondaryScreenPresentingComponent)?.presenter = WeakReferenceViewControllerPresenter(router)
         return router
     }
 }
