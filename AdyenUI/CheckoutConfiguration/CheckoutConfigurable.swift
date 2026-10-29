@@ -25,8 +25,6 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
 
-    //  var style: FormComponentStyle { get }
-
     var theme: CheckoutTheme { get set }
     
     /// Throws when the additional callbacks lack a callback this configuration requires.

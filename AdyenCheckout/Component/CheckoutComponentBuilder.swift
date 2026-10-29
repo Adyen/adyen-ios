@@ -134,6 +134,7 @@ package enum CheckoutComponentBuilder {
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
+        sessionConfiguration: SessionComponentConfiguration? = nil,
         context: AdyenContext
     ) throws -> PaymentComponent {
         switch storedPaymentMethod {
@@ -144,6 +145,7 @@ package enum CheckoutComponentBuilder {
                     storedPaymentMethod: storedCard,
                     configuration: configuration,
                     policy: policy,
+                    sessionConfiguration: sessionConfiguration,
                     context: context
                 )
         #endif
@@ -173,6 +175,7 @@ package enum CheckoutComponentBuilder {
                 for: storedPaymentMethod,
                 configuration: configuration,
                 policy: policy,
+                sessionConfiguration: sessionConfiguration,
                 context: context
             )
         }
@@ -337,6 +340,7 @@ extension CheckoutComponentBuilder {
         storedPaymentMethod: StoredCardPaymentMethod,
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
+        sessionConfiguration: SessionComponentConfiguration?,
         context: AdyenContext
     ) throws -> PaymentComponent {
         let factory = StoredCardComponentFactory()
@@ -345,7 +349,7 @@ extension CheckoutComponentBuilder {
             for: storedPaymentMethod,
             defaultValue: factory.defaultConfiguration(),
             configuration: configuration,
-            sessionConfiguration: nil,
+            sessionConfiguration: sessionConfiguration,
             policy: policy
         )
 

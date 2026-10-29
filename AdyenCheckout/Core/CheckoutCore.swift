@@ -140,6 +140,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             for: storedPaymentMethod,
             configuration: configuration,
             policy: .components(configuration),
+            sessionConfiguration: session?.componentConfiguration,
             context: adyenContext
         )
         paymentComponent.delegate = self
