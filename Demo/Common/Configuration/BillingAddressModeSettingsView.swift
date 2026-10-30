@@ -69,20 +69,3 @@ internal struct BillingAddressModeSettingsView: View {
         .navigationTitle("Billing Address")
     }
 }
-
-#Preview {
-    BillingAddressModeSettingsPreviewContainer()
-}
-
-private struct BillingAddressModeSettingsPreviewContainer: View {
-    @State private var billingAddress: BillingAddressModeDemoSetting = .full(
-        supportedCountryCodes: ["US", "NL", "GB"],
-        hideForCardBrands: [CardBrand.visa.rawValue, CardBrand.masterCard.rawValue]
-    )
-
-    var body: some View {
-        NavigationView {
-            BillingAddressModeSettingsView(billingAddress: $billingAddress)
-        }
-    }
-}

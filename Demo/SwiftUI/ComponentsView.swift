@@ -80,13 +80,6 @@ internal struct ComponentsView: View {
     }
 }
 
-// swiftlint:disable:next type_name
-internal struct ContentView_Previews: PreviewProvider {
-    internal static var previews: some View {
-        ComponentsView()
-    }
-}
-
 extension EdgeInsets {
     static var zero: EdgeInsets {
         EdgeInsets(
