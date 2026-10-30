@@ -48,7 +48,6 @@ package class CardComponent: PaymentComponent,
     /// Card component configuration.
     package internal(set) var configuration: CardConfiguration
     package let callbacks: CardCallbacks
-    package let addressCallbacks: AddressCallbacks?
 
     /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
     /// attached, used for all card UI string lookups.
@@ -75,13 +74,11 @@ package class CardComponent: PaymentComponent,
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     ///   - callbacks: The optional card event handlers.
-    ///   - addressCallbacks: The address lookup handlers, when address lookup is configured.
     package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init(),
-        callbacks: CardCallbacks,
-        addressCallbacks: AddressCallbacks? = nil
+        callbacks: CardCallbacks
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -94,8 +91,7 @@ package class CardComponent: PaymentComponent,
             context: context,
             configuration: configuration,
             binProvider: binInfoProvider,
-            callbacks: callbacks,
-            addressCallbacks: addressCallbacks
+            callbacks: callbacks
         )
     }
 
@@ -107,21 +103,18 @@ package class CardComponent: PaymentComponent,
     ///   - configuration: The Card component configuration.
     ///   - binProvider: Any object capable to provide a BinInfo.
     ///   - callbacks: The optional card event handlers.
-    ///   - addressCallbacks: The address lookup handlers.
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration,
         binProvider: AnyBinInfoProvider,
-        callbacks: CardCallbacks = .init(),
-        addressCallbacks: AddressCallbacks? = nil
+        callbacks: CardCallbacks = .init()
     ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
         self.binInfoProvider = binProvider
         self.callbacks = callbacks
-        self.addressCallbacks = addressCallbacks
 
         self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
@@ -167,7 +160,7 @@ package class CardComponent: PaymentComponent,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
             },
-            addressCallbacks: addressCallbacks
+            addressCallbacks: callbacks.addressCallbacks
         )
 
         formViewController.delegate = self

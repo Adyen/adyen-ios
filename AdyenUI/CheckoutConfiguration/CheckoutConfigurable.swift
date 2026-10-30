@@ -25,12 +25,26 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
 
+    var theme: CheckoutTheme { get set }
+    
     /// Throws when the additional callbacks lack a callback this configuration requires.
     func validate(_ callbacks: AdditionalCallbacksStore) throws
 
-    //  var style: FormComponentStyle { get }
+    /// Returns a copy of the configuration with the session-owned settings applied.
+    ///
+    /// Only configurations that need to update from session values override it.
+    func applying(_ session: SessionComponentConfiguration) -> Self
+}
 
-    var theme: CheckoutTheme { get set }
+extension CheckoutComponentConfiguration {
+
+    /// Empty default for components that require no extra callback.
+    package func validate(_: AdditionalCallbacksStore) throws {}
+    
+    /// Returns the configuration unchanged, for components without session-owned settings.
+    package func applying(_: SessionComponentConfiguration) -> Self {
+        self
+    }
 }
 
 package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
@@ -40,10 +54,4 @@ package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     package init(configurations: [CheckoutConfigurable]) {
         self.configurations = configurations
     }
-}
-
-extension CheckoutComponentConfiguration {
-
-    /// Accepts any callbacks, for components that require none.
-    package func validate(_: AdditionalCallbacksStore) throws {}
 }

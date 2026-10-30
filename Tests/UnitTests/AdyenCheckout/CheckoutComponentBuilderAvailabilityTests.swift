@@ -126,7 +126,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
 
     // MARK: - Configuration resolution
 
-    func test_isAvailable_withMerchantConfiguration_shouldPassResolvedConfigurationToFactory() throws {
+    func test_isAvailable_withMerchantConfiguration_shouldPassMerchantConfigurationToFactory() throws {
         let paymentMethod = try AdyenCoder.decode(["type": "blik", "name": "BLIK"]) as BLIKPaymentMethod
         let localizationParameters = LocalizationParameters(enforcedLocale: "it-IT")
         var blikConfiguration = BasicComponentConfiguration()
@@ -146,8 +146,8 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
         XCTAssertTrue(isAvailable)
         XCTAssertEqual(factory.receivedPaymentMethods.map(\.type), [.blik])
         let receivedConfiguration = try XCTUnwrap(factory.receivedConfigurations.first)
-        XCTAssertTrue(receivedConfiguration.showsSubmitButton, "Presentation settings come from the build policy, not availability")
-        XCTAssertEqual(receivedConfiguration.theme.colors.primary, .yellow)
+        XCTAssertTrue(receivedConfiguration.showsSubmitButton, "The build policy applies at creation, not availability")
+        XCTAssertNotEqual(receivedConfiguration.theme.colors.primary, .yellow, "The checkout theme applies at creation, not availability")
         XCTAssertEqual(receivedConfiguration.localizationParameters, localizationParameters)
     }
 
@@ -234,9 +234,10 @@ private final class AvailabilitySpyFactory: PaymentComponentFactory {
     func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BLIKComponent {
-        BLIKComponentFactory().create(with: paymentMethod, context: context, configuration: configuration)
+        BLIKComponentFactory().create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
     }
 
     func defaultConfiguration() -> BasicComponentConfiguration {

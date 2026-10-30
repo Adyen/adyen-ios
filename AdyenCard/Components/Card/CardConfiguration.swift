@@ -214,3 +214,12 @@ extension CardConfiguration {
     }
 
 }
+
+extension CardConfiguration {
+
+    /// Returns a copy with the session's store payment method visibility and installments applied.
+    package func applying(_ session: SessionComponentConfiguration) -> Self {
+        showStorePaymentMethod(session.showStorePaymentMethod)
+            .installmentConfiguration(session.installmentConfiguration)
+    }
+}

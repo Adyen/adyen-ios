@@ -237,7 +237,7 @@ final class CheckoutAdditionalCallbacksTests: XCTestCase {
         let card = try XCTUnwrap(facade.paymentComponent as? CardComponent)
 
         card.didChange(bin: "411111")
-        _ = await card.addressCallbacks?.onAddressLookup("Amsterdam")
+        _ = await card.callbacks.addressCallbacks?.onAddressLookup("Amsterdam")
 
         XCTAssertEqual(receivedBin, "411111")
         XCTAssertEqual(receivedQuery, "Amsterdam")
@@ -260,7 +260,7 @@ final class CheckoutAdditionalCallbacksTests: XCTestCase {
         let card = try XCTUnwrap(secured.childViewController.delegate as? CardComponent)
 
         card.didChange(bin: "555555")
-        _ = await card.addressCallbacks?.onAddressLookup("London")
+        _ = await card.callbacks.addressCallbacks?.onAddressLookup("London")
 
         XCTAssertEqual(receivedBin, "555555")
         XCTAssertEqual(receivedQuery, "London")

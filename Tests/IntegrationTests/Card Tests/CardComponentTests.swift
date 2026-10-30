@@ -2283,12 +2283,14 @@ extension CardComponentTests {
         amount: Amount? = nil,
         addressCallbacks: AddressCallbacks? = nil
     ) -> CardComponent {
-        CardComponent(
+        var callbacks = CardCallbacks()
+        callbacks.addressCallbacks = addressCallbacks
+        return CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: amount),
             configuration: configuration,
             binProvider: BinInfoProviderMock(),
-            addressCallbacks: addressCallbacks
+            callbacks: callbacks
         )
     }
 
