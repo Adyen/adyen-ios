@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenActions
+import AdyenCard
 import AdyenCheckout
 import AdyenUI
 import PassKit
@@ -15,7 +16,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -60,37 +61,46 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
+        }
+        .localizationProvider(DemoLocalizationProvider())
+        .theme(selectedTheme.theme)
+
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        ) {
+            CardCallbacks()
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { data in
                     print("Bin lookup response \(data)")
                 }
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
         }
-        .localizationProvider(DemoLocalizationProvider())
-        .theme(selectedTheme.theme)
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
 
         self.checkout = checkout
 

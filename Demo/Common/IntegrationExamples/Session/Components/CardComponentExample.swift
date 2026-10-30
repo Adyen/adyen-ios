@@ -17,7 +17,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: SessionCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -56,29 +56,38 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
+            AuthenticationConfiguration()
+                .requestorAppURL(ConfigurationConstants.returnUrl)
+        }
+        
+        let callbacks = CheckoutCallbacks(
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        ) {
+            CardCallbacks()
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { data in
                     print("Bin lookup response \(data)")
                 }
-            AuthenticationConfiguration()
-                .requestorAppURL(ConfigurationConstants.returnUrl)
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
         }
-        
+
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
         
         self.checkout = checkout
         

@@ -123,6 +123,11 @@ Pod::Spec.new do |s|
   s.subspec 'CoreUI' do |plugin|
     plugin.source_files = 'AdyenUI/**/*.swift'
     plugin.dependency 'Adyen/Core'
+    plugin.resource_bundles = {
+        'AdyenUI' => [
+            'AdyenUI/**/*.xcassets'
+        ]
+    }
   end
 
   s.subspec 'Core' do |plugin|

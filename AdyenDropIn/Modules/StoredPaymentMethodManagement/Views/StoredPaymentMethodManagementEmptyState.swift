@@ -14,7 +14,7 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
 
     private enum Constants {
         static let topPadding: CGFloat = 24
-        static let messageSpacing: CGFloat = 4
+        static let messageSpacing: CGFloat = 8
         static let buttonHeight: CGFloat = 52
     }
 
@@ -32,12 +32,10 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
             
             VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
-                    .font(Font(theme.elements.labels.bodyEmphasized.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
+                    .adyenLabelStyle(theme.elements.labels.subtitle)
 
                 Text(viewModel.emptyMessage)
-                    .font(Font(theme.elements.labels.body.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+                    .adyenLabelStyle(theme.elements.labels.body)
                     .multilineTextAlignment(.center)
             }
             

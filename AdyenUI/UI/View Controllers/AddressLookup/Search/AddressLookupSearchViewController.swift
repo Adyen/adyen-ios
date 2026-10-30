@@ -29,6 +29,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: lookupSearchViewModel.localizationParameters,
             style: lookupSearchViewModel.style,
+            theme: lookupSearchViewModel.theme,
             searchBarPlaceholder: localizedString(.addressLookupSearchPlaceholder, lookupSearchViewModel.localizationParameters),
             shouldFocusSearchBarOnAppearance: true
         ) { searchTerm, resultHandler in

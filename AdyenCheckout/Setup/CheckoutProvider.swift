@@ -11,7 +11,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// Plain static provider layer to create the Checkout object.
+/// Creates checkout cores with the context and callbacks for each flow.
 internal class CheckoutProvider: CheckoutProviding {
 
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
@@ -28,11 +28,21 @@ internal class CheckoutProvider: CheckoutProviding {
     
     internal static let `default` = CheckoutProvider()
 
+    /// Sets up a checkout core using a `/sessions` response.
+    /// - Parameters:
+    ///   - sessionResponse: The response from the `/sessions` call.
+    ///   - configuration: The checkout configuration.
+    ///   - callbacks: The callbacks for this checkout flow.
+    /// - Returns: A checkout core configured for the session.
+    /// - Throws: `CheckoutError` if the configuration requires callbacks that are missing, or if context or session setup fails.
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore
+        callbacks: CheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
+
+        let additionalCallbacks = AdditionalCallbacksStore(callbacks.additionalCallbacks)
+        try configuration.validate(additionalCallbacks: additionalCallbacks)
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
@@ -47,26 +57,31 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             session: session,
             adyenContext: adyenContext,
-            resultCallbacks: callbackStore,
+            resultCallbacks: callbacks,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
                 session: session,
-                callbackStore: callbackStore
-            )
+                callbacks: callbacks
+            ),
+            additionalCallbacks: additionalCallbacks
         )
     }
     
-    /// Sets up the checkout object for the advanced flow
-    /// with the values from your backend's `/paymentMethods` call.
+    /// Sets up a checkout core for the advanced flow.
     /// - Parameters:
-    ///   - paymentMethods: The `PaymentMethods` response from the `/paymentMethods` call.
-    ///   - configuration: The `CheckoutConfiguration` instance.
-    ///   - completion: A closure that is called when the setup is complete, containing the checkout object.
+    ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
+    ///   - configuration: The checkout configuration.
+    ///   - callbacks: The callbacks for this checkout flow.
+    /// - Returns: A checkout core configured for the advanced flow.
+    /// - Throws: `CheckoutError` if the configuration requires callbacks that are missing, or if context setup fails.
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore
+        callbacks: AdvancedCheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
+
+        let additionalCallbacks = AdditionalCallbacksStore(callbacks.additionalCallbacks)
+        try configuration.validate(additionalCallbacks: additionalCallbacks)
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
@@ -75,17 +90,21 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks),
+            additionalCallbacks: additionalCallbacks
         )
     }
     
-    /// Sets up the checkout object for action handling only.
+    /// Sets up a checkout core for action handling only.
     /// - Parameters:
-    ///   - configuration: The `CheckoutConfiguration` instance.
+    ///   - configuration: The checkout configuration.
+    ///   - callbacks: The callbacks for this checkout flow.
+    /// - Returns: A checkout core configured for action handling.
+    /// - Throws: `CheckoutError` if context setup fails.
     internal func setup(
         configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore
+        callbacks: ActionOnlyCheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -94,8 +113,8 @@ internal class CheckoutProvider: CheckoutProviding {
         return await CheckoutCore(
             configuration: configuration,
             adyenContext: adyenContext,
-            resultCallbacks: callbackStore,
-            callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: ActionOnlyCallbackHandler(callbacks: callbacks)
         )
     }
     

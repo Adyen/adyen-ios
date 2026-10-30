@@ -17,12 +17,9 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package typealias Method = CardMethod
     package typealias Configuration = CardConfiguration
     package typealias Component = CardComponent
+    package typealias Callbacks = CardCallbacks
 
-    private let sessionConfiguration: SessionComponentConfiguration?
-
-    package init(sessionConfiguration: SessionComponentConfiguration? = nil) {
-        self.sessionConfiguration = sessionConfiguration
-    }
+    package init() {}
 
     /// Creates a card payment component.
     ///
@@ -30,26 +27,29 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     ///   - paymentMethod: The payment method for the component.
     ///   - context: The context object.
     ///   - configuration: The configuration for the component.
+    ///   - callbacks: The card callbacks, including any address callbacks.
     /// - Returns: A configured card component.
     package func create(
         with paymentMethod: CardMethod,
         context: AdyenContext,
-        configuration: CardConfiguration
+        configuration: CardConfiguration,
+        callbacks: CardCallbacks?
     ) -> CardComponent {
-
-        var configuration = configuration
-
-        if let sessionConfiguration {
-            configuration = configuration
-                .showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
-                .installmentConfiguration(sessionConfiguration.installmentConfiguration)
-        }
-
-        return CardComponent(
+        CardComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks ?? .init()
         )
+    }
+
+    /// Combines the card callbacks with the separately supplied address callbacks.
+    ///
+    /// Returns card callbacks even when the merchant supplied only address callbacks.
+    package func callbacks(from store: AdditionalCallbacksStore) -> CardCallbacks? {
+        var callbacks = store.callbacks(of: CardCallbacks.self) ?? .init()
+        callbacks.addressCallbacks = store.callbacks(of: AddressCallbacks.self)
+        return callbacks
     }
     
     package func defaultConfiguration() -> CardConfiguration {

@@ -17,13 +17,29 @@ package enum AmountAwarePaymentStringsPolicy {
         }
 
         if amount.value == 0 {
-            return localizedString(.submitButtonSaveDetails, localizationParameters)
+            return localizedString(.submitButtonLabelSaveDetails, localizationParameters)
         }
 
         return localizedString(
             .submitButtonFormatted,
             localizationParameters,
             formatted(amount, localizationParameters: localizationParameters)
+        )
+    }
+
+    package static func preselectedPaymentMethodButtonTitle(
+        for paymentMethodName: String,
+        with amount: Amount?,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        if amount?.value == 0 {
+            return localizedString(.submitButtonLabelSaveDetails, localizationParameters)
+        }
+
+        return localizedString(
+            .dropInPreselectedPaymentMethodButtonLabel,
+            localizationParameters,
+            paymentMethodName
         )
     }
 
@@ -36,7 +52,7 @@ package enum AmountAwarePaymentStringsPolicy {
         }
 
         if amount.value == 0 {
-            return localizedString(.submitButtonSaveDetails, localizationParameters)
+            return localizedString(.dropInPaymentMethodListTitleSaveDetails, localizationParameters)
         }
 
         return formatted(amount, localizationParameters: localizationParameters)
@@ -80,43 +96,6 @@ package enum AmountAwarePaymentStringsPolicy {
             paymentMethodName,
             formatted(amount, localizationParameters: localizationParameters)
         )
-    }
-
-    /// Returns the stored payment method subtitle as an attributed string,
-    /// formatting the payment method name and a positive amount when present.
-    package static func storedPaymentMethodAttributedSubtitle(
-        for paymentMethodName: String,
-        with amount: Amount?,
-        localizationParameters: LocalizationParameters?,
-        attributes: [NSAttributedString.Key: Any],
-        emphasizedAttributes: [NSAttributedString.Key: Any]
-    ) -> NSAttributedString {
-        let text = storedPaymentMethodSubtitle(
-            for: paymentMethodName,
-            with: amount,
-            localizationParameters: localizationParameters
-        )
-        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
-
-        let emphasizedValues = [
-            paymentMethodName,
-            formattedPositiveAmount(with: amount, localizationParameters: localizationParameters)
-        ].compactMap { $0 }
-        for value in emphasizedValues {
-            let range = (text as NSString).range(of: value)
-            guard range.location != NSNotFound else { continue }
-            attributedString.addAttributes(emphasizedAttributes, range: range)
-        }
-        return attributedString
-    }
-
-    /// Returns the formatted amount when it is greater than zero, otherwise `nil`.
-    package static func formattedPositiveAmount(
-        with amount: Amount?,
-        localizationParameters: LocalizationParameters?
-    ) -> String? {
-        guard let amount, amount.value > 0 else { return nil }
-        return formatted(amount, localizationParameters: localizationParameters)
     }
 
     /// Returns the subtitle for a regular installment option.

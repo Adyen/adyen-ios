@@ -1,0 +1,87 @@
+//
+// Copyright (c) 2026 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Adyen
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
+import Foundation
+
+extension Checkout {
+
+    /// The payment methods available for this checkout flow.
+    public var paymentMethods: [PaymentMethod] {
+        core.paymentMethods?.regular ?? []
+    }
+
+    /// The stored payment methods available for this checkout flow.
+    public var storedPaymentMethods: [StoredPaymentMethod] {
+        core.paymentMethods?.stored ?? []
+    }
+
+    /// Returns whether a payment method from this checkout can be used on the current device.
+    ///
+    /// Use this to decide whether to show a payment method before creating its component.
+    /// Payment methods without device or configuration requirements are always available.
+    /// The result is a snapshot: device or wallet state can change afterwards.
+    ///
+    /// ```swift
+    /// if checkout.isPaymentMethodAvailable(for: .applePay) {
+    ///     let component = try checkout.createPaymentComponent(for: .applePay)
+    /// }
+    /// ```
+    ///
+    /// - Parameter type: The payment method type from the payment methods response.
+    /// - Returns: `true` if a component can be created for the payment method; `false` if the payment method
+    ///   isn't in this checkout's payment methods, or the device or configuration doesn't meet its requirements.
+    public func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool {
+        core.isPaymentMethodAvailable(for: type)
+    }
+
+    /// Creates a payment component for the specified payment method type.
+    ///
+    /// - Parameter type: The type of payment method to create a component for.
+    /// - Returns: A configured ``CheckoutPaymentComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if the payment method
+    ///   is not available in the current payment methods, is not supported, or cannot be
+    ///   initialized on this device (e.g. Apple Pay hardware check failed).
+    public func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
+        do {
+            return try core.createPaymentComponent(for: type)
+        } catch {
+            throw CheckoutError(error: error)
+        }
+    }
+
+    /// Creates a payment component for a stored payment method identifier.
+    ///
+    /// - Parameter identifier: The unique identifier of the stored payment method.
+    /// - Returns: A configured ``CheckoutPaymentComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if no stored
+    ///   payment method matching `identifier` exists.
+    public func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
+        do {
+            return try core.createPaymentComponent(for: identifier)
+        } catch {
+            throw CheckoutError(error: error)
+        }
+    }
+
+    /// Creates a Drop-in component with all available supported payment methods.
+    ///
+    /// Each call returns a new Drop-in component.
+    ///
+    /// - Returns: A configured ``CheckoutDropInComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if no supported
+    ///   payment method can be assembled.
+    public func createDropIn() throws -> CheckoutDropInComponent {
+        do {
+            return try core.createDropIn()
+        } catch {
+            throw CheckoutError(error: error, fallback: .paymentMethodFailure)
+        }
+    }
+}

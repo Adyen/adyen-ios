@@ -35,6 +35,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+    private let addressCallbacks: AddressCallbacks?
 
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
@@ -73,7 +74,8 @@ internal class CardViewController: FormViewController {
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
             addressMode: configuration.billingAddressMode,
-            scanCardHandler: scanCardHandler
+            scanCardHandler: scanCardHandler,
+            addressCallbacks: addressCallbacks
         )
     }()
     
@@ -102,7 +104,8 @@ internal class CardViewController: FormViewController {
         scope: String,
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
-        cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
+        cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler,
+        addressCallbacks: AddressCallbacks? = nil
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
@@ -112,6 +115,7 @@ internal class CardViewController: FormViewController {
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
+        self.addressCallbacks = addressCallbacks
 
         self.cardLogos = supportedCardBrands.map {
             .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)
@@ -323,7 +327,9 @@ extension CardViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
-        items.installmentsItem?.update(cardBrand: brand?.brand)
+        // Card-based installment options only apply to brands confirmed by `/binLookup`.
+        let reliableBrand = brand?.isReliable == true ? brand?.brand : nil
+        items.installmentsItem?.update(cardBrand: reliableBrand)
     }
     
     // MARK: Private methods
@@ -411,6 +417,9 @@ extension CardViewController {
             return nil
         }
     }
+}
+
+extension CardViewController {
     
     private func prefill() {
         guard let shopperInformation else { return }

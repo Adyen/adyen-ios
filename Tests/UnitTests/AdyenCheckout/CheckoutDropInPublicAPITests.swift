@@ -12,7 +12,7 @@ import XCTest
 final class CheckoutDropInPublicAPITests: XCTestCase {
 
     func test_publicDropInCreationAndPresentationAPI_compiles() {
-        func createDropIn(from checkout: PaymentCheckout) throws -> CheckoutDropInComponent {
+        func createDropIn(from checkout: Checkout) throws -> CheckoutDropInComponent {
             try checkout.createDropIn()
         }
 

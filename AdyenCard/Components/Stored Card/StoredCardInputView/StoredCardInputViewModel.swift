@@ -13,7 +13,6 @@ import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
-import Combine
 import Foundation
 
 // sourcery: AutoMockable

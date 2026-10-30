@@ -292,8 +292,8 @@ open class FormViewController: UIViewController, AdyenObserver {
     }
 
     private func setupViews() {
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
+        view.backgroundColor = theme.colors.background
+        formView.backgroundColor = theme.colors.background
         formView.isEmbeddedInScrollView = scrollEnabled
     }
 

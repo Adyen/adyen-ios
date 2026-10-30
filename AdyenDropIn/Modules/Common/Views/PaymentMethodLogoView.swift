@@ -10,17 +10,8 @@
 import Foundation
 import SwiftUI
 
-internal struct PaymentLogoView: View {
-
-    private enum Shadow {
-        static let nearOpacity: Double = 0.02
-        static let nearRadius: CGFloat = 2
-        static let nearOffset: CGFloat = 2
-
-        static let farOpacity: Double = 0.04
-        static let farRadius: CGFloat = 4
-        static let farOffset: CGFloat = 4
-    }
+/// SwiftUI wrapper around the shared `AdyenUI.PaymentLogoView` so all logo styling lives in one place.
+internal struct PaymentMethodLogoView: UIViewRepresentable {
 
     // MARK: - Properties
 
@@ -28,24 +19,21 @@ internal struct PaymentLogoView: View {
     internal let theme: CheckoutTheme
     internal let size: CGSize
 
-    // MARK: - Body
+    // MARK: - UIViewRepresentable
 
-    internal var body: some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius))
-        } placeholder: {
-            RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius)
-                .fill(Color(uiColor: theme.colors.disabled))
-        }
-        .frame(width: size.width, height: size.height)
-        .shadow(color: shadowColor.opacity(Shadow.nearOpacity), radius: Shadow.nearRadius, y: Shadow.nearOffset)
-        .shadow(color: shadowColor.opacity(Shadow.farOpacity), radius: Shadow.farRadius, y: Shadow.farOffset)
+    internal func makeUIView(context: Context) -> PaymentLogoView {
+        let logoView = PaymentLogoView(size: size)
+        updateUIView(logoView, context: context)
+        return logoView
     }
 
-    private var shadowColor: Color {
-        Color(uiColor: theme.colors.supportShadow)
+    internal func updateUIView(_ logoView: PaymentLogoView, context: Context) {
+        logoView.shadowColor = theme.colors.supportShadow
+        logoView.placeholderColor = theme.colors.disabled
+        logoView.load(url: url)
+    }
+
+    internal func sizeThatFits(_ proposal: ProposedViewSize, uiView: PaymentLogoView, context: Context) -> CGSize? {
+        size
     }
 }

@@ -169,12 +169,13 @@ class CardComponentTests: XCTestCase {
 
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
-        let colorToTest = UIColor.blue
+        let textColor = UIColor.systemTeal
         let customColors = CheckoutColors(
             container: .yellow,
             containerOutline: .purple,
-            primary: colorToTest,
-            highlight: .blue
+            primary: .blue,
+            highlight: .blue,
+            text: textColor
         )
         
         var configuration = CardConfiguration()
@@ -193,31 +194,31 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
 
-        // MARK: - Test 1: Semantic Primary Color Applied to All Text Fields
+        // MARK: - Test 1: Semantic Text Color Applied to All Text Fields
         
         // Card number field
         let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel")
         let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
         let cardNumberItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         
-        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, colorToTest, "Card number title should use theme primary color")
-        XCTAssertEqual(cardNumberItemTextField?.textColor, colorToTest, "Card number text should use theme primary color")
+        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, textColor, "Card number title should use theme text color")
+        XCTAssertEqual(cardNumberItemTextField?.textColor, textColor, "Card number text should use theme text color")
         
         // Holder name field
         let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
         let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
         let holderNameItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
         
-        XCTAssertEqual(holderNameItemTitleLabel?.textColor, colorToTest, "Holder name title should use theme primary color")
-        XCTAssertEqual(holderNameItemTextField?.textColor, colorToTest, "Holder name text should use theme primary color")
+        XCTAssertEqual(holderNameItemTitleLabel?.textColor, textColor, "Holder name title should use theme text color")
+        XCTAssertEqual(holderNameItemTextField?.textColor, textColor, "Holder name text should use theme text color")
         
         // Expiry date field
         let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
         let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
         let expiryDateItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         
-        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, colorToTest, "Expiry date title should use theme primary color")
-        XCTAssertEqual(expiryDateItemTextField?.textColor, colorToTest, "Expiry date text should use theme primary color")
+        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, textColor, "Expiry date title should use theme text color")
+        XCTAssertEqual(expiryDateItemTextField?.textColor, textColor, "Expiry date text should use theme text color")
         
         // Security code field
         let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.titleLabel")
@@ -225,8 +226,8 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
         
-        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, colorToTest, "Security code title should use theme primary color")
-        XCTAssertEqual(securityCodeItemTextField?.textColor, colorToTest, "Security code text should use theme primary color")
+        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, textColor, "Security code title should use theme text color")
+        XCTAssertEqual(securityCodeItemTextField?.textColor, textColor, "Security code text should use theme text color")
         XCTAssertNotNil(securityCodeCvvHint, "CVV hint should be present")
         
         // MARK: - Test 2: Containers Exist and Are Styled
@@ -301,14 +302,17 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(hideForCardBrands: [], onAddressLookup: { _ in [] }, onAddressSelected: nil)
+        configuration.billingAddressMode = .lookup()
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
                 containerOutline: expectedBorderColor
             )
         )
 
-        let sut = makeSUT(configuration: configuration)
+        let sut = makeSUT(
+            configuration: configuration,
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in [] })
+        )
 
         setupRootViewController(sut.cardViewController)
 
@@ -399,19 +403,10 @@ class CardComponentTests: XCTestCase {
             $0(BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress)], isCreatedLocally: false))
         }
 
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration(),
-            binProvider: cardBrandProviderMock
-        )
-
-        setupRootViewController(sut.viewController)
-
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let expectationCardBrand = XCTestExpectation(description: "CardBrand Expectation")
         
-        sut.configuration = sut.configuration
+        let callbacks = CardCallbacks()
             .onBinChange { value in
                 XCTAssertEqual(value, "371449")
                 expectationBin.fulfill()
@@ -424,6 +419,16 @@ class CardComponentTests: XCTestCase {
                 XCTAssertEqual(value, expected)
                 expectationCardBrand.fulfill()
             }
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration(),
+            binProvider: cardBrandProviderMock,
+            callbacks: callbacks
+        )
+
+        setupRootViewController(sut.viewController)
         
         self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
@@ -466,8 +471,9 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
 
         let tintColor = UIColor.black
+        let textColor = UIColor.systemTeal
         
-        configuration.theme = CheckoutTheme(colors: CheckoutColors(primary: tintColor))
+        configuration.theme = CheckoutTheme(colors: CheckoutColors(primary: tintColor, text: textColor))
 
         let component = CardComponent(
             paymentMethod: method,
@@ -482,13 +488,13 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
         XCTAssertEqual(switchView.onTintColor?.cgColor, tintColor.cgColor)
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor?.cgColor, textColor.cgColor)
 
         try withoutAnimation {
             focus(textItemView: securityCodeItemView)
         }
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor?.cgColor, textColor.cgColor)
     }
 
     // TODO: Fix Later
@@ -1145,14 +1151,14 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withDefaultAndCardBasedOptions_shouldShowCorrectOptions() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let defaultInstallmentOptions = InstallmentOptions(values: [3, 6, 9, 12])
 
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(
-            cardBasedOptions: cardBasedInstallmentOptions,
-            defaultOptions: defaultInstallmentOptions
+            defaultOptions: defaultInstallmentOptions,
+            cardBasedOptions: cardBasedInstallmentOptions
         )
         let cardBrandProviderMock = BinInfoProviderMock()
 
@@ -1203,7 +1209,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_whenSelectionChanges_shouldUpdateFooterWithSelectedSubtitle() throws {
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(monthValues: [2], includesRevolving: true)
+            defaultOptions: InstallmentOptions(values: [2], plans: [.regular, .revolving])
         )
 
         let sut = CardComponent(
@@ -1365,7 +1371,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.localizationProvider = provider
         configuration.installmentConfiguration = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(monthValues: [2], includesRevolving: true),
+            defaultOptions: InstallmentOptions(values: [2], plans: [.regular, .revolving]),
             showInstallmentAmount: true
         )
 
@@ -1398,7 +1404,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsSection_whenBrandOptionsChange_shouldToggleEntireSectionVisibility() throws {
         // Given a configuration where one brand has installment options and another brand has none.
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+            .visa: InstallmentOptions(values: [2, 3])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1437,18 +1443,22 @@ class CardComponentTests: XCTestCase {
             return sectionView
         }
         for subview in view.subviews {
-            if let found = sectionHeaderView(containing: text, in: subview) { return found }
+            if let found = sectionHeaderView(containing: text, in: subview) {
+                return found
+            }
         }
         return nil
     }
 
     private func containsLabel(withText text: String, in view: UIView) -> Bool {
-        if let label = view as? UILabel, label.text == text { return true }
+        if let label = view as? UILabel, label.text == text {
+            return true
+        }
         return view.subviews.contains { containsLabel(withText: text, in: $0) }
     }
 
     func test_installmentsField_withDefaultOptions_shouldShowDefaultOptions() throws {
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let defaultInstallmentOptions = InstallmentOptions(values: [3, 6, 9, 12])
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
         let cardBrandProviderMock = BinInfoProviderMock()
@@ -1486,7 +1496,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withCardBasedOptions_shouldShowCardSpecificOptions() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1537,7 +1547,7 @@ class CardComponentTests: XCTestCase {
     func test_installmentsField_withAmountShown_shouldDisplayInstallmentAmounts() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
-                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+                InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
 
         var configuration = CardConfiguration()
@@ -1595,8 +1605,8 @@ class CardComponentTests: XCTestCase {
 
     func test_installmentsField_whenCardBrandChanges_shouldResetSelectionToOneTime() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true),
-            .americanExpress: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            .visa: InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving]),
+            .americanExpress: InstallmentOptions(maxInstallments: 3)
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1626,7 +1636,7 @@ class CardComponentTests: XCTestCase {
 
     func test_installmentsField_whenSameCardBrandReassigned_shouldKeepSelection() throws {
         let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
-            .visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+            .visa: InstallmentOptions(maxInstallments: 8, plans: [.regular, .revolving])
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1650,6 +1660,181 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentsItem.formattedValue, "2 Installments")
         XCTAssertEqual(installmentsItem.selectableValues.count, 9)
         XCTAssertNotNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_withPreselectedValue_shouldPreselectMatchingOption() throws {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3], preselectedValue: 3)
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.formattedValue, "3 Installments")
+        XCTAssertEqual(sut.cardViewController.installments, Installments(totalMonths: 3, plan: .regular))
+    }
+
+    func test_installmentsField_withUnavailablePreselectedValue_shouldFallBackToOneTime() throws {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3], preselectedValue: 5)
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_withMaxInstallmentsOfTwo_shouldOfferOneTimeAndTwoInstallments() throws {
+        let options = InstallmentOptions(maxInstallments: 2)
+        XCTAssertEqual(options.values, [2])
+
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(defaultOptions: options))
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(
+            installmentsItem.selectableValues.map(\.installmentValue),
+            [nil, Installments(totalMonths: 2, plan: .regular)]
+        )
+    }
+
+    func test_installmentsField_whenCardBrandChanges_shouldPreselectBrandPreselectedValue() throws {
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
+            .visa: InstallmentOptions(values: [2, 3], preselectedValue: 2),
+            .americanExpress: InstallmentOptions(values: [2, 3])
+        ]
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            binProvider: BinInfoProviderMock()
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        // The preselected value of the detected brand is selected
+        installmentsItem.update(cardBrand: .visa)
+        XCTAssertEqual(installmentsItem.formattedValue, "2 Installments")
+        XCTAssertEqual(sut.cardViewController.installments, Installments(totalMonths: 2, plan: .regular))
+
+        // Switching to a brand without a preselected value resets the selection to one-time
+        installmentsItem.update(cardBrand: .americanExpress)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+        XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_withLocallyDetectedBrand_shouldNotShowCardBasedOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+        XCTAssertNil(sut.cardViewController.installments)
+    }
+
+    func test_installmentsField_whenBinLookupConfirmsLocallyDetectedBrand_shouldShowCardBasedOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+
+        // Same brand with otherwise identical properties, now confirmed by `/binLookup`
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+    }
+
+    func test_installmentsField_whenBrandFallsBackToLocalDetection_shouldShowDefaultOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2]),
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3, 6])]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        XCTAssertEqual(installmentsItem.selectableValues.count, 4)
+
+        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 2)
+    }
+
+    func test_installmentsField_whenDualBrandSelectionChanges_shouldUpdateOptions() throws {
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            cardBasedOptions: [.visa: InstallmentOptions(values: [2, 3], preselectedValue: 3)]
+        ))
+        setupRootViewController(sut.viewController)
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        let visa = DetectedCardBrand(brand: .visa)
+        let carteBancaire = DetectedCardBrand(brand: .carteBancaire)
+        let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
+
+        sut.cardViewController.update(
+            binInfo: BinLookupResponse(brands: [visa, carteBancaire], issuingCountryCode: "FR", isCreatedLocally: false)
+        )
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
+
+        sut.cardViewController.handleSelection(carteBancaire)
+        XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
+        XCTAssertNil(sut.cardViewController.installments)
+
+        sut.cardViewController.handleSelection(visa)
+        XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
+        XCTAssertEqual(installmentsItem.selectableValues.count, 3)
+        XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
+    }
+
+    func test_submit_withPreselectedInstallment_shouldIncludeInstallmentsInPaymentData() throws {
+        let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
+        let sut = makeSUT(installmentConfiguration: InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(values: [2, 3, 6], preselectedValue: preselectedInstallments.totalMonths)
+        ))
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+
+        let submission = expectation(description: "Card submits the pre-selected installment")
+        delegate.onDidSubmit = { data, _ in
+            XCTAssertEqual(data.installments, preselectedInstallments)
+            submission.fulfill()
+        }
+
+        let view = try XCTUnwrap(sut.viewController.view)
+        fillCard(on: view, with: Dummy.visaCard)
+        tapSubmitButton(on: view)
+
+        waitForExpectations(timeout: 10)
     }
 
     func test_supportedCardLogos_whenFieldActiveOrInactive_shouldUpdateVisibility() throws {
@@ -2095,14 +2280,24 @@ extension CardComponentTests {
 
     private func makeSUT(
         configuration: CardConfiguration,
-        amount: Amount? = nil
+        amount: Amount? = nil,
+        addressCallbacks: AddressCallbacks? = nil
     ) -> CardComponent {
-        CardComponent(
+        var callbacks = CardCallbacks()
+        callbacks.addressCallbacks = addressCallbacks
+        return CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: amount),
             configuration: configuration,
-            binProvider: BinInfoProviderMock()
+            binProvider: BinInfoProviderMock(),
+            callbacks: callbacks
         )
+    }
+
+    private func makeSUT(installmentConfiguration: InstallmentConfiguration) -> CardComponent {
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = installmentConfiguration
+        return makeSUT(configuration: configuration)
     }
 
     func fillCard(on view: UIView, with card: Card) {

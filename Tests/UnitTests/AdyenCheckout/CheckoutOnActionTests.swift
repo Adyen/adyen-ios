@@ -29,35 +29,69 @@ final class CheckoutOnActionTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_onAction_isAvailableOnEveryFlow_andStoresTheHandlerOnTheCallbackStore() {
-        let sessionStore = SessionCheckoutCallbackStore()
-        let advancedStore = AdvancedCheckoutCallbackStore()
-        let actionOnlyStore = ActionOnlyCheckoutCallbackStore()
+    func test_checkoutHandle_shouldForwardActionAndRetainCoreUntilReleased() {
+        var checkout: Checkout? = Checkout(core: makeCore(resultCallbacks: CheckoutCallbacks.test()))
+        weak var core = checkout?.core as? CheckoutCore
+        let actionHandler = ActionHandlingComponentMock()
+        var receivedRedirect = false
+        actionHandler.onAction = { action in
+            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            receivedRedirect = true
+        }
+        core?.actionHandlingComponent = actionHandler
 
-        _ = SessionCheckout(core: makeCore(resultCallbacks: sessionStore), callbackStore: sessionStore)
-            .onAction { _, _ in }
-        _ = AdvancedCheckout(core: makeCore(resultCallbacks: advancedStore), callbackStore: advancedStore)
-            .onAction { _, _ in }
-        _ = ActionOnlyCheckout(core: makeCore(resultCallbacks: actionOnlyStore), callbackStore: actionOnlyStore)
-            .onAction { _, _ in }
+        XCTAssertNotNil(core)
+        checkout?.handle(action: Dummy.redirectAction)
 
-        XCTAssertNotNil(sessionStore.onAction)
-        XCTAssertNotNil(advancedStore.onAction)
-        XCTAssertNotNil(actionOnlyStore.onAction)
+        XCTAssertTrue(receivedRedirect)
+        checkout = nil
+        XCTAssertNil(core)
+    }
+
+    func test_actionOnlyHandle_shouldForwardActionAndRetainCoreUntilReleased() {
+        var checkout: ActionOnlyCheckout? = ActionOnlyCheckout(core: makeCore(resultCallbacks: ActionOnlyCheckoutCallbacks.test()))
+        weak var core = checkout?.core as? CheckoutCore
+        let actionHandler = ActionHandlingComponentMock()
+        var receivedRedirect = false
+        actionHandler.onAction = { action in
+            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            receivedRedirect = true
+        }
+        core?.actionHandlingComponent = actionHandler
+
+        XCTAssertNotNil(core)
+        checkout?.handle(action: Dummy.redirectAction)
+
+        XCTAssertTrue(receivedRedirect)
+        checkout = nil
+        XCTAssertNil(core)
+    }
+
+    func test_onAction_isAvailableOnEveryCallbacksValue_andDoesNotChangeTheOriginal() {
+        let session = CheckoutCallbacks.test()
+        let advanced = AdvancedCheckoutCallbacks.test()
+        let actionOnly = ActionOnlyCheckoutCallbacks.test()
+
+        XCTAssertNotNil(session.onAction { _, _ in }.onAction)
+        XCTAssertNotNil(advanced.onAction { _, _ in }.onAction)
+        XCTAssertNotNil(actionOnly.onAction { _, _ in }.onAction)
+        XCTAssertNil(session.onAction)
+        XCTAssertNil(advanced.onAction)
+        XCTAssertNil(actionOnly.onAction)
     }
 
     func test_present_withHandler_shouldForwardActionDataAndViewController() {
         // Given
-        let callbackStore = AdvancedCheckoutCallbackStore()
-        let sut = makeCore(resultCallbacks: callbackStore)
         let actionViewController = UIViewController()
 
         var receivedActionData: ActionData?
         var receivedViewController: UIViewController?
-        callbackStore.onAction = { actionData, viewController in
+        let callbacks = AdvancedCheckoutCallbacks.test().onAction { actionData, viewController in
             receivedActionData = actionData
             receivedViewController = viewController
         }
+
+        let sut = makeCore(resultCallbacks: callbacks)
 
         // When
         sut.present(actionViewController: actionViewController, actionData: ActionData(type: .qrCode))
@@ -69,7 +103,7 @@ final class CheckoutOnActionTests: XCTestCase {
 
     func test_present_withoutHandler_shouldPresentOnThePendingPaymentComponent() {
         // Given
-        let sut = makeCore(resultCallbacks: AdvancedCheckoutCallbackStore())
+        let sut = makeCore(resultCallbacks: AdvancedCheckoutCallbacks.test())
         let presentingViewController = PresentRecordingViewController()
         let paymentComponent = PresentablePaymentComponentMock(
             paymentMethod: PaymentMethodMock(type: .scheme, name: "Card"),
@@ -88,15 +122,15 @@ final class CheckoutOnActionTests: XCTestCase {
 
     func test_present_withHandler_shouldNotPresentOnThePendingPaymentComponent() {
         // Given
-        let callbackStore = AdvancedCheckoutCallbackStore()
-        let sut = makeCore(resultCallbacks: callbackStore)
         let presentingViewController = PresentRecordingViewController()
         let paymentComponent = PresentablePaymentComponentMock(
             paymentMethod: PaymentMethodMock(type: .scheme, name: "Card"),
             viewController: presentingViewController
         )
+        let callbacks = AdvancedCheckoutCallbacks.test().onAction { _, _ in }
+
+        let sut = makeCore(resultCallbacks: callbacks)
         sut.pendingPaymentComponent = paymentComponent
-        callbackStore.onAction = { _, _ in }
 
         // When
         sut.present(actionViewController: UIViewController(), actionData: ActionData(type: .threeDS2))
@@ -107,7 +141,7 @@ final class CheckoutOnActionTests: XCTestCase {
 
     func test_present_withoutHandlerAndWithoutPendingComponent_shouldAssert() {
         // Given
-        let sut = makeCore(resultCallbacks: ActionOnlyCheckoutCallbackStore())
+        let sut = makeCore(resultCallbacks: ActionOnlyCheckoutCallbacks.test())
         let assertionExpectation = expectation(description: "Expect the assertion to be raised.")
 
         AdyenAssertion.listener = { message in
@@ -127,12 +161,12 @@ final class CheckoutOnActionTests: XCTestCase {
 
     // MARK: - Private
 
-    private func makeCore(resultCallbacks: any CheckoutResultCallbackStore) -> CheckoutCore {
+    private func makeCore(resultCallbacks: any CheckoutResultCallbacks) -> CheckoutCore {
         CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             resultCallbacks: resultCallbacks,
-            callbackHandler: ActionOnlyCallbackHandler(callbackStore: ActionOnlyCheckoutCallbackStore())
+            callbackHandler: ActionOnlyCallbackHandler(callbacks: ActionOnlyCheckoutCallbacks.test())
         )
     }
 }

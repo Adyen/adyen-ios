@@ -16,7 +16,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: SessionCheckout?
+    private var checkout: Checkout?
     private var dropInComponent: CheckoutDropInComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -65,19 +65,27 @@ internal final class DropInExample: InitialDataFlowProtocol {
         }
         .theme(ConfigurationConstants.current.themeSettings.theme.theme)
 
+        let callbacks = CheckoutCallbacks(
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        ) {
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
+        }
+
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
 
         self.checkout = checkout
         return try checkout.createDropIn()

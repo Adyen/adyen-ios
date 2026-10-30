@@ -47,7 +47,6 @@ The v6 API documented in this branch is currently alpha. These guides describe t
 * [v6 foundations][docs.github.v6.readme]
 * [v6 card component overview][docs.github.v6.card]
 * [v6 card component: session flow][docs.github.v6.cardSession]
-* [v6 card component: advanced flow][docs.github.v6.cardAdvanced]
 * [v6 checkout theme][docs.github.v6.theme]
 * [v5 to v6 migration notes][docs.github.v6.migration]
 
@@ -117,7 +116,7 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 
 ## Getting started
 
-The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, closure-based flow callbacks, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
+The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, callbacks supplied as a value before setup, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
 
 > **Note:** Drop-in is not part of the v6 alpha yet. The v6 alpha exposes individual payment components; Drop-in support is planned for a later release.
 
@@ -140,69 +139,50 @@ let configuration = try CheckoutConfiguration(
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+)
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
 In session flow the effective `amount` comes from the `/sessions` response, and settings such as `storePaymentMethodMode` and installments are session-controlled. See the [session flow guide][docs.github.v6.cardSession].
 
-### Advanced flow
-
-Use the advanced flow when your backend calls `/paymentMethods` and handles `/payments` and `/payments/details` itself.
-
-```swift
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration
-)
-.onSubmit { data in
-    try await callPayments(with: data)
-}
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-`callPayments(with:)` returns a `SubmitResult` and `callDetails(with:)` returns an `AdditionalDetailsResult`. See the [advanced flow guide][docs.github.v6.cardAdvanced].
-
 ### Action-only flow
 
 If your app only needs to handle actions, set up checkout without a `SessionResponse` or `PaymentMethods`, and call `checkout.handle(action:)` when your backend returns an action.
 
 ```swift
-let checkout = try await Checkout.setup(
-    configuration: configuration
+let callbacks = ActionOnlyCheckoutCallbacks(
+    onAdditionalDetails: { data in
+        try await callDetails(with: data)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
 )
 .onAction { actionData, actionViewController in
     present(actionViewController, animated: true)
 }
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
 .onComplete { result in
     print(result.resultCode)
 }
-.onFailure { error in
-    print(error.localizedDescription)
-}
+
+let checkout = try await Checkout.setup(
+    configuration: configuration,
+    callbacks: callbacks
+)
 ```
 
 ### Presenting a payment component
@@ -216,6 +196,8 @@ present(UINavigationController(rootViewController: viewController), animated: tr
 ```
 
 ### Presenting actions
+
+Set `.onAction` on the callbacks value before passing it to `Checkout.setup`.
 
 Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action.
 
@@ -319,7 +301,7 @@ We provide a fully working **Demo App** to explore the checkout integration in a
 
 The Demo App includes:
 
-* Sample integrations for Session Flow and Advanced Flow
+* Sample integrations for the session flow
 * UIKit and SwiftUI examples
 * Common payment methods (Card, Apple Pay, Instant Payments, Issuer List)
 
@@ -352,6 +334,5 @@ This repository is open source and available under the MIT license. For more inf
 [docs.github.v6.readme]: guides/v6/README.md
 [docs.github.v6.card]: guides/v6/card.md
 [docs.github.v6.cardSession]: guides/v6/card-session-flow.md
-[docs.github.v6.cardAdvanced]: guides/v6/card-advanced-flow.md
 [docs.github.v6.theme]: guides/v6/theme.md
 [docs.github.v6.migration]: MIGRATION.md

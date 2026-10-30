@@ -120,4 +120,70 @@ final class DemoConfigurationTests: XCTestCase {
 
         XCTAssertNil(configuration)
     }
+
+    func test_externalConfigurationReader_withDropInConfiguration_shouldDecodeStoredPaymentMethodFlags() {
+        let configuration = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(hideStoredPaymentMethods: true, startWithLastStoredPaymentMethod: false)
+        )
+        let encodedPayload = base64Encode(configuration)
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.dropIn?.hideStoredPaymentMethods, true)
+        XCTAssertEqual(result?.dropIn?.startWithLastStoredPaymentMethod, false)
+    }
+
+    func test_applying_withDropInConfiguration_shouldOverrideStoredPaymentMethodFlags() {
+        let external = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(hideStoredPaymentMethods: true, startWithLastStoredPaymentMethod: false)
+        )
+
+        let configuration = defaultConfiguration.applying(external)
+
+        XCTAssertTrue(configuration.dropInSettings.hideStoredPaymentMethods)
+        XCTAssertFalse(configuration.dropInSettings.startWithLastStoredPaymentMethod)
+    }
+
+    func test_applying_withPartialDropInConfiguration_shouldKeepUnsetDropInDefaults() {
+        let external = ExternalConfiguration(
+            dropIn: ExternalDropInConfiguration(startWithLastStoredPaymentMethod: false)
+        )
+
+        let configuration = defaultConfiguration.applying(external)
+
+        XCTAssertFalse(configuration.dropInSettings.hideStoredPaymentMethods)
+        XCTAssertFalse(configuration.dropInSettings.startWithLastStoredPaymentMethod)
+        XCTAssertEqual(
+            configuration.dropInSettings.showRemovePaymentMethodButton,
+            defaultConfiguration.dropInSettings.showRemovePaymentMethodButton
+        )
+    }
+
+    func test_externalConfigurationReader_withApplePayConfiguration_shouldDecodePlainPaymentSheet() {
+        let configuration = ExternalConfiguration(
+            applePay: ExternalApplePayConfiguration(plainPaymentSheet: true)
+        )
+        let encodedPayload = base64Encode(configuration)
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.applePay?.plainPaymentSheet, true)
+    }
+
+    func test_externalConfigurationReader_withApplePayConfigurationJSON_shouldUseApplePayConfigurationKey() {
+        let json = #"{"APPLE_PAY_CONFIGURATION":{"plainPaymentSheet":true}}"#
+        let encodedPayload = Data(json.utf8).base64EncodedString()
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertEqual(result?.applePay?.plainPaymentSheet, true)
+    }
+
+    func test_externalConfigurationReader_withEmptyApplePayConfiguration_shouldPreserveNilOptional() {
+        let encodedPayload = base64Encode(ExternalConfiguration(applePay: ExternalApplePayConfiguration()))
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertNil(result?.applePay?.plainPaymentSheet)
+    }
 }

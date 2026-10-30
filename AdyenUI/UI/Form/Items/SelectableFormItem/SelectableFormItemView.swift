@@ -13,7 +13,6 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     
     private enum Constants {
         static let upiLogo = "upiLogo"
-        static let checkmarkIcon = "verification_true"
         static let iconImageSize = CGSize(width: 40, height: 26)
         static let viewHeight: CGFloat = 48
     }
@@ -40,8 +39,8 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     // MARK: - Title Label
 
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+    private lazy var titleLabel: AdyenLabel = {
+        let titleLabel = AdyenLabel()
         titleLabel.text = item.title
         titleLabel.apply(theme.elements.labels.body)
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
@@ -53,13 +52,8 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Checkmark Imageview
 
     private lazy var checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(
-            image: UIImage(
-                named: Constants.checkmarkIcon,
-                in: Bundle.coreInternalResources,
-                compatibleWith: nil
-            )
-        )
+        let imageView = UIImageView(image: .adyenCheckmark)
+        imageView.tintColor = theme.colors.text
 
         let iconSize = CGSize(width: 16.0, height: 16.0)
         imageView.clipsToBounds = true

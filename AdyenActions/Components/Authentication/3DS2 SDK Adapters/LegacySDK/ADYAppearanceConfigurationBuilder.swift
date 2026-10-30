@@ -52,7 +52,7 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureTextFieldAppearance(_ textFieldAppearance: ADYTextFieldAppearance) {
         let textField = theme.elements.textField
         textFieldAppearance.textColor = textField.text.color
-        textFieldAppearance.borderWidth = textField.borderWidth
+        textFieldAppearance.borderWidth = textField.defaultBorderWidth
         textFieldAppearance.borderColor = textField.borderColor
         textFieldAppearance.cornerRadius = textField.cornerRadius.cgFloatValue
     }
@@ -82,7 +82,7 @@ internal struct ADYAppearanceConfigurationBuilder {
         }
 
         let cancelButtonAppearance = config.buttonAppearance(for: .cancel)
-        cancelButtonAppearance.textColor = theme.colors.primary
+        cancelButtonAppearance.textColor = theme.colors.text
     }
     
     private func configureButtonAppearance(

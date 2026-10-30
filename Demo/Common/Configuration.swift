@@ -99,6 +99,26 @@ internal enum ConfigurationConstants {
     // swiftlint:enable line_length
 }
 
+internal enum CardInstallmentOptionsMode: String, Codable, CaseIterable, Hashable {
+    case none
+    case defaultOptions
+    case defaultWithRevolving
+    case cardBasedVisa
+
+    internal var isEnabled: Bool {
+        self != .none
+    }
+
+    internal var displayName: String {
+        switch self {
+        case .none: return "None"
+        case .defaultOptions: return "Default installment options"
+        case .defaultWithRevolving: return "Default options with revolving"
+        case .cardBasedVisa: return "Card based options (VISA)"
+        }
+    }
+}
+
 internal struct CardSettings: Codable {
     internal var showCardholderName = false
     internal var showStorePaymentMethod = true
@@ -107,8 +127,14 @@ internal struct CardSettings: Codable {
     internal var billingAddress: BillingAddressModeDemoSetting = .none
     internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
+    // Kept to resolve settings persisted before installmentOptionsMode was introduced.
     internal var enableInstallments = false
+    internal var installmentOptionsMode: CardInstallmentOptionsMode? = nil
     internal var showsInstallmentAmount = false
+
+    internal var resolvedInstallmentOptionsMode: CardInstallmentOptionsMode {
+        installmentOptionsMode ?? (enableInstallments ? .defaultOptions : .none)
+    }
 }
 
 /// The demo app's billing address configuration, selected in the card settings.
@@ -189,15 +215,26 @@ internal struct DemoAppSettings: Codable {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
     }
 
-    private var installmentConfiguration: InstallmentConfiguration? {
-        guard cardSettings.enableInstallments else {
-            return nil
+    internal static let installmentMonthValues: [Int] = [2, 3]
+    internal static let installmentPreselectedValue: Int = 2
+
+    internal var installmentConfiguration: InstallmentConfiguration? {
+        let mode = cardSettings.resolvedInstallmentOptionsMode
+        guard mode.isEnabled else { return nil }
+
+        let options = InstallmentOptions(
+            values: Self.installmentMonthValues,
+            plans: mode == .defaultWithRevolving ? [.regular, .revolving] : [.regular]
+        )
+        if mode == .cardBasedVisa {
+            return InstallmentConfiguration(
+                cardBasedOptions: [.visa: options],
+                showInstallmentAmount: cardSettings.showsInstallmentAmount
+            )
         }
-        let defaultInstallmentOptions = InstallmentOptions(monthValues: [2, 3, 4], includesRevolving: true)
-        let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
+
         return InstallmentConfiguration(
-            cardBasedOptions: [.visa: visaInstallmentOptions],
-            defaultOptions: defaultInstallmentOptions,
+            defaultOptions: options,
             showInstallmentAmount: cardSettings.showsInstallmentAmount
         )
     }
@@ -305,6 +342,10 @@ internal struct DemoAppSettings: Codable {
         return dropInConfiguration
     }
 
+    internal var addressCallbacks: AddressCallbacks? {
+        cardSettings.billingAddress.addressCallbacks
+    }
+
     internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
         var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
         authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
@@ -336,25 +377,8 @@ private extension BillingAddressModeDemoSetting {
         }
 
         switch self {
-        case let .lookup(hideForCardBrands):
-            let provider = DemoAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: cardBrands(hideForCardBrands),
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                },
-                onAddressSelected: { selected in
-                    try await provider.completeAsync(selected)
-                }
-            )
-        case let .lookupMapKit(hideForCardBrands):
-            let provider = MapkitAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: cardBrands(hideForCardBrands),
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                }
-            )
+        case let .lookup(hideForCardBrands), let .lookupMapKit(hideForCardBrands):
+            return .lookup(hideForCardBrands: cardBrands(hideForCardBrands))
         case let .full(supportedCountryCodes, hideForCardBrands):
             return .full(
                 supportedCountryCodes: supportedCountryCodes,
@@ -364,6 +388,26 @@ private extension BillingAddressModeDemoSetting {
             return .postalCode(hideForCardBrands: cardBrands(hideForCardBrands))
         case .none:
             return .none
+        }
+    }
+
+    var addressCallbacks: AddressCallbacks? {
+        switch self {
+        case .lookup:
+            let provider = DemoAddressLookupProvider()
+            return AddressCallbacks(onAddressLookup: { searchTerm in
+                await provider.searchAsync(searchTerm)
+            })
+            .onAddressSelected { selected in
+                try await provider.completeAsync(selected)
+            }
+        case .lookupMapKit:
+            let provider = MapkitAddressLookupProvider()
+            return AddressCallbacks(onAddressLookup: { searchTerm in
+                await provider.searchAsync(searchTerm)
+            })
+        case .none, .postalCode, .full:
+            return nil
         }
     }
 }

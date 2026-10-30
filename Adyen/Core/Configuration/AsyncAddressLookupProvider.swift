@@ -6,18 +6,15 @@
 
 import Foundation
 
-/// Internal adapter that bridges async closures to the AddressLookupProvider protocol
+/// Internal adapter that bridges ``AddressCallbacks`` to the AddressLookupProvider protocol.
+///
+/// Without callbacks, lookups return no results and selected addresses are used as-is.
 package final class AsyncAddressLookupProvider: AddressLookupProvider {
     
-    private let lookupHandler: (String) async -> [AddressLookupResult]
-    private let addressSelectedHandler: ((AddressLookupResult) async throws -> PostalAddress)?
+    private let callbacks: AddressCallbacks?
     
-    package init(
-        onLookup: @escaping (String) async -> [AddressLookupResult],
-        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
-    ) {
-        self.lookupHandler = onLookup
-        self.addressSelectedHandler = onAddressSelected
+    package init(callbacks: AddressCallbacks?) {
+        self.callbacks = callbacks
     }
     
     package func lookUp(
@@ -25,7 +22,7 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
         resultHandler: @escaping ([AddressLookupResult]) -> Void
     ) {
         Task {
-            let results = await lookupHandler(searchTerm)
+            let results = await callbacks?.onAddressLookup(searchTerm) ?? []
             resultHandler(results)
         }
     }
@@ -34,7 +31,7 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
         incompleteAddress: AddressLookupResult,
         resultHandler: @escaping (Result<PostalAddress, Error>) -> Void
     ) {
-        guard let addressSelectedHandler else {
+        guard let addressSelectedHandler = callbacks?.onAddressSelected else {
             resultHandler(.success(incompleteAddress.postalAddress))
             return
         }
