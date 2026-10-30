@@ -12,13 +12,6 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 
     internal var localizationParameters: LocalizationParameters?
 
-    /// Provides accessibility label for corresponding view
-    internal var accessibilityValue: String {
-        let format = localizedString(.cardExpiryItemAccessibilityLabel, localizationParameters)
-        let title = title ?? ""
-        return title.isEmpty ? format : "\(title), \(format)"
-    }
-
     /// Flag determining this forms state. Validation changes based on this.
     internal var isOptional: Bool = false {
         didSet {
@@ -51,6 +44,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
+        self.localizationParameters = localizationParameters
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
         placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
@@ -83,10 +77,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
         let view = FormTextInputItemView(item: item)
-        view.observe(item.$title) { _ in
-            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
-        }
-        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        view.accessibilityInputFormat = localizedString(.cardExpiryItemAccessibilityLabel, item.localizationParameters)
         return view
     }
 }

@@ -121,6 +121,12 @@ public final class SubmitButton: UIControl {
         super.layoutSubviews()
         self.adyen.round(using: style.cornerRounding)
     }
+
+    override public func accessibilityActivate() -> Bool {
+        guard isEnabled, isUserInteractionEnabled else { return false }
+        sendActions(for: .touchUpInside)
+        return true
+    }
     
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
