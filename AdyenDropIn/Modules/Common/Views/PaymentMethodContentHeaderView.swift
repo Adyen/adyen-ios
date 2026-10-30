@@ -4,9 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if DEBUG
-    import Adyen
-#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -47,24 +44,3 @@ internal struct PaymentMethodContentHeaderView: View {
         }
     }
 }
-
-#if DEBUG
-    #Preview("Payment method content header") {
-        let theme = CheckoutTheme.default
-        PaymentMethodContentHeaderView(
-            viewModel: .init(
-                logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
-                title: "•••• 1111",
-                subtitle: "Use Visa to pay €10.00",
-                theme: theme
-            ),
-            accessibilityIdentifiers: .init(
-                logo: "preview.logo",
-                title: "preview.title",
-                subtitle: "preview.subtitle"
-            )
-        )
-        .padding()
-        .background(Color(uiColor: theme.colors.background))
-    }
-#endif

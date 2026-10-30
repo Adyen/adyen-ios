@@ -52,35 +52,3 @@ internal struct SelectableDisclosureSection<Item, ID: Hashable>: View {
         }
     }
 }
-
-#Preview {
-    SelectableDisclosureSectionPreviewContainer()
-}
-
-private struct SelectableDisclosureSectionPreviewContainer: View {
-    private let items = ["US", "GB", "NL", "DE"]
-    @State private var selection: Set<String> = ["US", "NL"]
-    @State private var isExpanded = true
-
-    var body: some View {
-        List {
-            SelectableDisclosureSection(
-                title: "Supported Country Codes",
-                footer: "Pick the countries you support.",
-                items: items,
-                id: \.self,
-                summary: selection.sorted().joined(separator: ", "),
-                isExpanded: $isExpanded,
-                rowTitle: { $0 },
-                isSelected: { selection.contains($0) },
-                onToggle: { code in
-                    if selection.contains(code) {
-                        selection.remove(code)
-                    } else {
-                        selection.insert(code)
-                    }
-                }
-            )
-        }
-    }
-}
