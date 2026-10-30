@@ -34,7 +34,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
 
-        observe(item.$initialBrand) { [weak self] _ in
+        observe(item.$selectedBrand) { [weak self] _ in
             guard let self else { return }
             // Don't force validation - brand detection is not a validation trigger
             self.updateValidation()
@@ -42,7 +42,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
-            self?.detectedBrandsView.updateCurrentLogos(newValue)
+            guard let self else { return }
+            self.detectedBrandsView.updateCurrentLogos(newValue, mode: self.item.brandDisplayMode)
+        }
+
+        observe(item.$brandSelection) { [weak self] newValue in
+            self?.detectedBrandsView.updateSelection(with: newValue)
         }
     }
 
@@ -81,7 +86,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         // change accessory back only if brand is supported or empty
-        if item.initialBrand?.isSupported ?? true {
+        if item.selectedBrand?.isSupported ?? true {
             accessory = .customView(detectedBrandsView)
         }
         item.isActive = true
@@ -95,11 +100,24 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         item.isActive = false
     }
     
+    // overridden to detect the touches on the clipped part of the dual brand view
+    override internal func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let convertedPoint = convert(point, to: detectedBrandsView)
+        if let hitView = detectedBrandsView.overflowHitTest(point: convertedPoint, with: event) {
+            return hitView
+        }
+        return super.hitTest(point, with: event)
+    }
+    
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
     internal lazy var detectedBrandsView: DualBrandAccessoryView = {
-        DualBrandAccessoryView(separatorColor: theme.colors.separator)
+        let view = DualBrandAccessoryView(colors: theme.colors)
+        view.onBrandSelection = { [weak self] selection in
+            self?.item.selectBrand(from: selection)
+        }
+        return view
     }()
     
     @objc private func openCardScanner() {

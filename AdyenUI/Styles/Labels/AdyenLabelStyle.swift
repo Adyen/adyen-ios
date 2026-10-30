@@ -72,7 +72,7 @@ extension AdyenLabelStyle {
     /// Returns a new AdyenLabelStyle with the specified color.
     /// - Parameter color: The color to set.
     /// - Returns: A new `AdyenLabelStyle` instance.
-    internal func color(_ color: UIColor) -> AdyenLabelStyle {
+    package func color(_ color: UIColor) -> AdyenLabelStyle {
         var newStyle = self
         newStyle.color = color
         return newStyle

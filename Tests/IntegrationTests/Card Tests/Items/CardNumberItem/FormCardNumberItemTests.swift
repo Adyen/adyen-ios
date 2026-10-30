@@ -243,7 +243,198 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(textField.text, "1234 56")
         XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
     }
-    
+
+    // MARK: - Dual brand selection
+
+    func test_currentBrand_inSingleMode_shouldReturnDetectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+
+        XCTAssertEqual(sut.currentBrand?.brand, .visa)
+    }
+
+    func test_currentBrand_inDualUnselectableMode_shouldReturnNil() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+        let bcmc = DetectedCardBrand(brand: .bcmc)
+
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualUnselectable
+
+        XCTAssertNil(sut.currentBrand)
+    }
+
+    func test_currentBrand_inDualSelectableMode_shouldAutoSelectFirstBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+        let bcmc = DetectedCardBrand(brand: .bcmc)
+
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+
+        XCTAssertEqual(sut.currentBrand?.brand, .visa)
+    }
+
+    func test_currentBrand_inDualSelectableModeAfterUserSelection_shouldReturnSelectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+        let bcmc = DetectedCardBrand(brand: .bcmc)
+
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+        sut.selectBrand(from: .secondary)
+
+        XCTAssertEqual(sut.currentBrand?.brand, .bcmc)
+    }
+
+    func test_currentBrand_withLocallyDetectedBrand_shouldReturnNil() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+        sut.isBrandDetectedLocally = true
+
+        XCTAssertNil(sut.currentBrand)
+        XCTAssertEqual(sut.selectedBrand?.brand, .visa)
+    }
+
+    func test_selectBrand_fromPrimary_shouldSelectFirstDetectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+        let bcmc = DetectedCardBrand(brand: .bcmc)
+
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .primary)
+
+        XCTAssertEqual(sut.selectedBrand?.brand, .visa)
+    }
+
+    func test_selectBrand_fromSecondary_shouldSelectSecondDetectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let visa = DetectedCardBrand(brand: .visa)
+        let bcmc = DetectedCardBrand(brand: .bcmc)
+
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+
+        XCTAssertEqual(sut.selectedBrand?.brand, .bcmc)
+    }
+
+    func test_selectBrand_whenNoBrandsAreDetected_shouldKeepSelectionNil() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.selectBrand(from: .secondary)
+
+        XCTAssertNil(sut.selectedBrand)
+    }
+
+    func test_selectBrand_fromSecondary_shouldCallOnUserBrandSelection() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        var selectedBrand: DetectedCardBrand?
+        sut.onUserBrandSelection = { selectedBrand = $0 }
+
+        sut.update(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .bcmc)])
+        sut.selectBrand(from: .secondary)
+
+        XCTAssertEqual(selectedBrand?.brand, .bcmc)
+    }
+
+    // MARK: - Brand selection sync
+
+    func test_update_withSameDualBrandsAfterUserSelection_shouldKeepSelectedBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        let brands = [DetectedCardBrand(brand: .carteBancaire), DetectedCardBrand(brand: .visa)]
+        sut.brandDisplayMode = .dualSelectable
+
+        sut.update(brands: brands)
+        sut.selectBrand(from: .secondary)
+        sut.update(brands: brands)
+
+        XCTAssertEqual(sut.currentBrand?.brand, .visa)
+        XCTAssertEqual(sut.brandSelection, .secondary)
+    }
+
+    func test_update_withDifferentDualBrandsAfterUserSelection_shouldSelectFirstBrand() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        sut.brandDisplayMode = .dualSelectable
+
+        sut.update(brands: [DetectedCardBrand(brand: .carteBancaire), DetectedCardBrand(brand: .visa)])
+        sut.selectBrand(from: .secondary)
+        sut.update(brands: [DetectedCardBrand(brand: .bcmc), DetectedCardBrand(brand: .masterCard)])
+
+        XCTAssertEqual(sut.currentBrand?.brand, .bcmc)
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
+    func test_brandSelection_shouldDefaultToPrimary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
+    func test_brandSelection_whenSecondaryBrandIsSelected_shouldBeSecondary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.update(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .bcmc)])
+        sut.selectBrand(from: .secondary)
+
+        XCTAssertEqual(sut.brandSelection, .secondary)
+    }
+
+    func test_brandSelection_whenSelectionReturnsToPrimary_shouldBePrimary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.update(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .bcmc)])
+        sut.selectBrand(from: .secondary)
+        sut.selectBrand(from: .primary)
+
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
+    func test_brandSelection_whenFirstDetectedBrandIsUnsupported_shouldBeSecondary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.update(brands: [
+            DetectedCardBrand(brand: .visa, isSupported: false),
+            DetectedCardBrand(brand: .bcmc, isSupported: true)
+        ])
+
+        XCTAssertEqual(sut.selectedBrand?.brand, .bcmc)
+        XCTAssertEqual(sut.brandSelection, .secondary)
+    }
+
+    func test_brandSelection_withSingleBrand_shouldBePrimary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.update(brands: [DetectedCardBrand(brand: .visa)])
+
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
+    func test_brandSelection_whenBrandsAreCleared_shouldResetToPrimary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+        sut.update(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .bcmc)])
+        sut.selectBrand(from: .secondary)
+        XCTAssertEqual(sut.brandSelection, .secondary)
+
+        sut.update(brands: [])
+
+        XCTAssertNil(sut.selectedBrand)
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+
+    func test_brandSelection_withTwoSupportedBrands_shouldBePrimary() {
+        let sut = FormCardNumberItem(cardBrandLogos: [])
+
+        sut.update(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .bcmc)])
+
+        XCTAssertEqual(sut.selectedBrand?.brand, .visa)
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
 }
 
 // MARK: - Helper Extensions

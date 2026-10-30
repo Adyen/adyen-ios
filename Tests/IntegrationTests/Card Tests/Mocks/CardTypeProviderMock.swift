@@ -8,8 +8,11 @@
 
 final class BinInfoProviderMock: AnyBinInfoProvider {
     func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void) {
+        receivedSupportedTypes = supportedTypes
         onFetch?(completion)
     }
+
+    var receivedSupportedTypes: [CardBrand]?
 
     var onFetch: ((_ completion: @escaping (BinLookupResponse) -> Void) -> Void)?
 
