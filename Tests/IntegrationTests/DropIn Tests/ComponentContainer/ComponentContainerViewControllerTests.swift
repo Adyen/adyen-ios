@@ -84,86 +84,108 @@ struct ComponentContainerViewControllerTests {
         #expect(sut.view.backgroundColor == theme.colors.background)
     }
 
-    @Test("A submitted payment cannot be cancelled, so the shopper cannot navigate away from it.")
-    func paymentInProgress_shouldLockTheNavigation() async throws {
-        // Given
-        let (sut, viewModelMock, _) = await makeSUT()
-        _ = makeNavigationController(pushing: sut)
-
+    @Test("A sheet with the container as its root cannot be swiped away, so a submitted payment is never dismissed.")
+    func init_shouldPreventTheInteractiveDismissal() async {
         // When
-        viewModelMock.paymentInProgressSubject.send(true)
+        let (sut, _, _) = await makeSUT()
 
         // Then
-        #expect(try #require(sut.navigationItem.leftBarButtonItem).isEnabled == false)
         #expect(sut.isModalInPresentation)
     }
 
-    @Test
-    func paymentInProgress_whenEnded_shouldUnlockTheNavigation() async throws {
-        // Given
-        let (sut, viewModelMock, _) = await makeSUT()
-        _ = makeNavigationController(pushing: sut)
-        viewModelMock.paymentInProgressSubject.send(true)
-
-        // When
-        viewModelMock.paymentInProgressSubject.send(false)
-
-        // Then
-        #expect(try #require(sut.navigationItem.leftBarButtonItem).isEnabled)
-        #expect(!sut.isModalInPresentation)
-    }
-
-    @Test("The system back button cannot be disabled, so the container shows its own one that pops it.")
-    func backButton_whenTapped_shouldPopTheContainer() async throws {
+    @Test("The container keeps the system back button, so swiping back works while no payment is in progress.")
+    func navigationItem_shouldKeepTheSystemBackButton() async {
         // Given
         let (sut, _, _) = await makeSUT()
+
+        // When
         let navigationController = makeNavigationController(pushing: sut)
-        let backButtonItem = try #require(sut.navigationItem.leftBarButtonItem)
-        #expect(sut.navigationItem.hidesBackButton)
-        #expect(backButtonItem.isEnabled)
-
-        // When
-        let action = try #require(backButtonItem.action)
-        _ = backButtonItem.target?.perform(action)
 
         // Then
-        #expect(!navigationController.viewControllers.contains(sut))
+        #expect(sut.navigationItem.leftBarButtonItem == nil)
+        #expect(!sut.navigationItem.hidesBackButton)
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
     }
 
-    @Test
-    func backButton_shouldUseThemePrimaryColor() async throws {
-        // Given
-        let theme = CheckoutTheme(colors: CheckoutColors(primary: .magenta))
-        let (sut, _, _) = await makeSUT(theme: theme)
-
-        // When
-        sut.loadViewIfNeeded()
-
-        // Then
-        #expect(try #require(sut.navigationItem.leftBarButtonItem).tintColor == theme.colors.primary)
-    }
-
-    @Test("A module presenting the container as its root can provide its own back button, which is kept and disabled.")
-    func paymentInProgress_withACustomBackButton_shouldDisableIt() async {
+    @Test("A submitted payment cannot be cancelled, so the shopper cannot navigate away from it.")
+    func paymentInProgress_shouldLockTheNavigation() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
-        let customBackButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: nil, action: nil)
-        sut.navigationItem.leftBarButtonItem = customBackButtonItem
-        _ = makeNavigationController(pushing: sut)
+        let navigationController = makeNavigationController(pushing: sut)
 
         // When
         viewModelMock.paymentInProgressSubject.send(true)
 
         // Then
-        #expect(sut.navigationItem.leftBarButtonItem === customBackButtonItem)
-        #expect(!customBackButtonItem.isEnabled)
+        #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+    }
+
+    @Test
+    func paymentInProgress_whenEnded_shouldUnlockTheNavigation() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+        let navigationController = makeNavigationController(pushing: sut)
+        viewModelMock.paymentInProgressSubject.send(true)
 
         // When
         viewModelMock.paymentInProgressSubject.send(false)
 
         // Then
-        #expect(sut.navigationItem.leftBarButtonItem === customBackButtonItem)
-        #expect(customBackButtonItem.isEnabled)
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+    }
+
+    #if compiler(>=6.2)
+        @Test("From iOS 26 swiping anywhere in the content pops too, so that gesture is locked as well.")
+        func paymentInProgress_shouldLockTheContentPopGesture() async throws {
+            guard #available(iOS 26.0, *) else { return }
+
+            // Given
+            let (sut, viewModelMock, _) = await makeSUT()
+            let navigationController = makeNavigationController(pushing: sut)
+            let contentPopGestureRecognizer = try #require(navigationController.interactiveContentPopGestureRecognizer)
+
+            // When
+            viewModelMock.paymentInProgressSubject.send(true)
+
+            // Then
+            #expect(!contentPopGestureRecognizer.isEnabled)
+
+            // When
+            viewModelMock.paymentInProgressSubject.send(false)
+
+            // Then
+            #expect(contentPopGestureRecognizer.isEnabled)
+        }
+    #endif
+
+    @Test("A screen pushed during the payment, such as an action, gets an interactive bar and keeps its own pop gesture state.")
+    func pushingAScreen_whilePaymentInProgress_shouldHandOverTheNavigation() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+        let navigationController = makeNavigationController(pushing: sut)
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = navigationController
+        window.isHidden = false
+        window.layoutIfNeeded()
+        viewModelMock.paymentInProgressSubject.send(true)
+
+        // When
+        navigationController.pushViewController(PopGestureLockingViewController(), animated: false)
+        navigationController.view.layoutIfNeeded()
+
+        // Then
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+
+        // When
+        viewModelMock.paymentInProgressSubject.send(false)
+
+        // Then
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+        window.isHidden = true
     }
 
     // MARK: - Mocks
@@ -183,9 +205,10 @@ struct ComponentContainerViewControllerTests {
         }
     }
 
-    private final class NonAnimatedNavigationController: UINavigationController {
-        override func popViewController(animated: Bool) -> UIViewController? {
-            super.popViewController(animated: false)
+    private final class PopGestureLockingViewController: UIViewController {
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
     }
 
@@ -208,7 +231,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     private func makeNavigationController(pushing sut: ComponentContainerViewController) -> UINavigationController {
-        let navigationController = NonAnimatedNavigationController(rootViewController: UIViewController())
+        let navigationController = UINavigationController(rootViewController: UIViewController())
         navigationController.loadViewIfNeeded()
         navigationController.pushViewController(sut, animated: false)
         sut.loadViewIfNeeded()
