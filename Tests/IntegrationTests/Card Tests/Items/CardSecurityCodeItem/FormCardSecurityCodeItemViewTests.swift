@@ -34,6 +34,22 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testAccessibilityFormatSurvivesValidationBrandChangeAndReset() {
+        item.value = "1"
+        sut.showValidation()
+        let format = localizedString(.cardCvcItemPlaceholderDigits, nil, "3")
+        let expected = [item.title, format, item.validationFailureMessage].compactMap { $0 }.joined(separator: ", ")
+        XCTAssertEqual(sut.textField.accessibilityLabel, expected)
+
+        item.selectedCard = .americanExpress
+        let amexFormat = localizedString(.cardCvcItemPlaceholderDigits, nil, "4")
+        XCTAssertTrue(sut.textField.accessibilityLabel?.contains(amexFormat) == true)
+        XCTAssertTrue(sut.textField.accessibilityLabel?.contains(item.validationFailureMessage ?? "") == true)
+
+        sut.reset()
+        XCTAssertEqual(sut.textField.accessibilityLabel, [item.title, amexFormat].compactMap { $0 }.joined(separator: ", "))
+    }
+
     func test_textFieldSanitization_givenNonAllowedCharacters_shouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "458"
