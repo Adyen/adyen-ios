@@ -1,7 +1,7 @@
 #  Migration Notes
 
-## 5.27.0
-- CocoaPods is no longer supported. `5.26.0` is the last version available on CocoaPods. To get newer versions, remove the `Adyen` and `AdyenCardScanner` pods from your `Podfile` and add `https://github.com/Adyen/adyen-ios` with Swift Package Manager (or use Carthage). Pick the products that match the pods you used:
+## 5.28.0
+- CocoaPods is no longer supported. `5.27.0` is the last version available on CocoaPods. To get newer versions, remove the `Adyen` and `AdyenCardScanner` pods from your `Podfile` and add `https://github.com/Adyen/adyen-ios` with Swift Package Manager (or use Carthage). Pick the products that match the pods you used:
 
 | CocoaPods | Swift Package Manager product |
 |---|---|

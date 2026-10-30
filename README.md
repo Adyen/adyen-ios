@@ -73,7 +73,7 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 ### CocoaPods
 
-:warning: _CocoaPods is no longer supported. `5.26.0` is the last version available on CocoaPods. Use [Swift Package Manager](#swift-package-manager) or [Carthage](#carthage) to get newer versions. See the [migration notes](MIGRATION.md#5270) for how to switch._
+:warning: _CocoaPods is no longer supported. `5.27.0` is the last version available on CocoaPods. Use [Swift Package Manager](#swift-package-manager) or [Carthage](#carthage) to get newer versions. See the [migration notes](MIGRATION.md#5280) for how to switch._
 
 ### Carthage
 
