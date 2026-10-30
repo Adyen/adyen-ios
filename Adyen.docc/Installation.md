@@ -1,6 +1,6 @@
 # Installation
 
-Adyen Components for iOS are available through either CocoaPods, Carthage or Swift Package Manager.
+Adyen Components for iOS are available through either Swift Package Manager or Carthage.
 
 ### Minimum Requirements
 
@@ -34,26 +34,7 @@ Adyen Components for iOS are available through either CocoaPods, Carthage or Swi
     }
     
     @Tab(CocoaPods) {
-        1. Add `pod 'Adyen'` to your `Podfile`.
-        2. Run `pod install`.
-
-        You can install all modules or add individual modules, depending on your needs and integration type.
-        The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
-        The `Adyen/CashAppPay` module needs to be explicitly added to support Cash App Pay.
-        The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
-
-        ```
-        pod 'Adyen'               // Add DropIn with all modules except WeChat Pay, Cash App Pay, SwiftUI and Session.
-        // Add individual modules
-        pod 'Adyen/Session'       // For the new Sessions integration.
-        pod 'Adyen/Card'          // Card components.
-        pod 'Adyen/Encryption'    // Encryption module.
-        pod 'Adyen/Components'    // All other payment components except WeChat Pay.
-        pod 'Adyen/Actions'       // Action Components.
-        pod 'Adyen/WeChatPay'     // WeChat Pay Component.
-        pod 'Adyen/CashAppPay'    // Cash App Pay Component.
-        pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
-        ```
+        > important: CocoaPods is no longer supported. `5.27.0` is the last version available on CocoaPods. Use Swift Package Manager or Carthage to get newer versions.
     }
     
     @Tab(Carthage) {

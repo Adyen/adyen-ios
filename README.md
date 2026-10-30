@@ -1,5 +1,4 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-os-compatibility.yml?branch=develop)
-[![Pod](https://img.shields.io/cocoapods/v/Adyen.svg?style=flat)](http://cocoapods.org/pods/Adyen)
 [![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&id=Adyen_adyen-ios)
@@ -39,7 +38,7 @@ More information about our versioning and the Drop-in/Components lifecycle can b
 
 ## Installation
 
-Adyen iOS are available through [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](http://cocoapods.org) or [Carthage](https://github.com/Carthage/Carthage).
+Adyen iOS are available through [Swift Package Manager](https://swift.org/package-manager/) or [Carthage](https://github.com/Carthage/Carthage).
 
 ### Minimum Requirements
 
@@ -74,26 +73,7 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 ### CocoaPods
 
-1. Add `pod 'Adyen'` to your `Podfile`.
-2. Run `pod install`.
-
-You can install all modules or add individual modules, depending on your needs and integration type.
-The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
-The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
-
-```
-pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
-// Add individual modules
-pod 'Adyen/Card'          // Card components.
-pod 'Adyen/Session'       // Handler for the simplified checkout flow.
-pod 'Adyen/Encryption'    // Encryption module.
-pod 'Adyen/Components'    // All other payment components except WeChat Pay.
-pod 'Adyen/Actions'       // Action Components.
-pod 'Adyen/WeChatPay'     // WeChat Pay Component.
-pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
-```
-
-:warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _CocoaPods is no longer supported. `5.27.0` is the last version available on CocoaPods. Use [Swift Package Manager](#swift-package-manager) or [Carthage](#carthage) to get newer versions. See the [migration notes](MIGRATION.md#5280) for how to switch._
 
 ### Carthage
 

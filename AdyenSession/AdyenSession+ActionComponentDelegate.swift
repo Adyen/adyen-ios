@@ -5,9 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenActions
 import Foundation
 
 @_spi(AdyenInternal)

@@ -6,9 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenActions
 import CloudKit
 import Foundation
 
