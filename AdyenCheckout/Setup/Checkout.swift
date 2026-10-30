@@ -38,6 +38,8 @@ public final class Checkout {
     /// - Returns: A checkout instance that can create payment components and Drop-in.
     /// - Throws: ``CheckoutError`` if the checkout session cannot be established.
     ///   Inspect ``CheckoutError/code`` for the specific failure reason.
+    ///   The code is ``CheckoutError/Code/invalidConfiguration`` when a component configuration requires callbacks
+    ///   that `callbacks` doesn't contain, for example `BillingAddressMode.lookup` without `AddressCallbacks`.
     public static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -58,6 +60,8 @@ public final class Checkout {
     ///   - callbacks: The callbacks for this checkout flow.
     /// - Returns: A checkout instance that can create payment components and Drop-in.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
+    ///   The code is ``CheckoutError/Code/invalidConfiguration`` when a component configuration requires callbacks
+    ///   that `callbacks` doesn't contain, for example `BillingAddressMode.lookup` without `AddressCallbacks`.
     package static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,

@@ -40,13 +40,10 @@ public enum BillingAddressMode {
     /// - Parameters:
     ///   - hideForCardBrands: Card brands for which the address lookup should be hidden
     ///     when detected via BIN lookup.
-    ///   - onAddressLookup: Called when the shopper enters a search term. Returns matching addresses.
-    ///   - onAddressSelected: Called when the shopper selects an address from the search results.
-    ///     Use this to fetch the complete address details if the initial result was partial.
-    ///     If not provided, the selected address is used as-is.
+    ///
+    /// Supply `AddressCallbacks` in the checkout callbacks to look up and complete addresses.
+    /// Without them, `Checkout.setup` throws `CheckoutError` with the `invalidConfiguration` code.
     case lookup(
-        hideForCardBrands: Set<CardBrand> = [],
-        onAddressLookup: (String) async -> [AddressLookupResult],
-        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
+        hideForCardBrands: Set<CardBrand> = []
     )
 }

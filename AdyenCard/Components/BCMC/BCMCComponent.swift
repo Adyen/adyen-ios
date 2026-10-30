@@ -20,7 +20,8 @@ package final class BCMCComponent: CardComponent {
     package init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init()
+        configuration: CardConfiguration = .init(),
+        callbacks: CardCallbacks
     ) {
         let configuration = configuration.bcmcConfiguration()
         let binInfoProvider = BinInfoProvider(
@@ -33,7 +34,8 @@ package final class BCMCComponent: CardComponent {
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            binProvider: binInfoProvider
+            binProvider: binInfoProvider,
+            callbacks: callbacks
         )
     }
     
@@ -41,14 +43,16 @@ package final class BCMCComponent: CardComponent {
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration,
-        binProvider: AnyBinInfoProvider
+        binProvider: AnyBinInfoProvider,
+        callbacks: CardCallbacks = .init()
     ) {
         let configuration = configuration.bcmcConfiguration()
         super.init(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            binProvider: binProvider
+            binProvider: binProvider,
+            callbacks: callbacks
         )
     }
 

@@ -37,6 +37,7 @@ internal class CardViewController: FormViewController {
     // US debit brands stay supported for the bin lookup, but their logos are not shown.
     private static let hiddenLogoBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+    private let addressCallbacks: AddressCallbacks?
 
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
@@ -79,7 +80,8 @@ internal class CardViewController: FormViewController {
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
             addressMode: configuration.billingAddressMode,
-            scanCardHandler: scanCardHandler
+            scanCardHandler: scanCardHandler,
+            addressCallbacks: addressCallbacks
         )
     }()
     
@@ -108,7 +110,8 @@ internal class CardViewController: FormViewController {
         scope: String,
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
-        cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
+        cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler,
+        addressCallbacks: AddressCallbacks? = nil
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
@@ -118,6 +121,7 @@ internal class CardViewController: FormViewController {
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
+        self.addressCallbacks = addressCallbacks
 
         self.cardLogos = supportedCardBrands
             .filter { !Self.hiddenLogoBrands.contains($0) }
@@ -406,6 +410,9 @@ extension CardViewController {
             return nil
         }
     }
+}
+
+extension CardViewController {
     
     private func prefill() {
         guard let shopperInformation else { return }

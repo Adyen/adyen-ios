@@ -31,7 +31,8 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BLIKComponent {
         BLIKComponent(
             paymentMethod: paymentMethod,

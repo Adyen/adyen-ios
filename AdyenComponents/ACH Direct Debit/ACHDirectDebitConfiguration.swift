@@ -86,3 +86,11 @@ extension ACHDirectDebitConfiguration {
         return config
     }
 }
+
+extension ACHDirectDebitConfiguration {
+
+    /// Returns a copy with the session's store payment method visibility applied.
+    package func applying(_ session: SessionComponentConfiguration) -> Self {
+        showStorePaymentMethod(session.showStorePaymentMethod)
+    }
+}

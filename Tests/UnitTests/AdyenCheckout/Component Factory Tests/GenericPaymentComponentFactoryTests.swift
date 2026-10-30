@@ -61,7 +61,8 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -79,7 +80,8 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -95,7 +97,8 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then

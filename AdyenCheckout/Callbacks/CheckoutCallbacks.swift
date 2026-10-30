@@ -15,6 +15,7 @@ import UIKit
 /// - Handle payment completion and failures.
 /// - Inspect or modify shopper data before submission.
 /// - Customize how action view controllers are presented.
+/// - Supply additional callbacks, such as `CardCallbacks`, in a trailing builder block.
 ///
 /// Provide the required completion and failure callbacks in the initializer, then add optional callbacks using modifiers.
 /// Pass the callbacks to `Checkout.setup` when setting up checkout.
@@ -28,7 +29,12 @@ import UIKit
 ///     onFailure: { error in
 ///         print(error.localizedDescription)
 ///     }
-/// )
+/// ) {
+///     CardCallbacks()
+///         .onBinChange { bin in
+///             print(bin)
+///         }
+/// }
 /// .onBeforeSubmit { data in
 ///     .proceed(data: data, sessionData: nil)
 /// }
@@ -40,6 +46,7 @@ public struct CheckoutCallbacks: CheckoutResultCallbacks {
     package let onFailure: CheckoutFailureHandler
     package private(set) var onBeforeSubmit: CheckoutBeforeSubmitHandler?
     package private(set) var onAction: CheckoutActionHandler?
+    package let additionalCallbacks: [any CheckoutAdditionalCallbacks]
 
     /// Creates a CheckoutCallbacks instance.
     /// - Parameters:
@@ -48,12 +55,17 @@ public struct CheckoutCallbacks: CheckoutResultCallbacks {
     ///       and ``CheckoutResult/sessionResult`` used to retrieve the payment outcome on your server.
     ///   - onFailure: Called after the payment component finalizes, when checkout fails or the shopper cancels.
     ///     - error: The `CheckoutError` describing the failure or cancellation.
+    ///   - additionalCallbacks: A builder for additional callbacks, such as `CardCallbacks` and `AddressCallbacks`.
+    ///     Defaults to an empty block.
+    ///     When a callback type occurs more than once, the last value replaces the earlier value.
     public init(
         onComplete: @escaping @MainActor (_ result: CheckoutResult) -> Void,
-        onFailure: @escaping @MainActor (_ error: CheckoutError) -> Void
+        onFailure: @escaping @MainActor (_ error: CheckoutError) -> Void,
+        @CheckoutAdditionalCallbacksBuilder additionalCallbacks: () -> [any CheckoutAdditionalCallbacks] = { [] }
     ) {
         self.onComplete = onComplete
         self.onFailure = onFailure
+        self.additionalCallbacks = additionalCallbacks()
     }
 
     /// Sets a callback to inspect or modify shopper data before submission.
