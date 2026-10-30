@@ -50,14 +50,13 @@ class CardComponentTests: XCTestCase {
         }
     }
     
-    func test_supportedCardBrands_whenPaymentMethodBrandsIncludeUSDebitBrands_shouldExcludeUSDebitBrands() {
-        let usDebitBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
-        let expectedBrands: [CardBrand] = [.visa, .masterCard]
+    func test_supportedCardBrands_whenPaymentMethodBrandsIncludeUSDebitBrands_shouldIncludeUSDebitBrands() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
         let paymentMethod = CardPaymentMethod(
             type: .bcmc,
             name: "Test name",
             fundingSource: .credit,
-            brands: expectedBrands + usDebitBrands
+            brands: brands
         )
 
         let sut = CardComponent(
@@ -66,14 +65,13 @@ class CardComponentTests: XCTestCase {
             configuration: CardConfiguration()
         )
 
-        XCTAssertEqual(sut.supportedCardBrands, expectedBrands)
+        XCTAssertEqual(sut.supportedCardBrands, brands)
     }
 
-    func test_supportedCardBrands_whenConfiguredBrandsIncludeUSDebitBrands_shouldExcludeUSDebitBrands() {
-        let usDebitBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
-        let expectedBrands: [CardBrand] = [.visa, .masterCard]
+    func test_supportedCardBrands_whenConfiguredBrandsIncludeUSDebitBrands_shouldIncludeUSDebitBrands() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
         var configuration = CardConfiguration()
-        configuration.supportedCardBrands = expectedBrands + usDebitBrands
+        configuration.supportedCardBrands = brands
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -81,7 +79,83 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        XCTAssertEqual(sut.supportedCardBrands, expectedBrands)
+        XCTAssertEqual(sut.supportedCardBrands, brands)
+    }
+
+    func test_cardBrandLogos_whenSupportedBrandsIncludeUSDebitBrands_shouldExcludeUSDebitLogos() {
+        let visibleBrands: [CardBrand] = [.visa, .masterCard]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = visibleBrands + [.accel, .pulse, .star, .nyce]
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        let numberContainerItem = sut.cardViewController.items.numberContainerItem
+        XCTAssertEqual(numberContainerItem.cardBrandLogos.map(\.brand), visibleBrands)
+        XCTAssertEqual(numberContainerItem.numberItem.cardBrandLogos.map(\.brand), visibleBrands)
+    }
+
+    func test_binLookup_whenSupportedBrandsIncludeUSDebitBrands_shouldSendUSDebitBrandsAsSupported() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = brands
+        let binInfoProviderMock = BinInfoProviderMock()
+        let fetchExpectation = expectation(description: "Bin lookup requested")
+        binInfoProviderMock.onFetch = { _ in fetchExpectation.fulfill() }
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            binProvider: binInfoProviderMock
+        )
+        sut.didChange(pan: "41111111111")
+
+        wait(for: [fetchExpectation], timeout: 2)
+        XCTAssertEqual(binInfoProviderMock.receivedSupportedTypes, brands)
+    }
+
+    func test_selectedBrand_whenBinLookupReturnsVisaAndStar_shouldBeNil() {
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = [.visa, .masterCard, .star]
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        sut.viewController.loadViewIfNeeded()
+
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .star)],
+            issuingCountryCode: "US",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(response)
+
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.brandDisplayMode, .dualUnselectable)
+        XCTAssertNil(sut.cardViewController.selectedBrand)
+    }
+
+    func test_selectedBrand_whenBinLookupReturnsSingleBrand_shouldBeDetectedBrand() {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+        sut.viewController.loadViewIfNeeded()
+
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa)],
+            issuingCountryCode: "US",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(response)
+
+        XCTAssertEqual(sut.cardViewController.selectedBrand, CardBrand.visa.rawValue)
     }
 
     func test_cardViewController_shouldRequireKeyboardInput() throws {

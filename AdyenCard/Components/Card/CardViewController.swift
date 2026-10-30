@@ -34,6 +34,8 @@ internal class CardViewController: FormViewController {
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
+    // US debit brands stay supported for the bin lookup, but their logos are not shown.
+    private static let hiddenLogoBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
 
     private lazy var cardScannerController: CardScannerControlling = {
@@ -117,9 +119,9 @@ internal class CardViewController: FormViewController {
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
 
-        self.cardLogos = supportedCardBrands.map {
-            .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)
-        }
+        self.cardLogos = supportedCardBrands
+            .filter { !Self.hiddenLogoBrands.contains($0) }
+            .map { .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0) }
 
         super.init(
             scrollEnabled: configuration.showsSubmitButton,
