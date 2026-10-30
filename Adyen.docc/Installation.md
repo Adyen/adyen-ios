@@ -34,7 +34,7 @@ Adyen Components for iOS are available through either Swift Package Manager or C
     }
     
     @Tab(CocoaPods) {
-        > important: CocoaPods is no longer supported. `5.26.0` is the last version available on CocoaPods. Use Swift Package Manager or Carthage to get newer versions.
+        > important: CocoaPods is no longer supported. `5.27.0` is the last version available on CocoaPods. Use Swift Package Manager or Carthage to get newer versions.
     }
     
     @Tab(Carthage) {
