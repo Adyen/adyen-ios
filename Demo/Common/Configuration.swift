@@ -342,6 +342,10 @@ internal struct DemoAppSettings: Codable {
         return dropInConfiguration
     }
 
+    internal var addressCallbacks: AddressCallbacks? {
+        cardSettings.billingAddress.addressCallbacks
+    }
+
     internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
         var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
         authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
@@ -373,25 +377,8 @@ private extension BillingAddressModeDemoSetting {
         }
 
         switch self {
-        case let .lookup(hideForCardBrands):
-            let provider = DemoAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: cardBrands(hideForCardBrands),
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                },
-                onAddressSelected: { selected in
-                    try await provider.completeAsync(selected)
-                }
-            )
-        case let .lookupMapKit(hideForCardBrands):
-            let provider = MapkitAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: cardBrands(hideForCardBrands),
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                }
-            )
+        case let .lookup(hideForCardBrands), let .lookupMapKit(hideForCardBrands):
+            return .lookup(hideForCardBrands: cardBrands(hideForCardBrands))
         case let .full(supportedCountryCodes, hideForCardBrands):
             return .full(
                 supportedCountryCodes: supportedCountryCodes,
@@ -401,6 +388,26 @@ private extension BillingAddressModeDemoSetting {
             return .postalCode(hideForCardBrands: cardBrands(hideForCardBrands))
         case .none:
             return .none
+        }
+    }
+
+    var addressCallbacks: AddressCallbacks? {
+        switch self {
+        case .lookup:
+            let provider = DemoAddressLookupProvider()
+            return AddressCallbacks(onAddressLookup: { searchTerm in
+                await provider.searchAsync(searchTerm)
+            })
+            .onAddressSelected { selected in
+                try await provider.completeAsync(selected)
+            }
+        case .lookupMapKit:
+            let provider = MapkitAddressLookupProvider()
+            return AddressCallbacks(onAddressLookup: { searchTerm in
+                await provider.searchAsync(searchTerm)
+            })
+        case .none, .postalCode, .full:
+            return nil
         }
     }
 }

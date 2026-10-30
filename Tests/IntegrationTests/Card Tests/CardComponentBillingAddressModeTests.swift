@@ -409,7 +409,8 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_hideForMatchingCard_hidesLookup_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
-            billingAddressMode: .lookup(hideForCardBrands: [CardBrand.visa], onAddressLookup: Self.anyOnAddressLookup),
+            billingAddressMode: .lookup(hideForCardBrands: [CardBrand.visa]),
+            addressCallbacks: AddressCallbacks(onAddressLookup: Self.anyOnAddressLookup),
             detectedBrand: CardBrand.visa
         )
 
@@ -428,13 +429,11 @@ struct CardComponentBillingAddressModeTests {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: [CardBrand.jcb],
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
-                },
-                onAddressSelected: { $0.postalAddress }
-            ),
+            billingAddressMode: .lookup(hideForCardBrands: [CardBrand.jcb]),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
+                [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
+            })
+            .onAddressSelected { $0.postalAddress },
             detectedBrand: CardBrand.visa
         )
 
@@ -453,13 +452,11 @@ struct CardComponentBillingAddressModeTests {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: [],
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
-                },
-                onAddressSelected: { $0.postalAddress }
-            ),
+            billingAddressMode: .lookup(hideForCardBrands: []),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
+                [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
+            })
+            .onAddressSelected { $0.postalAddress },
             detectedBrand: detectedBrand
         )
 
@@ -479,13 +476,11 @@ struct CardComponentBillingAddressModeTests {
         var receivedSearchTerms: [String] = []
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: Self.anyHideForCardBrands,
-                onAddressLookup: { searchTerm in
-                    receivedSearchTerms.append(searchTerm)
-                    return []
-                }
-            )
+            billingAddressMode: .lookup(hideForCardBrands: Self.anyHideForCardBrands),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { searchTerm in
+                receivedSearchTerms.append(searchTerm)
+                return []
+            })
         )
 
         await proxy.load()
@@ -502,13 +497,11 @@ struct CardComponentBillingAddressModeTests {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: Self.anyHideForCardBrands,
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
-                },
-                onAddressSelected: { $0.postalAddress }
-            )
+            billingAddressMode: .lookup(hideForCardBrands: Self.anyHideForCardBrands),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
+                [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
+            })
+            .onAddressSelected { $0.postalAddress }
         )
 
         await proxy.load()
@@ -530,13 +523,11 @@ struct CardComponentBillingAddressModeTests {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: Self.anyHideForCardBrands,
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
-                },
-                onAddressSelected: { $0.postalAddress }
-            )
+            billingAddressMode: .lookup(hideForCardBrands: Self.anyHideForCardBrands),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
+                [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
+            })
+            .onAddressSelected { $0.postalAddress }
         )
 
         await proxy.load()
@@ -557,15 +548,13 @@ struct CardComponentBillingAddressModeTests {
         let completeAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                hideForCardBrands: Self.anyHideForCardBrands,
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny-123", postalAddress: partialAddress)]
-                },
-                onAddressSelected: { _ in
-                    completeAddress
-                }
-            )
+            billingAddressMode: .lookup(hideForCardBrands: Self.anyHideForCardBrands),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
+                [AddressLookupResult(identifier: "ny-123", postalAddress: partialAddress)]
+            })
+            .onAddressSelected { _ in
+                completeAddress
+            }
         )
 
         await proxy.load()
@@ -579,7 +568,7 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_analytics_reportsModeAsLookup() throws {
         let configData = try analyticsConfigData(
-            for: .lookup(hideForCardBrands: Self.anyHideForCardBrands, onAddressLookup: Self.anyOnAddressLookup)
+            for: .lookup(hideForCardBrands: Self.anyHideForCardBrands)
         )
 
         #expect(configData["billingAddressMode"] == "lookup")
@@ -590,7 +579,7 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_analytics_withHideForCardBrands_reportsBrands() throws {
         let configData = try analyticsConfigData(
-            for: .lookup(hideForCardBrands: [.jcb], onAddressLookup: Self.anyOnAddressLookup)
+            for: .lookup(hideForCardBrands: [.jcb])
         )
 
         #expect(configData["billingAddressMode"] == "lookup")
@@ -602,7 +591,8 @@ struct CardComponentBillingAddressModeTests {
         let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: { _ in
+            billingAddressMode: .lookup(hideForCardBrands: []),
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in
                 // Prefilling must not trigger the lookup handler.
                 Issue.record("Lookup handler should not be called for a prefilled address")
                 return []
@@ -617,6 +607,29 @@ struct CardComponentBillingAddressModeTests {
         // No manual lookup/selection — the prefilled value should be submitted as-is.
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == prefilledAddress)
+    }
+
+    @Test
+    func lookup_withoutAddressCallbacks_keepsManualEntryAvailable() async throws {
+        let previousListener = AdyenAssertion.listener
+        var assertions: [String] = []
+        AdyenAssertion.listener = { assertions.append($0) }
+        defer { AdyenAssertion.listener = previousListener }
+        let expectedAddress = PostalAddressMocks.newYorkPostalAddress
+        let proxy = makeSUT(billingAddressMode: .lookup())
+        proxy.component.cardViewController.loadViewIfNeeded()
+        AdyenAssertion.listener = previousListener
+        #expect(assertions.count == 1)
+        #expect(assertions.first?.contains("AddressCallbacks") == true)
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        try await proxy.fillBillingAddressManuallyFromLookup(with: expectedAddress)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == expectedAddress)
     }
 
     // MARK: - Helpers
@@ -646,6 +659,7 @@ struct CardComponentBillingAddressModeTests {
 
     private func makeSUT(
         billingAddressMode: BillingAddressMode,
+        addressCallbacks: AddressCallbacks? = nil,
         detectedBrand: CardBrand = anyCardBrand,
         shopperInformation: PrefilledShopperInformation? = nil
     ) -> CardComponentProxy {
@@ -678,7 +692,8 @@ struct CardComponentBillingAddressModeTests {
                 paymentMethod: method,
                 context: Dummy.context,
                 configuration: configuration,
-                binProvider: binProvider
+                binProvider: binProvider,
+                addressCallbacks: addressCallbacks
             )
 
             proxy = CardComponentProxy(component: component)
@@ -747,7 +762,9 @@ private struct CardComponentProxy {
         guard let view, view.window != nil else { return false }
         var current: UIView? = view
         while let candidate = current {
-            if candidate.isHidden || candidate.alpha < 0.01 { return false }
+            if candidate.isHidden || candidate.alpha < 0.01 {
+                return false
+            }
             current = candidate.superview
         }
         return true
@@ -839,6 +856,24 @@ private struct CardComponentProxy {
     /// tap billing address picker -> search -> select result -> form prefilled -> tap Done.
     func fillBillingAddressViaLookup(searchTerm: String) async throws {
         let addressFormVC = try await searchAndSelectAddressFromLookup(searchTerm: searchTerm)
+        addressFormVC.submitTapped()
+        await waitForDismissal()
+    }
+
+    func fillBillingAddressManuallyFromLookup(with address: PostalAddress) async throws {
+        let lookupVC = try await openBillingAddressLookup()
+        let searchVM = lookupVC.viewModel.buildAddressSearchViewModel { _ in }
+        let resultCount = await withCheckedContinuation { continuation in
+            searchVM.handleLookUp(searchTerm: "no matches") { items in
+                continuation.resume(returning: items.count)
+            }
+        }
+        #expect(resultCount == 0)
+
+        searchVM.handleSwitchToManualEntry()
+        await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
+        let addressFormVC = try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
+        fillAddressFields(in: addressFormVC.view, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }

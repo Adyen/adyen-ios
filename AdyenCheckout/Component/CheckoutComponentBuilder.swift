@@ -28,6 +28,7 @@ package enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
         sessionConfiguration: SessionComponentConfiguration? = nil,
+        additionalCallbacks: AdditionalCallbacksStore = .init(),
         context: AdyenContext
     ) throws -> PaymentComponent {
         
@@ -82,7 +83,11 @@ package enum CheckoutComponentBuilder {
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
                 return try createComponent(
-                    using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
+                    using: CardComponentFactory(
+                        sessionConfiguration: sessionConfiguration,
+                        callbacks: additionalCallbacks.callbacks(of: CardCallbacks.self) ?? .init(),
+                        addressCallbacks: additionalCallbacks.callbacks(of: AddressCallbacks.self)
+                    ),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
                     policy: policy,
@@ -150,6 +155,7 @@ package enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         policy: ComponentBuildPolicy,
         sessionConfiguration: SessionComponentConfiguration? = nil,
+        additionalCallbacks: AdditionalCallbacksStore = .init(),
         context: AdyenContext
     ) throws -> PaymentComponent {
         if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
@@ -166,6 +172,7 @@ package enum CheckoutComponentBuilder {
             configuration: configuration,
             policy: policy,
             sessionConfiguration: sessionConfiguration,
+            additionalCallbacks: additionalCallbacks,
             context: context
         )
     }
@@ -173,7 +180,7 @@ package enum CheckoutComponentBuilder {
     // swiftlint:disable function_body_length
     /// Returns whether a component can currently be built for a regular or stored payment method.
     ///
-    /// The regular-method dispatch mirrors ``build(for:configuration:policy:sessionConfiguration:context:)``.
+    /// The regular-method dispatch mirrors ``build(for:configuration:policy:sessionConfiguration:additionalCallbacks:context:)``.
     /// Keep both switches in sync when adding a payment method.
     @MainActor
     package static func isAvailable(
@@ -306,26 +313,6 @@ extension CheckoutComponentBuilder {
     }
 
     @MainActor
-    private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
-        for paymentMethod: PaymentMethod,
-        defaultValue: @autoclosure () throws -> Configuration,
-        configuration: CheckoutConfiguration
-    ) throws -> Configuration {
-
-        var componentConfiguration = try configuration.configuration(
-            for: paymentMethod,
-            defaultValue: defaultValue()
-        )
-
-        componentConfiguration.theme = configuration.theme
-        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
-            mergingExistingParameters: componentConfiguration.localizationParameters
-        )
-
-        return componentConfiguration
-    }
-
-    @MainActor
     private static func createStoredCardComponent(
         storedPaymentMethod: StoredCardPaymentMethod,
         configuration: CheckoutConfiguration,
@@ -363,5 +350,25 @@ extension CheckoutComponentBuilder {
         component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 
         return component
+    }
+    
+    @MainActor
+    private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
+        for paymentMethod: PaymentMethod,
+        defaultValue: @autoclosure () throws -> Configuration,
+        configuration: CheckoutConfiguration
+    ) throws -> Configuration {
+
+        var componentConfiguration = try configuration.configuration(
+            for: paymentMethod,
+            defaultValue: defaultValue()
+        )
+
+        componentConfiguration.theme = configuration.theme
+        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: componentConfiguration.localizationParameters
+        )
+
+        return componentConfiguration
     }
 }

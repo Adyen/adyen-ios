@@ -302,14 +302,17 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(hideForCardBrands: [], onAddressLookup: { _ in [] }, onAddressSelected: nil)
+        configuration.billingAddressMode = .lookup()
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
                 containerOutline: expectedBorderColor
             )
         )
 
-        let sut = makeSUT(configuration: configuration)
+        let sut = makeSUT(
+            configuration: configuration,
+            addressCallbacks: AddressCallbacks(onAddressLookup: { _ in [] })
+        )
 
         setupRootViewController(sut.cardViewController)
 
@@ -400,19 +403,10 @@ class CardComponentTests: XCTestCase {
             $0(BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress)], isCreatedLocally: false))
         }
 
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration(),
-            binProvider: cardBrandProviderMock
-        )
-
-        setupRootViewController(sut.viewController)
-
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let expectationCardBrand = XCTestExpectation(description: "CardBrand Expectation")
         
-        sut.configuration = sut.configuration
+        let callbacks = CardCallbacks()
             .onBinChange { value in
                 XCTAssertEqual(value, "371449")
                 expectationBin.fulfill()
@@ -425,6 +419,16 @@ class CardComponentTests: XCTestCase {
                 XCTAssertEqual(value, expected)
                 expectationCardBrand.fulfill()
             }
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration(),
+            binProvider: cardBrandProviderMock,
+            callbacks: callbacks
+        )
+
+        setupRootViewController(sut.viewController)
         
         self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
@@ -1439,13 +1443,17 @@ class CardComponentTests: XCTestCase {
             return sectionView
         }
         for subview in view.subviews {
-            if let found = sectionHeaderView(containing: text, in: subview) { return found }
+            if let found = sectionHeaderView(containing: text, in: subview) {
+                return found
+            }
         }
         return nil
     }
 
     private func containsLabel(withText text: String, in view: UIView) -> Bool {
-        if let label = view as? UILabel, label.text == text { return true }
+        if let label = view as? UILabel, label.text == text {
+            return true
+        }
         return view.subviews.contains { containsLabel(withText: text, in: $0) }
     }
 
@@ -2272,13 +2280,15 @@ extension CardComponentTests {
 
     private func makeSUT(
         configuration: CardConfiguration,
-        amount: Amount? = nil
+        amount: Amount? = nil,
+        addressCallbacks: AddressCallbacks? = nil
     ) -> CardComponent {
         CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: amount),
             configuration: configuration,
-            binProvider: BinInfoProviderMock()
+            binProvider: BinInfoProviderMock(),
+            addressCallbacks: addressCallbacks
         )
     }
 

@@ -19,9 +19,17 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package typealias Component = CardComponent
 
     private let sessionConfiguration: SessionComponentConfiguration?
+    private let callbacks: CardCallbacks
+    private let addressCallbacks: AddressCallbacks?
 
-    package init(sessionConfiguration: SessionComponentConfiguration? = nil) {
+    package init(
+        sessionConfiguration: SessionComponentConfiguration? = nil,
+        callbacks: CardCallbacks = .init(),
+        addressCallbacks: AddressCallbacks? = nil
+    ) {
         self.sessionConfiguration = sessionConfiguration
+        self.callbacks = callbacks
+        self.addressCallbacks = addressCallbacks
     }
 
     /// Creates a card payment component.
@@ -48,7 +56,9 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         return CardComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks,
+            addressCallbacks: addressCallbacks
         )
     }
     

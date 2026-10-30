@@ -32,13 +32,7 @@ let configuration = try CheckoutConfiguration(
         .showSecurityCode(true)
         .showSecurityCodeForStoredCard(true)
         .supportedCardBrands([.visa, .masterCard])
-        .billingAddressMode(.full)
-        .onBinChange { bin in
-            print(bin)
-        }
-        .onBinLookup { brands in
-            print(brands)
-        }
+        .billingAddressMode(.full())
 }
 ```
 
@@ -56,10 +50,76 @@ let configuration = try CheckoutConfiguration(
 | `installmentConfiguration(_:)` | Configure installments. |
 | `billingAddressMode(_:)` | Control billing address collection. |
 | `shopperInformation(_:)` | Prefill shopper details. |
-| `onBinChange(_:)` | Receive BIN updates while the shopper types. |
-| `onBinLookup(_:)` | Receive detected card brands from card number input. |
 
 When you use [session flow](card-session-flow.md), some card settings, including `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and `showInstallmentAmount`, are determined by the session instead of component-level overrides. For details, see [card-session-flow.md](card-session-flow.md).
+
+## Card callbacks
+
+Keep component configuration in `CardConfiguration`. Put event handlers in `CardCallbacks`, inside the
+trailing additional callbacks block of `CheckoutCallbacks`:
+
+```swift
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    CardCallbacks()
+        .onBinChange { bin in
+            print(bin)
+        }
+        .onBinLookup { data in
+            print(data.issuingCountryCode, data.brands)
+        }
+}
+```
+
+- `onBinChange(_:)` receives the BIN prefix as the shopper enters the card number.
+- `onBinLookup(_:)` receives issuing-country and detected-brand information from BIN lookup.
+
+Modifiers return copies. The additional callbacks block supports `if` and `if`/`else`. If you include the
+same callback type more than once, the last whole value wins; its handlers are not merged with earlier values.
+The callbacks reach both standalone card components and cards presented inside Drop-in.
+
+## Address lookup callbacks
+
+Enable lookup in the card configuration:
+
+```swift
+CardConfiguration()
+    .billingAddressMode(.lookup())
+```
+
+Then include `AddressCallbacks` in the same checkout callbacks block. Replace `searchAddresses` and
+`fetchAddress` below with your address service calls:
+
+```swift
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    AddressCallbacks(onAddressLookup: { query in
+        await searchAddresses(matching: query)
+    })
+    .onAddressSelected { result in
+        try await fetchAddress(for: result)
+    }
+}
+```
+
+`onAddressLookup` is required and returns matching `AddressLookupResult` values. The optional
+`onAddressSelected(_:)` modifier can retrieve a complete `PostalAddress` for a partial result.
+Without it, the selected result's postal address is used as-is.
+
+`BillingAddressMode.lookup(hideForCardBrands:)` contains configuration only. When lookup is enabled
+without `AddressCallbacks`, `Checkout.setup` throws `CheckoutError` with the `.invalidConfiguration` code.
 
 ## 3D Secure configuration
 
