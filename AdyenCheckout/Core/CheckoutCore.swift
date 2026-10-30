@@ -77,6 +77,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     internal var additionalDetailsTask: Task<Void, Never>?
 
     internal weak var pendingPaymentComponent: (any PaymentComponent)?
+    internal weak var pendingDropInComponent: (any AnyDropInComponent)?
 
     package init(
         configuration: CheckoutConfiguration,
