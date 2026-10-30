@@ -199,16 +199,16 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
         guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
         updateValidation(for: brand)
-        brandSelection = selection
         selectedBrand = brand
+        brandSelection = selection
         onUserBrandSelection?(brand)
     }
 
     /// Updates the selected brand and the related validation checks.
     private func updateSelectedBrand(_ brand: DetectedCardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
-        updateBrandSelection(with: brand)
         selectedBrand = brand
+        updateBrandSelection(with: brand)
         updateBINIfNeeded()
     }
     
