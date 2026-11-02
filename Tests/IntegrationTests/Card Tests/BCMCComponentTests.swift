@@ -258,19 +258,17 @@ class BCMCComponentTests: XCTestCase {
         let brands: [CardBrand] = [.bcmc]
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
+        expectation.isInverted = true
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
-            context: context
+            context: context,
+            callbacks: CardCallbacks().onBinLookup { _ in
+                expectation.fulfill()
+            }
         )
 
         sut.viewController.loadViewIfNeeded()
-
-        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
-        expectation.isInverted = true
-        sut.configuration = sut.configuration
-            .onBinLookup { _ in
-                expectation.fulfill()
-            }
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "67034")
@@ -281,23 +279,21 @@ class BCMCComponentTests: XCTestCase {
     func test_onBinChange_withCorrectBIN_shouldReturnBINValue() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
-            context: context
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        sut.configuration = sut.configuration
-            .onBinChange { value in
+            context: context,
+            callbacks: CardCallbacks().onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 if value == "67034444" {
                     expectationBin.fulfill()
                 }
             }
-        
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         try populate(textItemView: XCTUnwrap(cardNumberItemView), with: XCTUnwrap(Dummy.bancontactCard.number))
 
@@ -307,18 +303,18 @@ class BCMCComponentTests: XCTestCase {
     func test_onBinChange_whenTypingDigits_shouldFirePerDigitUpToSixThenStopWithoutThrottling() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        var receivedBins: [String] = []
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
-            context: context
+            context: context,
+            callbacks: CardCallbacks().onBinChange { value in
+                receivedBins.append(value)
+            }
         )
 
         sut.viewController.loadViewIfNeeded()
 
-        var receivedBins: [String] = []
-        sut.configuration = sut.configuration
-            .onBinChange { value in
-                receivedBins.append(value)
-            }
+        receivedBins.removeAll()
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         // Typing 7 digits one by one. Without throttling each distinct BIN must be
@@ -340,25 +336,23 @@ class BCMCComponentTests: XCTestCase {
         
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            binProvider: cardBrandProviderMock
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        sut.configuration = sut.configuration
-            .onBinChange { value in
+            binProvider: cardBrandProviderMock,
+            callbacks: CardCallbacks().onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 if value == "67034444" {
                     expectationBin.fulfill()
                 }
             }
-        
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard, simulateKeyStrokes: true)
         wait(for: [expectationBinLookup], timeout: 10)
         tapSubmitButton(on: sut.viewController.view)
@@ -377,25 +371,23 @@ class BCMCComponentTests: XCTestCase {
         
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            binProvider: cardBrandProviderMock
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        sut.configuration = sut.configuration
-            .onBinChange { value in
+            binProvider: cardBrandProviderMock,
+            callbacks: CardCallbacks().onBinChange { value in
                 XCTAssertTrue("67030000".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 if value == "67030000" {
                     expectationBin.fulfill()
                 }
             }
-        
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
         fillCard(on: sut.viewController.view, with: Dummy.longBancontactCard, simulateKeyStrokes: true)
         wait(for: [expectationBinLookup], timeout: 10)
         tapSubmitButton(on: sut.viewController.view)
@@ -406,19 +398,17 @@ class BCMCComponentTests: XCTestCase {
     func test_onBinLookup_withIncorrectCardAndLessThan11Digits_shouldNotBeCalled() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
+        expectation.isInverted = true
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
-            context: context
+            context: context,
+            callbacks: CardCallbacks().onBinLookup { _ in
+                expectation.fulfill()
+            }
         )
 
         sut.viewController.loadViewIfNeeded()
-
-        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
-        expectation.isInverted = true
-        sut.configuration = sut.configuration
-            .onBinLookup { _ in
-                expectation.fulfill()
-            }
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "32145")

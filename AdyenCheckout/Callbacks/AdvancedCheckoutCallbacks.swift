@@ -15,17 +15,20 @@ package struct AdvancedCheckoutCallbacks: CheckoutResultCallbacks {
     package let onComplete: AdvancedCheckoutCompletionHandler
     package let onFailure: CheckoutFailureHandler
     package private(set) var onAction: CheckoutActionHandler?
+    package let additionalCallbacks: [any AdvancedCheckoutAdditionalCallbacks]
 
     package init(
         onSubmit: @escaping CheckoutSubmitHandler,
         onAdditionalDetails: @escaping CheckoutAdditionalDetailsHandler,
         onComplete: @escaping AdvancedCheckoutCompletionHandler,
-        onFailure: @escaping CheckoutFailureHandler
+        onFailure: @escaping CheckoutFailureHandler,
+        @AdvancedAdditionalCallbacksBuilder additionalCallbacks: () -> [any AdvancedCheckoutAdditionalCallbacks] = { [] }
     ) {
         self.onSubmit = onSubmit
         self.onAdditionalDetails = onAdditionalDetails
         self.onComplete = onComplete
         self.onFailure = onFailure
+        self.additionalCallbacks = additionalCallbacks()
     }
 
     package func onAction(_ handler: @escaping CheckoutActionHandler) -> Self {

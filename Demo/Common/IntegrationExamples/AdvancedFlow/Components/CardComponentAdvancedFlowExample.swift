@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenActions
+import AdyenCard
 import AdyenCheckout
 import AdyenUI
 import PassKit
@@ -60,12 +61,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .onBinChange { bin in
-                    print("Here is the bin \(bin)")
-                }
-                .onBinLookup { data in
-                    print("Bin lookup response \(data)")
-                }
         }
         .localizationProvider(DemoLocalizationProvider())
         .theme(selectedTheme.theme)
@@ -88,7 +83,18 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             onFailure: { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
             }
-        )
+        ) {
+            CardCallbacks()
+                .onBinChange { bin in
+                    print("Here is the bin \(bin)")
+                }
+                .onBinLookup { data in
+                    print("Bin lookup response \(data)")
+                }
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
+        }
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,

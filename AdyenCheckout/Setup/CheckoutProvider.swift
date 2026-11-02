@@ -34,12 +34,15 @@ internal class CheckoutProvider: CheckoutProviding {
     ///   - configuration: The checkout configuration.
     ///   - callbacks: The callbacks for this checkout flow.
     /// - Returns: A checkout core configured for the session.
-    /// - Throws: `CheckoutError` if context or session setup fails.
+    /// - Throws: `CheckoutError` if the configuration requires callbacks that are missing, or if context or session setup fails.
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbacks: CheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
+
+        let additionalCallbacks = AdditionalCallbacksStore(callbacks.additionalCallbacks)
+        try configuration.validate(additionalCallbacks: additionalCallbacks)
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
@@ -59,7 +62,8 @@ internal class CheckoutProvider: CheckoutProviding {
                 handler: SessionCallbackHandler(session: session),
                 session: session,
                 callbacks: callbacks
-            )
+            ),
+            additionalCallbacks: additionalCallbacks
         )
     }
     
@@ -69,12 +73,15 @@ internal class CheckoutProvider: CheckoutProviding {
     ///   - configuration: The checkout configuration.
     ///   - callbacks: The callbacks for this checkout flow.
     /// - Returns: A checkout core configured for the advanced flow.
-    /// - Throws: `CheckoutError` if context setup fails.
+    /// - Throws: `CheckoutError` if the configuration requires callbacks that are missing, or if context setup fails.
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbacks: AdvancedCheckoutCallbacks
     ) async throws -> CheckoutCoreProtocol {
+
+        let additionalCallbacks = AdditionalCallbacksStore(callbacks.additionalCallbacks)
+        try configuration.validate(additionalCallbacks: additionalCallbacks)
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
@@ -84,7 +91,8 @@ internal class CheckoutProvider: CheckoutProviding {
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
             resultCallbacks: callbacks,
-            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks),
+            additionalCallbacks: additionalCallbacks
         )
     }
     

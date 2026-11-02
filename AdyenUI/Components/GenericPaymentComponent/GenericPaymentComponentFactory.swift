@@ -31,7 +31,8 @@ package struct GenericPaymentComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: GenericPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> GenericPaymentComponent {
         GenericPaymentComponent(
             paymentMethod: paymentMethod,

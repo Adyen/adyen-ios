@@ -366,11 +366,11 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
     }
 
-    func test_build_withCardCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+    func test_build_withCardCallbacks_shouldDeliverAdditionalCallbacks() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         var receivedBin: String?
         var receivedBinLookupData: BinLookupData?
-        checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
+        let callbacks = CardCallbacks()
             .onBinChange { receivedBin = $0 }
             .onBinLookup { receivedBinLookupData = $0 }
         let expectedBinLookupData = BinLookupData(
@@ -382,11 +382,12 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
             policy: .components(checkoutConfiguration),
+            additionalCallbacks: AdditionalCallbacksStore([callbacks]),
             context: context
         )
         let cardComponent = try XCTUnwrap(component as? CardComponent)
-        cardComponent.configuration.onBinChange?("411111")
-        cardComponent.configuration.onBinLookup?(expectedBinLookupData)
+        cardComponent.didChange(bin: "411111")
+        cardComponent.callbacks.onBinLookup?(expectedBinLookupData)
 
         XCTAssertEqual(receivedBin, "411111")
         XCTAssertEqual(receivedBinLookupData, expectedBinLookupData)

@@ -28,6 +28,10 @@ The entry points for integrating the SDK.
 
 - ``CheckoutCallbacks``
 - ``ActionOnlyCheckoutCallbacks``
+- ``CheckoutAdditionalCallbacks``
+- ``CheckoutAdditionalCallbacksBuilder``
+- ``CardCallbacks``
+- ``AddressCallbacks``
 - ``CheckoutResultCode``
 - ``CheckoutError``
 - ``AdvancedCheckoutResult``

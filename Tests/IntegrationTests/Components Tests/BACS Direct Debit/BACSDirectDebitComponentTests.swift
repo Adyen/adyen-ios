@@ -29,7 +29,8 @@ class BACSDirectDebitComponentTests: XCTestCase {
         sut = BACSDirectDebitFactory().create(
             with: paymentMethod,
             context: context,
-            configuration: .init()
+            configuration: .init(),
+            callbacks: nil
         )
 
         sut.delegate = paymentComponentDelegate

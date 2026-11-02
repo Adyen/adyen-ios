@@ -101,7 +101,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         func create(
             with paymentMethod: MockPaymentMethod,
             context: AdyenContext,
-            configuration: MockConfiguration
+            configuration: MockConfiguration,
+            callbacks _: Never?
         ) -> MockComponent {
             MockComponent(
                 paymentMethod: paymentMethod,
@@ -111,6 +112,37 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         }
     }
     
+    struct MockCallbacks {
+        let value: String
+    }
+
+    struct MockCallbacksFactory: PaymentComponentFactory {
+        typealias Configuration = MockConfiguration
+        typealias Method = MockPaymentMethod
+        typealias Component = MockComponent
+
+        func isAvailable(for _: MockPaymentMethod, configuration _: MockConfiguration) -> Bool {
+            true
+        }
+
+        func defaultConfiguration() -> MockConfiguration {
+            MockConfiguration()
+        }
+
+        func create(
+            with paymentMethod: MockPaymentMethod,
+            context: AdyenContext,
+            configuration: MockConfiguration,
+            callbacks _: MockCallbacks?
+        ) -> MockComponent {
+            MockComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: configuration
+            )
+        }
+    }
+
     // MARK: - Protocol Conformance Tests
     
     func testMockFactory_ConformsToProtocol() {
@@ -144,7 +176,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then
@@ -163,7 +196,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: Dummy.context,
-            configuration: config
+            configuration: config,
+            callbacks: nil
         )
         
         // Then - Verify through properties
@@ -183,7 +217,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: Dummy.context,
-            configuration: customConfig
+            configuration: customConfig,
+            callbacks: nil
         )
         
         // Then - Component should use the provided configuration
@@ -200,7 +235,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: Dummy.context,
-            configuration: config
+            configuration: config,
+            callbacks: nil
         )
         
         // Then
@@ -225,7 +261,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: customContext,
-            configuration: config
+            configuration: config,
+            callbacks: nil
         )
         
         // Then
@@ -242,8 +279,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let config2 = MockConfiguration(value: "config2", showsSubmitButton: false)
         
         // When
-        let component1 = factory.create(with: paymentMethod1, context: Dummy.context, configuration: config1)
-        let component2 = factory.create(with: paymentMethod2, context: Dummy.context, configuration: config2)
+        let component1 = factory.create(with: paymentMethod1, context: Dummy.context, configuration: config1, callbacks: nil)
+        let component2 = factory.create(with: paymentMethod2, context: Dummy.context, configuration: config2, callbacks: nil)
         
         // Then - Components should be independent
         XCTAssertEqual(component1.configValue, "config1")
@@ -261,7 +298,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: Dummy.context,
-            configuration: config
+            configuration: config,
+            callbacks: nil
         )
         
         // Then - Verify component conforms to PaymentComponent
@@ -281,5 +319,29 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         // Then - Default configurations should have same values
         XCTAssertEqual(config1.value, config2.value)
         XCTAssertEqual(config1.showsSubmitButton, config2.showsSubmitButton)
+    }
+
+    // MARK: - Callbacks Resolution Tests
+
+    func testCallbacks_WhenFactoryHasNoCallbacks_ReturnsNil() {
+        let store = AdditionalCallbacksStore([MockCallbacks(value: "unused")])
+
+        XCTAssertNil(MockFactory().callbacks(from: store))
+    }
+
+    func testCallbacks_DefaultLookup_ReturnsLastEntryOfCallbacksType() {
+        let store = AdditionalCallbacksStore([
+            MockCallbacks(value: "first"),
+            "unrelated",
+            MockCallbacks(value: "last")
+        ])
+
+        XCTAssertEqual(MockCallbacksFactory().callbacks(from: store)?.value, "last")
+    }
+
+    func testCallbacks_DefaultLookup_WithoutMatchingEntry_ReturnsNil() {
+        let store = AdditionalCallbacksStore(["unrelated"])
+
+        XCTAssertNil(MockCallbacksFactory().callbacks(from: store))
     }
 }

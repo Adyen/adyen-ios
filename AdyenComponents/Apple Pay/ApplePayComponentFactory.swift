@@ -35,7 +35,8 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
-        configuration: ApplePayConfiguration
+        configuration: ApplePayConfiguration,
+        callbacks _: Never?
     ) throws -> ApplePayComponent {
         try ApplePayComponent(
             paymentMethod: paymentMethod,

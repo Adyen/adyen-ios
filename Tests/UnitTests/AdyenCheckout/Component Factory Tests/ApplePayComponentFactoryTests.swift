@@ -52,7 +52,8 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         let component = try factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -71,7 +72,8 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         let component = try factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
 
         // Then
@@ -98,7 +100,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
         XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
         XCTAssertThrowsError(
-            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+            try factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
         ) { error in
             XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
         }
@@ -113,7 +115,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
         XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
         XCTAssertThrowsError(
-            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+            try factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
         ) { error in
             XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
         }
@@ -128,7 +130,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         XCTAssertTrue(factory.isAvailable(for: paymentMethod, configuration: configuration))
         XCTAssertTrue(paymentRequest.supportedNetworks.isEmpty)
 
-        let component = try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        let component = try factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
         XCTAssertEqual(
             paymentRequest.supportedNetworks,
             try ApplePayComponent.validatedSupportedNetworks(for: paymentMethod, configuration: configuration)

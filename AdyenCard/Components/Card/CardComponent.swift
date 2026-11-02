@@ -47,6 +47,7 @@ package class CardComponent: SecondaryScreenPresentingComponent,
 
     /// Card component configuration.
     package internal(set) var configuration: CardConfiguration
+    package let callbacks: CardCallbacks
 
     /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
     /// attached, used for all card UI string lookups.
@@ -72,10 +73,12 @@ package class CardComponent: SecondaryScreenPresentingComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
+    ///   - callbacks: The optional card event handlers.
     package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init()
+        configuration: CardConfiguration = .init(),
+        callbacks: CardCallbacks
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -87,7 +90,8 @@ package class CardComponent: SecondaryScreenPresentingComponent,
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            binProvider: binInfoProvider
+            binProvider: binInfoProvider,
+            callbacks: callbacks
         )
     }
 
@@ -98,16 +102,19 @@ package class CardComponent: SecondaryScreenPresentingComponent,
     ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
     ///   - binProvider: Any object capable to provide a BinInfo.
+    ///   - callbacks: The optional card event handlers.
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration,
-        binProvider: AnyBinInfoProvider
+        binProvider: AnyBinInfoProvider,
+        callbacks: CardCallbacks = .init()
     ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
         self.binInfoProvider = binProvider
+        self.callbacks = callbacks
 
         self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
@@ -157,7 +164,8 @@ package class CardComponent: SecondaryScreenPresentingComponent,
             secondaryScreenPresenter: presenter,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
-            }
+            },
+            addressCallbacks: callbacks.addressCallbacks
         )
 
         formViewController.delegate = self
@@ -206,7 +214,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        configuration.onBinChange?(bin)
+        callbacks.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {
@@ -217,7 +225,7 @@ extension CardComponent: CardViewControllerDelegate {
             let brands = (binInfo.brands ?? []).map {
                 BinLookupBrand(brand: $0.brand.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
             }
-            self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
+            self.callbacks.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
     }
 }
@@ -234,7 +242,7 @@ private extension CardComponent {
 
         return
             configuration.billingAddressMode.supportedCountryCodes?.first ??
-            Locale.current.regionCode ??
+            Locale.current.region?.identifier ??
             CardComponent.Constant.defaultCountryCode
     }
 }
@@ -279,7 +287,7 @@ extension BillingAddressMode {
             return hideForCardBrands
         case let .full(_, hideForCardBrands):
             return hideForCardBrands
-        case let .lookup(hideForCardBrands, _, _):
+        case let .lookup(hideForCardBrands):
             return hideForCardBrands
         }
     }
