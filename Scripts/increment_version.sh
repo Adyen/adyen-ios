@@ -18,7 +18,7 @@ then
   agvtool new-marketing-version $NEW_VERSION
   agvtool next-version # Bumping build number
 
-  sed -i '' '$d' $ADYEN_SDK_VERSION_PATH && echo 'public let adyenSdkVersion: String = "'$NEW_VERSION'"' >> $ADYEN_SDK_VERSION_PATH
+  sed -i '' -e 's/\(public let adyenSdkVersion: String = "\)[^"]*/\1'$NEW_VERSION'/' $ADYEN_SDK_VERSION_PATH
   sed -i '' -e 's/'$ADYEN_GITHUB_DOCS_PREFIX'.*'$ADYEN_GITHUB_DOCS_SUFFIX'/'$ADYEN_GITHUB_DOCS_PREFIX''$NEW_VERSION''$ADYEN_GITHUB_DOCS_SUFFIX'/g' $ADYEN_README_PATH
 fi
 
