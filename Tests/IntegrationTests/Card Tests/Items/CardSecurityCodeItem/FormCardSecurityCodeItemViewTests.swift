@@ -252,13 +252,92 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         assert(for: .americanExpress, showsDigits: 4)
     }
 
+    func test_placeholder_givenNoSelectedCard_shouldShowThreeDigits() {
+        XCTAssertEqual(
+            item.placeholder,
+            localizedString(.cardSecurityCodeHintThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_title_shouldUseCanonicalSecurityCodeLabel() {
+        XCTAssertEqual(item.title, localizedString(.cardSecurityCodeLabel, item.localizationParameters))
+    }
+
+    func test_validationFailureMessage_givenEmptyCodeAndNonAmex_shouldUseThreeDigitsEmptyError() {
+        // Setting a brand re-evaluates the message against the (empty) value.
+        item.selectedCard = .masterCard
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorEmptyThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenPartialCodeAndNonAmex_shouldUseThreeDigitsIncompleteError() {
+        item.value = "1"
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorIncompleteThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenEmptyCodeAndAmex_shouldUseFourDigitsEmptyError() {
+        // Given
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+
+        // When - selecting a brand re-evaluates the message against the (empty) value.
+        item.selectedCard = .americanExpress
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorEmptyFourDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenPartialCodeAndAmex_shouldUseFourDigitsIncompleteError() {
+        // Given
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+        item.selectedCard = .americanExpress
+
+        // When
+        item.value = "123"
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorIncompleteFourDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenNonStatusValidator_shouldUseGenericInvalidMessage() {
+        // Given
+        item.displayMode = .optional
+
+        // When
+        item.value = "12"
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardCvcItemInvalid, item.localizationParameters)
+        )
+    }
+
     private func assert(
         for brand: CardBrand,
         showsDigits digits: Int,
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        let expectedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, String(digits))
+        let hintKey: LocalizationKey = digits == 4
+            ? .cardSecurityCodeHintFourDigits
+            : .cardSecurityCodeHintThreeDigits
+        let expectedPlaceholder = localizedString(hintKey, item.localizationParameters)
         item.selectedCard = brand
         XCTAssertEqual(item.placeholder, expectedPlaceholder, file: file, line: line)
     }

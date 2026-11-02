@@ -358,6 +358,20 @@ public struct LocalizationKey {
     public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description")
     /// %@ monthly payments of %@
     public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description_with_price")
+    /// Security code
+    public static let cardSecurityCodeLabel = LocalizationKey(key: "adyen_checkout_card_security_code_label")
+    /// 3 digits on back of card
+    public static let cardSecurityCodeHintThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_hint_three_digits")
+    /// 4 digits on front of card
+    public static let cardSecurityCodeHintFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_hint_four_digits")
+    /// Enter the security code. 3 digits on back of card.
+    public static let cardSecurityCodeErrorEmptyThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_three_digits")
+    /// Enter the security code. 4 digits on front of card.
+    public static let cardSecurityCodeErrorEmptyFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_four_digits")
+    /// Enter the complete security code. 3 digits on back of card.
+    public static let cardSecurityCodeErrorIncompleteThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_incomplete_three_digits")
+    /// Enter the complete security code. 4 digits on front of card.
+    public static let cardSecurityCodeErrorIncompleteFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_incomplete_four_digits")
     /// Bank account holder name
     public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
     /// Bank account number

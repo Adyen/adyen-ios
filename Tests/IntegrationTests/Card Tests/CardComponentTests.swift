@@ -95,9 +95,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, sut.configuration.localizationParameters))
         XCTAssertNil(items.securityCodeItem.placeholder)
-        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardCvcItemInvalid, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardSecurityCodeErrorEmptyThreeDigits, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.configuration.localizationParameters))
@@ -124,9 +124,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_label"), sut.configuration.localizationParameters))
         XCTAssertNil(items.securityCodeItem.placeholder)
-        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_cvcItem_invalid"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_three_digits"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.configuration.localizationParameters))
@@ -150,7 +150,7 @@ class CardComponentTests: XCTestCase {
         let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
     }
 
@@ -389,11 +389,11 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertNotNil(securityCodeCvvHint)
         XCTAssertFalse(try XCTUnwrap(securityCodeCvvHint?.showFront))
-        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits on back of card")
 
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "370000")
         XCTAssertTrue(try XCTUnwrap(securityCodeCvvHint?.showFront))
-        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits on front of card")
 
     }
 
@@ -2406,7 +2406,7 @@ extension CardComponentTests {
 
         XCTAssertEqual(items.numberContainerItem.numberItem.title, "Card #")
         // Security code was not overridden — falls back to the SDK bundle.
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, nil))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, nil))
     }
 
     func test_cardComponent_withProviderAndEnforcedLocale_shouldReceiveEnforcedLocale() {

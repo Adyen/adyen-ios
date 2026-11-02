@@ -26,8 +26,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         
         observe(item.$selectedCard) { [weak self] cardsType in
             guard let self else { return }
-            let number = String(cardsType.expectedSecurityCodeLength)
-            let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
+            let hintKey: LocalizationKey = cardsType.expectedSecurityCodeLength == 4
+                ? .cardSecurityCodeHintFourDigits
+                : .cardSecurityCodeHintThreeDigits
+            let localizedPlaceholder = localizedString(hintKey, item.localizationParameters)
             
             // Set placeholder on item - it will be shown in footer label reactively
             self.item.placeholder = localizedPlaceholder

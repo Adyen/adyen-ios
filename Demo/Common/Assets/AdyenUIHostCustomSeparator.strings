@@ -31,6 +31,13 @@
 "adyen_card_stored_expires" = "Test-Expires %@";
 "adyen_card_securityCode_title" = "Test-Enter security code";
 "adyen_card_securityCode_description" = "Test-Enter the security code for %@";
+"adyen_checkout_card_security_code_label" = "Test-CVC / CVV";
+"adyen_checkout_card_security_code_hint_three_digits" = "Test-3 digits on back of card";
+"adyen_checkout_card_security_code_hint_four_digits" = "Test-4 digits on front of card";
+"adyen_checkout_card_security_code_error_empty_three_digits" = "Test-Enter the security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_empty_four_digits" = "Test-Enter the security code. 4 digits on front of card.";
+"adyen_checkout_card_security_code_error_incomplete_three_digits" = "Test-Enter the complete security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_incomplete_four_digits" = "Test-Enter the complete security code. 4 digits on front of card.";
 "adyen_dropIn_stored_title" = "Test-Confirm %@ payment";
 "adyen_phoneNumber_title" = "Phone Number";
 "adyen_phoneNumber_placeholder" = "Test 123 456 789";
