@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
+import AdyenActions
 import AdyenNetworking
 
 package protocol SessionProtocol: AnyObject {

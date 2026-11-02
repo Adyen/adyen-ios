@@ -6,14 +6,10 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenEncryption
+import AdyenUI
 import UIKit
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)

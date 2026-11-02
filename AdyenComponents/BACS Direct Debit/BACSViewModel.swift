@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
 import Foundation
 
 @MainActor

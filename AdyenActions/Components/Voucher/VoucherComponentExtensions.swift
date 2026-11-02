@@ -6,9 +6,7 @@
 
 import Adyen
 @_spi(AdyenInternal) import enum Adyen.VoucherAction
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import PassKit
 import UIKit
 

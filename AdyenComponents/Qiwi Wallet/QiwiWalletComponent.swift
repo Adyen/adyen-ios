@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormValueItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormValueItem
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.

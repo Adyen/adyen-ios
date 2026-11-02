@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 // Contains the styling customization options for an item in a FormCoBadged card Item.

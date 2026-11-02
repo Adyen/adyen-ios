@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextItemView
 import UIKit
 
 /// A view representing a form card number item.

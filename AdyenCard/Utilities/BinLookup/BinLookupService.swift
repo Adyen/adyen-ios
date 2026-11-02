@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
 import AdyenNetworking
 import Foundation
 

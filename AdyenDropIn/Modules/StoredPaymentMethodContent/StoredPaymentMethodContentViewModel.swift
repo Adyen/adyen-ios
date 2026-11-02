@@ -5,11 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 @MainActor
 internal protocol StoredPaymentMethodContentRouting: AnyObject {

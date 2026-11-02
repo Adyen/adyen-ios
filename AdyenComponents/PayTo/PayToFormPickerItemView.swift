@@ -5,11 +5,9 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormStringPickerItem
-    @_spi(AdyenInternal) import class AdyenUI.BaseFormPickerItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormStringPickerItem
+@_spi(AdyenInternal) import class AdyenUI.BaseFormPickerItemView
 import UIKit
 
 internal class PayToIdentifierItem: FormStringPickerItem {

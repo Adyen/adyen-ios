@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 
 /// The display mode for the billing address form.
 public enum BillingAddressMode {

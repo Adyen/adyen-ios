@@ -5,12 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenSession)
-    import AdyenSession
-#endif
+import AdyenActions
+import AdyenSession
 import Foundation
 
 /// A checkout that creates payment components and handles payment actions.
