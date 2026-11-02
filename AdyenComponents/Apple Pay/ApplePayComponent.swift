@@ -40,6 +40,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     }
 
     internal let configuration: ApplePayConfiguration
+    internal let callbacks: ApplePayCallbacks
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -60,12 +61,14 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Apple Pay component configuration
+    /// - Parameter callbacks: The optional Apple Pay sheet event handlers.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
     package init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
-        configuration: ApplePayConfiguration
+        configuration: ApplePayConfiguration,
+        callbacks: ApplePayCallbacks
     ) throws {
         let supportedNetworks = try Self.validatedSupportedNetworks(
             for: paymentMethod,
@@ -74,6 +77,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
         configuration.paymentRequest.supportedNetworks = supportedNetworks
         self.configuration = configuration
+        self.callbacks = callbacks
         self.context = context
         self.applePayPaymentMethod = paymentMethod
         super.init()
@@ -147,6 +151,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         let handler = ApplePayAuthorizationHandler(
             controller: makeAuthorizationController(paymentRequest),
             configuration: configuration,
+            callbacks: callbacks,
             presentationWindow: presentationWindow,
             onPresent: { [weak self] in
                 self?.sendDidLoadEvent()
