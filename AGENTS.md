@@ -179,7 +179,6 @@ The project uses GitHub Actions for CI with the following key workflows:
 - **verify-os-compatibility.yml**: Runs tests on multiple iOS versions (iOS 16, 17, 18)
 - **pr_scan.yml**: Runs linting and validation on pull requests
 - **test-SPM-integration.yml**: Validates Swift Package Manager integration
-- **test_cocoapods_integration.yml**: Validates CocoaPods integration
 
 ## Resources
 
