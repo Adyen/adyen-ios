@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenUI
+import Combine
 import SwiftUI
 
 @MainActor
@@ -53,12 +54,17 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
         let viewModel = StoredPaymentMethodContentViewModel(
             component: component,
             theme: theme,
-            showsCancelButton: isPresentedModally,
             logoURLProvider: logoURLProvider,
             localizationParameters: localizationParameters,
             dropInFlowManager: dropInFlowManager
         )
-        let viewController = StoredPaymentMethodContentViewController(viewModel: viewModel)
+        let onCancel: (() -> Void)? = isPresentedModally ? { viewModel.cancel() } : nil
+        let viewController = NavigationLockingHostingController(
+            rootView: StoredPaymentMethodContentView(viewModel: viewModel),
+            isPaymentInProgress: viewModel.$isPaymentInProgress.eraseToAnyPublisher(),
+            onPop: { viewModel.cancel() },
+            onCancel: onCancel
+        )
         let router = StoredPaymentMethodContentRouter(
             viewController: viewController,
             listener: listener

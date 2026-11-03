@@ -80,12 +80,6 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(!context.sut.isPaymentInProgress)
     }
 
-    @Test(arguments: [true, false])
-    internal func showsCancelButton_thenFollowsHowTheContentIsPresented(showsCancelButton: Bool) {
-        let context = makeSUTStoredCardWithCVC(showsCancelButton: showsCancelButton)
-        #expect(context.sut.showsCancelButton == showsCancelButton)
-    }
-
     /// Cancelling from the content asks the module that presented it to take it away.
     @Test
     internal func cancel_thenCancelsTheComponentAndAsksToDismiss() {
@@ -104,10 +98,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
         let router: StoredPaymentMethodContentRoutingSpy
     }
 
-    private func makeSUTStoredCardWithCVC(
-        amount: Amount? = Dummy.amount,
-        showsCancelButton: Bool = false
-    ) -> TestContext {
+    private func makeSUTStoredCardWithCVC(amount: Amount? = Dummy.amount) -> TestContext {
         let paymentMethod = StoredCardPaymentMethod(
             type: .scheme,
             name: "Visa",
@@ -131,15 +122,14 @@ internal struct StoredPaymentMethodContentViewModelTests {
             context: componentContext,
             theme: .default
         )
-        return makeSUT(component: component, showsCancelButton: showsCancelButton)
+        return makeSUT(component: component)
     }
 
-    private func makeSUT(component: any StoredPaymentComponent, showsCancelButton: Bool = false) -> TestContext {
+    private func makeSUT(component: any StoredPaymentComponent) -> TestContext {
         let flowManager = DropInFlowManagingMock()
         let sut = StoredPaymentMethodContentViewModel(
             component: component,
             theme: .default,
-            showsCancelButton: showsCancelButton,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
             dropInFlowManager: flowManager

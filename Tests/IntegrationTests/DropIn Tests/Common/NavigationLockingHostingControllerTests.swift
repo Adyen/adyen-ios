@@ -4,16 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
-@_spi(AdyenInternal) @testable import AdyenUI
+import Combine
+import SwiftUI
 import Testing
 import UIKit
 
 @MainActor
-struct StoredPaymentMethodContentViewControllerTests {
+struct NavigationLockingHostingControllerTests {
 
-    @Test("A sheet with the screen as its root cannot be swiped away, so a submitted payment is never dismissed.")
+    @Test("A sheet with the screen on top cannot be swiped away, so a submitted payment is never dismissed.")
     func init_shouldPreventTheInteractiveDismissal() {
         // When
         let environment = makeSUT()
@@ -37,10 +37,10 @@ struct StoredPaymentMethodContentViewControllerTests {
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
     }
 
-    @Test("The root of a sheet has nothing to go back to, so it gets the system Cancel button.")
-    func rootOfSheet_shouldShowTheSystemCancelButton() {
+    @Test("A screen that can be cancelled gets the system Cancel button, which SwiftUI keeps once the screen is shown.")
+    func cancellableScreen_shouldShowTheSystemCancelButton() {
         // Given
-        let environment = makeSUT(showsCancelButton: true)
+        let environment = makeSUT(onCancel: {})
         let navigationController = UINavigationController(rootViewController: environment.sut)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
@@ -55,6 +55,39 @@ struct StoredPaymentMethodContentViewControllerTests {
         window.isHidden = true
     }
 
+    @Test("A submitted payment cannot be cancelled, so the Cancel button is disabled until it ends.")
+    func paymentInProgress_shouldDisableTheCancelButton() {
+        // Given
+        let environment = makeSUT(onCancel: {})
+
+        // When
+        environment.isPaymentInProgress.send(true)
+
+        // Then
+        #expect(!environment.sut.cancelButtonItem.isEnabled)
+
+        // When
+        environment.isPaymentInProgress.send(false)
+
+        // Then
+        #expect(environment.sut.cancelButtonItem.isEnabled)
+    }
+
+    @Test("The root of a sheet has no screen to go back to, so locking it does not add a back button next to Cancel.")
+    func paymentInProgress_onTheRootOfASheet_shouldNotAddABackButton() {
+        // Given
+        let environment = makeSUT(onCancel: {})
+        let navigationController = UINavigationController(rootViewController: environment.sut)
+        navigationController.loadViewIfNeeded()
+
+        // When
+        environment.isPaymentInProgress.send(true)
+
+        // Then
+        #expect(environment.sut.navigationItem.backAction == nil)
+        #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+    }
+
     @Test("A submitted payment cannot be cancelled, so the shopper cannot navigate away from it.")
     func paymentInProgress_shouldLockTheNavigation() {
         // Given
@@ -62,11 +95,12 @@ struct StoredPaymentMethodContentViewControllerTests {
         let navigationController = push(environment.sut)
 
         // When
-        environment.flowManager.paymentInProgressSubject.send(true)
+        environment.isPaymentInProgress.send(true)
 
         // Then
         #expect(!navigationController.navigationBar.isUserInteractionEnabled)
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+        #expect(environment.sut.navigationItem.backAction != nil)
     }
 
     @Test
@@ -74,14 +108,15 @@ struct StoredPaymentMethodContentViewControllerTests {
         // Given
         let environment = makeSUT()
         let navigationController = push(environment.sut)
-        environment.flowManager.paymentInProgressSubject.send(true)
+        environment.isPaymentInProgress.send(true)
 
         // When
-        environment.flowManager.paymentInProgressSubject.send(false)
+        environment.isPaymentInProgress.send(false)
 
         // Then
         #expect(navigationController.navigationBar.isUserInteractionEnabled)
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+        #expect(environment.sut.navigationItem.backAction == nil)
     }
 
     #if compiler(>=6.2)
@@ -95,43 +130,25 @@ struct StoredPaymentMethodContentViewControllerTests {
             let contentPopGestureRecognizer = try #require(navigationController.interactiveContentPopGestureRecognizer)
 
             // When
-            environment.flowManager.paymentInProgressSubject.send(true)
+            environment.isPaymentInProgress.send(true)
 
             // Then
             #expect(!contentPopGestureRecognizer.isEnabled)
 
             // When
-            environment.flowManager.paymentInProgressSubject.send(false)
+            environment.isPaymentInProgress.send(false)
 
             // Then
             #expect(contentPopGestureRecognizer.isEnabled)
         }
     #endif
 
-    @Test("A submitted payment cannot be cancelled, so the Cancel button is disabled until it ends.")
-    func paymentInProgress_shouldDisableTheCancelButton() {
-        // Given
-        let environment = makeSUT(showsCancelButton: true)
-
-        // When
-        environment.flowManager.paymentInProgressSubject.send(true)
-
-        // Then
-        #expect(!environment.sut.cancelButtonItem.isEnabled)
-
-        // When
-        environment.flowManager.paymentInProgressSubject.send(false)
-
-        // Then
-        #expect(environment.sut.cancelButtonItem.isEnabled)
-    }
-
-    @Test("A screen pushed during the payment, such as an action, gets an interactive bar and does not cancel the payment.")
+    @Test("A screen pushed during the payment, such as an action, gets an interactive bar and is not reported as going back.")
     func pushingAScreen_whilePaymentInProgress_shouldHandOverTheNavigation() {
         // Given
         let environment = makeSUT()
         let (navigationController, window) = pushInWindow(environment.sut)
-        environment.flowManager.paymentInProgressSubject.send(true)
+        environment.isPaymentInProgress.send(true)
 
         // When
         navigationController.pushViewController(PopGestureLockingViewController(), animated: false)
@@ -142,16 +159,16 @@ struct StoredPaymentMethodContentViewControllerTests {
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
 
         // When
-        environment.flowManager.paymentInProgressSubject.send(false)
+        environment.isPaymentInProgress.send(false)
 
         // Then
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
-        #expect(environment.flowManager.cancelComponentCallsCount == 0)
+        #expect(environment.popCounter.count == 0)
         window.isHidden = true
     }
 
-    @Test("Going back from the screen cancels the component.")
-    func poppingTheScreen_shouldCancelTheComponent() {
+    @Test("Going back from the screen is reported once.")
+    func poppingTheScreen_shouldReportThePop() {
         // Given
         let environment = makeSUT()
         let (navigationController, window) = pushInWindow(environment.sut)
@@ -161,7 +178,29 @@ struct StoredPaymentMethodContentViewControllerTests {
         navigationController.view.layoutIfNeeded()
 
         // Then
-        #expect(environment.flowManager.cancelComponentCallsCount == 1)
+        #expect(environment.popCounter.count == 1)
+        window.isHidden = true
+    }
+
+    @Test("A payment that starts while the screen is still being pushed keeps going back blocked once the push ends.")
+    func paymentInProgress_duringThePushTransition_shouldStayLocked() async throws {
+        // Given
+        let environment = makeSUT()
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = navigationController
+        window.isHidden = false
+        navigationController.view.layoutIfNeeded()
+        navigationController.pushViewController(environment.sut, animated: true)
+        navigationController.view.layoutIfNeeded()
+
+        // When
+        environment.isPaymentInProgress.send(true)
+        try await Task.sleep(for: .seconds(1))
+
+        // Then
+        #expect(environment.sut.navigationItem.backAction != nil)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
         window.isHidden = true
     }
 
@@ -174,28 +213,29 @@ struct StoredPaymentMethodContentViewControllerTests {
         }
     }
 
+    private final class PopCounter {
+        var count = 0
+    }
+
     private struct Environment {
-        let sut: StoredPaymentMethodContentViewController
-        let flowManager: DropInFlowManagingMock
+        let sut: NavigationLockingHostingController<Color>
+        let isPaymentInProgress: CurrentValueSubject<Bool, Never>
+        let popCounter: PopCounter
     }
 
-    private func makeSUT(showsCancelButton: Bool = false) -> Environment {
-        let flowManager = DropInFlowManagingMock()
-        let viewModel = StoredPaymentMethodContentViewModel(
-            component: StoredComponentMock(
-                paymentMethod: PaymentMethodMock(type: .payPal, name: "PayPal"),
-                viewController: UIViewController()
-            ),
-            theme: .default,
-            showsCancelButton: showsCancelButton,
-            logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-            localizationParameters: nil,
-            dropInFlowManager: flowManager
+    private func makeSUT(onCancel: (() -> Void)? = nil) -> Environment {
+        let isPaymentInProgress = CurrentValueSubject<Bool, Never>(false)
+        let popCounter = PopCounter()
+        let sut = NavigationLockingHostingController(
+            rootView: Color.clear,
+            isPaymentInProgress: isPaymentInProgress.eraseToAnyPublisher(),
+            onPop: { popCounter.count += 1 },
+            onCancel: onCancel
         )
-        return Environment(sut: StoredPaymentMethodContentViewController(viewModel: viewModel), flowManager: flowManager)
+        return Environment(sut: sut, isPaymentInProgress: isPaymentInProgress, popCounter: popCounter)
     }
 
-    private func push(_ sut: StoredPaymentMethodContentViewController) -> UINavigationController {
+    private func push(_ sut: UIViewController) -> UINavigationController {
         let navigationController = UINavigationController(rootViewController: UIViewController())
         navigationController.loadViewIfNeeded()
         navigationController.pushViewController(sut, animated: false)
@@ -204,7 +244,7 @@ struct StoredPaymentMethodContentViewControllerTests {
     }
 
     /// The window is returned alongside the navigation controller, as appearance callbacks only run while it is visible.
-    private func pushInWindow(_ sut: StoredPaymentMethodContentViewController) -> (UINavigationController, UIWindow) {
+    private func pushInWindow(_ sut: UIViewController) -> (UINavigationController, UIWindow) {
         let navigationController = UINavigationController(rootViewController: UIViewController())
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController

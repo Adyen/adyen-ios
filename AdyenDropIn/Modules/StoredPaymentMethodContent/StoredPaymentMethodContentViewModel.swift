@@ -19,7 +19,6 @@ internal protocol StoredPaymentMethodContentRouting: AnyObject {
 internal final class StoredPaymentMethodContentViewModel: ObservableObject {
 
     internal let theme: CheckoutTheme
-    internal let showsCancelButton: Bool
     internal weak var router: StoredPaymentMethodContentRouting?
 
     @Published internal private(set) var isPaymentInProgress = false
@@ -33,14 +32,12 @@ internal final class StoredPaymentMethodContentViewModel: ObservableObject {
     internal init(
         component: any StoredPaymentComponent,
         theme: CheckoutTheme,
-        showsCancelButton: Bool,
         logoURLProvider: LogoURLProvider,
         localizationParameters: LocalizationParameters?,
         dropInFlowManager: DropInFlowManaging
     ) {
         self.component = component
         self.theme = theme
-        self.showsCancelButton = showsCancelButton
         self.logoURLProvider = logoURLProvider
         self.localizationParameters = localizationParameters
         self.dropInFlowManager = dropInFlowManager

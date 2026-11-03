@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenUI
+import Combine
 import Foundation
 import SwiftUI
 
@@ -54,8 +55,11 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
             logoUrlProvider: logoURLProvider,
             localizationParameters: localizationParameters
         )
-        let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel, theme: theme)
-        let genericPaymentMethodViewController = UIHostingController(rootView: genericPaymentMethodView)
+        let genericPaymentMethodViewController = NavigationLockingHostingController(
+            rootView: GenericPaymentMethodView(viewModel: viewModel, theme: theme),
+            isPaymentInProgress: viewModel.isNavigationLocked,
+            onPop: { viewModel.dismiss() }
+        )
 
         let router = GenericPaymentMethodRouter(
             viewController: genericPaymentMethodViewController,
