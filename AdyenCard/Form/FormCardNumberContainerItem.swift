@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.

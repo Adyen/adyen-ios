@@ -5,16 +5,12 @@
 //
 
 import Adyen
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication
 #endif
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
 extension CardComponent {

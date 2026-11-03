@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.AnyFormItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import protocol AdyenUI.AnyFormItemView
 import UIKit
 
 extension FormCardNumberItemView {

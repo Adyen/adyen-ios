@@ -5,11 +5,9 @@
 //
 
 import Adyen
+import AdyenActions
 import AdyenNetworking
 import Foundation
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
 
 @MainActor
 internal protocol DropInViewModelProtocol {

@@ -6,9 +6,7 @@
 
 import Adyen
 @_spi(AdyenInternal) import protocol Adyen.ShopperInformation
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication
 #endif

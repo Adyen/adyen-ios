@@ -8,10 +8,7 @@ import Adyen
 import Combine
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {

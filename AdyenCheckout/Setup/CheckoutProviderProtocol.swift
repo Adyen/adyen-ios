@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenSession)
-    import AdyenSession
-#endif
 import AdyenNetworking
+import AdyenSession
 import Foundation
 
 internal protocol CheckoutProviding: AdyenSessionProviding {

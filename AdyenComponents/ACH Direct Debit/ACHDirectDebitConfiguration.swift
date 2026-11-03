@@ -5,12 +5,9 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Configuration for ACH Direct Debit.
 public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {

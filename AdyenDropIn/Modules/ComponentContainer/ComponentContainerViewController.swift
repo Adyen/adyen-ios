@@ -6,12 +6,9 @@
 
 import Adyen
 import Combine
+import AdyenUI
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 internal class ComponentContainerViewController: UIViewController {
     

@@ -5,9 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
-#endif
+@_spi(AdyenInternal) import AdyenSession
 import UIKit
 
 // MARK: - PartialPaymentDelegate

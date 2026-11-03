@@ -6,13 +6,10 @@
 
 import Adyen
 import AdyenNetworking
+import AdyenUI
 import Foundation
 import SafariServices
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 internal protocol DropInRouting: Router, DropInFlowRouting, AnyObject {}
 

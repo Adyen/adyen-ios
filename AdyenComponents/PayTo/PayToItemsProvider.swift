@@ -7,9 +7,7 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 internal protocol PayToItemsProviding {

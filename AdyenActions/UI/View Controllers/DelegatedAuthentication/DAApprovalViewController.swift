@@ -6,9 +6,7 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import UIKit
 
 internal final class DAApprovalViewController: UIViewController {
