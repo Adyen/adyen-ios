@@ -125,41 +125,27 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         }
     }
 
-    private func cropRegionOfInterest(
+    internal func cropRegionOfInterest(
         from image: CIImage,
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
     ) -> CIImage {
-        // Scale factors between CIImage and preview frame
+        guard previewFrame.width > 0, previewFrame.height > 0, !roiInPreviewFrame.isEmpty else { return image }
+
+        // The preview is aspect-fill: a single scale maps points to pixels and the overflow is cropped evenly on both sides.
         let imageWidth = image.extent.width
         let imageHeight = image.extent.height
+        let scale = min(imageWidth / previewFrame.width, imageHeight / previewFrame.height)
+        let xOffset = (imageWidth - previewFrame.width * scale) * 0.5
+        let yOffset = (imageHeight - previewFrame.height * scale) * 0.5
 
-        let previewWidth = previewFrame.width
-        let previewHeight = previewFrame.height
-
-        let scaleX = imageWidth / previewWidth
-        let scaleY = imageHeight / previewHeight
-
-        // Adjust for any potential aspect ratio difference
-        let scaleFactor = max(scaleX, scaleY) // Use the larger factor to ensure full coverage
-
-        // Adjust ROI to CIImage coordinates
-        let scaledROI = CGRect(
-            x: roiInPreviewFrame.origin.x * scaleFactor,
-            y: roiInPreviewFrame.origin.y * scaleFactor,
-            width: roiInPreviewFrame.width * scaleFactor,
-            height: roiInPreviewFrame.height * scaleFactor
-        )
-
-        // Center the ROI if the aspect ratios differ
-        let xOffset = (imageWidth - (previewWidth * scaleFactor)) * 0.5
-        let yOffset = (imageHeight - (previewHeight * scaleFactor)) * 0.5
-
+        // The ROI origin is top-left whereas the CIImage origin is bottom-left.
+        let roiHeight = roiInPreviewFrame.height * scale
         let adjustedROI = CGRect(
-            x: scaledROI.origin.x + xOffset,
-            y: scaledROI.origin.y + yOffset,
-            width: scaledROI.width,
-            height: scaledROI.height
+            x: image.extent.minX + xOffset + roiInPreviewFrame.origin.x * scale,
+            y: image.extent.minY + imageHeight - yOffset - roiInPreviewFrame.origin.y * scale - roiHeight,
+            width: roiInPreviewFrame.width * scale,
+            height: roiHeight
         )
 
         // Ensure the ROI is within the bounds of the CIImage
