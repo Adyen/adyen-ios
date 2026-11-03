@@ -23,6 +23,8 @@ internal class StoredCardInputViewController: UIViewController {
         static let contentPadding: CGFloat = 16
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
+        /// Height of one extra line of the security code's hint or error message.
+        static let validationMessageSpacerHeight: CGFloat = 20
     }
 
     // MARK: - Subviews
@@ -40,6 +42,27 @@ internal class StoredCardInputViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
         view.delegate = self
+        return view
+    }()
+
+    /// Groups the security code field with the space reserved below it, so they sit together in `contentStackView`.
+    private lazy var securityCodeStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [securityCodeItemView, validationMessageSpacer])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
+    /// Reserves one extra line below the security code field for its validation message.
+    /// The SwiftUI host measures this screen only once, so this space lets a longer message
+    /// wrap onto a second line instead of being clipped.
+    private lazy var validationMessageSpacer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: Constants.validationMessageSpacerHeight)
+        // Lower than the message label's compression resistance, so the label takes this space when it needs it.
+        heightConstraint.priority = .defaultLow
+        heightConstraint.isActive = true
         return view
     }()
 
@@ -106,7 +129,7 @@ internal class StoredCardInputViewController: UIViewController {
         buttonsStackView.addArrangedSubview(primaryButton)
 
         [
-            securityCodeItemView,
+            securityCodeStackView,
             buttonsStackView
         ].forEach(contentStackView.addArrangedSubview)
 

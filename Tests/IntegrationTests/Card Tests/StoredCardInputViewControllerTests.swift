@@ -120,6 +120,24 @@ struct StoredCardInputViewControllerTests {
         #expect(viewModel.viewDidDisappearCallsCount == 1)
     }
 
+    /// The SwiftUI host sizes this screen once, while the short hint is showing. When the longer Amex error
+    /// replaces the hint, it still gets the full height of its two lines instead of being clipped to one.
+    @Test
+    func longSecurityCodeError_atInitialHeight_isNotClipped() async throws {
+        let (proxy, viewModel) = makeSUT(cardBrand: .americanExpress)
+        await proxy.load()
+        proxy.layoutAtFittingHeight(width: 320)
+        let hintHeight = try proxy.footerLabel().bounds.height
+
+        try proxy.enterCode("12")
+        viewModel.onSecurityCodeValidationRequested?()
+        proxy.layoutKeepingHeight()
+
+        let footerLabel = try proxy.footerLabel()
+        #expect(footerLabel.bounds.height > hintHeight)
+        #expect(footerLabel.bounds.height >= proxy.requiredHeight(of: footerLabel))
+    }
+
     // MARK: - D: Security code input behavior
 
     @Test
@@ -150,13 +168,16 @@ struct StoredCardInputViewControllerTests {
 
     private func makeSUT(
         submitButtonTitle: String = "Pay €1.00",
-        inProgressPublisher: Published<Bool>.Publisher? = nil
+        inProgressPublisher: Published<Bool>.Publisher? = nil,
+        cardBrand: CardBrand? = nil
     ) -> (proxy: StoredCardInputViewControllerProxy, viewModel: StoredCardInputViewModelProtocolMock) {
         let viewModel = StoredCardInputViewModelProtocolMock()
         viewModel.underlyingSubmitButtonTitle = submitButtonTitle
         viewModel.underlyingTheme = .default
         viewModel.underlyingInProgressPublisher = inProgressPublisher ?? StoredCardInputInProgressSource().$isInProgress
-        viewModel.underlyingSecurityCodeItem = FormCardSecurityCodeItem()
+        let securityCodeItem = FormCardSecurityCodeItem()
+        securityCodeItem.selectedCard = cardBrand
+        viewModel.underlyingSecurityCodeItem = securityCodeItem
 
         let viewController = StoredCardInputViewController(viewModel: viewModel)
         return (StoredCardInputViewControllerProxy(viewController: viewController), viewModel)
@@ -208,6 +229,33 @@ struct StoredCardInputViewControllerProxy {
         let textField = try securityCodeItemView().textField
         code.forEach { textField.insertText(String($0)) }
         textField.sendActions(for: .editingChanged)
+    }
+
+    func footerLabel() throws -> UILabel {
+        try securityCodeItemView().footerLabel
+    }
+
+    /// Sizes the screen to fit its content at the given width, the way the SwiftUI host does when it first appears.
+    func layoutAtFittingHeight(width: CGFloat) {
+        let view: UIView = viewController.view
+        let height = view.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        view.frame.size = CGSize(width: width, height: height)
+        layoutKeepingHeight()
+    }
+
+    /// Lays the screen out again without changing its size, as the SwiftUI host does not measure it again.
+    func layoutKeepingHeight() {
+        // A second pass lets the multi-line footer settle on its new preferredMaxLayoutWidth.
+        viewController.view.layoutIfNeeded()
+        viewController.view.layoutIfNeeded()
+    }
+
+    func requiredHeight(of label: UILabel) -> CGFloat {
+        label.sizeThatFits(CGSize(width: label.bounds.width, height: .greatestFiniteMagnitude)).height
     }
 
     func tapPrimaryButton() throws {
