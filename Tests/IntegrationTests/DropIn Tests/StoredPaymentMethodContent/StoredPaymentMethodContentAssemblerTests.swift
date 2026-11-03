@@ -21,13 +21,12 @@ internal struct StoredPaymentMethodContentAssemblerTests {
             viewController: UIViewController()
         )
         let sut = makeSUT()
-        #expect(
-            sut.resolveStoredPaymentMethodContentRouter(
-                for: component,
-                isPresentedModally: false,
-                listener: ContentRouterListenerSpy()
-            ) != nil
+        let router = sut.resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: false,
+            listener: ContentRouterListenerSpy()
         )
+        #expect(router?.rootViewController is StoredPaymentMethodContentViewController)
     }
 
     /// A real stored payment method that needs no input at all, such as stored Cash App Pay, also gets

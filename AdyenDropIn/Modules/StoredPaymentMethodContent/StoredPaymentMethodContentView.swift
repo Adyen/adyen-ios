@@ -5,9 +5,9 @@
 //
 
 import Adyen
-import Combine
 import AdyenCard
 import AdyenUI
+import Combine
 import SwiftUI
 
 internal struct StoredPaymentMethodContentView: View {
@@ -46,20 +46,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
-        .background(
-            NavigationLock(
-                isActive: viewModel.isPaymentInProgress,
-                onPop: { viewModel.cancel() },
-                onCancel: cancelAction
-            )
-        )
-        .interactiveDismissDisabled()
         .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
-    }
-
-    private var cancelAction: (() -> Void)? {
-        guard viewModel.showsCancelButton else { return nil }
-        return { viewModel.cancel() }
     }
 }
 

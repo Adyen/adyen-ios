@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Combine
 import AdyenUI
+import Combine
 import Foundation
 import UIKit
 

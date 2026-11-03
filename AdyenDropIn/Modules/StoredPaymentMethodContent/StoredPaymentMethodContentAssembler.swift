@@ -58,9 +58,7 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
             localizationParameters: localizationParameters,
             dropInFlowManager: dropInFlowManager
         )
-        let viewController = UIHostingController(
-            rootView: StoredPaymentMethodContentView(viewModel: viewModel)
-        )
+        let viewController = StoredPaymentMethodContentViewController(viewModel: viewModel)
         let router = StoredPaymentMethodContentRouter(
             viewController: viewController,
             listener: listener
