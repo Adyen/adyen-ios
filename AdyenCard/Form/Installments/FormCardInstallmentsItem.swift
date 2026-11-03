@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.InstallmentOptions
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormPickerItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormPickerItem
 
 /// A form element that handles the display and selection of installment options based on the configuration.
 internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement>, AdyenObserver {

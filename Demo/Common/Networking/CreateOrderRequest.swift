@@ -5,10 +5,8 @@
 //
 
 import Adyen
+import AdyenCard
 import AdyenNetworking
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 
 internal struct CreateOrderRequest: APIRequest {

@@ -5,10 +5,7 @@
 //
 
 import Adyen
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import Foundation
 import UIKit
 

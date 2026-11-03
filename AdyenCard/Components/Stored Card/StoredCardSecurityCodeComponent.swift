@@ -6,11 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenUI
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// A component that provides a form for stored card payments.
 @MainActor

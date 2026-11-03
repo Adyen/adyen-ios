@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
 /// A component that provides a form for Online Banking payment.

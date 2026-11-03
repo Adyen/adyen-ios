@@ -4,11 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Combine
 import SwiftUI
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 import UIKit
 
 @MainActor

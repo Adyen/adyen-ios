@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
 import Foundation
 
 /// Contains the details provided by the gift card component with meal voucher payment method.

@@ -6,9 +6,7 @@
 
 import Adyen
 import UIKit
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 
 /// Contains the styling customization options for the QR code component.
 package struct QRCodeComponentStyle: ViewStyle {

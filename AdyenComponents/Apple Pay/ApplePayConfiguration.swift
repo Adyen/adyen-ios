@@ -5,12 +5,9 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import PassKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Configuration for the Apple Pay payment component.
 public struct ApplePayConfiguration: CheckoutComponentConfiguration {

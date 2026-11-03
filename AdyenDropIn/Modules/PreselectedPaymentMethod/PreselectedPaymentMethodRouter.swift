@@ -5,15 +5,10 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
+import AdyenActions
+import AdyenUI
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 // sourcery:AutoMockable
 @MainActor

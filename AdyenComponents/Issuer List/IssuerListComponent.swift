@@ -5,11 +5,8 @@
 //
 
 import Adyen
-
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.SearchViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.SearchViewController
 import Foundation
 import UIKit
 

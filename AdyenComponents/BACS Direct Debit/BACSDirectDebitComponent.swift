@@ -5,10 +5,7 @@
 //
 
 import Adyen
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import UIKit
 
 /// A component that provides a form for BACS Direct Debit payments.
