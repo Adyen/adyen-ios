@@ -10,7 +10,6 @@ extension UINavigationController {
 
     internal func setNavigationLock(active isActive: Bool) {
         navigationBar.isUserInteractionEnabled = !isActive
-        navigationBar.tintAdjustmentMode = isActive ? .dimmed : .automatic
         popGestureRecognizers.forEach { $0.isEnabled = !isActive }
     }
 
