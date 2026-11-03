@@ -153,29 +153,6 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(sut.childRouter == nil)
     }
 
-    /// When the stored payment screen reports it was already popped, the preselected screen only drops its reference
-    /// and dismisses nothing, so it never closes more than the shopper left.
-    @Test
-    func storedPaymentMethodContent_whenPopped_thenReleasesChildRouterWithoutDismissing() throws {
-        let rootViewController = ViewControllerSpy()
-        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
-        let sut = PreselectedPaymentMethodRouter(
-            viewController: rootViewController,
-            listener: nil,
-            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodContentAssembler: contentAssembler,
-            theme: .default
-        )
-        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
-        try #require(sut.childRouter != nil)
-
-        sut.didPopStoredPaymentMethodContent()
-
-        #expect(rootViewController.dismissCallsCount == 0)
-        #expect(sut.childRouter == nil)
-    }
-
     // MARK: - Show All Payment Methods Tests
 
     @Test("PaymentComponent - show all payment methods presents payment method list")

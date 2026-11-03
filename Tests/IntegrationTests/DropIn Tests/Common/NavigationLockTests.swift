@@ -112,6 +112,46 @@ struct NavigationLockTests {
         environment.window.isHidden = true
     }
 
+    @Test("A screen that can be cancelled gets the system Cancel button.")
+    func cancellableScreen_shouldShowTheSystemCancelButton() {
+        // Given
+        let environment = makeSUT(onCancel: {})
+
+        // Then
+        #expect(environment.screen.navigationItem.leftBarButtonItem === environment.sut.cancelButtonItem)
+        #expect(environment.sut.cancelButtonItem.isEnabled)
+        environment.window.isHidden = true
+    }
+
+    @Test
+    func screenThatCannotBeCancelled_shouldNotShowTheCancelButton() {
+        // Given
+        let environment = makeSUT()
+
+        // Then
+        #expect(environment.screen.navigationItem.leftBarButtonItem == nil)
+        environment.window.isHidden = true
+    }
+
+    @Test("A submitted payment cannot be cancelled, so the Cancel button is disabled until it ends.")
+    func activeLock_shouldDisableTheCancelButton() {
+        // Given
+        let environment = makeSUT(onCancel: {})
+
+        // When
+        environment.sut.isLockActive = true
+
+        // Then
+        #expect(!environment.sut.cancelButtonItem.isEnabled)
+
+        // When
+        environment.sut.isLockActive = false
+
+        // Then
+        #expect(environment.sut.cancelButtonItem.isEnabled)
+        environment.window.isHidden = true
+    }
+
     // MARK: - Helpers
 
     private final class PopGestureLockingViewController: UIViewController {
@@ -127,16 +167,18 @@ struct NavigationLockTests {
 
     private struct Environment {
         let sut: NavigationLockViewController
+        let screen: UIViewController
         let navigationController: UINavigationController
         let window: UIWindow
         let onPopCallsCount: () -> Int
     }
 
     /// Pushes a screen that hosts the lock, the way SwiftUI hosts it as a child of its hosting controller.
-    private func makeSUT() -> Environment {
+    private func makeSUT(onCancel: (() -> Void)? = nil) -> Environment {
         let sut = NavigationLockViewController()
         let popCounter = PopCounter()
         sut.onPop = { popCounter.count += 1 }
+        sut.onCancel = onCancel
 
         let screen = UIViewController()
         screen.addChild(sut)
@@ -152,6 +194,7 @@ struct NavigationLockTests {
 
         return Environment(
             sut: sut,
+            screen: screen,
             navigationController: navigationController,
             window: window,
             onPopCallsCount: { popCounter.count }

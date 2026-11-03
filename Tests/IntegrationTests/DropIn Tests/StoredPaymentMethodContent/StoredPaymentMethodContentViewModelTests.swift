@@ -95,19 +95,6 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
         #expect(context.flowManager.cancelComponentCallsCount == 1)
         #expect(context.router.dismissCallsCount == 1)
-        #expect(context.router.didPopCallsCount == 0)
-    }
-
-    /// Going back already removed the content, so it is not dismissed a second time.
-    @Test
-    internal func didPopBack_thenCancelsTheComponentWithoutDismissing() {
-        let context = makeSUTStoredCardWithCVC()
-
-        context.sut.didPopBack()
-
-        #expect(context.flowManager.cancelComponentCallsCount == 1)
-        #expect(context.router.didPopCallsCount == 1)
-        #expect(context.router.dismissCallsCount == 0)
     }
 
     private struct TestContext {
@@ -167,13 +154,8 @@ internal struct StoredPaymentMethodContentViewModelTests {
 private final class StoredPaymentMethodContentRoutingSpy: StoredPaymentMethodContentRouting {
 
     private(set) var dismissCallsCount = 0
-    private(set) var didPopCallsCount = 0
 
     func dismiss() {
         dismissCallsCount += 1
-    }
-
-    func didPop() {
-        didPopCallsCount += 1
     }
 }

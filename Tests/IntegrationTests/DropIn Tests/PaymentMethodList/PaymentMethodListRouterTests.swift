@@ -269,13 +269,15 @@ struct PaymentMethodListRouterTests {
     func dismissStoredPaymentMethodContent_shouldPopAndReleaseChildRouter() throws {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
-        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
             storedPaymentMethodContentAssembler: contentAssembler
         )
         sut.present(component: makeStoredPaymentComponentMock())
         try #require(sut.childRouter != nil)
+        navigationControllerSpy.viewControllers = [UIViewController(), contentRouter.rootViewController]
 
         // When
         sut.dismissStoredPaymentMethodContent()
@@ -286,9 +288,9 @@ struct PaymentMethodListRouterTests {
     }
 
     /// When the shopper swipes or taps back from the stored payment screen, the navigation stack already popped it,
-    /// so the list only drops its reference and pops nothing else.
+    /// so the list only drops its reference and does not pop the screen now on top.
     @Test
-    func didPopStoredPaymentMethodContent_shouldReleaseChildRouterWithoutPopping() throws {
+    func dismissStoredPaymentMethodContent_whenAlreadyPopped_shouldReleaseChildRouterWithoutPopping() throws {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
         let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
@@ -298,9 +300,10 @@ struct PaymentMethodListRouterTests {
         )
         sut.present(component: makeStoredPaymentComponentMock())
         try #require(sut.childRouter != nil)
+        navigationControllerSpy.viewControllers = [UIViewController()]
 
         // When
-        sut.didPopStoredPaymentMethodContent()
+        sut.dismissStoredPaymentMethodContent()
 
         // Then
         #expect(navigationControllerSpy.popViewControllerCallsCount == 0)

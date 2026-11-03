@@ -42,6 +42,7 @@ internal final class NavigationLockViewController: UIViewController {
 
     /// The ancestor of this controller that sits in the navigation stack.
     private weak var screen: UIViewController?
+    private weak var stack: UINavigationController?
 
     internal private(set) lazy var cancelButtonItem = UIBarButtonItem(
         systemItem: .cancel,
@@ -53,6 +54,7 @@ internal final class NavigationLockViewController: UIViewController {
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         screen = screenInNavigationStack
+        stack = screen?.navigationController
         setupCancelButton()
         applyLock()
     }
@@ -64,7 +66,7 @@ internal final class NavigationLockViewController: UIViewController {
 
     override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        guard screen?.isMovingFromParent == true else { return }
+        guard let screen, let stack, !stack.viewControllers.contains(screen) else { return }
         onPop?()
     }
 

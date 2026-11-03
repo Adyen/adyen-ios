@@ -78,5 +78,4 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 @MainActor
 private final class ContentRouterListenerSpy: StoredPaymentMethodContentRouterListener {
     func dismissStoredPaymentMethodContent() {}
-    func didPopStoredPaymentMethodContent() {}
 }
