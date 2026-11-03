@@ -256,6 +256,7 @@ struct PaymentMethodListRouterTests {
         sut.present(component: storedPaymentComponent)
 
         #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(contentAssembler.receivedIsPresentedModally == false)
         #expect(navigationControllerSpy.capturedPushedViewController === contentRouter.rootViewController)
         #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
         #expect(sut.childRouter === contentRouter)
@@ -281,6 +282,28 @@ struct PaymentMethodListRouterTests {
 
         // Then
         #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(sut.childRouter == nil)
+    }
+
+    /// When the shopper swipes or taps back from the stored payment screen, the navigation stack already popped it,
+    /// so the list only drops its reference and pops nothing else.
+    @Test
+    func didPopStoredPaymentMethodContent_shouldReleaseChildRouterWithoutPopping() throws {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            storedPaymentMethodContentAssembler: contentAssembler
+        )
+        sut.present(component: makeStoredPaymentComponentMock())
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.didPopStoredPaymentMethodContent()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 0)
         #expect(sut.childRouter == nil)
     }
 
@@ -450,6 +473,7 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
+    private(set) var receivedIsPresentedModally: Bool?
 
     init(router: Router?) {
         self.router = router
@@ -457,9 +481,11 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
+        receivedIsPresentedModally = isPresentedModally
         return router
     }
 }

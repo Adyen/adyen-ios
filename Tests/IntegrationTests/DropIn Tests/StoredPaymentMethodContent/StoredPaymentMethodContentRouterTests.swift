@@ -35,6 +35,20 @@ internal struct StoredPaymentMethodContentRouterTests {
         #expect(navigationController.dismissCallsCount == 0)
     }
 
+    /// When the shopper already went back from the stored payment screen, the screen only tells the module
+    /// that presented it, so that module releases it without unwinding anything else.
+    @Test
+    internal func storedPaymentMethodContent_whenPopped_thenTellsListenerItIsGone() {
+        let (sut, listener, navigationController) = makeSUT()
+
+        sut.didPop()
+
+        #expect(listener.didPopCallsCount == 1)
+        #expect(listener.dismissCallsCount == 0)
+        #expect(navigationController.popViewControllerCallsCount == 0)
+        #expect(navigationController.dismissCallsCount == 0)
+    }
+
     private func makeSUT() -> (
         sut: StoredPaymentMethodContentRouter,
         listener: ContentRouterListenerSpy,
@@ -56,8 +70,13 @@ internal struct StoredPaymentMethodContentRouterTests {
 @MainActor
 private final class ContentRouterListenerSpy: StoredPaymentMethodContentRouterListener {
     private(set) var dismissCallsCount = 0
+    private(set) var didPopCallsCount = 0
 
     func dismissStoredPaymentMethodContent() {
         dismissCallsCount += 1
+    }
+
+    func didPopStoredPaymentMethodContent() {
+        didPopCallsCount += 1
     }
 }

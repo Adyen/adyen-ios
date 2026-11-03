@@ -122,6 +122,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
 
         #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(contentAssembler.receivedIsPresentedModally == true)
         let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
         #expect(navigationController.viewControllers.first === contentRouter.rootViewController)
         #expect(navigationController.isModalInPresentation)
@@ -149,6 +150,29 @@ struct PreselectedPaymentMethodIntegrationTests {
         sut.dismissStoredPaymentMethodContent()
 
         #expect(rootViewController.dismissCallsCount == 1)
+        #expect(sut.childRouter == nil)
+    }
+
+    /// When the stored payment screen reports it was already popped, the preselected screen only drops its reference
+    /// and dismisses nothing, so it never closes more than the shopper left.
+    @Test
+    func storedPaymentMethodContent_whenPopped_thenReleasesChildRouterWithoutDismissing() throws {
+        let rootViewController = ViewControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
+        )
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+        try #require(sut.childRouter != nil)
+
+        sut.didPopStoredPaymentMethodContent()
+
+        #expect(rootViewController.dismissCallsCount == 0)
         #expect(sut.childRouter == nil)
     }
 
@@ -437,6 +461,7 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
+    private(set) var receivedIsPresentedModally: Bool?
 
     init(router: Router?) {
         self.router = router
@@ -444,9 +469,11 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
+        receivedIsPresentedModally = isPresentedModally
         return router
     }
 }

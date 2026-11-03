@@ -15,10 +15,12 @@ internal protocol StoredPaymentMethodContentAssembling {
 
     /// Resolves the router for the content that lets the shopper complete a stored payment.
     ///
+    /// - Parameter isPresentedModally: Whether the content is the root of a modal, with no screen to go back to.
     /// - Returns: The router, or `nil` when the component cannot be completed through this content,
     ///            in which case the parent module decides how to present it.
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router?
 }
@@ -45,6 +47,7 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
 
     internal func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         guard let component = component as? any StoredPaymentComponent else { return nil }
@@ -52,6 +55,7 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
         let viewModel = StoredPaymentMethodContentViewModel(
             component: component,
             theme: theme,
+            showsCancelButton: isPresentedModally,
             logoURLProvider: logoURLProvider,
             localizationParameters: localizationParameters,
             dropInFlowManager: dropInFlowManager

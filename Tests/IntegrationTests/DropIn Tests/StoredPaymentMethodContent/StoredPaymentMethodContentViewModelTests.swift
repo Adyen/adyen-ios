@@ -80,13 +80,47 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(!context.sut.isPaymentInProgress)
     }
 
+    @Test(arguments: [true, false])
+    internal func showsCancelButton_thenFollowsHowTheContentIsPresented(showsCancelButton: Bool) {
+        let context = makeSUTStoredCardWithCVC(showsCancelButton: showsCancelButton)
+        #expect(context.sut.showsCancelButton == showsCancelButton)
+    }
+
+    /// Cancelling from the content asks the module that presented it to take it away.
+    @Test
+    internal func cancel_thenCancelsTheComponentAndAsksToDismiss() {
+        let context = makeSUTStoredCardWithCVC()
+
+        context.sut.cancel()
+
+        #expect(context.flowManager.cancelComponentCallsCount == 1)
+        #expect(context.router.dismissCallsCount == 1)
+        #expect(context.router.didPopCallsCount == 0)
+    }
+
+    /// Going back already removed the content, so it is not dismissed a second time.
+    @Test
+    internal func didPopBack_thenCancelsTheComponentWithoutDismissing() {
+        let context = makeSUTStoredCardWithCVC()
+
+        context.sut.didPopBack()
+
+        #expect(context.flowManager.cancelComponentCallsCount == 1)
+        #expect(context.router.didPopCallsCount == 1)
+        #expect(context.router.dismissCallsCount == 0)
+    }
+
     private struct TestContext {
         let sut: StoredPaymentMethodContentViewModel
         let component: any StoredPaymentComponent
         let flowManager: DropInFlowManagingMock
+        let router: StoredPaymentMethodContentRoutingSpy
     }
 
-    private func makeSUTStoredCardWithCVC(amount: Amount? = Dummy.amount) -> TestContext {
+    private func makeSUTStoredCardWithCVC(
+        amount: Amount? = Dummy.amount,
+        showsCancelButton: Bool = false
+    ) -> TestContext {
         let paymentMethod = StoredCardPaymentMethod(
             type: .scheme,
             name: "Visa",
@@ -110,19 +144,22 @@ internal struct StoredPaymentMethodContentViewModelTests {
             context: componentContext,
             theme: .default
         )
-        return makeSUT(component: component)
+        return makeSUT(component: component, showsCancelButton: showsCancelButton)
     }
 
-    private func makeSUT(component: any StoredPaymentComponent) -> TestContext {
+    private func makeSUT(component: any StoredPaymentComponent, showsCancelButton: Bool = false) -> TestContext {
         let flowManager = DropInFlowManagingMock()
         let sut = StoredPaymentMethodContentViewModel(
             component: component,
             theme: .default,
+            showsCancelButton: showsCancelButton,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
             dropInFlowManager: flowManager
         )
-        return TestContext(sut: sut, component: component, flowManager: flowManager)
+        let router = StoredPaymentMethodContentRoutingSpy()
+        sut.router = router
+        return TestContext(sut: sut, component: component, flowManager: flowManager, router: router)
     }
 }
 
@@ -130,8 +167,13 @@ internal struct StoredPaymentMethodContentViewModelTests {
 private final class StoredPaymentMethodContentRoutingSpy: StoredPaymentMethodContentRouting {
 
     private(set) var dismissCallsCount = 0
+    private(set) var didPopCallsCount = 0
 
     func dismiss() {
         dismissCallsCount += 1
+    }
+
+    func didPop() {
+        didPopCallsCount += 1
     }
 }

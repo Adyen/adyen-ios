@@ -24,6 +24,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         #expect(
             sut.resolveStoredPaymentMethodContentRouter(
                 for: component,
+                isPresentedModally: false,
                 listener: ContentRouterListenerSpy()
             ) != nil
         )
@@ -46,6 +47,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) != nil)
     }
@@ -58,6 +60,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) == nil)
     }
@@ -75,4 +78,5 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 @MainActor
 private final class ContentRouterListenerSpy: StoredPaymentMethodContentRouterListener {
     func dismissStoredPaymentMethodContent() {}
+    func didPopStoredPaymentMethodContent() {}
 }
