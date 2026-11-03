@@ -660,13 +660,13 @@ class CardComponentTests: XCTestCase {
         )
     }
 
-    func test_zeroAmount_whenConsentFieldIsConfiguredToHide_thenKeepsFieldHiddenAndStoresPaymentMethod() throws {
-        // Zero-amount tokenization stores credentials even when merchant hides the consent field.
+    func test_zeroAmount_whenConsentFieldIsConfiguredToHide_thenKeepsFieldHiddenAndSubmitsNoStorePaymentMethodValue() throws {
+        // Hidden consent configuration omits storage choice, also for zero-amount payments.
         try assertCardSubmission(
             amount: Amount(value: 0, currencyCode: "EUR"),
             showsStorePaymentMethod: false,
             expectsConsentField: false,
-            expectedStorePaymentMethod: true
+            expectedStorePaymentMethod: nil
         )
     }
 
