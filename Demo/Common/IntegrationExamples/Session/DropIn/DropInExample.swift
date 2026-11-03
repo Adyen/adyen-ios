@@ -75,7 +75,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
             onFailure: { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
             }
-        )
+        ) {
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
+        }
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,

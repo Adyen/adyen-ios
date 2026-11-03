@@ -25,12 +25,6 @@ let configuration = try CheckoutConfiguration(
     clientKey: clientKey
 ) {
     CardConfiguration()
-        .onBinChange { bin in
-            print("BIN: \(bin)")
-        }
-        .onBinLookup { brands in
-            print("Brands: \(brands)")
-        }
     AuthenticationConfiguration()
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
@@ -42,7 +36,15 @@ let callbacks = CheckoutCallbacks(
     onFailure: { error in
         print(error.localizedDescription)
     }
-)
+) {
+    CardCallbacks()
+        .onBinChange { bin in
+            print("BIN: \(bin)")
+        }
+        .onBinLookup { data in
+            print("Brands: \(data.brands)")
+        }
+}
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,

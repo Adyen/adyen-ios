@@ -37,6 +37,7 @@ extension CheckoutCore {
     internal func makeDropInPaymentComponentProvider() -> DropInPaymentComponentProvider {
         let checkoutConfiguration = configuration
         let sessionConfiguration = session?.componentConfiguration
+        let additionalCallbacks = additionalCallbacks
         let context = adyenContext
         return DropInPaymentComponentProvider(
             isAvailable: { paymentMethod in
@@ -51,6 +52,7 @@ extension CheckoutCore {
                     configuration: checkoutConfiguration,
                     policy: .dropIn,
                     sessionConfiguration: sessionConfiguration,
+                    additionalCallbacks: additionalCallbacks,
                     context: context
                 )
             }

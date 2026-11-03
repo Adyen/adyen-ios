@@ -34,7 +34,8 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BACSDirectDebitComponent {
         weak var weakComponent: BACSDirectDebitComponent?
 

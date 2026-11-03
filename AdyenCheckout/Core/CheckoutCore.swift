@@ -46,6 +46,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let adyenContext: AdyenContext
     package let resultCallbacks: any CheckoutResultCallbacks
     package let callbackHandler: any CheckoutCallbackHandling
+    package let additionalCallbacks: AdditionalCallbacksStore
 
     internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
         var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
@@ -85,7 +86,8 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
         resultCallbacks: any CheckoutResultCallbacks,
-        callbackHandler: any CheckoutCallbackHandling
+        callbackHandler: any CheckoutCallbackHandling,
+        additionalCallbacks: AdditionalCallbacksStore = .init()
     ) {
         self.configuration = configuration
         self.session = session
@@ -93,6 +95,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         self.adyenContext = adyenContext
         self.resultCallbacks = resultCallbacks
         self.callbackHandler = callbackHandler
+        self.additionalCallbacks = additionalCallbacks
     }
 
     deinit {
@@ -122,6 +125,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             configuration: configuration,
             policy: .components(configuration),
             sessionConfiguration: session?.componentConfiguration,
+            additionalCallbacks: additionalCallbacks,
             context: adyenContext
         )
         paymentComponent.delegate = self
@@ -137,6 +141,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             for: storedPaymentMethod,
             configuration: configuration,
             policy: .components(configuration),
+            sessionConfiguration: session?.componentConfiguration,
             context: adyenContext
         )
         paymentComponent.delegate = self

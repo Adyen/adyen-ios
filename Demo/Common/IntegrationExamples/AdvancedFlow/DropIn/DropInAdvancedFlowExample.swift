@@ -86,7 +86,11 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
             onFailure: { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
             }
-        )
+        ) {
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
+        }
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
