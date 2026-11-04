@@ -5,13 +5,10 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import SwiftUI
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 internal final class PreselectedPaymentMethodViewController: UIHostingController<PreselectedPaymentMethodView> {
 

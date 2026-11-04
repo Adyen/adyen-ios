@@ -1049,31 +1049,34 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
     }
     
-    func test_build_withApplePayCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+    func test_build_withApplePayCallbacks_shouldDeliverAdditionalCallbacks() throws {
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
-        let applePayConfiguration = try ApplePayConfiguration(
+        checkoutConfiguration.configurations[.payment(.applePay)] = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
-        .onSelectShippingContact { _, summaryItems in
-            PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: summaryItems, shippingMethods: [])
-        }
-        .onSelectShippingMethod { _, summaryItems in
-            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
-        }
-        checkoutConfiguration.configurations[.payment(.applePay)] = applePayConfiguration
+        let callbacks = ApplePayCallbacks()
+            .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
+            .onSelectShippingContact { _, summaryItems in
+                PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: summaryItems, shippingMethods: [])
+            }
+            .onSelectShippingMethod { _, summaryItems in
+                PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+            }
 
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
             policy: .components(checkoutConfiguration),
+            additionalCallbacks: AdditionalCallbacksStore([callbacks]),
             context: context
         )
         let applePayComponent = try XCTUnwrap(component as? ApplePayComponent)
 
-        XCTAssertNotNil(applePayComponent.configuration.onAuthorize)
-        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingContact)
-        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingMethod)
+        XCTAssertNotNil(applePayComponent.callbacks.onAuthorize)
+        XCTAssertNotNil(applePayComponent.callbacks.onSelectShippingContact)
+        XCTAssertNotNil(applePayComponent.callbacks.onSelectShippingMethod)
+        XCTAssertNil(applePayComponent.callbacks.onChangeCouponCode)
+        XCTAssertNil(applePayComponent.callbacks.onSelectPaymentMethod)
     }
 
     func testBuild_WithApplePayAndNoConfiguration_ThrowsMissingConfigurationError() throws {

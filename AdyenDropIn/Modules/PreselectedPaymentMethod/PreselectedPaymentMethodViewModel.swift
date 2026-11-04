@@ -6,11 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenUI
 import Foundation
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 @MainActor
 internal final class PreselectedPaymentMethodViewModel: ObservableObject {

@@ -8,15 +8,9 @@ import Adyen
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
-#if canImport(AdyenTwint)
-    import AdyenTwint
-#endif
+import AdyenCard
+import AdyenComponents
+import AdyenTwint
 import Foundation
 
 package enum CheckoutComponentBuilder {

@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import Foundation
 
 /// Configuration for Authentication related actions, such as 3D Secure 2.

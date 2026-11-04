@@ -4,12 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// A navigation controller whose bar tint and titles follow the checkout theme.
 /// The system bar background is kept, so that the bar still blurs the content scrolling underneath it.

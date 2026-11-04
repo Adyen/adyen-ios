@@ -6,10 +6,7 @@
 
 import Adyen
 @_spi(AdyenInternal) import class Adyen.Analytics
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import Foundation
 import UIKit
 

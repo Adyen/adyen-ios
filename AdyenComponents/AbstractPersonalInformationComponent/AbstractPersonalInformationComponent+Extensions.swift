@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.PaymentComponentData
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormButtonItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormButtonItem
 import UIKit
 
 extension AbstractPersonalInformationComponent: LoadingComponent {

@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
 import Foundation
 
 /// A form item into which card expiry date is entered, formatted and validated.

@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
+import AdyenComponents
 import Foundation
 
 package extension CheckoutError {

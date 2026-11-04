@@ -1,5 +1,31 @@
 #  Migration Notes
 
+## 6.0.0-alpha.2
+
+### CocoaPods
+
+- CocoaPods is no longer supported. `5.27.0` is the last v5 version and `6.0.0-alpha.1` the last v6 version available on CocoaPods. To get newer versions, remove the `Adyen` and `AdyenCardScanner` pods from your `Podfile` and add `https://github.com/Adyen/adyen-ios` with Swift Package Manager. Pick the products that match the pods you used:
+
+| CocoaPods | Swift Package Manager product |
+|---|---|
+| `pod 'Adyen'`, `pod 'Adyen/Checkout'` | `AdyenCheckout` |
+| `pod 'Adyen/Core'` | `Adyen` |
+| `pod 'Adyen/CoreUI'` | `AdyenUI` |
+| `pod 'Adyen/Session'` | `AdyenSession` |
+| `pod 'Adyen/Card'` | `AdyenCard` |
+| `pod 'Adyen/Components'` | `AdyenComponents` |
+| `pod 'Adyen/Actions'` | `AdyenActions` |
+| `pod 'Adyen/Encryption'` | `AdyenEncryption` |
+| `pod 'Adyen/DropIn'` | `AdyenDropIn` |
+| `pod 'Adyen/WeChatPay'` | `AdyenWeChatPay` |
+| `pod 'Adyen/CashAppPay'` | `AdyenCashAppPay` |
+| `pod 'Adyen/AdyenTwint'` | `AdyenTwint` |
+| `pod 'Adyen/SwiftUI'` | `AdyenSwiftUI` |
+| `pod 'Adyen/DelegatedAuthentication'` | `AdyenDelegatedAuthentication` |
+| `pod 'Adyen/CardScanner'`, `pod 'AdyenCardScanner'` | `AdyenCardScanner` |
+
+- With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenCheckout`, `import AdyenUI`, `import AdyenCard`) next to `import Adyen`.
+
 ## 6.0.0-alpha.1
 
 See also:
@@ -405,6 +431,52 @@ Set the button's type, style and corner radius with `ApplePayButtonAppearance`. 
 ```swift
 try ApplePayConfiguration(paymentRequest: paymentRequest)
     .buttonAppearance(ApplePayButtonAppearance(buttonType: .buy, buttonStyle: .black, cornerRadius: 8))
+```
+
+#### Apple Pay callbacks
+
+The `onAuthorize(_:)`, `onSelectShippingContact(_:)`, `onSelectShippingMethod(_:)`, `onChangeCouponCode(_:)` and
+`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closure signatures
+are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
+configuration in `ApplePayConfiguration`.
+
+##### Before
+
+```swift
+let configuration = try CheckoutConfiguration(environment: .test, clientKey: clientKey) {
+    try ApplePayConfiguration(paymentRequest: paymentRequest)
+        .onAuthorize { payment in
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        .onSelectShippingMethod { shippingMethod, summaryItems in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+        }
+}
+```
+
+##### After
+
+```swift
+let configuration = try CheckoutConfiguration(environment: .test, clientKey: clientKey) {
+    try ApplePayConfiguration(paymentRequest: paymentRequest)
+}
+
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    ApplePayCallbacks()
+        .onAuthorize { payment in
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        .onSelectShippingMethod { shippingMethod, summaryItems in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+        }
+}
 ```
 
 ### BACS Direct Debit component
