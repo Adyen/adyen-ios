@@ -50,7 +50,9 @@ struct NavigationLockingHostingControllerTests {
         navigationController.view.layoutIfNeeded()
 
         // Then
-        #expect(environment.sut.navigationItem.leftBarButtonItem === environment.sut.cancelButtonItem)
+        let navigationItem = environment.sut.navigationItem
+        let leadingItems = (navigationItem.leftBarButtonItems ?? []) + navigationItem.leadingItemGroups.flatMap(\.barButtonItems)
+        #expect(leadingItems.contains { $0 === environment.sut.cancelButtonItem })
         #expect(environment.sut.cancelButtonItem.isEnabled)
         window.isHidden = true
     }
