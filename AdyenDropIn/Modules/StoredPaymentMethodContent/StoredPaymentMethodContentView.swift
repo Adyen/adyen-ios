@@ -5,12 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenCard
+import AdyenUI
 import SwiftUI
 
 internal struct StoredPaymentMethodContentView: View {

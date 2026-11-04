@@ -6,11 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component

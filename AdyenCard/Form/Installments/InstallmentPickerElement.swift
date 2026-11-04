@@ -6,11 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenUI
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.FormPickable
-#endif
+@_spi(AdyenInternal) import protocol AdyenUI.FormPickable
 
 /// Type that combines month values and plan selections
 /// to be able to show in a picker item.

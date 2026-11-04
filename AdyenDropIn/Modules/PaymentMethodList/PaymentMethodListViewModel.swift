@@ -6,11 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenUI
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 internal enum PaymentMethodListState {
     case idle

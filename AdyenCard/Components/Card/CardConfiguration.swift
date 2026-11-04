@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 
 /// Card component configuration.
 public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {

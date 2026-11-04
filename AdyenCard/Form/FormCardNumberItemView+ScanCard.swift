@@ -4,10 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextItemView
 import Foundation
 import UIKit
 

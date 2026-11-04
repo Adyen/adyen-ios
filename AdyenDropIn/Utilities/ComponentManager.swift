@@ -6,12 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenActions
+import AdyenUI
 import Foundation
 
 @MainActor

@@ -5,15 +5,11 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Combine
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
-
-#endif
+@_spi(AdyenInternal) import class AdyenUI.FormTextItemView
 
 internal class StoredCardInputViewController: UIViewController {
 

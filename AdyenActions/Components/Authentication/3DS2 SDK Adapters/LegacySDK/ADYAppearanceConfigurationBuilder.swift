@@ -5,9 +5,7 @@
 //
 
 import Adyen3DS2
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 import Foundation
 
 /// Builds an `Adyen3DS2.ADYAppearanceConfiguration` from an `CheckoutTheme`.

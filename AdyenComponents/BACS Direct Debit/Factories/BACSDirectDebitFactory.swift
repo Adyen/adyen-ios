@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import UIKit
 
 /// Assembly layer responsible for creating `BACSDirectDebitComponent` instances,

@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenSession)
-    import AdyenSession
-#endif
 import AdyenNetworking
+import AdyenSession
 import Foundation
 
 /// Creates checkout cores with the context and callbacks for each flow.

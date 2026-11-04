@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormItemView
 import UIKit
 
 internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UICollectionViewDataSource {
