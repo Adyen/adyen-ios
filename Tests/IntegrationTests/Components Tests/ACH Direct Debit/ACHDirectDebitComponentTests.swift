@@ -186,7 +186,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(routingNumberItemView?.footerLabel.text, "Invalid ABA routing number")
     }
     
-    func test_zeroAmount_whenStorePaymentMethodEnabled_thenHidesFieldAndSubmitsTrue() {
+    func test_zeroAmount_whenStorePaymentMethodEnabled_thenShowsFieldAndSubmitsShopperChoice() {
         let zeroAmountContext = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Amount(value: 0, currencyCode: "USD"),
@@ -204,18 +204,18 @@ class ACHDirectDebitComponentTests: XCTestCase {
             configuration: configuration
         )
         let delegate = PaymentComponentDelegateMock()
-        let expectation = expectation(description: "Zero-amount payment should store the payment method.")
+        let expectation = expectation(description: "Zero-amount payment should submit the shopper's choice.")
         sut.delegate = delegate
         setupRootViewController(sut.viewController)
         delegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(data.storePaymentMethod, true)
+            XCTAssertEqual(data.storePaymentMethod, false)
             expectation.fulfill()
         }
 
         let storeDetailsToggleView: UIView? = sut.viewController.view.findView(
             with: "AdyenComponents.ACHDirectDebitComponent.storeDetailsItem"
         )
-        XCTAssertNil(storeDetailsToggleView)
+        XCTAssertNotNil(storeDetailsToggleView)
 
         sut.holderNameItem.value = "Test Shopper"
         sut.bankAccountNumberItem.value = "123456789"
