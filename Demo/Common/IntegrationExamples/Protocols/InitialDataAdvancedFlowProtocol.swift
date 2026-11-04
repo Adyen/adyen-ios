@@ -51,13 +51,15 @@ extension InitialDataAdvancedFlowProtocol {
             clientKey: ConfigurationConstants.apiContext.clientKey
         )
 
+        let browserInfo = await BrowserInfo()
+
         // TODO: This has to be removed from the demo code. AdyenContext will not be exposed to the merchants in V6
-        self.context = await AdyenContext(
+        self.context = AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             amount: ConfigurationConstants.current.amount,
             publicKey: publicKey,
             checkoutAttemptId: nil,
-            browserInfo: BrowserInfo(),
+            browserInfo: browserInfo,
             analyticsAPIContext: CheckoutConfiguration.createAnalyticsAPIContext(apiContext: ConfigurationConstants.apiContext),
             analyticsConfiguration: analyticsConfiguration
         )
