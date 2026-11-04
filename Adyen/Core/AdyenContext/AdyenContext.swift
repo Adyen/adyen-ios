@@ -21,6 +21,8 @@ public final class AdyenContext {
 
     package let publicKey: String
 
+    package let browserInfo: BrowserInfo?
+
     /// The payment amount.
     public var amount: Amount?
 
@@ -31,6 +33,7 @@ public final class AdyenContext {
         amount: Amount?,
         publicKey: String,
         checkoutAttemptId: String?,
+        browserInfo: BrowserInfo?,
         analyticsAPIContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
@@ -44,6 +47,7 @@ public final class AdyenContext {
             apiContext: apiContext,
             amount: amount,
             publicKey: publicKey,
+            browserInfo: browserInfo,
             analyticsProvider: analyticsProvider
         )
     }
@@ -53,11 +57,13 @@ public final class AdyenContext {
         apiContext: APIContext,
         amount: Amount?,
         publicKey: String,
+        browserInfo: BrowserInfo?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.publicKey = publicKey
         self.apiContext = apiContext
         self.amount = amount
+        self.browserInfo = browserInfo
         self.analyticsProvider = analyticsProvider
     }
 
