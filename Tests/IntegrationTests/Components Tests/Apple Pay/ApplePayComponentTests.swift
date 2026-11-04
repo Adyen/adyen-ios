@@ -211,7 +211,8 @@ class ApplePayComponentTest: XCTestCase {
             try ApplePayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context,
-                configuration: configuration
+                configuration: configuration,
+                callbacks: ApplePayCallbacks()
             )
         ) { error in
             XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
@@ -366,15 +367,14 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayShipping() async throws {
         var receivedMethod: PKShippingMethod?
-        var configuration = try makeConfiguration()
-        configuration.onSelectShippingMethod = { method, _ in
+        let callbacks = ApplePayCallbacks().onSelectShippingMethod { method, _ in
             receivedMethod = method
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
 
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 5)
@@ -391,15 +391,14 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayShippingContact() async throws {
         var receivedContact: PKContact?
-        var configuration = try makeConfiguration()
-        configuration.onSelectShippingContact = { contact, _ in
+        let callbacks = ApplePayCallbacks().onSelectShippingContact { contact, _ in
             receivedContact = contact
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         let contact = PKContact()
         contact.name = PersonNameComponents()
@@ -416,15 +415,14 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayCoupon() async throws {
         var receivedCoupon: String?
-        var configuration = try makeConfiguration()
-        configuration.onChangeCouponCode = { coupon, _ in
+        let callbacks = ApplePayCallbacks().onChangeCouponCode { coupon, _ in
             receivedCoupon = coupon
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
 
         let result = await handler.paymentAuthorizationController(passKitController, didChangeCouponCode: "Coupon")
@@ -437,15 +435,14 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayPaymentMethod() async throws {
         var receivedPaymentMethod: PKPaymentMethod?
-        var configuration = try makeConfiguration()
-        configuration.onSelectPaymentMethod = { paymentMethod, _ in
+        let callbacks = ApplePayCallbacks().onSelectPaymentMethod { paymentMethod, _ in
             receivedPaymentMethod = paymentMethod
             return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
 
         let result = await handler.paymentAuthorizationController(passKitController, didSelectPaymentMethod: PKPaymentMethodMock())
@@ -498,11 +495,10 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayCoupon_givenDelegateReturnsEmptyItems_shouldKeepOriginalItems() async throws {
-        var configuration = try makeConfiguration()
-        configuration.onChangeCouponCode = { _, _ in
+        let callbacks = ApplePayCallbacks().onChangeCouponCode { _, _ in
             PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: [])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         let originalItems = sut.paymentRequest.paymentSummaryItems
 
@@ -515,12 +511,11 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeSuccess_shouldTriggerDidSubmit() async throws {
         var receivedPayment: PKPayment?
-        var configuration = try makeConfiguration()
-        configuration.onAuthorize = { payment in
+        let callbacks = ApplePayCallbacks().onAuthorize { payment in
             receivedPayment = payment
             return PKPaymentAuthorizationResult(status: .success, errors: nil)
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
 
         let didSubmitExpectation = expectation(description: "didSubmit should be called")
@@ -545,15 +540,14 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() async throws {
-        var configuration = try makeConfiguration()
-        configuration.onAuthorize = { _ in
+        let callbacks = ApplePayCallbacks().onAuthorize { _ in
             let error = PKPaymentRequest.paymentShippingAddressInvalidError(
                 withKey: CNPostalAddressPostalCodeKey,
                 localizedDescription: "Invalid postal code"
             )
             return PKPaymentAuthorizationResult(status: .failure, errors: [error])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         mockDelegate.onDidSubmit = { _, _ in
             XCTFail("didSubmit should not be called when authorization fails")
@@ -568,12 +562,11 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeWithEmptyToken_shouldFailOnceAfterSheetIsDismissed() async throws {
         var authorizeCalled = false
-        var configuration = try makeConfiguration()
-        configuration.onAuthorize = { _ in
+        let callbacks = ApplePayCallbacks().onAuthorize { _ in
             authorizeCalled = true
             return PKPaymentAuthorizationResult(status: .success, errors: nil)
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         var errors: [Error] = []
         let didFail = expectation(description: "didFail(.invalidToken)")
@@ -699,13 +692,12 @@ class ApplePayComponentTest: XCTestCase {
         for status in [PKPaymentAuthorizationStatus.success, .failure] {
             let onAuthorizeStarted = expectation(description: "onAuthorize entered")
             let releaseOnAuthorize = expectation(description: "release onAuthorize")
-            var configuration = try makeConfiguration()
-            configuration.onAuthorize = { _ in
+            let callbacks = ApplePayCallbacks().onAuthorize { _ in
                 onAuthorizeStarted.fulfill()
                 await self.fulfillment(of: [releaseOnAuthorize], timeout: 5)
                 return PKPaymentAuthorizationResult(status: status, errors: nil)
             }
-            sut = try makeComponent(configuration: configuration)
+            sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
             submit()
             let handler = try XCTUnwrap(sut.authorizationHandler)
 
@@ -760,15 +752,14 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func test_dismiss_afterMerchantRejection_callsDidFailCancelled() async throws {
-        var configuration = try makeConfiguration()
-        configuration.onAuthorize = { _ in
+        let callbacks = ApplePayCallbacks().onAuthorize { _ in
             let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
                 withKey: CNPostalAddressPostalCodeKey,
                 localizedDescription: "Wrong postal code"
             )
             return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         let didFailExpectation = expectation(description: "didFail(.cancelled)")
         mockDelegate.onDidFail = { error, _ in
@@ -883,7 +874,12 @@ class ApplePayComponentTest: XCTestCase {
 
         let config = try ApplePayConfiguration(paymentRequest: request)
 
-        let component = try ApplePayComponent(paymentMethod: paymentMethod, context: Dummy.context, configuration: config)
+        let component = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config,
+            callbacks: ApplePayCallbacks()
+        )
 
         XCTAssertEqual(component.paymentRequest.countryCode, request.countryCode)
         XCTAssertEqual(component.paymentRequest.currencyCode, request.currencyCode)
@@ -1011,12 +1007,14 @@ class ApplePayComponentTest: XCTestCase {
     
     private func makeComponent(
         configuration: ApplePayConfiguration,
+        callbacks: ApplePayCallbacks = .init(),
         context: AdyenContext = Dummy.context
     ) throws -> ApplePayComponent {
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
         component.makeAuthorizationController = { [unowned self] _ in
             self.makeControllerCallsCount += 1
@@ -1046,11 +1044,10 @@ class ApplePayComponentTest: XCTestCase {
         file: StaticString = #filePath,
         line: UInt = #line
     ) async throws {
-        var configuration = try makeConfiguration()
-        configuration.onSelectShippingMethod = { _, _ in
+        let callbacks = ApplePayCallbacks().onSelectShippingMethod { _, _ in
             PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
         }
-        sut = try makeComponent(configuration: configuration)
+        sut = try makeComponent(configuration: makeConfiguration(), callbacks: callbacks)
         submit()
         let handler = try XCTUnwrap(sut.authorizationHandler)
         let originalItems = sut.paymentRequest.paymentSummaryItems

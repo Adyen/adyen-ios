@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenCard
 @testable import AdyenComponents
 @testable import AdyenUI
 import PassKit
@@ -78,6 +79,66 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
         // Then
         XCTAssertTrue(component.configuration.allowOnboarding)
+    }
+
+    func test_create_withCallbacks_passesThemToComponent() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        let callbacks = ApplePayCallbacks()
+            .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
+
+        let component = try factory.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration,
+            callbacks: callbacks
+        )
+
+        XCTAssertNotNil(component.callbacks.onAuthorize)
+    }
+
+    func test_create_withoutCallbacks_usesEmptyCallbacks() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+
+        let component = try factory.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration,
+            callbacks: nil
+        )
+
+        XCTAssertNil(component.callbacks.onAuthorize)
+        XCTAssertNil(component.callbacks.onSelectShippingContact)
+        XCTAssertNil(component.callbacks.onSelectShippingMethod)
+        XCTAssertNil(component.callbacks.onChangeCouponCode)
+        XCTAssertNil(component.callbacks.onSelectPaymentMethod)
+    }
+
+    // MARK: - Callbacks Tests
+
+    func test_callbacks_withApplePayCallbacks_returnsLastEntry() throws {
+        let store = AdditionalCallbacksStore([
+            ApplePayCallbacks(),
+            CardCallbacks(),
+            ApplePayCallbacks().onChangeCouponCode { _, summaryItems in
+                PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: summaryItems)
+            }
+        ])
+
+        let callbacks = try XCTUnwrap(factory.callbacks(from: store))
+
+        XCTAssertNotNil(callbacks.onChangeCouponCode)
+    }
+
+    func test_callbacks_withoutApplePayCallbacks_returnsNil() {
+        let store = AdditionalCallbacksStore([CardCallbacks()])
+
+        XCTAssertNil(factory.callbacks(from: store))
     }
 
     // MARK: - Availability Tests
