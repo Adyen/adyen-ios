@@ -26,6 +26,10 @@
 
 - With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenCheckout`, `import AdyenUI`, `import AdyenCard`) next to `import Adyen`.
 
+### Internal types
+
+- `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
+
 ## 6.0.0-alpha.1
 
 See also:
