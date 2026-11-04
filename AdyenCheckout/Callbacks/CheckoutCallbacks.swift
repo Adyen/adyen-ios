@@ -40,7 +40,7 @@ import UIKit
 /// }
 /// ```
 ///
-public struct CheckoutCallbacks: CheckoutResultCallbacks {
+public struct CheckoutCallbacks: CheckoutResultCallbacks, Sendable {
 
     package let onComplete: CheckoutCompletionHandler
     package let onFailure: CheckoutFailureHandler
@@ -59,8 +59,8 @@ public struct CheckoutCallbacks: CheckoutResultCallbacks {
     ///     Defaults to an empty block.
     ///     When a callback type occurs more than once, the last value replaces the earlier value.
     public init(
-        onComplete: @escaping @MainActor (_ result: CheckoutResult) -> Void,
-        onFailure: @escaping @MainActor (_ error: CheckoutError) -> Void,
+        onComplete: @escaping @MainActor @Sendable (_ result: CheckoutResult) -> Void,
+        onFailure: @escaping @MainActor @Sendable (_ error: CheckoutError) -> Void,
         @CheckoutAdditionalCallbacksBuilder additionalCallbacks: () -> [any CheckoutAdditionalCallbacks] = { [] }
     ) {
         self.onComplete = onComplete
