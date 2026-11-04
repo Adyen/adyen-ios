@@ -60,20 +60,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            let applePay = try ConfigurationConstants.current
+            try ConfigurationConstants.current
                 .applePayConfiguration(using: plainPaymentSheet ? .demo : .demoWithShippingFields)
-                .onAuthorize { payment in
-                    if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
-                        return PKPaymentAuthorizationResult(status: .success, errors: nil)
-                    } else {
-                        let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
-                            withKey: CNPostalAddressPostalCodeKey,
-                            localizedDescription: "Wrong postal code"
-                        )
-                        return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
-                    }
-                }
-            addingSheetUpdateCallbacks(to: applePay, plainPaymentSheet: plainPaymentSheet)
                 .buttonAppearance(
                     .init(
                         buttonType: .donate,
@@ -82,6 +70,19 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     )
                 )
         }
+
+        let applePayCallbacks = ApplePayCallbacks()
+            .onAuthorize { payment in
+                if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+                    return PKPaymentAuthorizationResult(status: .success, errors: nil)
+                } else {
+                    let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                        withKey: CNPostalAddressPostalCodeKey,
+                        localizedDescription: "Wrong postal code"
+                    )
+                    return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
+                }
+            }
 
         let callbacks = CheckoutCallbacks(
             onComplete: { [weak self] result in
@@ -93,7 +94,9 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             onFailure: { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
             }
-        )
+        ) {
+            addingSheetUpdateCallbacks(to: applePayCallbacks, plainPaymentSheet: plainPaymentSheet)
+        }
         .onBeforeSubmit { [weak self] data in
             guard let self else { return .abort }
             print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
@@ -131,12 +134,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func addingSheetUpdateCallbacks(
-        to configuration: ApplePayConfiguration,
+        to callbacks: ApplePayCallbacks,
         plainPaymentSheet: Bool
-    ) -> ApplePayConfiguration {
-        guard !plainPaymentSheet else { return configuration }
+    ) -> ApplePayCallbacks {
+        guard !plainPaymentSheet else { return callbacks }
 
-        return configuration
+        return callbacks
             .onSelectShippingContact { [weak self] contact, summaryItems in
                 guard let self else { return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: summaryItems) }
                 let cityLabel = contact.postalAddress?.city ?? "Somewhere"
