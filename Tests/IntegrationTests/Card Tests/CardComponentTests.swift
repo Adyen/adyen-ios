@@ -650,13 +650,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(sut.cardViewController.items.button.title, "Save details")
     }
 
-    func test_zeroAmount_whenConsentFieldIsConfiguredToShow_thenHidesFieldAndStoresPaymentMethod() throws {
-        // Zero-amount tokenization overrides a configuration that normally asks for consent.
+    func test_zeroAmount_whenConsentFieldIsConfiguredToShow_thenShowsFieldAndSubmitsShopperChoice() throws {
+        // Zero-amount payments follow the configuration, like positive payments.
         try assertCardSubmission(
             amount: Amount(value: 0, currencyCode: "EUR"),
             showsStorePaymentMethod: true,
-            expectsConsentField: false,
-            expectedStorePaymentMethod: true
+            expectsConsentField: true,
+            expectedStorePaymentMethod: false
         )
     }
 
