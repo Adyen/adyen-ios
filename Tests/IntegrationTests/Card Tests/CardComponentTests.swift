@@ -1959,6 +1959,7 @@ class CardComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1985,6 +1986,7 @@ class CardComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -2121,6 +2123,7 @@ class CardComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
 
@@ -2144,6 +2147,7 @@ class CardComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
 

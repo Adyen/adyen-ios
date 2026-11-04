@@ -184,6 +184,7 @@ import XCTest
                 apiContext: Dummy.apiContext,
                 amount: Dummy.amount,
                 publicKey: Dummy.publicKey,
+                browserInfo: nil,
                 analyticsProvider: analyticsProviderMock
             )
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
@@ -221,6 +222,7 @@ import XCTest
                 apiContext: Dummy.apiContext,
                 amount: Amount(value: 0, currencyCode: "USD"),
                 publicKey: Dummy.publicKey,
+                browserInfo: nil,
                 analyticsProvider: AnalyticsProviderMock()
             )
             let sut = CashAppPayComponent(

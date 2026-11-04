@@ -21,14 +21,12 @@ class AtomeComponentUITests: XCTestCase {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         context = Dummy.context
         style = FormComponentStyle()
-        BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
         context = nil
         style = nil
-        BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
     

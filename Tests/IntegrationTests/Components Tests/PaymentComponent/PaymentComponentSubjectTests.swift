@@ -77,25 +77,39 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
 
-    func test_submit_sets_browserInfo() {
+    func test_submit_withBrowserInfoInContext_shouldSetBrowserInfo() async throws {
+        // Given
+        let fetchedBrowserInfo = await BrowserInfo()
+        let browserInfo = try XCTUnwrap(fetchedBrowserInfo)
+        let sut = PaymentComponentSubject(
+            context: Dummy.context(analyticsProvider: analyticsProviderMock, browserInfo: browserInfo),
+            delegate: paymentComponentDelegate,
+            order: nil,
+            paymentMethod: paymentMethod
+        )
+        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
+        XCTAssertNil(paymentComponentData.browserInfo)
+
+        // When
+        sut.submit(data: paymentComponentData, component: sut)
+
+        // Then
+        let submittedData = try XCTUnwrap(paymentComponentDelegate.didSubmitReceivedArguments?.data)
+        XCTAssertEqual(submittedData.browserInfo?.userAgent, browserInfo.userAgent)
+    }
+
+    func test_submit_withoutBrowserInfoInContext_shouldNotSetBrowserInfo() throws {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
-        let didSubmitExpectation = expectation(description: "didSubmit should get called")
-
         // When
-        XCTAssertNil(paymentComponentData.browserInfo)
-
-        // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.browserInfo)
-            didSubmitExpectation.fulfill()
-        }
-
         sut.submit(data: paymentComponentData, component: sut)
 
-        wait(for: [didSubmitExpectation], timeout: 3)
+        // Then
+        let submittedData = try XCTUnwrap(paymentComponentDelegate.didSubmitReceivedArguments?.data)
+        XCTAssertNil(submittedData.browserInfo)
     }
 
     func test_submit_event() {

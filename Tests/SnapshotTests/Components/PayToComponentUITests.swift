@@ -25,11 +25,6 @@ class PayToComponentUITests: XCTestCase {
         FormComponentStyle()
     }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        BrowserInfo.cachedUserAgent = "some_value"
-    }
-
     func test_UI_configuration() {
         var style = style
         style.backgroundColor = .green

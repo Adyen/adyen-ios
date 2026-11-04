@@ -112,6 +112,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -172,6 +173,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Amount(value: 500, currencyCode: "USD"),
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -929,6 +931,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()

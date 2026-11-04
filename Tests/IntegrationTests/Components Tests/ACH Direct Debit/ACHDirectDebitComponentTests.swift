@@ -191,6 +191,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Amount(value: 0, currencyCode: "USD"),
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
@@ -274,6 +275,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")

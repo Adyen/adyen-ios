@@ -32,11 +32,6 @@ class UPIComponentUITests: XCTestCase {
         Issuer(identifier: "phonepe", name: "PhonePe")
     ]
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        BrowserInfo.cachedUserAgent = "some_value"
-    }
-
     func testUIConfiguration() {
         var style = style
         style.backgroundColor = .green
