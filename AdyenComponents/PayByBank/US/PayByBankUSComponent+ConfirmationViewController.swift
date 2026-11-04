@@ -5,10 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.SupportedPaymentMethodLogosView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.SupportedPaymentMethodLogosView
 import UIKit
 
 extension PayByBankUSComponent {

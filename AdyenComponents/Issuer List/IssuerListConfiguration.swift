@@ -5,10 +5,8 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Configuration for Issuer List type components.
 package struct IssuerListConfiguration: CheckoutComponentConfiguration {

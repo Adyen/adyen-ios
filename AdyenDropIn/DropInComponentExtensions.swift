@@ -5,15 +5,9 @@
 //
 
 import Adyen
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
+import AdyenActions
+import AdyenCard
+import AdyenComponents
 import AdyenNetworking
 import UIKit
 

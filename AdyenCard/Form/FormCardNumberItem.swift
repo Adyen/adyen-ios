@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextItem
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextItem
 import UIKit
 
 /// A form item into which a card number is entered.

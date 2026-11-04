@@ -5,12 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenSession)
-    import AdyenSession
-#endif
+import AdyenActions
+import AdyenSession
 import Foundation
 
 @MainActor

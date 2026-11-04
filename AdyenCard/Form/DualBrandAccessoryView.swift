@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 /// A segmented picker view housing up to 2 brand logos with selection support for dual-branded cards.

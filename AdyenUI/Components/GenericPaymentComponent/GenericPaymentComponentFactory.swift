@@ -5,9 +5,6 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Factory for creating Generic payment components.
 ///

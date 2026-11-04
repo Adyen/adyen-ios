@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 
 /// Configuration for Drop-in behavior.
 public struct DropInConfiguration: CheckoutConfigurable {

@@ -6,10 +6,8 @@
 
 import Adyen
 import AdyenNetworking
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import Foundation
 import UIKit
 
