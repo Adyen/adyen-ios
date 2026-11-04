@@ -212,7 +212,7 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
-        func test_zeroAmount_whenStorePaymentMethodFieldEnabled_thenHidesFieldAndSubmitsTrue() throws {
+        func test_zeroAmount_whenStorePaymentMethodFieldEnabled_thenShowsFieldAndSubmitsShopperChoice() throws {
             let configuration = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
                 showsStorePaymentMethodField: true
@@ -229,18 +229,18 @@ import XCTest
                 configuration: configuration
             )
             let delegate = PaymentComponentDelegateMock()
-            let expectation = expectation(description: "Zero-amount payment should store the payment method.")
+            let expectation = expectation(description: "Zero-amount payment should submit the shopper's choice.")
             sut.delegate = delegate
             sut.viewController.loadViewIfNeeded()
             delegate.onDidSubmit = { data, _ in
-                XCTAssertEqual(data.storePaymentMethod, true)
+                XCTAssertEqual(data.storePaymentMethod, false)
                 expectation.fulfill()
             }
 
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(
                 with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem"
             )
-            XCTAssertNil(storeDetailsToggleView)
+            XCTAssertNotNil(storeDetailsToggleView)
 
             sut.submitApprovedRequest(with: [onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
