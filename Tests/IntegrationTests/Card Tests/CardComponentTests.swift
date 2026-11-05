@@ -1149,6 +1149,33 @@ class CardComponentTests: XCTestCase {
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
     }
 
+    func test_cardLogos_emptyBinLookupWithValidNumber_keepsSupportedLogosVisible() throws {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        let supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"))
+
+        populate(textItemView: cardNumberItemView, with: "36070500001020")
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [], isCreatedLocally: false))
+
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.isValid())
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: false)
+
+        sut.cardViewController.handleBinLookupResponse(
+            BinLookupResponse(brands: [DetectedCardBrand(brand: .diners, isSupported: true)], isCreatedLocally: false)
+        )
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
+
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [], isCreatedLocally: false))
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: false)
+    }
+
     func test_securityCodeField_withDifferentCVCPolicies_shouldUpdateDisplayMode() {
         let brands = [
             DetectedCardBrand(brand: .visa, cvcPolicy: .required),
