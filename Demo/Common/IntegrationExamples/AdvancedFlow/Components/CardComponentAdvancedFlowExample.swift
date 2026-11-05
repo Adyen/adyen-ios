@@ -195,7 +195,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 /// Keys grouped by where they show up in the card UI:
 /// - field titles (always visible): `.cardNumber`, `.cardExpiryDate`, `.cardSecurityCode`, `.cardHolderName`
 /// - the "save card" toggle: `.cardStorePaymentMethod`
-/// - validation errors (visible when you submit bad input): `.cardNumberInvalid`, `.cardExpiryDateInvalid`, `.cardSecurityCodeInvalid`
+/// - validation errors (visible when you submit bad input): `.cardNumberInvalid`, `.cardExpiryDateInvalid`
 ///
 /// To eyeball locale routing, change the simulator language under Settings → General → Language & Region.
 private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
@@ -238,11 +238,6 @@ private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
             "en": "Expiry date is invalid",
             "nl": "Vervaldatum is ongeldig",
             "fr": "Date d'expiration invalide"
-        ],
-        .cardSecurityCodeInvalid: [
-            "en": "CVC is invalid",
-            "nl": "CVC is ongeldig",
-            "fr": "CVC invalide"
         ]
     ]
 
@@ -268,8 +263,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Name on card",
             .cardStorePaymentMethod: "Remember this card",
             .cardNumberInvalid: "Card number looks wrong",
-            .cardExpiryDateInvalid: "Expiry date is invalid",
-            .cardSecurityCodeInvalid: "CVC is invalid"
+            .cardExpiryDateInvalid: "Expiry date is invalid"
         ],
         "nl": [
             .cardNumber: "Kaartnummer (Aangepast)",
@@ -278,8 +272,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Naam op kaart",
             .cardStorePaymentMethod: "Onthoud deze kaart",
             .cardNumberInvalid: "Kaartnummer klopt niet",
-            .cardExpiryDateInvalid: "Vervaldatum is ongeldig",
-            .cardSecurityCodeInvalid: "CVC is ongeldig"
+            .cardExpiryDateInvalid: "Vervaldatum is ongeldig"
         ],
         "fr": [
             .cardNumber: "Numéro de carte (perso)",
@@ -288,8 +281,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Nom sur la carte",
             .cardStorePaymentMethod: "Mémoriser cette carte",
             .cardNumberInvalid: "Numéro de carte incorrect",
-            .cardExpiryDateInvalid: "Date d'expiration invalide",
-            .cardSecurityCodeInvalid: "CVC invalide"
+            .cardExpiryDateInvalid: "Date d'expiration invalide"
         ]
     ]
 

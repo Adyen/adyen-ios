@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
 import UIKit
@@ -22,21 +21,18 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false
         
-        observe(item.$selectedCard) { [weak self] cardsType in
-            guard let self else { return }
-            let number = String(cardsType.expectedSecurityCodeLength)
-            let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
-            
-            // Set placeholder on item - it will be shown in footer label reactively
-            self.item.placeholder = localizedPlaceholder
-            self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
+        observe(item.$placeholder) { [weak self] _ in
+            self?.updateHintAccessibilityLabel()
+        }
+        observe(item.$title) { [weak self] _ in
+            self?.updateHintAccessibilityLabel()
         }
 
         observe(item.$displayMode) { [weak self] _ in
             self?.updateValidation()
         }
         
-        item.$selectedCard.publish(nil)
+        updateHintAccessibilityLabel()
 
         item.focusHandler = { [weak self] in
             self?.becomeFirstResponder()
@@ -121,6 +117,7 @@ extension FormCardSecurityCodeItemView {
         
         internal init(item: FormCardSecurityCodeItem) {
             super.init(frame: .zero)
+            showFront = item.selectedCard == .americanExpress
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstraints()
@@ -186,6 +183,11 @@ extension FormCardSecurityCodeItemView {
             in: self.bundle,
             compatibleWith: nil
         ))
+    }
+
+    private func updateHintAccessibilityLabel() {
+        guard !item.validationState.shouldShowError else { return }
+        textField.accessibilityLabel = accessibilityLabel(placeholder: item.placeholder ?? "")
     }
 
     private func accessibilityLabel(placeholder: String) -> String {
