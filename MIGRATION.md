@@ -433,6 +433,52 @@ try ApplePayConfiguration(paymentRequest: paymentRequest)
     .buttonAppearance(ApplePayButtonAppearance(buttonType: .buy, buttonStyle: .black, cornerRadius: 8))
 ```
 
+#### Apple Pay callbacks
+
+The `onAuthorize(_:)`, `onSelectShippingContact(_:)`, `onSelectShippingMethod(_:)`, `onChangeCouponCode(_:)` and
+`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closure signatures
+are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
+configuration in `ApplePayConfiguration`.
+
+##### Before
+
+```swift
+let configuration = try CheckoutConfiguration(environment: .test, clientKey: clientKey) {
+    try ApplePayConfiguration(paymentRequest: paymentRequest)
+        .onAuthorize { payment in
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        .onSelectShippingMethod { shippingMethod, summaryItems in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+        }
+}
+```
+
+##### After
+
+```swift
+let configuration = try CheckoutConfiguration(environment: .test, clientKey: clientKey) {
+    try ApplePayConfiguration(paymentRequest: paymentRequest)
+}
+
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    ApplePayCallbacks()
+        .onAuthorize { payment in
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        .onSelectShippingMethod { shippingMethod, summaryItems in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+        }
+}
+```
+
 ### BACS Direct Debit component
 
 In v5, the BACS Direct Debit component had two screens: the shopper filled in the form, then reviewed their details on a

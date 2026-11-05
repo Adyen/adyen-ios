@@ -31,6 +31,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
 
     private let controller: ApplePayAuthorizationControlling
     private let configuration: ApplePayConfiguration
+    private let callbacks: ApplePayCallbacks
     private let presentationWindow: UIWindow?
     private let onPresent: () -> Void
     private let submitPayment: (PKPayment) -> Void
@@ -51,6 +52,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
     internal init(
         controller: ApplePayAuthorizationControlling,
         configuration: ApplePayConfiguration,
+        callbacks: ApplePayCallbacks,
         presentationWindow: UIWindow?,
         onPresent: @escaping () -> Void,
         submitPayment: @escaping (PKPayment) -> Void,
@@ -58,6 +60,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
     ) {
         self.controller = controller
         self.configuration = configuration
+        self.callbacks = callbacks
         self.presentationWindow = presentationWindow
         self.onPresent = onPresent
         self.submitPayment = submitPayment
@@ -141,7 +144,7 @@ extension ApplePayAuthorizationHandler: PKPaymentAuthorizationControllerDelegate
         _ controller: PKPaymentAuthorizationController,
         didSelectPaymentMethod paymentMethod: PKPaymentMethod
     ) async -> PKPaymentRequestPaymentMethodUpdate {
-        guard let onSelectPaymentMethod = configuration.onSelectPaymentMethod else {
+        guard let onSelectPaymentMethod = callbacks.onSelectPaymentMethod else {
             return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
@@ -154,7 +157,7 @@ extension ApplePayAuthorizationHandler: PKPaymentAuthorizationControllerDelegate
         _ controller: PKPaymentAuthorizationController,
         didSelectShippingContact contact: PKContact
     ) async -> PKPaymentRequestShippingContactUpdate {
-        guard let onSelectShippingContact = configuration.onSelectShippingContact else {
+        guard let onSelectShippingContact = callbacks.onSelectShippingContact else {
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
@@ -167,7 +170,7 @@ extension ApplePayAuthorizationHandler: PKPaymentAuthorizationControllerDelegate
         _ controller: PKPaymentAuthorizationController,
         didSelectShippingMethod shippingMethod: PKShippingMethod
     ) async -> PKPaymentRequestShippingMethodUpdate {
-        guard let onSelectShippingMethod = configuration.onSelectShippingMethod else {
+        guard let onSelectShippingMethod = callbacks.onSelectShippingMethod else {
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
@@ -180,7 +183,7 @@ extension ApplePayAuthorizationHandler: PKPaymentAuthorizationControllerDelegate
         _ controller: PKPaymentAuthorizationController,
         didChangeCouponCode couponCode: String
     ) async -> PKPaymentRequestCouponCodeUpdate {
-        guard let onChangeCouponCode = configuration.onChangeCouponCode else {
+        guard let onChangeCouponCode = callbacks.onChangeCouponCode else {
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
@@ -201,7 +204,7 @@ extension ApplePayAuthorizationHandler {
             return PKPaymentAuthorizationResult(status: .failure, errors: nil)
         }
 
-        if let onAuthorize = configuration.onAuthorize {
+        if let onAuthorize = callbacks.onAuthorize {
             let result = await onAuthorize(payment)
             if result.status == .failure {
                 // With errors the sheet stays open to retry. Without them, PassKit closes it.

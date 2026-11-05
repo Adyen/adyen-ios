@@ -32,6 +32,7 @@ The entry points for integrating the SDK.
 - ``CheckoutAdditionalCallbacksBuilder``
 - ``CardCallbacks``
 - ``AddressCallbacks``
+- ``ApplePayCallbacks``
 - ``CheckoutResultCode``
 - ``CheckoutError``
 - ``AdvancedCheckoutResult``

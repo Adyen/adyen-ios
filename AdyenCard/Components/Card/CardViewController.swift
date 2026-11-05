@@ -214,11 +214,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal var storePayment: Bool? {
-        if amount?.value == 0 {
-            return true
-        }
-
-        return configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
     }
 
     internal var installments: Installments? {
@@ -353,10 +349,7 @@ extension CardViewController {
             bindInstallmentsSectionVisibility()
         }
         
-        if StorePaymentMethodPolicy.shouldShowConsent(
-            configuredVisible: configuration.showStorePaymentMethod,
-            amount: amount
-        ) {
+        if configuration.showStorePaymentMethod {
             append(items.storeDetailsItem)
             append(FormSpacerItem())
         }
@@ -481,14 +474,10 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     internal func update(storePaymentMethodFieldVisibility isVisible: Bool) {
-        let shouldShowConsent = StorePaymentMethodPolicy.shouldShowConsent(
-            configuredVisible: isVisible,
-            amount: amount
-        )
-        if !shouldShowConsent {
+        if !isVisible {
             items.storeDetailsItem.value = false
         }
-        items.storeDetailsItem.isVisible = shouldShowConsent
+        items.storeDetailsItem.isVisible = isVisible
     }
     
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
