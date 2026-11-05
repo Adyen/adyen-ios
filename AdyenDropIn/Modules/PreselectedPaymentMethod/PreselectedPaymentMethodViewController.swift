@@ -13,7 +13,6 @@ import UIKit
 internal final class PreselectedPaymentMethodViewController: UIHostingController<PreselectedPaymentMethodView> {
 
     private enum Constants {
-        static let sheetCornerRadius: CGFloat = 16
         static let sheetHeight: CGFloat = 500
     }
 
@@ -48,7 +47,6 @@ internal final class PreselectedPaymentMethodViewController: UIHostingController
                 }
             ]
             sheet.prefersGrabberVisible = false
-            sheet.preferredCornerRadius = Constants.sheetCornerRadius
         }
     }
 
