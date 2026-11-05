@@ -96,7 +96,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, sut.configuration.localizationParameters))
-        XCTAssertNil(items.securityCodeItem.placeholder)
+        XCTAssertEqual(items.securityCodeItem.placeholder, localizedString(.cardSecurityCodeHintThreeDigits, sut.configuration.localizationParameters))
         XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardSecurityCodeErrorEmptyThreeDigits, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, sut.configuration.localizationParameters))
@@ -125,7 +125,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_label"), sut.configuration.localizationParameters))
-        XCTAssertNil(items.securityCodeItem.placeholder)
+        XCTAssertEqual(items.securityCodeItem.placeholder, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_hint_three_digits"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_three_digits"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.configuration.localizationParameters))
