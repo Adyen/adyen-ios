@@ -12,7 +12,7 @@ import UIKit
 
 extension CheckoutCore: PartialPaymentDelegate {
 
-    public func checkBalance(
+    package func checkBalance(
         with data: PaymentComponentData,
         component: any Component,
         completion: @escaping (Result<Balance, Error>) -> Void
@@ -33,7 +33,7 @@ extension CheckoutCore: PartialPaymentDelegate {
         }
     }
 
-    public func requestOrder(for component: any Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    package func requestOrder(for component: any Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         guard let session else {
             completion(.failure(PartialPaymentError.notSupportedForComponent))
             return
@@ -50,7 +50,7 @@ extension CheckoutCore: PartialPaymentDelegate {
         }
     }
 
-    public func cancelOrder(_ order: PartialPaymentOrder, component: any Component) {
+    package func cancelOrder(_ order: PartialPaymentOrder, component: any Component) {
         Task { [weak self] in
             await self?.session?.cancelOrder(order)
         }

@@ -20,9 +20,6 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// Comes from the demo app protocol and is unused by Checkout.
-    internal var context: AdyenContext?
-
     internal var selectedTheme: ExampleAppTheme {
         ConfigurationConstants.current.themeSettings.theme
     }
