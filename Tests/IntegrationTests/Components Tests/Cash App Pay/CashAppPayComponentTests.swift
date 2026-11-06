@@ -231,13 +231,8 @@ import XCTest
                 configuration: configuration
             )
             let delegate = PaymentComponentDelegateMock()
-            let expectation = expectation(description: "Zero-amount payment should submit the shopper's choice.")
             sut.delegate = delegate
             sut.viewController.loadViewIfNeeded()
-            delegate.onDidSubmit = { data, _ in
-                XCTAssertEqual(data.storePaymentMethod, false)
-                expectation.fulfill()
-            }
 
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(
                 with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem"
@@ -246,7 +241,8 @@ import XCTest
 
             sut.submitApprovedRequest(with: [onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
-            wait(for: [expectation], timeout: 10)
+            let submittedData = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data)
+            XCTAssertEqual(submittedData.storePaymentMethod, false)
         }
 
         func test_hiddenStorePaymentMethodField_whenStorePaymentMethodEnabled_thenSubmitsTrue() throws {
@@ -262,18 +258,14 @@ import XCTest
                 configuration: configuration
             )
             let delegate = PaymentComponentDelegateMock()
-            let expectation = expectation(description: "Payment data should request storing the payment method.")
             sut.delegate = delegate
-            delegate.onDidSubmit = { data, _ in
-                XCTAssertEqual(data.storePaymentMethod, true)
-                expectation.fulfill()
-            }
 
             // When
             sut.submitApprovedRequest(with: [onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
             // Then
-            wait(for: [expectation], timeout: 10)
+            let submittedData = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data)
+            XCTAssertEqual(submittedData.storePaymentMethod, true)
         }
 
         func testOneTimeSubmitDetails() throws {
@@ -284,27 +276,25 @@ import XCTest
             sut.delegate = delegate
             sut.viewController.loadViewIfNeeded()
 
-            let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
-            delegate.onDidSubmit = { data, component in
-                XCTAssertTrue(component === sut)
-                XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
-                let details = data.paymentMethod as! CashAppPayDetails
-                
-                XCTAssertEqual(details.grantId, "grantId1")
-                XCTAssertNil(details.cashtag)
-                XCTAssertEqual(details.customerId, "testId")
-                XCTAssertNil(details.onFileGrantId)
 
-                Task {
-                    await sut.finalizeIfNeeded(success: true)
-                    finalizationExpectation.fulfill()
-                }
-                delegateExpectation.fulfill()
-            }
-            
             sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
-            
+
+            let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+            XCTAssertTrue(submitted.component === sut)
+            XCTAssertTrue(submitted.data.paymentMethod is CashAppPayDetails)
+            let details = try XCTUnwrap(submitted.data.paymentMethod as? CashAppPayDetails)
+
+            XCTAssertEqual(details.grantId, "grantId1")
+            XCTAssertNil(details.cashtag)
+            XCTAssertEqual(details.customerId, "testId")
+            XCTAssertNil(details.onFileGrantId)
+
+            Task {
+                await sut.finalizeIfNeeded(success: true)
+                finalizationExpectation.fulfill()
+            }
+
             waitForExpectations(timeout: 10, handler: nil)
         }
         
@@ -316,27 +306,25 @@ import XCTest
             sut.delegate = delegate
             sut.viewController.loadViewIfNeeded()
 
-            let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
-            delegate.onDidSubmit = { data, component in
-                XCTAssertTrue(component === sut)
-                XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
-                let details = data.paymentMethod as! CashAppPayDetails
-                
-                XCTAssertEqual(details.grantId, "grantId1")
-                XCTAssertEqual(details.customerId, "testId")
-                XCTAssertEqual(details.cashtag, "testtag")
-                XCTAssertEqual(details.onFileGrantId, "onFileGrantId1")
 
-                Task {
-                    await sut.finalizeIfNeeded(success: true)
-                    finalizationExpectation.fulfill()
-                }
-                delegateExpectation.fulfill()
-            }
-            
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
-            
+
+            let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+            XCTAssertTrue(submitted.component === sut)
+            XCTAssertTrue(submitted.data.paymentMethod is CashAppPayDetails)
+            let details = try XCTUnwrap(submitted.data.paymentMethod as? CashAppPayDetails)
+
+            XCTAssertEqual(details.grantId, "grantId1")
+            XCTAssertEqual(details.customerId, "testId")
+            XCTAssertEqual(details.cashtag, "testtag")
+            XCTAssertEqual(details.onFileGrantId, "onFileGrantId1")
+
+            Task {
+                await sut.finalizeIfNeeded(success: true)
+                finalizationExpectation.fulfill()
+            }
+
             waitForExpectations(timeout: 10, handler: nil)
         }
 
@@ -353,23 +341,18 @@ import XCTest
             let paymentDelegateMock = PaymentComponentDelegateMock()
             sut.delegate = paymentDelegateMock
 
-            let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
-
-            paymentDelegateMock.onDidSubmit = { _, _ in
-                Task {
-                    await sut.finalizeIfNeeded(success: true)
-                    finalizationExpectation.fulfill()
-                }
-                didSubmitExpectation.fulfill()
-            }
 
             // When
             sut.performSubmit()
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
             // Then
-            wait(for: [finalizationExpectation, didSubmitExpectation], timeout: 10)
+            Task {
+                await sut.finalizeIfNeeded(success: true)
+                finalizationExpectation.fulfill()
+            }
+            wait(for: [finalizationExpectation], timeout: 10)
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
         }
         

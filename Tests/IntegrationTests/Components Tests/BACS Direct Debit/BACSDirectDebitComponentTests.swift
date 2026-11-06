@@ -49,17 +49,14 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertTrue(title?.contains(Dummy.amount.formatted) == true)
     }
 
-    func test_performSubmit_whenFormIsValid_shouldCallDelegateDidSubmitWithDetails() async throws {
+    func test_performSubmit_whenFormIsValid_shouldCallDelegateDidSubmitWithDetails() throws {
         // Given
         populateValidFormData()
-        let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
-        paymentComponentDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
 
         // When
         sut.performSubmit()
 
         // Then
-        await fulfillment(of: [didSubmitExpectation], timeout: 1)
         let arguments = try XCTUnwrap(paymentComponentDelegate.didSubmitReceivedArguments)
         XCTAssertTrue(arguments.component === sut)
 
@@ -70,17 +67,12 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(details.shopperEmail, mockShopperEmail)
     }
 
-    func test_performSubmit_whenFormIsInvalid_shouldNotCallDelegateDidSubmit() async {
-        // Given
-        let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() not to be called.")
-        didSubmitExpectation.isInverted = true
-        paymentComponentDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
-
+    func test_performSubmit_whenFormIsInvalid_shouldNotCallDelegateDidSubmit() {
         // When
         sut.performSubmit()
 
         // Then
-        await fulfillment(of: [didSubmitExpectation], timeout: 0.5)
+        XCTAssertEqual(paymentComponentDelegate.didSubmitCallsCount, 0)
         XCTAssertEqual(sut.bacsViewModel.state, .invalid)
     }
 

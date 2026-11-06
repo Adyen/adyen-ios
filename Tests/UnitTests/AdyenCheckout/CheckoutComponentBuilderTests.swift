@@ -532,7 +532,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertNil(weakComponent, "BACSDirectDebitComponent should not be retained after its last reference is released")
     }
 
-    func test_build_withBACSPaymentMethod_whenValidFormIsSubmitted_shouldSubmitToDelegate() async throws {
+    func test_build_withBACSPaymentMethod_whenValidFormIsSubmitted_shouldSubmitToDelegate() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
         let delegate = PaymentComponentDelegateMock()
@@ -545,8 +545,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             ) as? BACSDirectDebitComponent
         )
         component.delegate = delegate
-        let didSubmitExpectation = expectation(description: "didSubmit")
-        delegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
 
         let viewModel = component.bacsViewModel
         viewModel.viewDidLoad()
@@ -561,7 +559,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         component.performSubmit()
 
         // Then
-        await fulfillment(of: [didSubmitExpectation], timeout: 1)
         XCTAssertTrue(delegate.didSubmitReceivedArguments?.component === component)
         XCTAssertTrue(delegate.didSubmitReceivedArguments?.data.paymentMethod is BACSDirectDebitDetails)
     }

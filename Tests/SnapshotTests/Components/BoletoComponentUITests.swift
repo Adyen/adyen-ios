@@ -104,37 +104,31 @@ final class BoletoComponentUITests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
-        
         let view = try XCTUnwrap(sut.viewController.view)
         let submitButton: FormButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
         let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "firstNameItem"))
         let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
 
-        mockDelegate.onDidSubmit = { paymentData, paymentComponent in
-            let boletoDetails = paymentData.paymentMethod as? BoletoDetails
-            XCTAssertNotNil(boletoDetails)
-            
-            XCTAssertEqual(boletoDetails?.shopperName, mockInformation.shopperName)
-            XCTAssertEqual(boletoDetails?.socialSecurityNumber, mockInformation.socialSecurityNumber)
-            XCTAssertEqual(boletoDetails?.emailAddress, mockInformation.emailAddress)
-            XCTAssertEqual(boletoDetails?.billingAddress, mockInformation.billingAddress)
-            XCTAssertEqual(boletoDetails?.type, sut.boletoPaymentMethod.type)
-            XCTAssertNil(boletoDetails?.telephoneNumber)
-
-            self.verifyViewControllerImage(matching: sut.viewController, named: "boleto_flow")
-            
-            dummyExpectation.fulfill()
-        }
-        
         wait(until: firstNameView, at: \.isValid, is: true)
         wait(until: lastNameView, at: \.isValid, is: true)
         wait(until: billingAddressView, at: \.isValid, is: true)
 
         submitButton.sendActions(for: .touchUpInside)
         
-        wait(for: [dummyExpectation], timeout: 100)
+        let submitted = try XCTUnwrap(mockDelegate.didSubmitReceivedArguments)
+        XCTAssertEqual(mockDelegate.didSubmitCallsCount, 1)
+        let boletoDetails = submitted.data.paymentMethod as? BoletoDetails
+        XCTAssertNotNil(boletoDetails)
+
+        XCTAssertEqual(boletoDetails?.shopperName, mockInformation.shopperName)
+        XCTAssertEqual(boletoDetails?.socialSecurityNumber, mockInformation.socialSecurityNumber)
+        XCTAssertEqual(boletoDetails?.emailAddress, mockInformation.emailAddress)
+        XCTAssertEqual(boletoDetails?.billingAddress, mockInformation.billingAddress)
+        XCTAssertEqual(boletoDetails?.type, sut.boletoPaymentMethod.type)
+        XCTAssertNil(boletoDetails?.telephoneNumber)
+
+        verifyViewControllerImage(matching: sut.viewController, named: "boleto_flow")
     }
     
     func testPaymentDataNoName() throws {

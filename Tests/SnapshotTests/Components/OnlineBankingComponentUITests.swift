@@ -68,7 +68,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testPressContinueButton() {
+    func testPressContinueButton() throws {
         // Given
         let config = BasicComponentConfiguration(style: style)
         let sut = OnlineBankingComponent(
@@ -82,23 +82,17 @@ class OnlineBankingComponentUITests: XCTestCase {
         // Then
         let button: FormButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
-        let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
-
-        delegate.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! OnlineBankingDetails
-            XCTAssertEqual(details.type, .onlineBankingCZ)
-            XCTAssertEqual(details.issuer, "jp")
-            sut.stopLoading()
-            
-            self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
-            didContinueExpectation.fulfill()
-        }
-        
         button.sendActions(for: .touchUpInside)
         
-        wait(for: [didContinueExpectation], timeout: 5)
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? OnlineBankingDetails)
+        XCTAssertEqual(details.type, .onlineBankingCZ)
+        XCTAssertEqual(details.issuer, "jp")
+        sut.stopLoading()
+
+        verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 
     func testContinueButtonLoading() throws {

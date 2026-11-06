@@ -719,29 +719,6 @@ class CardComponentTests: XCTestCase {
 
         let expectedVerificationAddress = PostalAddressMocks.newYorkPostalAddress
 
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        let finalizationExpectation = expectation(description: "Component should finalize.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is CardDetails)
-            let details = data.paymentMethod as! CardDetails
-
-            XCTAssertNotEqual(details.encryptedCardNumber, "4917 6100 0000 0000")
-            XCTAssertNotEqual(details.encryptedExpiryYear, "30")
-            XCTAssertNotEqual(details.encryptedExpiryMonth, "03")
-            XCTAssertNotEqual(details.encryptedSecurityCode, "737")
-            XCTAssertEqual(data.storePaymentMethod, true)
-            XCTAssertEqual(data.billingAddress, expectedVerificationAddress)
-
-            Task {
-                await sut.finalizeIfNeeded(success: true)
-                XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
-                XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
-                finalizationExpectation.fulfill()
-            }
-            delegateExpectation.fulfill()
-        }
-
         let view: UIView = sut.viewController.view
 
         fillCard(on: view, with: Dummy.visaCard)
@@ -753,6 +730,28 @@ class CardComponentTests: XCTestCase {
         billingAddressView.item.value = expectedVerificationAddress
 
         tapSubmitButton(on: view)
+
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        let data = arguments.data
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertTrue(data.paymentMethod is CardDetails)
+        let details = try XCTUnwrap(data.paymentMethod as? CardDetails)
+
+        XCTAssertNotEqual(details.encryptedCardNumber, "4917 6100 0000 0000")
+        XCTAssertNotEqual(details.encryptedExpiryYear, "30")
+        XCTAssertNotEqual(details.encryptedExpiryMonth, "03")
+        XCTAssertNotEqual(details.encryptedSecurityCode, "737")
+        XCTAssertEqual(data.storePaymentMethod, true)
+        XCTAssertEqual(data.billingAddress, expectedVerificationAddress)
+
+        let finalizationExpectation = expectation(description: "Component should finalize.")
+        Task {
+            await sut.finalizeIfNeeded(success: true)
+            XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
+            finalizationExpectation.fulfill()
+        }
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -862,20 +861,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            let paymentDetails = data.paymentMethod as? CardDetails
-            XCTAssertNotNil(paymentDetails)
-
-            XCTAssertNotEqual(paymentDetails?.password, "12")
-            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
-            XCTAssertEqual(paymentDetails?.taxNumber, "121212")
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
         
         let taxNumberItemView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
         let passwordItemView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
@@ -895,8 +881,18 @@ class CardComponentTests: XCTestCase {
         self.populate(textItemView: passwordItemView, with: "12")
 
         self.tapSubmitButton(on: sut.viewController.view)
-        
-        waitForExpectations(timeout: 10)
+
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        let paymentDetails = arguments.data.paymentMethod as? CardDetails
+        XCTAssertNotNil(paymentDetails)
+
+        XCTAssertNotEqual(paymentDetails?.password, "12")
+        XCTAssertTrue(try XCTUnwrap(paymentDetails?.password?.starts(with: "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ")))
+        XCTAssertEqual(paymentDetails?.taxNumber, "121212")
+
+        sut.stopLoading()
     }
 
     func test_brazilSSNField_withAutoMode_shouldShowBasedOnBinResponse() throws {
@@ -922,17 +918,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            let paymentDetails = data.paymentMethod as? CardDetails
-            XCTAssertNotNil(paymentDetails)
-            XCTAssertEqual(paymentDetails?.socialSecurityNumber, "12312312312")
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
 
         let brazilSSNItemView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem"))
         XCTAssertTrue(brazilSSNItemView.isHidden)
@@ -945,13 +931,20 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: brazilSSNItemView, with: "123.123.123-12")
 
         tapSubmitButton(on: sut.viewController.view)
+
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        let paymentDetails = arguments.data.paymentMethod as? CardDetails
+        XCTAssertNotNil(paymentDetails)
+        XCTAssertEqual(paymentDetails?.socialSecurityNumber, "12312312312")
+
+        sut.stopLoading()
         
         let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
         wait(until: brazilSSNItemView, at: \.isHidden, is: true)
-
-        waitForExpectations(timeout: 20, handler: nil)
     }
     
     func test_brazilSSNField_withHideMode_shouldNotBeVisible() {
@@ -1824,17 +1817,13 @@ class CardComponentTests: XCTestCase {
         sut.delegate = delegate
         setupRootViewController(sut.viewController)
 
-        let submission = expectation(description: "Card submits the pre-selected installment")
-        delegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(data.installments, preselectedInstallments)
-            submission.fulfill()
-        }
-
         let view = try XCTUnwrap(sut.viewController.view)
         fillCard(on: view, with: Dummy.visaCard)
         tapSubmitButton(on: view)
 
-        waitForExpectations(timeout: 10)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let data = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data)
+        XCTAssertEqual(data.installments, preselectedInstallments)
     }
 
     func test_supportedCardLogos_whenFieldActiveOrInactive_shouldUpdateVisibility() throws {
@@ -2260,14 +2249,8 @@ extension CardComponentTests {
         let configuration = CardConfiguration().showStorePaymentMethod(showsStorePaymentMethod)
         let sut = makeSUT(configuration: configuration, amount: amount)
         let delegate = PaymentComponentDelegateMock()
-        let submission = expectation(description: "Card submits store-payment-method choice")
         sut.delegate = delegate
         setupRootViewController(sut.viewController)
-
-        delegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(data.storePaymentMethod, expectedStorePaymentMethod, file: file, line: line)
-            submission.fulfill()
-        }
 
         let view = try XCTUnwrap(sut.viewController.view, file: file, line: line)
         let consentField: FormToggleItemView? = view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
@@ -2279,7 +2262,9 @@ extension CardComponentTests {
         fillCard(on: view, with: Dummy.visaCard)
         tapSubmitButton(on: view)
 
-        waitForExpectations(timeout: 10)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1, file: file, line: line)
+        let data = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data, file: file, line: line)
+        XCTAssertEqual(data.storePaymentMethod, expectedStorePaymentMethod, file: file, line: line)
     }
 
     private func makeSUT(

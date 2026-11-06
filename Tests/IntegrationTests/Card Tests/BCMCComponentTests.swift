@@ -209,24 +209,6 @@ class BCMCComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
         
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
-        delegate.onDidSubmit = { paymentData, component in
-            
-            let data = try! AdyenCoder.encode(paymentData.paymentMethod.encodable) as Data
-            
-            let resultJson = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [String: Any]
-            
-            XCTAssertTrue(component === sut)
-            XCTAssertNotNil(resultJson["encryptedExpiryYear"] as? String)
-            XCTAssertNotNil(resultJson["encryptedCardNumber"] as? String)
-            XCTAssertNotNil(resultJson["type"] as? String)
-            XCTAssertEqual(resultJson["type"] as? String, "bcmc")
-            XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
-            XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
-
-            sut.stopLoading()
-            didSubmitExpectation.fulfill()
-        }
         delegate.onDidFail = { error, _ in
             XCTFail("delegate.didFail() must not be called")
         }
@@ -250,8 +232,22 @@ class BCMCComponentTests: XCTestCase {
         
         // Tap submit button
         tapSubmitButton(on: sut.viewController.view)
+
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        let data = try AdyenCoder.encode(arguments.data.paymentMethod.encodable) as Data
         
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let resultJson = try XCTUnwrap(JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: Any])
+        
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertNotNil(resultJson["encryptedExpiryYear"] as? String)
+        XCTAssertNotNil(resultJson["encryptedCardNumber"] as? String)
+        XCTAssertNotNil(resultJson["type"] as? String)
+        XCTAssertEqual(resultJson["type"] as? String, "bcmc")
+        XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
+        XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
+
+        sut.stopLoading()
     }
     
     func test_onBinLookup_withLessThan11Digits_shouldNotBeCalled() throws {
