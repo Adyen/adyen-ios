@@ -102,6 +102,15 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
 
+    /// Keeps `preferredMaxLayoutWidth` in sync with the laid-out width so the multi-line
+    /// footer reports the correct intrinsic height. The footerLabel displays a pretty long message spanning 2 lines.
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        let width = footerLabel.frame.width
+        guard width > 0, footerLabel.preferredMaxLayoutWidth != width else { return }
+        footerLabel.preferredMaxLayoutWidth = width
+    }
+
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
         let contentChanged = footerLabel.text != text || footerLabel.textColor != color
         let wasVisible = !footerLabel.isHidden

@@ -38,7 +38,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: "Global number",
-            securityCodeTitle: localizedString(.cardCvcItemTitle, localizationParameters)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, localizationParameters)
         )
     }
 
@@ -54,7 +54,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: "Card #",
-            securityCodeTitle: localizedString(.cardCvcItemTitle, localizationParameters)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, localizationParameters)
         )
     }
 
@@ -64,7 +64,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: localizedString(.cardNumberItemTitle, nil),
-            securityCodeTitle: localizedString(.cardCvcItemTitle, nil)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, nil)
         )
     }
 

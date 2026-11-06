@@ -93,6 +93,13 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidDisappear()
     }
 
+    override internal func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // This is called when the elements of the screen expand more than their initial size due to the error message if the user hasn't entered a correct security code.
+        // We invalidate the intrinsic content size to allow recompilation of the height of the view.
+        view.invalidateIntrinsicContentSize()
+    }
+
     // MARK: - setup & configurations
 
     private func setupView() {
