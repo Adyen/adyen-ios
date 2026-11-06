@@ -99,14 +99,8 @@ class BLIKComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
-
-        paymentDelegateMock.onDidSubmit = { _, _ in
-            didSubmitExpectation.fulfill()
-        }
 
         let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
 
@@ -116,7 +110,6 @@ class BLIKComponentTests: XCTestCase {
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 }

@@ -157,11 +157,14 @@ internal class CheckoutProvider: CheckoutProviding {
                 clientKey: configuration.apiContext.clientKey
             )
 
+            async let browserInfo = BrowserInfo()
+
             return try await AdyenContext(
                 apiContext: configuration.apiContext,
                 amount: nil,
                 publicKey: publicKey,
                 checkoutAttemptId: checkoutAttemptId,
+                browserInfo: browserInfo,
                 analyticsAPIContext: configuration.analyticsApiContext,
                 analyticsConfiguration: configuration.analyticsConfiguration
             )

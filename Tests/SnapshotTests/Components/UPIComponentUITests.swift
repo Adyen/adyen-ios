@@ -32,11 +32,6 @@ class UPIComponentUITests: XCTestCase {
         Issuer(identifier: "phonepe", name: "PhonePe")
     ]
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        BrowserInfo.cachedUserAgent = "some_value"
-    }
-
     func testUIConfiguration() {
         var style = style
         style.backgroundColor = .green
@@ -150,21 +145,9 @@ class UPIComponentUITests: XCTestCase {
             configuration: config
         )
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
-            let data = data.paymentMethod as! UPIComponentDetails
-            XCTAssertEqual(data.virtualPaymentAddress, nil)
-            XCTAssertEqual(data.type, "upi_intent")
-            didSubmitExpectation.fulfill()
-        }
-        
         sut.upiAppsList.first?.selectionHandler?()
         wait(for: .aMoment)
         
@@ -173,7 +156,13 @@ class UPIComponentUITests: XCTestCase {
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
         continueButton.sendActions(for: .touchUpInside)
     
-        waitForExpectations(timeout: 10, handler: nil)
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertTrue(submitted.data.paymentMethod is UPIComponentDetails)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? UPIComponentDetails)
+        XCTAssertEqual(details.virtualPaymentAddress, nil)
+        XCTAssertEqual(details.type, "upi_intent")
     }
 
     func testUPIComponentDetailsForUPICollectFlow() throws {
@@ -187,22 +176,9 @@ class UPIComponentUITests: XCTestCase {
         
         sut.viewController.loadViewIfNeeded()
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
-            let data = data.paymentMethod as! UPIComponentDetails
-            XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
-            XCTAssertEqual(data.type, "upi_collect")
-            
-            didSubmitExpectation.fulfill()
-        }
-        
         // Switch to UPI-ID segment
         let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
         segmentedControl.selectedSegmentIndex = 1
@@ -220,7 +196,13 @@ class UPIComponentUITests: XCTestCase {
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
         continueButton.sendActions(for: .touchUpInside)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertTrue(submitted.data.paymentMethod is UPIComponentDetails)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? UPIComponentDetails)
+        XCTAssertEqual(details.virtualPaymentAddress, "testvpa@icici")
+        XCTAssertEqual(details.type, "upi_collect")
     }
 
     func test_noAppSelectedSubmit_shouldShowError() throws {

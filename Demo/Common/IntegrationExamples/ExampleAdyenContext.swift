@@ -20,11 +20,14 @@ internal func makeExampleAdyenContext() async throws -> AdyenContext {
         clientKey: ConfigurationConstants.apiContext.clientKey
     )
 
+    let browserInfo = await BrowserInfo()
+
     return AdyenContext(
         apiContext: ConfigurationConstants.apiContext,
         amount: ConfigurationConstants.current.amount,
         publicKey: publicKey,
         checkoutAttemptId: nil,
+        browserInfo: browserInfo,
         analyticsAPIContext: CheckoutConfiguration.createAnalyticsAPIContext(apiContext: ConfigurationConstants.apiContext),
         analyticsConfiguration: analyticsConfiguration
     )
