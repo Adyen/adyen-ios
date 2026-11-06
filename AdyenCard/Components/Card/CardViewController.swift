@@ -31,6 +31,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+    private let secondaryScreenPresenter: WeakReferenceViewControllerPresenter
     private let addressCallbacks: AddressCallbacks?
 
     private lazy var cardScannerController: CardScannerControlling = {
@@ -68,7 +69,7 @@ internal class CardViewController: FormViewController {
             initialCountryCode: initialCountryCode,
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
-            presenter: self,
+            presenter: secondaryScreenPresenter,
             addressMode: configuration.billingAddressMode,
             scanCardHandler: scanCardHandler,
             addressCallbacks: addressCallbacks
@@ -89,6 +90,8 @@ internal class CardViewController: FormViewController {
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     ///   - theme: The theme to use for styling.
+    ///   - secondaryScreenPresenter: Shows the secondary screens, like the installments picker or the address lookup.
+    ///    Given by the component, which decides how they appear.
     internal init(
         configuration: CardConfiguration,
         shopperInformation: PrefilledShopperInformation?,
@@ -100,6 +103,7 @@ internal class CardViewController: FormViewController {
         scope: String,
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
+        secondaryScreenPresenter: ViewControllerPresenter,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler,
         addressCallbacks: AddressCallbacks? = nil
     ) {
@@ -111,6 +115,7 @@ internal class CardViewController: FormViewController {
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
+        self.secondaryScreenPresenter = .init(secondaryScreenPresenter)
         self.addressCallbacks = addressCallbacks
 
         self.cardLogos = supportedCardBrands.map {

@@ -43,7 +43,7 @@ package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension>
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,
         style: FormTextItemStyle,
-        presenter: WeakReferenceViewControllerPresenter,
+        presenter: ViewControllerPresenter,
         identifier: String? = nil
     ) {
         self.init(
@@ -62,7 +62,7 @@ package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension>
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,
         style: FormTextItemStyle,
-        presenter: WeakReferenceViewControllerPresenter,
+        presenter: ViewControllerPresenter,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
