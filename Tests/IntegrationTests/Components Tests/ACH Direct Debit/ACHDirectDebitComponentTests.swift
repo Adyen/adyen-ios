@@ -186,11 +186,12 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(routingNumberItemView?.footerLabel.text, "Invalid ABA routing number")
     }
     
-    func test_zeroAmount_whenStorePaymentMethodEnabled_thenShowsFieldAndSubmitsShopperChoice() {
+    func test_zeroAmount_whenStorePaymentMethodEnabled_thenShowsFieldAndSubmitsShopperChoice() throws {
         let zeroAmountContext = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Amount(value: 0, currencyCode: "USD"),
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
@@ -203,13 +204,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
             configuration: configuration
         )
         let delegate = PaymentComponentDelegateMock()
-        let expectation = expectation(description: "Zero-amount payment should submit the shopper's choice.")
         sut.delegate = delegate
         setupRootViewController(sut.viewController)
-        delegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(data.storePaymentMethod, false)
-            expectation.fulfill()
-        }
 
         let storeDetailsToggleView: UIView? = sut.viewController.view.findView(
             with: "AdyenComponents.ACHDirectDebitComponent.storeDetailsItem"
@@ -221,7 +217,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         sut.bankRoutingNumberItem.value = "121000358"
         sut.performSubmit()
 
-        wait(for: [expectation], timeout: 10)
+        let data = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data)
+        XCTAssertEqual(data.storePaymentMethod, false)
     }
 
     func testSubmission() throws {
@@ -234,20 +231,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is ACHDirectDebitDetails)
-            let data = data.paymentMethod as! ACHDirectDebitDetails
-            XCTAssertEqual(data.holderName, "test")
-            XCTAssertNotNil(data.encryptedBankAccountNumber)
-            XCTAssertNotNil(data.encryptedBankRoutingNumber)
-            XCTAssertNotNil(data.billingAddress)
-            expectation.fulfill()
-        }
         
         let payButtonItemViewButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem"))
         let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
@@ -262,8 +247,15 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         payButtonItemViewButton.didTapButton()
         wait(until: payButtonItemViewButton, at: \.item.showsActivityIndicator, is: true)
-        
-        wait(for: [expectation], timeout: 100)
+
+        let arguments = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertTrue(arguments.data.paymentMethod is ACHDirectDebitDetails)
+        let data = try XCTUnwrap(arguments.data.paymentMethod as? ACHDirectDebitDetails)
+        XCTAssertEqual(data.holderName, "test")
+        XCTAssertNotNil(data.encryptedBankAccountNumber)
+        XCTAssertNotNil(data.encryptedBankRoutingNumber)
+        XCTAssertNotNil(data.billingAddress)
     }
 
     func testViewDidLoadShouldSendInitialCall() {
@@ -274,6 +266,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
@@ -305,14 +298,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
-        paymentDelegateMock.onDidSubmit = { _, component in
-            XCTAssertTrue(component === sut)
-            didSubmitExpectation.fulfill()
-        }
 
         let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
         let accountNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem"))
@@ -326,7 +313,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let component = try XCTUnwrap(paymentDelegateMock.didSubmitReceivedArguments?.component)
+        XCTAssertTrue(component === sut)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 }

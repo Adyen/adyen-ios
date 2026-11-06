@@ -20,16 +20,6 @@ class AffirmComponentUITests: XCTestCase {
         FormComponentStyle()
     }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        BrowserInfo.cachedUserAgent = "some_value"
-    }
-
-    override func tearDownWithError() throws {
-        BrowserInfo.cachedUserAgent = nil
-        try super.tearDownWithError()
-    }
-
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
         let config = AffirmComponent.Configuration(

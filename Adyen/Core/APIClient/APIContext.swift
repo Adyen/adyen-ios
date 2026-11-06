@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// An object that needs an Adyen context.
-public protocol AdyenContextAware: AnyObject {
+package protocol AdyenContextAware: AnyObject {
 
     /// The context object for this component.
     var context: AdyenContext { get }

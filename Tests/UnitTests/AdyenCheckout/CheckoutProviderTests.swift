@@ -113,6 +113,7 @@ final class CheckoutProviderTests: XCTestCase {
 
         let checkoutCore = try XCTUnwrap(core as? CheckoutCore)
         XCTAssertNotNil(checkoutCore.additionalCallbacks.callbacks(of: AddressCallbacks.self))
+        XCTAssertNotNil(checkoutCore.adyenContext.browserInfo)
         XCTAssertEqual(publicKeyFetcher.fetchCount, 1)
     }
 

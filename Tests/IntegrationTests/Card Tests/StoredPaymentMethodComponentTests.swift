@@ -188,6 +188,7 @@ internal struct StoredPaymentMethodComponentTests {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProvider
         )
     }

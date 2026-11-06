@@ -502,6 +502,7 @@ struct PaymentMethodListViewModelTests {
             apiContext: Dummy.apiContext,
             amount: amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
 
@@ -607,6 +608,7 @@ struct PaymentMethodListViewModelTests {
         apiContext: Dummy.apiContext,
         amount: .init(value: 100, currencyCode: "EUR"),
         publicKey: Dummy.publicKey,
+        browserInfo: nil,
         analyticsProvider: AnalyticsProviderMock()
     )
 }

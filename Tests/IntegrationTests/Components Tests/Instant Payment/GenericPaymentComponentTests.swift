@@ -48,39 +48,29 @@ class GenericPaymentComponentTests: XCTestCase {
         XCTAssertFalse(sut.requiresUserInteraction)
     }
 
-    func testCustomPaymentData() {
-        let delegateExpectation = expectation(description: "expect delegate to be called.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
-            let details = data.paymentMethod as! GiftCardDetails
-            XCTAssertEqual(details.brand, "brand")
-            XCTAssertEqual(details.encryptedCardNumber, "card")
-            XCTAssertEqual(details.encryptedSecurityCode, "cvc")
-            delegateExpectation.fulfill()
-        }
-
+    func testCustomPaymentData() throws {
         sut.performSubmit()
 
-        waitForExpectations(timeout: 2, handler: nil)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        let details = try XCTUnwrap(arguments.data.paymentMethod as? GiftCardDetails)
+        XCTAssertEqual(details.brand, "brand")
+        XCTAssertEqual(details.encryptedCardNumber, "card")
+        XCTAssertEqual(details.encryptedSecurityCode, "cvc")
     }
 
     func testViewControllerHasCorrectTitle() {
         XCTAssertEqual(sut.viewController.title, paymentMethod.displayInformation(using: nil).title)
     }
 
-    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() {
+    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() throws {
         sut.viewController.loadViewIfNeeded()
-
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
-            didSubmitExpectation.fulfill()
-        }
 
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(by: "payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let component = try XCTUnwrap(delegate.didSubmitReceivedArguments?.component)
+        XCTAssertTrue(component === sut)
     }
 
     func testPerformSubmitStartsLoadingOnPayButton() throws {

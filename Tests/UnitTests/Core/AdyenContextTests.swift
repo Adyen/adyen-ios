@@ -23,6 +23,7 @@ struct AdyenContextTests {
             amount: oneEUR,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
+            browserInfo: nil,
             analyticsAPIContext: nil,
             analyticsConfiguration: AnalyticsConfiguration()
         )
@@ -38,6 +39,7 @@ struct AdyenContextTests {
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
+            browserInfo: nil,
             analyticsAPIContext: nil,
             analyticsConfiguration: AnalyticsConfiguration()
         )
@@ -51,6 +53,7 @@ struct AdyenContextTests {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         
@@ -59,6 +62,29 @@ struct AdyenContextTests {
         #expect(context.analyticsProvider != nil)
     }
     
+    @Test @MainActor func browserInfoIsStored() async throws {
+        let browserInfo = try #require(await BrowserInfo())
+
+        let packageInitContext = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            browserInfo: browserInfo,
+            analyticsAPIContext: nil
+        )
+        let internalInitContext = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            browserInfo: browserInfo,
+            analyticsProvider: nil
+        )
+
+        #expect(packageInitContext.browserInfo?.userAgent == browserInfo.userAgent)
+        #expect(internalInitContext.browserInfo?.userAgent == browserInfo.userAgent)
+    }
+
     struct AnalyticsTestData: CustomTestStringConvertible {
         let attemptID: String?
         let analyticsAPIContext: APIContext?
@@ -109,6 +135,7 @@ struct AdyenContextTests {
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: testData.attemptID,
+            browserInfo: nil,
             analyticsAPIContext: testData.analyticsAPIContext,
             analyticsConfiguration: testData.analyticsConfiguration
         )
