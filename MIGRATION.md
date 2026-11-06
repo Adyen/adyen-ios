@@ -194,6 +194,11 @@ Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavi
 Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
 modifiers are optional. All handlers are supplied before setup, and callbacks cannot be changed on an active checkout.
 
+`CheckoutCallbacks`, `ActionOnlyCheckoutCallbacks`, `CardCallbacks`, `AddressCallbacks` and `ApplePayCallbacks` conform to
+`Sendable`, and `CheckoutAdditionalCallbacks` refines `Sendable`. Every closure passed to these types is `@MainActor @Sendable`
+and runs on the main actor. With strict concurrency checking enabled, a closure can't mutate captured local variables or
+capture non-`Sendable` values; capture main-actor-isolated objects, such as view models, instead.
+
 #### Checkout instances
 
 `Checkout` is now a final instance class as well as the setup entry point. Replace `PaymentCheckout` type annotations
@@ -366,6 +371,8 @@ as `CardCallbacks`. Configure the UI separately with `CardConfiguration().billin
 The lookup closure still receives a search term and asynchronously returns `[AddressLookupResult]`.
 The selection closure still receives the selected result and asynchronously returns a `PostalAddress`,
 or throws. Without the selection handler, the result's postal address is used as-is.
+Both closures are now `@MainActor @Sendable` and start on the main actor. Await your address service
+rather than doing slow synchronous work in them.
 When a card configuration uses `.lookup()` and the checkout callbacks contain no `AddressCallbacks`,
 `Checkout.setup` throws `CheckoutError` with the `.invalidConfiguration` code before making any network request.
 
@@ -436,8 +443,8 @@ try ApplePayConfiguration(paymentRequest: paymentRequest)
 #### Apple Pay callbacks
 
 The `onAuthorize(_:)`, `onSelectShippingContact(_:)`, `onSelectShippingMethod(_:)`, `onChangeCouponCode(_:)` and
-`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closure signatures
-are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
+`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closures are now
+`@MainActor @Sendable`; the parameters and return types are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
 configuration in `ApplePayConfiguration`.
 
 ##### Before
