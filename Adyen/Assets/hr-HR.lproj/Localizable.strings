@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
 "adyen.card.scanYourCardButton" = "Skenirajte svoju karticu";
 "adyen.creditCard.dualBrand.title" = "Vrsta kartice";
-"adyen.creditCard.dualBrand.description" = "Odaberite vrstu kartice kojom želite platiti. Ovo je neobavezno.";
+"adyen_checkout_card_dual_brand_selector_description" = "Možete odabrati vrstu kartice kojom želite platiti. Ovo je neobavezno.";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
