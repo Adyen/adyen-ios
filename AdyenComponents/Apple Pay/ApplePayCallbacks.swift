@@ -26,31 +26,31 @@ import PassKit
 /// ```
 public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditionalCallbacks {
 
-    package private(set) var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
+    package private(set) var onAuthorize: (@MainActor @Sendable (PKPayment) async -> PKPaymentAuthorizationResult)?
 
     package private(set) var onSelectShippingContact: (
-        @MainActor (
+        @MainActor @Sendable (
             PKContact,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingContactUpdate
     )?
 
     package private(set) var onSelectShippingMethod: (
-        @MainActor (
+        @MainActor @Sendable (
             PKShippingMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingMethodUpdate
     )?
 
     package private(set) var onChangeCouponCode: (
-        @MainActor (
+        @MainActor @Sendable (
             String,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestCouponCodeUpdate
     )?
 
     package private(set) var onSelectPaymentMethod: (
-        @MainActor (
+        @MainActor @Sendable (
             PKPaymentMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestPaymentMethodUpdate
@@ -76,7 +76,7 @@ public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAd
     ///   - Returns: A `PKPaymentAuthorizationResult` indicating success or failure with optional field-specific errors.
     /// - Returns: A modified copy of the callbacks.
     public func onAuthorize(
-        _ handler: @escaping @MainActor (_ payment: PKPayment) async -> PKPaymentAuthorizationResult
+        _ handler: @escaping @MainActor @Sendable (_ payment: PKPayment) async -> PKPaymentAuthorizationResult
     ) -> Self {
         var callbacks = self
         callbacks.onAuthorize = handler
@@ -93,7 +93,7 @@ public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAd
     ///   - Returns: A `PKPaymentRequestShippingContactUpdate` with updated summary items, shipping methods, and/or errors.
     /// - Returns: A modified copy of the callbacks.
     public func onSelectShippingContact(
-        _ handler: @escaping @MainActor (
+        _ handler: @escaping @MainActor @Sendable (
             _ contact: PKContact,
             _ summaryItems: [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingContactUpdate
@@ -112,7 +112,7 @@ public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAd
     ///   - Returns: A `PKPaymentRequestShippingMethodUpdate` with updated summary items reflecting the new shipping cost.
     /// - Returns: A modified copy of the callbacks.
     public func onSelectShippingMethod(
-        _ handler: @escaping @MainActor (
+        _ handler: @escaping @MainActor @Sendable (
             _ shippingMethod: PKShippingMethod,
             _ summaryItems: [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestShippingMethodUpdate
@@ -132,7 +132,7 @@ public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAd
     ///    or errors if the code is invalid.
     /// - Returns: A modified copy of the callbacks.
     public func onChangeCouponCode(
-        _ handler: @escaping @MainActor (
+        _ handler: @escaping @MainActor @Sendable (
             _ couponCode: String,
             _ summaryItems: [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestCouponCodeUpdate
@@ -151,7 +151,7 @@ public struct ApplePayCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAd
     ///   - Returns: A `PKPaymentRequestPaymentMethodUpdate` with updated summary items reflecting any changes based on the payment method.
     /// - Returns: A modified copy of the callbacks.
     public func onSelectPaymentMethod(
-        _ handler: @escaping @MainActor (
+        _ handler: @escaping @MainActor @Sendable (
             _ paymentMethod: PKPaymentMethod,
             _ summaryItems: [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestPaymentMethodUpdate

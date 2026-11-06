@@ -12,6 +12,6 @@ package typealias CheckoutAdditionalDetailsHandler = @MainActor @Sendable (_ dat
 package typealias CheckoutBeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
 package typealias CheckoutActionHandler = @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
 
-package typealias CheckoutCompletionHandler = @MainActor (_ result: CheckoutResult) -> Void
-package typealias AdvancedCheckoutCompletionHandler = @MainActor (_ result: AdvancedCheckoutResult) -> Void
-package typealias CheckoutFailureHandler = @MainActor (_ error: CheckoutError) -> Void
+package typealias CheckoutCompletionHandler = @MainActor @Sendable (_ result: CheckoutResult) -> Void
+package typealias AdvancedCheckoutCompletionHandler = @MainActor @Sendable (_ result: AdvancedCheckoutResult) -> Void
+package typealias CheckoutFailureHandler = @MainActor @Sendable (_ error: CheckoutError) -> Void

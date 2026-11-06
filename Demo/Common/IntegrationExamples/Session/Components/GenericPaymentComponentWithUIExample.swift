@@ -23,9 +23,6 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
-
     internal init() {}
 
     internal func start() {

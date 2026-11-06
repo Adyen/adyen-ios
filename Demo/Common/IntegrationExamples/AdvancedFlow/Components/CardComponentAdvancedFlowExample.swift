@@ -22,9 +22,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
-    
     internal var selectedTheme: ExampleAppTheme {
         ConfigurationConstants.current.themeSettings.theme
     }

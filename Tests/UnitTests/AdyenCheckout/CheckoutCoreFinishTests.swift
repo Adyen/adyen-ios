@@ -46,11 +46,10 @@ final class CheckoutCoreFinishTests: XCTestCase {
         let earlyCompletion = expectation(description: "onComplete before finalize returns")
         earlyCompletion.isInverted = true
         let completed = expectation(description: "onComplete called")
-        var didReleaseFinalize = false
         onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             completionCount += 1
-            if didReleaseFinalize {
+            if component.isReleased {
                 completed.fulfill()
             } else {
                 earlyCompletion.fulfill()
@@ -64,7 +63,6 @@ final class CheckoutCoreFinishTests: XCTestCase {
         XCTAssertEqual(component.finalizeCalls, [true])
         XCTAssertEqual(completionCount, 0)
 
-        didReleaseFinalize = true
         component.releaseFinalize()
 
         await fulfillment(of: [completed], timeout: 1)
@@ -79,10 +77,9 @@ final class CheckoutCoreFinishTests: XCTestCase {
         let earlyFailure = expectation(description: "onFailure before finalize returns")
         earlyFailure.isInverted = true
         let failed = expectation(description: "onFailure called")
-        var didReleaseFinalize = false
         onFailure = { _ in
             failureCount += 1
-            if didReleaseFinalize {
+            if component.isReleased {
                 failed.fulfill()
             } else {
                 earlyFailure.fulfill()
@@ -96,7 +93,6 @@ final class CheckoutCoreFinishTests: XCTestCase {
         XCTAssertEqual(component.finalizeCalls, [false])
         XCTAssertEqual(failureCount, 0)
 
-        didReleaseFinalize = true
         component.releaseFinalize()
 
         await fulfillment(of: [failed], timeout: 1)
@@ -385,7 +381,7 @@ private final class FinalizablePaymentComponentMock: PaymentComponentMock, Final
     private(set) var finalizeCalls: [Bool] = []
     var onFinalize: (() -> Void)?
 
-    private var isReleased = false
+    private(set) var isReleased = false
     private var release: CheckedContinuation<Void, Never>?
 
     @MainActor
