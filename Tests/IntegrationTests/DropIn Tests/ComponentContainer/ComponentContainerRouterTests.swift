@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+import Combine
 @_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
@@ -85,6 +86,11 @@ struct ComponentContainerRouterTests {
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()
+        let paymentInProgressSubject = CurrentValueSubject<Bool, Never>(false)
+        var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+            paymentInProgressSubject.eraseToAnyPublisher()
+        }
+
         var cancelCallsCount = 0
 
         func cancel() {

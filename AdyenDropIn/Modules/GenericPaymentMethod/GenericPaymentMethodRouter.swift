@@ -43,7 +43,9 @@ internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
     // MARK: - GenericPaymentMethodRouting
 
     internal func dismiss() {
-        rootViewController.navigationController?.popViewController(animated: true)
+        if rootViewController.navigationController?.topViewController === rootViewController {
+            rootViewController.navigationController?.popViewController(animated: true)
+        }
         listener?.didDismissGenericPaymentMethod()
     }
 }

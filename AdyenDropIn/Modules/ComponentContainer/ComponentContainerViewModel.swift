@@ -5,15 +5,16 @@
 //
 
 import Adyen
-import AdyenUI
+import Combine
 import Foundation
 import UIKit
+import AdyenUI
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
     func cancel()
 }
 
@@ -50,6 +51,10 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal var componentViewController: UIViewController {
         component.viewController
+    }
+
+    internal var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        dropInFlowManager.paymentInProgressPublisher
     }
 
     internal func cancel() {

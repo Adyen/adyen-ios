@@ -122,6 +122,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
 
         #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(contentAssembler.receivedIsPresentedModally == true)
         let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
         #expect(navigationController.viewControllers.first === contentRouter.rootViewController)
         #expect(navigationController.isModalInPresentation)
@@ -437,6 +438,7 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
+    private(set) var receivedIsPresentedModally: Bool?
 
     init(router: Router?) {
         self.router = router
@@ -444,9 +446,11 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
+        receivedIsPresentedModally = isPresentedModally
         return router
     }
 }

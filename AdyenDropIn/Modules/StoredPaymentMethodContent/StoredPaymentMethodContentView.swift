@@ -7,6 +7,7 @@
 import Adyen
 import AdyenCard
 import AdyenUI
+import Combine
 import SwiftUI
 
 internal struct StoredPaymentMethodContentView: View {
@@ -17,7 +18,7 @@ internal struct StoredPaymentMethodContentView: View {
         static let bottomPadding: CGFloat = 16
     }
 
-    private let viewModel: StoredPaymentMethodContentViewModel
+    @ObservedObject private var viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
         self.viewModel = viewModel
@@ -45,21 +46,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
-            }
-        }
-        .navigationBarBackButtonHidden(true)
         .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
-    }
-
-    private var backButton: some View {
-        Button {
-            viewModel.cancel()
-        } label: {
-            Image(systemName: "chevron.backward")
-        }
     }
 }
 

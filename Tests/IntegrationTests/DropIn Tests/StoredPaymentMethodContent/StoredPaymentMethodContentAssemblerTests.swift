@@ -21,12 +21,27 @@ internal struct StoredPaymentMethodContentAssemblerTests {
             viewController: UIViewController()
         )
         let sut = makeSUT()
-        #expect(
-            sut.resolveStoredPaymentMethodContentRouter(
-                for: component,
-                listener: ContentRouterListenerSpy()
-            ) != nil
+        let router = sut.resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: false,
+            listener: ContentRouterListenerSpy()
         )
+        #expect(router?.rootViewController is NavigationLockingHostingController<StoredPaymentMethodContentView>)
+    }
+
+    /// The root of a sheet has nothing to go back to, so it gets the system Cancel button. A pushed screen keeps the back button.
+    @Test(arguments: [true, false])
+    internal func storedComponent_whenResolved_thenShowsCancelButtonOnlyWhenPresentedModally(isPresentedModally: Bool) {
+        let component = StoredComponentMock(
+            paymentMethod: PaymentMethodMock(type: .payPal, name: "PayPal"),
+            viewController: UIViewController()
+        )
+        let router = makeSUT().resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: isPresentedModally,
+            listener: ContentRouterListenerSpy()
+        )
+        #expect((router?.rootViewController.navigationItem.leftBarButtonItem != nil) == isPresentedModally)
     }
 
     /// A real stored payment method that needs no input at all, such as stored Cash App Pay, also gets
@@ -46,6 +61,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) != nil)
     }
@@ -58,6 +74,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) == nil)
     }

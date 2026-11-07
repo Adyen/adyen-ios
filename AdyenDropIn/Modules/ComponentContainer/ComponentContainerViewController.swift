@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Combine
 import AdyenUI
 import Foundation
 import UIKit
@@ -14,6 +15,7 @@ internal class ComponentContainerViewController: UIViewController {
     // MARK: - Properties
     
     private let viewModel: ComponentContainerViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -24,6 +26,7 @@ internal class ComponentContainerViewController: UIViewController {
     internal init(viewModel: ComponentContainerViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: Bundle(for: ComponentContainerViewController.self))
+        isModalInPresentation = true
     }
     
     @available(*, unavailable)
@@ -38,6 +41,12 @@ internal class ComponentContainerViewController: UIViewController {
         setupComponentView()
         setupNavigationItem()
         applyTheme()
+        observePaymentProgress()
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationLock(active: false)
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -75,4 +84,15 @@ internal class ComponentContainerViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
     }
+
+    private func observePaymentProgress() {
+        viewModel.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                guard let self, navigationController?.topViewController === self else { return }
+                navigationController?.setNavigationLock(active: isPaymentInProgress)
+            }
+            .store(in: &cancellables)
+    }
+
 }
