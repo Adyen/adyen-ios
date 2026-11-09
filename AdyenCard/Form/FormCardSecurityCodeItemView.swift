@@ -187,11 +187,10 @@ extension FormCardSecurityCodeItemView {
 
     private func updateHintAccessibilityLabel() {
         guard !item.validationState.shouldShowError else { return }
-        textField.accessibilityLabel = accessibilityLabel(placeholder: item.placeholder ?? "")
-    }
 
-    private func accessibilityLabel(placeholder: String) -> String {
         let title = item.title ?? ""
-        return title.isEmpty ? placeholder : "\(title), \(placeholder)"
+        let placeholder = item.placeholder ?? ""
+
+        textField.accessibilityLabel = title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }
