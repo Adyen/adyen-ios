@@ -47,7 +47,7 @@ package final class PaymentButtonViewController: FormViewController {
 
     override package func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: - Implement analytics on this screen
+        // TODO: V6 - Implement analytics on this screen
         
         if showsSubmitButton {
             append(payButtonItem)

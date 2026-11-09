@@ -179,7 +179,7 @@ extension CheckoutLocalizationKey {
 /// translated into the target language. The SDK resolves strings from `Bundle.main` first,
 /// so your translations are picked up automatically with no provider required.
 ///
-// TODO: Provide reference doc/link to the file with all SDK keys
+// TODO: V6 Provide reference doc/link to the file with all SDK keys
 public protocol CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String?
 }

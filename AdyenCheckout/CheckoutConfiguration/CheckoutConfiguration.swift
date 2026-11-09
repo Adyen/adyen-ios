@@ -35,7 +35,6 @@ public struct CheckoutConfiguration {
     
     package var showsSubmitButton: Bool = true
     
-    // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
 
     package var dropInConfiguration: DropInConfiguration

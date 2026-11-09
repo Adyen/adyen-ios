@@ -7,8 +7,6 @@
 import Adyen
 import Foundation
 
-// TODO: These configurations may be removed/changed to fit the new configuration structure.
-
 /// The configuration of any component that can contain shopper information.
 package protocol AnyPersonalInformationConfiguration {
     
