@@ -19,7 +19,7 @@ struct CardComponentBillingAddressModeTests {
     private static let anySupportedCountryCodes = ["US"]
     private static let anyCardBrand = CardBrand.visa
     private static let anyHideForCardBrands: Set<CardBrand> = []
-    private static let anyOnAddressLookup: (String) async -> [AddressLookupResult] = { _ in [] }
+    private static let anyOnAddressLookup: @MainActor @Sendable (String) async -> [AddressLookupResult] = { _ in [] }
     private static let anySearchTerm = "searchTerm"
 
     // MARK: - .none

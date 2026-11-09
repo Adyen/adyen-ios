@@ -50,27 +50,22 @@ class IssuerListComponentTests: XCTestCase {
         let listViewController = searchViewController.resultsListViewController
         let expectedIssuer = paymentMethod.issuers[0]
 
-        let expectation = expectation(description: "Call didSubmit")
         let mockDelegate = PaymentComponentDelegateMock()
-        mockDelegate.onDidSubmit = { paymentData, paymentComponent in
-            XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
-            let details = paymentData.paymentMethod as! IssuerListDetails
-            XCTAssertEqual(details.issuer, expectedIssuer.identifier)
-            
-            XCTAssertEqual(analyticsProviderMock.infos.count, 2)
-            let infoType = analyticsProviderMock.infos.first?.type
-            XCTAssertEqual(infoType, .rendered)
-            XCTAssertEqual(analyticsProviderMock.infos[1].type, .selected)
 
-            expectation.fulfill()
-        }
-        
         setupRootViewController(searchViewController)
 
         sut.delegate = mockDelegate
         listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))
 
-        waitForExpectations(timeout: 10)
+        let paymentData = try XCTUnwrap(mockDelegate.didSubmitReceivedArguments?.data)
+        XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
+        let details = try XCTUnwrap(paymentData.paymentMethod as? IssuerListDetails)
+        XCTAssertEqual(details.issuer, expectedIssuer.identifier)
+
+        XCTAssertEqual(analyticsProviderMock.infos.count, 2)
+        let infoType = analyticsProviderMock.infos.first?.type
+        XCTAssertEqual(infoType, .rendered)
+        XCTAssertEqual(analyticsProviderMock.infos[1].type, .selected)
     }
     
     func test_componentSendsInfo_onSearchInput_With_Throttling() throws {

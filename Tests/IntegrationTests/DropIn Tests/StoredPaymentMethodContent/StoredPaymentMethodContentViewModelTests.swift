@@ -115,6 +115,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
             apiContext: Dummy.apiContext,
             amount: amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: nil
         )
         let component = StoredCardSecurityCodeComponent(

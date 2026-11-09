@@ -5,7 +5,7 @@
 //
 
 /// Callbacks that can be included in the additional callbacks block of `CheckoutCallbacks`.
-public protocol CheckoutAdditionalCallbacks {}
+public protocol CheckoutAdditionalCallbacks: Sendable {}
 
 /// Callbacks supported by the package-only advanced checkout flow.
-package protocol AdvancedCheckoutAdditionalCallbacks {}
+package protocol AdvancedCheckoutAdditionalCallbacks: Sendable {}

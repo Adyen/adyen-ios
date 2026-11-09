@@ -14,6 +14,8 @@
 /// `.lookup()` requires them: without `AddressCallbacks`, `Checkout.setup` throws ``CheckoutError``
 /// with the ``CheckoutError/Code/invalidConfiguration`` code.
 ///
+/// The callbacks run on the main actor.
+///
 /// For example:
 /// ```swift
 /// AddressCallbacks(onAddressLookup: { query in
@@ -25,15 +27,15 @@
 /// ```
 public struct AddressCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditionalCallbacks {
 
-    package let onAddressLookup: (String) async -> [AddressLookupResult]
-    package private(set) var onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)?
+    package let onAddressLookup: @MainActor @Sendable (String) async -> [AddressLookupResult]
+    package private(set) var onAddressSelected: (@MainActor @Sendable (AddressLookupResult) async throws -> PostalAddress)?
 
     /// Creates an AddressCallbacks instance.
     ///
     /// - Parameter onAddressLookup: The callback invoked when the shopper enters a search term.
     ///   - query: The search term entered by the shopper.
     ///   - Returns: The matching address results to display.
-    public init(onAddressLookup: @escaping (_ query: String) async -> [AddressLookupResult]) {
+    public init(onAddressLookup: @escaping @MainActor @Sendable (_ query: String) async -> [AddressLookupResult]) {
         self.onAddressLookup = onAddressLookup
     }
 
@@ -47,7 +49,7 @@ public struct AddressCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdd
     ///   - Throws: An error if the address details cannot be retrieved.
     /// - Returns: A modified copy of the callbacks.
     public func onAddressSelected(
-        _ handler: @escaping (_ result: AddressLookupResult) async throws -> PostalAddress
+        _ handler: @escaping @MainActor @Sendable (_ result: AddressLookupResult) async throws -> PostalAddress
     ) -> Self {
         var callbacks = self
         callbacks.onAddressSelected = handler

@@ -243,6 +243,7 @@ class StoredCardSecurityCodeComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProvider ?? AnalyticsProviderMock()
         )
 

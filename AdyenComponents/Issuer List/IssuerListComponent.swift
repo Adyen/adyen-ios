@@ -140,14 +140,14 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
                     paymentMethod: self.issuerListPaymentMethod,
                     issuer: issuer.identifier
                 )
+                
+                self.sendIssuerSelectedEvent(issuer)
+                listItem.startLoading()
+                
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
                     order: self.order
                 ))
-                
-                self.sendIssuerSelectedEvent(issuer)
-                
-                listItem.startLoading()
             }
             return listItem
         }

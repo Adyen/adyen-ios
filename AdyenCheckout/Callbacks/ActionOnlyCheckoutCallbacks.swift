@@ -34,7 +34,7 @@ import UIKit
 /// }
 /// ```
 ///
-public struct ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks {
+public struct ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks, Sendable {
 
     package let onAdditionalDetails: CheckoutAdditionalDetailsHandler
     package let onFailure: CheckoutFailureHandler
@@ -50,7 +50,7 @@ public struct ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks {
     ///     - error: The `CheckoutError` describing the failure or cancellation.
     public init(
         onAdditionalDetails: @escaping @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult,
-        onFailure: @escaping @MainActor (_ error: CheckoutError) -> Void
+        onFailure: @escaping @MainActor @Sendable (_ error: CheckoutError) -> Void
     ) {
         self.onAdditionalDetails = onAdditionalDetails
         self.onFailure = onFailure
@@ -61,7 +61,7 @@ public struct ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks {
     /// - Parameter handler: The callback receiving the action-only checkout result.
     ///   - result: The ``AdvancedCheckoutResult`` containing the ``AdvancedCheckoutResult/resultCode`` returned by `onAdditionalDetails`.
     /// - Returns: A modified copy of the callbacks.
-    public func onComplete(_ handler: @escaping @MainActor (_ result: AdvancedCheckoutResult) -> Void) -> Self {
+    public func onComplete(_ handler: @escaping @MainActor @Sendable (_ result: AdvancedCheckoutResult) -> Void) -> Self {
         var callbacks = self
         callbacks.onComplete = handler
         return callbacks

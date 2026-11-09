@@ -307,13 +307,6 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("partialPaymentDelegate.onRequestOrder must not be called.")
         }
 
-        let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
-            XCTAssertNil(data.order)
-            XCTAssertTrue(component === self.sut)
-            onSubmitExpectation.fulfill()
-        }
-
         sut.viewController.loadViewIfNeeded()
 
         XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
@@ -321,6 +314,11 @@ class GiftCardComponentTests: XCTestCase {
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertNil(submitted.data.order)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
 
         wait(for: .seconds(1))
 
@@ -393,12 +391,6 @@ class GiftCardComponentTests: XCTestCase {
             onRequestOrderExpectation.fulfill()
         }
 
-        let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
-            XCTAssertEqual(data.order, expectedOrder)
-            onSubmitExpectation.fulfill()
-        }
-
         readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
@@ -410,6 +402,10 @@ class GiftCardComponentTests: XCTestCase {
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        let submittedData = try XCTUnwrap(delegateMock.didSubmitReceivedArguments?.data)
+        XCTAssertEqual(submittedData.order, expectedOrder)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
 
         wait(for: .seconds(1))
 
@@ -439,12 +435,6 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("This should never be called because there is already an order")
         }
 
-        let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
-            XCTAssertEqual(data.order, expectedOrder)
-            onSubmitExpectation.fulfill()
-        }
-
         readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
@@ -456,6 +446,10 @@ class GiftCardComponentTests: XCTestCase {
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        let submittedData = try XCTUnwrap(delegateMock.didSubmitReceivedArguments?.data)
+        XCTAssertEqual(submittedData.order, expectedOrder)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
 
         wait(for: .seconds(1))
 

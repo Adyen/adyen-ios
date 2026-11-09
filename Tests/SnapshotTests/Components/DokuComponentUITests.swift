@@ -82,28 +82,22 @@ final class DokuComponentUITests: XCTestCase {
         let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.email)
         self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-        let delegateExpectation = XCTestExpectation(description: "Dummy Expectation")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is DokuDetails)
-            let data = data.paymentMethod as! DokuDetails
-            XCTAssertEqual(data.firstName, "Mohamed")
-            XCTAssertEqual(data.lastName, "Smith")
-            XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
-            
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.button.showsActivityIndicator, false)
-            
-            self.verifyViewControllerImage(matching: sut.viewController, named: "doku_flow")
-
-            delegateExpectation.fulfill()
-        }
-        
         submitButton.sendActions(for: .touchUpInside)
 
-        wait(for: [delegateExpectation], timeout: 60)
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertTrue(submitted.data.paymentMethod is DokuDetails)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? DokuDetails)
+        XCTAssertEqual(details.firstName, "Mohamed")
+        XCTAssertEqual(details.lastName, "Smith")
+        XCTAssertEqual(details.emailAddress, "mohamed.smith@domain.com")
+
+        sut.stopLoading()
+        XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+        XCTAssertEqual(sut.button.showsActivityIndicator, false)
+
+        verifyViewControllerImage(matching: sut.viewController, named: "doku_flow")
     }
 
     func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
@@ -125,16 +119,10 @@ final class DokuComponentUITests: XCTestCase {
         let emailView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.email))
         self.populate(textItemView: emailView, with: "katrina.mar@mail.com")
 
-        let didSubmitExpectation = expectation(description: "didSubmitExpectation")
-        paymentDelegateMock.onDidSubmit = { _, _ in
-            didSubmitExpectation.fulfill()
-        }
-
         // When
         sut.performSubmit()
 
         // Then
-        waitForExpectations(timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 

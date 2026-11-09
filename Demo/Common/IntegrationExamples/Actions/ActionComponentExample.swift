@@ -21,8 +21,6 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
 
     private let actionJSON: String
 
