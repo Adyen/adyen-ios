@@ -95,8 +95,18 @@ internal class StoredCardInputViewController: UIViewController {
 
     override internal func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // Request host size recalculation so a growing validation footer is not clipped.
-        view.invalidateIntrinsicContentSize()
+
+        // Report the size at the current width so the parent can fit wrapped validation messages.
+        let width = view.bounds.width
+        guard width > 0 else { return }
+
+        let fittingSize = view.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        guard preferredContentSize != fittingSize else { return }
+        preferredContentSize = fittingSize
     }
 
     // MARK: - setup & configurations
