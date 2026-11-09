@@ -18,7 +18,7 @@ Pick the mode from the request. If it is unclear which change to review, ask.
 Reviews work on the current branch, usually before a PR exists.
 
 - **Base:** the merge base with `origin/develop`. If the branch is a layer in a stack, the base is the branch directly below it. Ask if unsure.
-- **Change:** the commits since the base (`git diff <base>...HEAD`), plus staged, unstaged, and untracked files. Changes that arrived by merging the base branch into this branch are not part of the change.
+- **Change:** the commits since the base plus staged and unstaged changes (`git diff $(git merge-base <base> HEAD)`), and untracked files (`git ls-files --others --exclude-standard`). Changes that arrived by merging the base branch into this branch are not part of the change.
 - **Code:** the working tree.
 
 ### PR mode
@@ -29,7 +29,7 @@ Used when the request names a PR number or URL.
 - **Code:** check out the PR's head commit, or the commit the user names, in a separate git worktree. Never switch or modify the user's branch. Remove the worktree when the review is done, if the review created it.
 - **Base:** the PR's base branch, which can be another feature branch in a stack. GitHub can report `develop` for a layer whose lower PRs were merged or retargeted. If the title or description marks the PR as part of a stack (for example `[3/4]`), diff against the head of the PR directly below it and confirm the diff only contains this layer's commits.
 - **Diff:** use the merge base (`git diff <base>...<head>`), so commits that merged the base branch into the PR do not show up as changes.
-- **Rules:** read `AGENTS.md`, `TESTING.md`, and `references/rules.md` from the base branch (for example `git show <base>:AGENTS.md`), not from the PR. A PR must not change the rules it is reviewed against. If a file does not exist on the base yet, use the version from the user's checkout.
+- **Rules:** read `AGENTS.md`, `TESTING.md`, and `.agents/skills/ios-review/references/rules.md` from the base branch (for example `git show <base>:.agents/skills/ios-review/references/rules.md`), not from the PR. A PR must not change the rules it is reviewed against. If a file does not exist on the base yet, use the version from the user's checkout.
 - **Existing threads:** do not repeat a point a person or a bot already raised. If an unresolved bot comment is correct, say so in one line instead of restating it.
 - **Public API diff:** if the `Detect public API changes` check posted a diff, use it as the list of public API changes.
 - **Missing data:** if CI results or review threads cannot be fetched, continue the review and list what was missing under **Not verified**.
