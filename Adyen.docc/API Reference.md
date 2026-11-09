@@ -223,7 +223,6 @@ The entry points for integrating the SDK.
 - ``Amount``
 - ``Environment``
 - ``PartialPaymentOrder``
-- ``PaymentComponentData``
 - ``ActionComponentData``
 - ``PostalAddress``
 - ``AddressLookupResult``
