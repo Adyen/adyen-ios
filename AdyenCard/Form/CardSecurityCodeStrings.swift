@@ -12,7 +12,7 @@ internal enum CardSecurityCodeStrings {
         for brand: CardBrand?,
         localizationParameters: LocalizationParameters?
     ) -> String {
-        let key: LocalizationKey = brand.expectedSecurityCodeLength == 4
+        let key: LocalizationKey = Self.isFourDigitCode(for: brand)
             ? .cardSecurityCodeHintFourDigits
             : .cardSecurityCodeHintThreeDigits
         return localizedString(key, localizationParameters)
@@ -23,7 +23,7 @@ internal enum CardSecurityCodeStrings {
         brand: CardBrand?,
         localizationParameters: LocalizationParameters?
     ) -> String? {
-        let isFourDigitCode = brand.expectedSecurityCodeLength == 4
+        let isFourDigitCode = Self.isFourDigitCode(for: brand)
         let key: LocalizationKey
         switch error {
         case .securityCodeEmpty:
@@ -34,5 +34,9 @@ internal enum CardSecurityCodeStrings {
             return nil
         }
         return localizedString(key, localizationParameters)
+    }
+
+    private static func isFourDigitCode(for brand: CardBrand?) -> Bool {
+        brand.expectedSecurityCodeLength == 4
     }
 }
