@@ -17,15 +17,18 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Tests
 
+    /// The container forwards disappearance to its view model, distinguishing it from permanently leaving the screen.
     @Test
     func viewDidDisappear_shouldForwardToViewModel() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
 
         // When
+        // Trigger disappearance without a pop or dismissal; the argument only indicates whether the transition is animated.
         sut.viewDidDisappear(true)
 
         // Then
+        // Forward the lifecycle event once with isLeavingScreen false so the view model can avoid cancelling the payment.
         #expect(viewModelMock.viewDidDisappearCallsCount == 1)
         #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == false)
     }
