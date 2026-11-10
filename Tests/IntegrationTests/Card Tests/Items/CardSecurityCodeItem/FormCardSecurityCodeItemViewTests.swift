@@ -403,7 +403,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
     func test_strings_givenLocalizationProvider_shouldUseOverridesAndFallbackForMissingKeys() {
         let sut = CardSecurityCodeStrings.self
         let parameters = LocalizationParameters(enforcedLocale: "en-US").withProvider(StringsProvider(values: [
-            .cardSecurityCodeHint3Digits: "Custom hint",
+            .cardSecurityCodeHintThreeDigits: "Custom hint",
             CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyThreeDigits): "Custom error"
         ]))
         XCTAssertEqual(sut.hint(for: .visa, localizationParameters: parameters), "Custom hint")
