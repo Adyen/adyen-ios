@@ -31,7 +31,6 @@
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "Invalid expiry date";
 "adyen.card.expiryItem.accessibilityLabel" = "Month, 2 digits, Year, 2 digits";
-"adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
 "adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.securityCode.title" = "Enter security code";
@@ -175,6 +174,13 @@
 "adyen_checkout_card_installments_option_regular" = "%@ Installments";
 "adyen_checkout_card_installments_option_regular_description" = "%@ monthly payments";
 "adyen_checkout_card_installments_option_regular_description_with_price" = "%@ monthly payments of %@";
+"adyen_checkout_card_security_code_label" = "Security code";
+"adyen_checkout_card_security_code_hint_three_digits" = "3 digits on back of card";
+"adyen_checkout_card_security_code_hint_four_digits" = "4 digits on front of card";
+"adyen_checkout_card_security_code_error_empty_three_digits" = "Enter the security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_empty_four_digits" = "Enter the security code. 4 digits on front of card.";
+"adyen_checkout_card_security_code_error_incomplete_three_digits" = "Enter the complete security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_incomplete_four_digits" = "Enter the complete security code. 4 digits on front of card.";
 "adyen.bacs.holderNameField.title" = "Bank account holder name";
 "adyen.bacs.bankAccountNumberField.title" = "Bank account number";
 "adyen.bacs.bankLocationIdField.title" = "Sort code";

@@ -209,7 +209,7 @@ package final class GiftCardComponent: PaymentComponent,
         case .giftCard:
             title = localizedString(.cardPinTitle, localizationParameters)
         case .mealVoucher:
-            title = localizedString(.cardCvcItemTitle, localizationParameters)
+            title = localizedString(.cardSecurityCodeLabel, localizationParameters)
         }
         item.title = title
         item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)
