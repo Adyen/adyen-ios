@@ -185,7 +185,9 @@ let checkout = try await Checkout.setup(
 
 The advanced flow is not available in this release. Use the session flow for payment components.
 The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
-`CheckoutSubmitHandler`, `SubmitResult` and `PartialPayment` are package-only and cannot be used by merchant integrations.
+`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment` and `PaymentComponentData` are package-only and cannot be
+used by merchant integrations. In the session flow, inspect or patch shopper data with
+`CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Checkout callbacks
@@ -501,9 +503,8 @@ In v6, the component has a single screen:
 - To use your own submit button, set `showsSubmitButton(false)` on `CheckoutConfiguration` and call `submit()` on the
   component when the shopper taps it.
 - Create the component with `checkout.createPaymentComponent(for: .bacsDirectDebit)`.
-- `BACSDirectDebitDetails` has a new `shopperEmail` property containing the email address the shopper entered, and
-  `PaymentComponentData.emailAddress` now returns it. The initializer has a matching `shopperEmail` parameter that
-  defaults to `nil`, so existing code keeps compiling.
+- `BACSDirectDebitDetails` has a new `shopperEmail` property containing the email address the shopper entered. The
+  initializer has a matching `shopperEmail` parameter that defaults to `nil`, so existing code keeps compiling.
 
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.
