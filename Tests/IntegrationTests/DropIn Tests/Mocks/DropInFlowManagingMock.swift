@@ -6,11 +6,18 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+import Combine
 
 @MainActor
 final class DropInFlowManagingMock: DropInFlowManaging {
 
     var dropInFlowRouter: DropInFlowRouting?
+
+    let paymentInProgressSubject = CurrentValueSubject<Bool, Never>(false)
+
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        paymentInProgressSubject.eraseToAnyPublisher()
+    }
 
     var submitCallsCount = 0
     var submitCalled: Bool {
@@ -70,5 +77,14 @@ final class DropInFlowManagingMock: DropInFlowManaging {
 
     func dismissDropIn() {
         dismissDropInCallsCount += 1
+    }
+
+    var endPaymentAttemptCallsCount = 0
+    var endPaymentAttemptCalled: Bool {
+        endPaymentAttemptCallsCount > 0
+    }
+
+    func endPaymentAttempt() {
+        endPaymentAttemptCallsCount += 1
     }
 }

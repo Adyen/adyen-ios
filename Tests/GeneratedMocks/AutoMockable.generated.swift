@@ -113,33 +113,6 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
 }
 
-class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
-
-    // MARK: - resolveComponentContainerRouter
-
-    var resolveComponentContainerRouterForListenerCallsCount = 0
-    var resolveComponentContainerRouterForListenerCalled: Bool {
-        resolveComponentContainerRouterForListenerCallsCount > 0
-    }
-
-    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PaymentComponent, listener: ComponentContainerRouterListener)?
-    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PaymentComponent, listener: ComponentContainerRouterListener)] = []
-    var resolveComponentContainerRouterForListenerReturnValue: Router!
-    var resolveComponentContainerRouterForListenerClosure: ((PaymentComponent, ComponentContainerRouterListener) -> Router)?
-
-    func resolveComponentContainerRouter(for component: PaymentComponent, listener: ComponentContainerRouterListener) -> Router {
-        resolveComponentContainerRouterForListenerCallsCount += 1
-        resolveComponentContainerRouterForListenerReceivedArguments = (component: component, listener: listener)
-        resolveComponentContainerRouterForListenerReceivedInvocations.append((component: component, listener: listener))
-        if let resolveComponentContainerRouterForListenerClosure {
-            return resolveComponentContainerRouterForListenerClosure(component, listener)
-        } else {
-            return resolveComponentContainerRouterForListenerReturnValue
-        }
-    }
-
-}
-
 class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
     // MARK: - didDismissComponentContainer
@@ -198,37 +171,6 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
     func dismiss(completion: (() -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
-    }
-
-}
-
-class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
-
-    var componentViewController: UIViewController {
-        get { underlyingComponentViewController }
-        set(value) { underlyingComponentViewController = value }
-    }
-
-    var underlyingComponentViewController: UIViewController!
-    var theme: CheckoutTheme {
-        get { underlyingTheme }
-        set(value) { underlyingTheme = value }
-    }
-
-    var underlyingTheme: CheckoutTheme!
-
-    // MARK: - cancel
-
-    var cancelCallsCount = 0
-    var cancelCalled: Bool {
-        cancelCallsCount > 0
-    }
-
-    var cancelClosure: (() -> Void)?
-
-    func cancel() {
-        cancelCallsCount += 1
-        cancelClosure?()
     }
 
 }

@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenActions
+import Combine
 import Foundation
 import UIKit
 
@@ -33,6 +34,8 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
+    func endPaymentAttempt()
 }
 
 @MainActor
@@ -49,6 +52,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     /// Whether the payment session is expected to return an action to handle.
     private var isAwaitingAction = false
     private var didCancelDropIn = false
+    @Published private var isPaymentInProgress = false
 
     // MARK: - Initializers
 
@@ -82,11 +86,16 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - DropInFlowManaging
 
+    internal var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        $isPaymentInProgress.eraseToAnyPublisher()
+    }
+
     internal func submit(
         _ data: PaymentComponentData,
         from component: PaymentComponent
     ) {
         isAwaitingAction = true
+        isPaymentInProgress = true
         notifyDidSubmit(data, from: component)
     }
 
@@ -122,6 +131,11 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func dismissDropIn() {
         dropInFlowRouter?.dismissDropIn(completion: nil)
+    }
+
+    internal func endPaymentAttempt() {
+        endSubmission()
+        isPaymentInProgress = false
     }
 
     // MARK: - Private

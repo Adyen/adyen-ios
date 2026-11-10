@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenUI
+import Combine
 import Foundation
 import UIKit
 
@@ -14,16 +15,25 @@ internal class ComponentContainerViewController: UIViewController {
     // MARK: - Properties
     
     private let viewModel: ComponentContainerViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     private var theme: CheckoutTheme {
         viewModel.theme
     }
+
+    internal private(set) lazy var cancelButtonItem = UIBarButtonItem(
+        systemItem: .cancel,
+        primaryAction: UIAction { [weak self] _ in
+            self?.viewModel.cancelDropIn()
+        }
+    )
     
     // MARK: - Initializers
     
     internal init(viewModel: ComponentContainerViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: Bundle(for: ComponentContainerViewController.self))
+        isModalInPresentation = true
     }
     
     @available(*, unavailable)
@@ -38,6 +48,12 @@ internal class ComponentContainerViewController: UIViewController {
         setupComponentView()
         setupNavigationItem()
         applyTheme()
+        observePaymentProgress()
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationLock(active: false)
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -76,5 +92,21 @@ internal class ComponentContainerViewController: UIViewController {
         navigationItem.title = componentViewController.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        if viewModel.isDropInRoot {
+            navigationItem.leftBarButtonItem = cancelButtonItem
+        }
     }
+
+    private func observePaymentProgress() {
+        viewModel.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                guard let self else { return }
+                cancelButtonItem.isEnabled = !isPaymentInProgress
+                guard navigationController?.topViewController === self else { return }
+                navigationController?.setNavigationLock(active: isPaymentInProgress)
+            }
+            .store(in: &cancellables)
+    }
+
 }
