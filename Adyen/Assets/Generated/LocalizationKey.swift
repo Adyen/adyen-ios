@@ -100,8 +100,8 @@ public struct LocalizationKey {
     public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
     /// Card Brand
     public static let creditCardDualBrandTitle = LocalizationKey(key: "adyen.creditCard.dualBrand.title")
-    /// Select the card brand you prefer to pay with. This is optional.
-    public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen.creditCard.dualBrand.description")
+    /// You can select the card brand you prefer to pay with. This is optional.
+    public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen_checkout_card_dual_brand_selector_description")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
