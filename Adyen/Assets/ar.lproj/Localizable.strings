@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "العلامة التجارية للبطاقة التي تم إدخالها غير مدعومة";
 "adyen.card.scanYourCardButton" = "امسح بطاقتك ضوئيًا";
 "adyen.creditCard.dualBrand.title" = "العلامة التجارية للبطاقة";
-"adyen.creditCard.dualBrand.description" = "اختر العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا البيان اختياري.";
+"adyen_checkout_card_dual_brand_selector_description" = "يمكنك اختيار العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا اختياري.";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
