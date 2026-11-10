@@ -33,9 +33,9 @@ internal final class QRCodeView: UIView, AdyenObserver {
         return imageView
     }()
         
-    private let amountLabel: UILabel
+    private let amountLabel: AdyenLabel
     private let progressView: UIProgressView
-    private let expirationLabel: UILabel
+    private let expirationLabel: AdyenLabel
     
     // MARK: - Initialization
     
