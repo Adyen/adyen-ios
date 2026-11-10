@@ -9,11 +9,13 @@ import AdyenUI
 import Foundation
 import UIKit
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerAssemblerProtocol {
+
+    /// - Parameter isDropInRoot: Whether the container is the root of the drop in, in which case it lets the shopper close the drop in.
     func resolveComponentContainerRouter(
         for component: PaymentComponent,
+        isDropInRoot: Bool,
         listener: ComponentContainerRouterListener
     ) -> Router
 }
@@ -43,6 +45,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
         for component: PaymentComponent,
+        isDropInRoot: Bool,
         listener: ComponentContainerRouterListener
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
@@ -50,7 +53,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             theme: configuration.theme,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            isDropInRoot: isDropInRoot
         )
         let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
