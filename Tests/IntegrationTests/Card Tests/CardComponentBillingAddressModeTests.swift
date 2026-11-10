@@ -780,7 +780,7 @@ private struct CardComponentProxy {
         if let selectedCountry {
             #expect(addressFormVC.addressItem.countryPickerItem.value?.identifier == selectedCountry)
         }
-        addressFormVC.dismissAddressLookup()
+        addressFormVC.dismiss(animated: true)
         await waitForDismissal()
     }
 
@@ -788,7 +788,7 @@ private struct CardComponentProxy {
     func expectAddressFormPrefilled(with expectedAddress: PostalAddress) async throws {
         let addressFormVC = try await openBillingAddressForm()
         #expect(addressFormVC.addressItem.value == expectedAddress)
-        addressFormVC.dismissAddressLookup()
+        addressFormVC.dismiss(animated: true)
         await waitForDismissal()
     }
 
@@ -800,7 +800,7 @@ private struct CardComponentProxy {
             #expect(countryCodes.contains(code), "Expected country \(code) to be in picker")
         }
         #expect(countryCodes.count > expectedCodes.count, "Expected more than \(expectedCodes.count) countries")
-        addressFormVC.dismissAddressLookup()
+        addressFormVC.dismiss(animated: true)
         await waitForDismissal()
     }
 
@@ -873,8 +873,8 @@ private struct CardComponentProxy {
         #expect(resultCount == 0)
 
         searchVM.handleSwitchToManualEntry()
-        await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
-        let addressFormVC = try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
+        await pollUntil({ lookupVC.activeViewController is AddressInputFormViewController }, timeout: 3)
+        let addressFormVC = try #require(lookupVC.activeViewController as? AddressInputFormViewController)
         fillAddressFields(in: addressFormVC.view, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
@@ -908,8 +908,8 @@ private struct CardComponentProxy {
     ) async throws -> AddressInputFormViewController {
         let lookupVC = try await openBillingAddressLookup()
         try await searchAndSelectResult(in: lookupVC, searchTerm: searchTerm, resultIndex: resultIndex)
-        await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
-        return try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
+        await pollUntil({ lookupVC.activeViewController is AddressInputFormViewController }, timeout: 3)
+        return try #require(lookupVC.activeViewController as? AddressInputFormViewController)
     }
 
     /// Programmatically triggers a search on the lookup ViewModel and selects a result at the given index.
@@ -1052,26 +1052,30 @@ private struct CardComponentProxy {
     private func waitForPresentedAddressInputForm(timeout: TimeInterval = 3) async throws -> AddressInputFormViewController {
         await pollUntil({ component.viewController.presentedViewController != nil }, timeout: timeout)
 
-        let securedVC = try #require(
-            component.viewController.presentedViewController as? SecuredViewController<UIViewController>,
-            "Expected SecuredViewController to be presented"
+        let navigationController = try #require(
+            component.viewController.presentedViewController as? UINavigationController,
+            "Expected UINavigationController to be presented"
         )
-        let navController = try #require(
-            securedVC.childViewController as? UINavigationController,
-            "Expected UINavigationController inside SecuredViewController"
+        let securedVC = try #require(
+            navigationController.viewControllers.first as? SecuredViewController<UIViewController>,
+            "Expected SecuredViewController inside UINavigationController"
         )
         return try #require(
-            navController.viewControllers.first as? AddressInputFormViewController,
-            "Expected AddressInputFormViewController as root of UINavigationController"
+            securedVC.childViewController as? AddressInputFormViewController,
+            "Expected AddressInputFormViewController inside SecuredViewController"
         )
     }
 
     private func waitForPresentedAddressLookupVC(timeout: TimeInterval = 3) async throws -> AddressLookupViewController {
         await pollUntil({ component.viewController.presentedViewController != nil }, timeout: timeout)
 
+        let navigationController = try #require(
+            component.viewController.presentedViewController as? UINavigationController,
+            "Expected UINavigationController to be presented"
+        )
         let securedVC = try #require(
-            component.viewController.presentedViewController as? SecuredViewController<UIViewController>,
-            "Expected SecuredViewController to be presented"
+            navigationController.viewControllers.first as? SecuredViewController<UIViewController>,
+            "Expected SecuredViewController inside UINavigationController"
         )
         return try #require(
             securedVC.childViewController as? AddressLookupViewController,

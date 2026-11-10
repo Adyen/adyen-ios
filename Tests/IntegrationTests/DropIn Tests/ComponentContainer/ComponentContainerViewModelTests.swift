@@ -114,6 +114,33 @@ struct ComponentContainerViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 0)
     }
 
+    @Test
+    func viewDidDisappear_whenLeavingScreen_shouldCancelComponent() {
+        // Given
+        let (sut, _, _, dropInFlowManagerMock, routerMock) = makeSUT()
+
+        // When
+        sut.viewDidDisappear(isLeavingScreen: true)
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 1)
+        #expect(routerMock.dismissCompletionCallsCount == 1)
+    }
+
+    @Test
+    func viewDidDisappear_whenScreenIsCovered_shouldNotCancelComponent() {
+        // Given
+        let (sut, _, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
+
+        // When
+        sut.viewDidDisappear(isLeavingScreen: false)
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 0)
+        #expect(paymentComponentMock.stopLoadingCallsCount == 0)
+        #expect(routerMock.dismissCompletionCallsCount == 0)
+    }
+
     // MARK: - Mocks
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {

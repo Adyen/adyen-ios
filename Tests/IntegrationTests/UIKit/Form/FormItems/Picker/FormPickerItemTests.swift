@@ -175,7 +175,7 @@ class FormPickerItemTests: XCTestCase {
         let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
         setupRootViewController(pickerViewController)
 
-        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerViewController
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
         XCTAssertEqual(headerView.titleLabel.text, "Installments")
         XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
@@ -220,7 +220,7 @@ class FormPickerItemTests: XCTestCase {
         let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
         setupRootViewController(pickerViewController)
 
-        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerViewController
         XCTAssertNil(searchViewController.headerView)
         XCTAssertEqual(searchViewController.title, "Country/Region")
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))

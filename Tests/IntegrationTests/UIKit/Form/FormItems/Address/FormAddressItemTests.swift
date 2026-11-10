@@ -23,7 +23,7 @@ class FormAddressItemTests: XCTestCase {
                 supportedCountryCodes: ["NL", "US"],
                 showsHeader: true
             ),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -35,7 +35,7 @@ class FormAddressItemTests: XCTestCase {
                 supportedCountryCodes: ["NL", "US"],
                 showsHeader: false
             ),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
 
@@ -49,7 +49,7 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -66,7 +66,7 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -93,7 +93,7 @@ class FormAddressItemTests: XCTestCase {
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         

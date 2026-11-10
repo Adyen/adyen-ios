@@ -18,7 +18,7 @@ struct ComponentContainerViewControllerTests {
     // MARK: - Tests
 
     @Test
-    func viewDidDisappear_shouldCallViewModelCancel() async {
+    func viewDidDisappear_shouldForwardToViewModel() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
 
@@ -26,7 +26,8 @@ struct ComponentContainerViewControllerTests {
         sut.viewDidDisappear(true)
 
         // Then
-        #expect(viewModelMock.cancelCallsCount == 1)
+        #expect(viewModelMock.viewDidDisappearCallsCount == 1)
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == false)
     }
 
     @Test
@@ -234,10 +235,12 @@ struct ComponentContainerViewControllerTests {
             paymentInProgressSubject.eraseToAnyPublisher()
         }
 
-        var cancelCallsCount = 0
+        var viewDidDisappearCallsCount = 0
+        var viewDidDisappearReceivedIsLeavingScreen: Bool?
 
-        func cancel() {
-            cancelCallsCount += 1
+        func viewDidDisappear(isLeavingScreen: Bool) {
+            viewDidDisappearCallsCount += 1
+            viewDidDisappearReceivedIsLeavingScreen = isLeavingScreen
         }
 
         var cancelDropInCallsCount = 0
