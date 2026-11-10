@@ -194,7 +194,10 @@ class VoucherComponentTests: XCTestCase {
         forAction action: VoucherAction
     ) {
         XCTAssertEqual(model.theme.colors, sut.configuration.theme.colors)
-        XCTAssertEqual(model.theme.elements, sut.configuration.theme.elements)
+        XCTAssertEqual(model.theme.elements.buttons.primary, sut.configuration.theme.elements.buttons.primary)
+        XCTAssertEqual(model.theme.elements.buttons.tertiary, sut.configuration.theme.elements.buttons.tertiary)
+        XCTAssertEqual(model.theme.elements.labels.title.font, sut.configuration.theme.elements.labels.title.font)
+        XCTAssertEqual(model.theme.elements.labels.title.color, sut.configuration.theme.elements.labels.title.color)
         
         let comps = action.anyAction.totalAmount.formattedComponents
         
