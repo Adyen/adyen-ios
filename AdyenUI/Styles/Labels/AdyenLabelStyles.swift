@@ -8,7 +8,6 @@ import UIKit
 
 package struct AdyenLabelStyles {
     package var title: AdyenLabelStyle
-    package var title2: AdyenLabelStyle
     package var subtitle: AdyenLabelStyle
     package var body: AdyenLabelStyle
     package var bodyEmphasized: AdyenLabelStyle
@@ -27,7 +26,6 @@ package struct AdyenLabelStyles {
     ///
     /// - Parameters:
     ///   - title: The title label style.
-    ///   - title2: The secondary title label style.
     ///   - subtitle: The subtitle label style.
     ///   - body: The body label style.
     ///   - bodyEmphasized: The emphasized body label style.
@@ -38,7 +36,6 @@ package struct AdyenLabelStyles {
     ///   - label: The label style used for form field titles.
     internal init(
         title: AdyenLabelStyle,
-        title2: AdyenLabelStyle,
         subtitle: AdyenLabelStyle,
         body: AdyenLabelStyle,
         bodyEmphasized: AdyenLabelStyle,
@@ -49,7 +46,6 @@ package struct AdyenLabelStyles {
         label: AdyenLabelStyle
     ) {
         self.title = title
-        self.title2 = title2
         self.subtitle = subtitle
         self.body = body
         self.bodyEmphasized = bodyEmphasized

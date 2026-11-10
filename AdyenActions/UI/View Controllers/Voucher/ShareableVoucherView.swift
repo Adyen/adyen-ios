@@ -95,7 +95,7 @@ internal class ShareableVoucherView: UIView, Localizable {
     
     internal func createBottomView() -> UIView {
         let codeLabel = AdyenLabel()
-        codeLabel.apply(model.theme.elements.labels.title2)
+        codeLabel.apply(model.theme.elements.labels.subtitle)
         codeLabel.textAlignment = .center
         codeLabel.text = model.code
         let views = [codeLabel] + model.fields.flatMap {
