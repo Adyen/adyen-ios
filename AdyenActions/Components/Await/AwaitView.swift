@@ -43,7 +43,7 @@ internal struct AwaitView: View {
     // MARK: - Private
 
     private var logoView: some View {
-        PaymentLogo(
+        PaymentMethodLogoView(
             url: viewModel.logoURL,
             theme: theme,
             size: Constants.logoSize
