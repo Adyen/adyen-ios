@@ -60,9 +60,10 @@ class AwaitComponentTests: XCTestCase {
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let sut = AwaitComponent(
             context: Dummy.context,
-            action: AwaitAction(paymentData: "data", paymentMethodType: .mbway),
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .mbway)),
             actionPresentationDelegate: actionPresentationDelegate,
-            configuration: .init(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+            configuration: .init(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)),
+            pollingHandlerProvider: PollingHandlerProvider(context: Dummy.context)
         )
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")

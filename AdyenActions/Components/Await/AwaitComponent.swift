@@ -58,48 +58,6 @@ package final class AwaitComponent: ActionComponent, Cancellable {
 
     private let componentName = "await"
 
-    /// Initializes the `AwaitComponent` for an await action.
-    ///
-    /// - Parameter context: The context object for this component.
-    /// - Parameter action: The await action object.
-    /// - Parameter actionPresentationDelegate: The delegate presenting the component's view controller.
-    /// - Parameter configuration: The await component configurations.
-    package convenience init(
-        context: AdyenContext,
-        action: AwaitAction,
-        actionPresentationDelegate: ActionPresentationDelegate,
-        configuration: Configuration = .init()
-    ) {
-        self.init(
-            context: context,
-            flow: .standard(action),
-            actionPresentationDelegate: actionPresentationDelegate,
-            configuration: configuration,
-            pollingHandlerProvider: PollingHandlerProvider(context: context)
-        )
-    }
-
-    /// Initializes the `AwaitComponent` for a redirectable await action.
-    ///
-    /// - Parameter context: The context object for this component.
-    /// - Parameter action: The redirectable await action object.
-    /// - Parameter actionPresentationDelegate: The delegate presenting the component's view controller.
-    /// - Parameter configuration: The await component configurations.
-    package convenience init(
-        context: AdyenContext,
-        action: RedirectableAwaitAction,
-        actionPresentationDelegate: ActionPresentationDelegate,
-        configuration: Configuration = .init()
-    ) {
-        self.init(
-            context: context,
-            flow: .redirectable(action),
-            actionPresentationDelegate: actionPresentationDelegate,
-            configuration: configuration,
-            pollingHandlerProvider: PollingHandlerProvider(context: context)
-        )
-    }
-
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter context: The context object for this component.

@@ -45,9 +45,10 @@ class AwaitComponentUITests: XCTestCase {
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let sut = AwaitComponent(
             context: Dummy.context,
-            action: AwaitAction(paymentData: "data", paymentMethodType: paymentMethodType),
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: paymentMethodType)),
             actionPresentationDelegate: actionPresentationDelegate,
-            configuration: .init(theme: theme)
+            configuration: .init(theme: theme),
+            pollingHandlerProvider: PollingHandlerProvider(context: Dummy.context)
         )
 
         actionPresentationDelegate.doPresent = { viewController in
