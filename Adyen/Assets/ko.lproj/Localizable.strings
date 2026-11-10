@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
 "adyen.moreOptions" = "옵션 더 보기";
 "adyen.applePay.total" = "총 금액";
-"adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";
-"adyen.blik.confirmPayment" = "뱅킹 앱을 열어서 결제를 확인하세요.";
 "adyen.blik.invalid" = "6자리 숫자 입력";
 "adyen.blik.code" = "6자리 코드";
 "adyen.blik.help" = "뱅킹 앱에서 코드를 가져오세요.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "UPI ID를 입력하세요";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "유효한 UPI를 입력하세요.";
-"adyen.upi.collect.confirmPayment" = "확인 대기 중…";
-"adyen.upi.vpaWaitingMessage" = "UPI 앱을 열어 결제를 확인하세요";
 "adyen.upi.qrcode.timerMessage" = "남은 승인 시한: %@";
 "adyen.upi.qrcode.instructions" = "스크린샷을 찍어서 UPI 앱에 업로드하거나 즐겨 쓰는 UPI 앱에서 QR 코드를 스캔하여 결제하세요.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "올바른 은행 주 지점을 입력하세요.";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "올바른 은행 계좌 번호를 입력하세요.";
 "adyen.payto.payid.description" = "PayTo 계정에 연결된 PayID와 계정 세부 정보를 입력하세요.";
-"adyen.payto.await.description" = "구매해 주셔서 감사드립니다. 은행 계좌에 로그인하여 결제를 완료하고 PayTo 계약에 동의한 후 결제 조건을 승인해 주세요.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "카메라 접근 허용";
 "adyen.card.scanner.camera.access.denied.alert.message" = "이전에 접근이 거부되었습니다. 카드를 스캔하려면 '설정'에서 접근 권한을 부여하세요.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "설정 열기";

@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Ogiltig e-postadress";
 "adyen.moreOptions" = "Fler alternativ";
 "adyen.applePay.total" = "Totalt";
-"adyen.mbway.confirmPayment" = "Bekräfta din betalning i appen MB WAY";
 "adyen.await.waitForConfirmation" = "Väntar på bekräftelse";
-"adyen.blik.confirmPayment" = "Öppna din bankapp för att bekräfta betalningen.";
 "adyen.blik.invalid" = "Ange 6 siffror";
 "adyen.blik.code" = "Sexsiffrig kod";
 "adyen.blik.help" = "Hämta koden från din bankapp.";
@@ -186,8 +184,6 @@
 "adyen.upi.collect.instruction" = "Bekräfta ditt UPI-ID";
 "adyen.upi.mode.enterUpiId" = "UPI-ID";
 "adyen.upi.collect.field.invalidIdError" = "Bekräfta en giltig UPI";
-"adyen.upi.collect.confirmPayment" = "Väntar på din bekräftelse…";
-"adyen.upi.vpaWaitingMessage" = "Öppna din UPI-app för att bekräfta betalningen";
 "adyen.upi.qrcode.timerMessage" = "Du har %@ att godkänna";
 "adyen.upi.qrcode.instructions" = "Ta en skärmdump att ladda upp i UPI-appen eller skanna QR-koden med din UPI-app för att slutföra betalningen.";
 "adyen.twint.noAppsInstalled.message" = "Ingen, eller en utgången, version av TWINT finns installerad på den här enheten. Uppdatera eller installera TWINT-appen.";
@@ -262,7 +258,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Ange ett korrekt bankkontor";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Ange ett korrekt bankkontonummer";
 "adyen.payto.payid.description" = "Ange PayID och kontouppgifter för PayTo-kontot.";
-"adyen.payto.await.description" = "Tack för ditt köp! Slutför betalningen genom att logga in på ditt bankkonto och godkänna PayTo-avtalet och betalningsvillkoren.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Tillåt kameraåtkomst";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Åtkomst har nekats tidigare. Bevilja åtkomst i Inställningar för att skanna kort.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Öppna Inställningar";

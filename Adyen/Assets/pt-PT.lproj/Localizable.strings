@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Endereço de e-mail inválido";
 "adyen.moreOptions" = "Mais opções";
 "adyen.applePay.total" = "Total";
-"adyen.mbway.confirmPayment" = "Confirme o seu pagamento na aplicação MB WAY";
 "adyen.await.waitForConfirmation" = "A aguardar confirmação";
-"adyen.blik.confirmPayment" = "Abra a sua aplicação bancária para confirmar o pagamento.";
 "adyen.blik.invalid" = "Digite 6 números";
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Obtenha o código da sua aplicação bancária.";
@@ -187,8 +185,6 @@
 "adyen.upi.collect.instruction" = "Introduza o seu ID de UPI";
 "adyen.upi.mode.enterUpiId" = "ID da UPI";
 "adyen.upi.collect.field.invalidIdError" = "Introduza uma UPI válida";
-"adyen.upi.collect.confirmPayment" = "A aguardar a sua confirmação…";
-"adyen.upi.vpaWaitingMessage" = "Abra a aplicação UPI para confirmar o pagamento";
 "adyen.upi.qrcode.timerMessage" = "Tem %@ para aprovar";
 "adyen.upi.qrcode.instructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
 "adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
@@ -263,7 +259,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Introduza uma sucursal estatal do banco correta";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Introduza um número de conta bancária correto";
 "adyen.payto.payid.description" = "Introduza o PayID e os dados da conta que estão ligados à sua conta PayTo.";
-"adyen.payto.await.description" = "Agradecemos a sua compra. Para concluir o pagamento, inicie sessão na sua conta bancária, autorize o acordo PayTo e aprove os termos de pagamento.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Permitir o acesso à câmara";
 "adyen.card.scanner.camera.access.denied.alert.message" = "O acesso foi negado anteriormente. Para digitalizar cartões, conceda acesso nas Configurações.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Abrir configurações";

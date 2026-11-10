@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Netinkamas el. pašto adresas";
 "adyen.moreOptions" = "Daugiau parinkčių";
 "adyen.applePay.total" = "Iš viso";
-"adyen.mbway.confirmPayment" = "Patvirtinkite mokėjimą MB WAY programoje";
 "adyen.await.waitForConfirmation" = "Laukiama patvirtinimo";
-"adyen.blik.confirmPayment" = "Atidarykite savo bankininkystės programą, kad patvirtintumėte mokėjimą.";
 "adyen.blik.invalid" = "Įveskite 6 skaičius";
 "adyen.blik.code" = "6 skaitmenų kodas";
 "adyen.blik.help" = "Gaukite kodą iš savo banko programos.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Įveskite savo UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Įveskite galiojantį UPI";
-"adyen.upi.collect.confirmPayment" = "Laukiama jūsų patvirtinimo…";
-"adyen.upi.vpaWaitingMessage" = "Atidarykite savo UPI programą, kad patvirtintumėte mokėjimą";
 "adyen.upi.qrcode.timerMessage" = "Turite %@ patvirtinti";
 "adyen.upi.qrcode.instructions" = "Padarykite ekrano kopiją ir įkelkite ją į UPI programą arba nuskaitykite QR kodą naudodami pageidaujamą UPI programą, kad užbaigtumėte mokėjimą.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Įveskite teisingą banko filialo kodą";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Įveskite teisingą banko sąskaitos numerį";
 "adyen.payto.payid.description" = "Įveskite „PayID“ ir sąskaitos duomenis, susietus su jūsų „PayTo“ sąskaita.";
-"adyen.payto.await.description" = "Dėkojame, kad perkate. Užbaikite mokėjimą prisijungę prie savo banko sąskaitos, patvirtinkite „PayTo“ sutartį ir mokėjimo sąlygas.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Suteikti prieigą prie kameros";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Anksčiau prieigos užklausa buvo atmesta. Norėdami nuskaityti korteles, suteikite prieigą skiltyje „Nustatymai“.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Atidarykite skiltį „Nustatymai“";

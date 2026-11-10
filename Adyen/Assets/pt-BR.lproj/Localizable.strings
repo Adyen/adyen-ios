@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Endereço de e-mail inválido";
 "adyen.moreOptions" = "Mais opções";
 "adyen.applePay.total" = "Total";
-"adyen.mbway.confirmPayment" = "Confirme seu pagamento no aplicativo MB WAY";
 "adyen.await.waitForConfirmation" = "Aguardando confirmação";
-"adyen.blik.confirmPayment" = "Abra o aplicativo do seu banco para confirmar o pagamento.";
 "adyen.blik.invalid" = "Digite 6 números";
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Obtenha o código no aplicativo do seu banco.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Digite o seu ID UPI";
 "adyen.upi.mode.enterUpiId" = "ID UPI";
 "adyen.upi.collect.field.invalidIdError" = "Informe um UPI válido";
-"adyen.upi.collect.confirmPayment" = "Aguardando sua confirmação…";
-"adyen.upi.vpaWaitingMessage" = "Abra o aplicativo UPI para confirmar o pagamento";
 "adyen.upi.qrcode.timerMessage" = "Você tem %@ para aprovar";
 "adyen.upi.qrcode.instructions" = "Faça uma captura de tela para carregar no aplicativo de UPI ou escaneie o QR code usando o aplicativo UPI de sua preferência para concluir o pagamento.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Digite uma agência bancária estadual válida";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Digite um número válido de conta bancária";
 "adyen.payto.payid.description" = "Digite o PayID e as informações da conta associados à sua conta PayTo.";
-"adyen.payto.await.description" = "Agradecemos a compra! Para concluir o pagamento, acesse sua conta bancária, aceite o acordo do PayTo e aprove os termos de pagamento.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Dê acesso à câmera";
 "adyen.card.scanner.camera.access.denied.alert.message" = "O acesso foi negado anteriormente. Para digitalizar cartões, conceda acesso em Configurações.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Abrir Configurações";

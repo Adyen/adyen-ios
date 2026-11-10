@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Недействительный адрес эл. почты";
 "adyen.moreOptions" = "Другие опции";
 "adyen.applePay.total" = "К оплате";
-"adyen.mbway.confirmPayment" = "Подтвердите оплату в приложении MB WAY";
 "adyen.await.waitForConfirmation" = "Ожидание подтверждения";
-"adyen.blik.confirmPayment" = "Для подтверждения оплаты откройте приложение банка.";
 "adyen.blik.invalid" = "Введите 6 цифр";
 "adyen.blik.code" = "6-значный код";
 "adyen.blik.help" = "Получите код из приложения вашего банка.";
@@ -186,8 +184,6 @@
 "adyen.upi.collect.instruction" = "Введите свой идентификатор UPI";
 "adyen.upi.mode.enterUpiId" = "Идентификатор UPI";
 "adyen.upi.collect.field.invalidIdError" = "Введите действительный UPI";
-"adyen.upi.collect.confirmPayment" = "В ожидании подтверждения…";
-"adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.upi.qrcode.timerMessage" = "На одобрение отведено %@";
 "adyen.upi.qrcode.instructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
@@ -262,7 +258,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Введите правильное отделение банка";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Введите правильный номер банковского счета";
 "adyen.payto.payid.description" = "Введите PayID и данные счета, которые связаны с вашей учетной записью PayTo.";
-"adyen.payto.await.description" = "Благодарим за покупку! Чтобы оформить оплату, войдите в свой банковский счет, подпишите соглашение с PayTo и примите условия оплаты.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Разрешите доступ к камере";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Доступ был закрыт ранее. Чтобы сканировать карты, выдайте необходимое разрешение в «Настройках».";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Откройте настройки";

@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Neveljaven elektronski naslov";
 "adyen.moreOptions" = "Več možnosti";
 "adyen.applePay.total" = "Skupaj";
-"adyen.mbway.confirmPayment" = "Potrdite svoje plačilo v aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čakanje na potrditev";
-"adyen.blik.confirmPayment" = "Za potrditev plačila odprite svojo bančno aplikacijo.";
 "adyen.blik.invalid" = "Vnesite 6 številk";
 "adyen.blik.code" = "6-mestna koda";
 "adyen.blik.help" = "Pridobite kodo iz bančne aplikacije.";
@@ -186,8 +184,6 @@
 "adyen.upi.collect.instruction" = "Vnesite svoj UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Vnesite veljaven UPI";
-"adyen.upi.collect.confirmPayment" = "Čakanje na vašo potrditev…";
-"adyen.upi.vpaWaitingMessage" = "Za potrditev plačila odprite svojo aplikacijo UPI";
 "adyen.upi.qrcode.timerMessage" = "Za odobritev imate %@";
 "adyen.upi.qrcode.instructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
 "adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
@@ -262,7 +258,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Vnesite pravilno podružnico banke";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Vnesite pravilno številko bančnega računa";
 "adyen.payto.payid.description" = "Vnesite PayID in podrobnosti o računu, ki so povezani z vašim računom PayTo.";
-"adyen.payto.await.description" = "Zahvaljujemo se vam za nakup. Plačilo dokončajte tako, da se prijavite v svoj bančni račun, sprejmite pogodbo PayTo in potrdite plačilne pogoje.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Dovolite dostop do kamere";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Dostop je bil prej zavrnjen. Za skeniranje Kartic morate omogočiti dostop v Nastavitvah.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Odpri nastavitve";

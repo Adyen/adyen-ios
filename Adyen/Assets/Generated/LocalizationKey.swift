@@ -142,12 +142,8 @@ public struct LocalizationKey {
     public static let moreOptions = LocalizationKey(key: "adyen.moreOptions")
     /// Total
     public static let applePayTotal = LocalizationKey(key: "adyen.applePay.total")
-    /// Confirm your payment on the MB WAY app
-    public static let mbwayConfirmPayment = LocalizationKey(key: "adyen.mbway.confirmPayment")
     /// Waiting for confirmation
     public static let awaitWaitForConfirmation = LocalizationKey(key: "adyen.await.waitForConfirmation")
-    /// Open your banking app to confirm the payment.
-    public static let blikConfirmPayment = LocalizationKey(key: "adyen.blik.confirmPayment")
     /// Enter 6 numbers
     public static let blikInvalid = LocalizationKey(key: "adyen.blik.invalid")
     /// 6-digit code
@@ -444,10 +440,6 @@ public struct LocalizationKey {
     public static let upiModeEnterUpiId = LocalizationKey(key: "adyen.upi.mode.enterUpiId")
     /// Enter a valid UPI
     public static let upiCollectFieldInvalidIdError = LocalizationKey(key: "adyen.upi.collect.field.invalidIdError")
-    /// Awaiting your confirmation…
-    public static let upiCollectConfirmPayment = LocalizationKey(key: "adyen.upi.collect.confirmPayment")
-    /// Open your UPI app to confirm the payment
-    public static let upiVpaWaitingMessage = LocalizationKey(key: "adyen.upi.vpaWaitingMessage")
     /// You have %@ to approve
     public static let upiQrcodeTimerMessage = LocalizationKey(key: "adyen.upi.qrcode.timerMessage")
     /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
@@ -600,8 +592,6 @@ public struct LocalizationKey {
     public static let paytoBsbBankAccountNumberInvalid = LocalizationKey(key: "adyen.payto.bsb.bankAccountNumber.invalid")
     /// Enter the PayID and account details that are connected to your PayTo account.
     public static let paytoPayidDescription = LocalizationKey(key: "adyen.payto.payid.description")
-    /// Thank you for your purchase, complete your payment by logging into you bank account, authorize the PayTo agreement and approve the payment terms.
-    public static let paytoAwaitDescription = LocalizationKey(key: "adyen.payto.await.description")
     /// Allow camera access
     public static let cardScannerCameraAccessDeniedAlertTitle = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.title")
     /// Access was previously denied. To scan cards, please grant access from Settings.
@@ -640,7 +630,7 @@ public struct LocalizationKey {
     public static let checkoutAwaitTitle = LocalizationKey(key: "adyen.checkout.await.title")
     /// Complete the payment in the provider's application or website.
     public static let checkoutAwaitDescription = LocalizationKey(key: "adyen.checkout.await.description")
-    /// Awaiting completion..
+    /// Awaiting completion…
     public static let checkoutAwaitStatus = LocalizationKey(key: "adyen.checkout.await.status")
     
     internal let key: String

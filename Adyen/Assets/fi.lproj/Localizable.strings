@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
 "adyen.moreOptions" = "Lisää vaihtoehtoja";
 "adyen.applePay.total" = "Yhteensä";
-"adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
-"adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";
 "adyen.blik.invalid" = "Syötä 6 numeroa";
 "adyen.blik.code" = "6-numeroinen koodi";
 "adyen.blik.help" = "Hanki koodi pankkisovelluksestasi.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Anna UPI-tunnuksesi";
 "adyen.upi.mode.enterUpiId" = "UPI-tunnus";
 "adyen.upi.collect.field.invalidIdError" = "Anna kelvollinen UPI";
-"adyen.upi.collect.confirmPayment" = "Odottaa vahvistustasi…";
-"adyen.upi.vpaWaitingMessage" = "Avaa UPI-sovellus vahvistaaksesi maksun";
 "adyen.upi.qrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";
 "adyen.upi.qrcode.instructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Anna oikea pankkikonttorin osavaltion sivuliike";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Anna oikea pankkitilinumero";
 "adyen.payto.payid.description" = "Anna PayTo-tilisi PayID ja tilitiedot";
-"adyen.payto.await.description" = "Kiitos ostoksestasi. Suorita maksu kirjautumalla pankkitilillesi ja hyväksymällä PayTo-sopimus sekä maksuehdot.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Salli kameran käyttö";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Käyttö estettiin aiemmin. Jos haluat lukea kortteja, anna käyttöoikeus asetuksissa.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Avaa asetukset";

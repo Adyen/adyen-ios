@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Nederīga e-pasta adrese";
 "adyen.moreOptions" = "Citas opcijas";
 "adyen.applePay.total" = "Kopā";
-"adyen.mbway.confirmPayment" = "Apstipriniet maksājumu lietotnē MB WAY";
 "adyen.await.waitForConfirmation" = "Gaidām apstiprinājumu";
-"adyen.blik.confirmPayment" = "Atveriet savu bankas lietotni, lai apstiprinātu maksājumu.";
 "adyen.blik.invalid" = "Ievadiet 6 skaitļus";
 "adyen.blik.code" = "6 ciparu kods";
 "adyen.blik.help" = "Iegūstiet kodu, atverot savu bankas lietotni.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Ievadiet savu UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Ievadiet derīgu UPI";
-"adyen.upi.collect.confirmPayment" = "Gaidām jūsu apstiprinājumu…";
-"adyen.upi.vpaWaitingMessage" = "Atveriet UPI lietotni, lai apstiprinātu maksājumu";
 "adyen.upi.qrcode.timerMessage" = "Jums ir %@, lai apstiprinātu";
 "adyen.upi.qrcode.instructions" = "Lai pabeigtu maksājumu, uzņemiet ekrānuzņēmumu un augšupielādējiet to UPI lietotnē, vai skenējiet QR kodu, izmantojot vēlamo UPI lietotni.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Ievadiet pareizu bankas valsts filiāli";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Ievadiet pareizu bankas konta numuru";
 "adyen.payto.payid.description" = "Ievadiet PayID un konta informāciju, kas ir savienota ar Jūsu PayTo kontu.";
-"adyen.payto.await.description" = "Paldies par jūsu pirkumu, lūdzu, pabeidziet maksājumu, pieslēdzoties savam bankas kontam, autorizējot PayTo līgumu un apstiprinot maksājuma noteikumus.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Atļaut piekļuvi kamerai";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Piekļuve iepriekš tika liegta. Lai skenētu kartes, lūdzu, piešķiriet piekļuvi no Iestatījumiem.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Atvērt Iestatījumus";

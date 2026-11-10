@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Невалиден имейл адрес";
 "adyen.moreOptions" = "Още опции";
 "adyen.applePay.total" = "Общо";
-"adyen.mbway.confirmPayment" = "Потвърдете плащането си в приложението MB WAY";
 "adyen.await.waitForConfirmation" = "В очакване на потвърждение";
-"adyen.blik.confirmPayment" = "Отворете вашето банково приложение, за да потвърдите плащането.";
 "adyen.blik.invalid" = "Въведете 6 числа";
 "adyen.blik.code" = "6-цифрен код";
 "adyen.blik.help" = "Вземете кода от вашето банково приложение.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Въведете UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Въведи валиден UPI";
-"adyen.upi.collect.confirmPayment" = "Очакваме вашето потвърждение…";
-"adyen.upi.vpaWaitingMessage" = "Отворете приложението UPI, за да потвърдите плащането";
 "adyen.upi.qrcode.timerMessage" = "Имате %@ за одобрение";
 "adyen.upi.qrcode.instructions" = "Направете снимка на екрана, за да я качите в приложението UPI, или сканирайте QR кода с предпочитаното от Вас приложение UPI, за да завършите плащането.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Въведете правилния щатски банков клон";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Въведете правилен номер на банкова сметка";
 "adyen.payto.payid.description" = "Въведете PayID и данните за сметката, които са свързани с Вашия PayTo акаунт.";
-"adyen.payto.await.description" = "Благодарим Ви за покупката, завършете плащането, като влезете в банковата си сметка, потвърдите споразумението PayTo и одобрите условията за плащане.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Разрешете достъп до камерата";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Достъпът е бил отказан по-рано. За да сканирате карти, моля, дайте достъп от настройки.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Отворете настройките";

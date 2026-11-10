@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Vale e-posti aadress";
 "adyen.moreOptions" = "Rohkem valikuid";
 "adyen.applePay.total" = "Kokku";
-"adyen.mbway.confirmPayment" = "Kinnitage oma makse MB WAY rakenduses";
 "adyen.await.waitForConfirmation" = "Kinnituse ootel";
-"adyen.blik.confirmPayment" = "Makse kinnitamiseks avage oma pangarakendus.";
 "adyen.blik.invalid" = "Sisestage 6 numbrit";
 "adyen.blik.code" = "6-kohaline kood";
 "adyen.blik.help" = "Hankige kood oma pangarakendusest.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Sisestage oma UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Sisestage kehtiv UPI";
-"adyen.upi.collect.confirmPayment" = "Teie kinnituse ootel …";
-"adyen.upi.vpaWaitingMessage" = "Makse kinnitamiseks avage oma UPI rakendus";
 "adyen.upi.qrcode.timerMessage" = "Teil on kinnitamiseks %@";
 "adyen.upi.qrcode.instructions" = "Tehke UPI rakenduses üleslaadimiseks kuvatõmmis või skannige QR-kood, kasutades oma eelistatud UPI rakendust, et makse lõpule viia.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Sisestage õige panga riiklik filiaal";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sisestage õige pangakonto number";
 "adyen.payto.payid.description" = "Sisestage PayID ja teie PayTo kontoga ühendatud konto andmed.";
-"adyen.payto.await.description" = "Täname teid ostu eest, viige makse lõpule, logides sisse oma pangakontole, kinnitage PayTo leping ja nõustuge maksetingimustega.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Lubage kaamerale juurdepääs";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Juurdepääs oli varem keelatud. Kaartide skannimiseks andke juurdepääs Sätete kaudu.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Avage Sätted";

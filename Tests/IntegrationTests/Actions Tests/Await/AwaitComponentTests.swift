@@ -71,7 +71,7 @@ class AwaitComponentTests: XCTestCase {
 
             XCTAssertEqual(viewModel.title, "Awaiting -- Test")
             XCTAssertEqual(viewModel.description, "Complete the payment in the provider's application or website. -- Test")
-            XCTAssertEqual(viewModel.progressTitle, "Awaiting completion.. -- Test")
+            XCTAssertEqual(viewModel.progressTitle, "Awaiting completion… -- Test")
 
             presentationExpectation.fulfill()
         }

@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Ongeldig e-mailadres";
 "adyen.moreOptions" = "Meer opties";
 "adyen.applePay.total" = "Totaal";
-"adyen.mbway.confirmPayment" = "Bevestig uw betaling via de MB WAY-app";
 "adyen.await.waitForConfirmation" = "Wacht op bevestiging";
-"adyen.blik.confirmPayment" = "Open uw bankapp om de betaling te bevestigen.";
 "adyen.blik.invalid" = "Voer 6 cijfers in";
 "adyen.blik.code" = "6-cijferige code";
 "adyen.blik.help" = "Haal de code op in uw bankapp.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Voer uw UPI-ID in";
 "adyen.upi.mode.enterUpiId" = "UPI-ID";
 "adyen.upi.collect.field.invalidIdError" = "Voer een geldige UPI in";
-"adyen.upi.collect.confirmPayment" = "In afwachting van uw bevestiging…";
-"adyen.upi.vpaWaitingMessage" = "Open je UPI-app om de betaling te bevestigen";
 "adyen.upi.qrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
 "adyen.upi.qrcode.instructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Voer een correcte bankfiliaal in";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Voer een correct bankrekeningnummer in";
 "adyen.payto.payid.description" = "Voer de PayID en accountgegevens in die gekoppeld zijn aan uw PayTo-account.";
-"adyen.payto.await.description" = "Bedankt voor uw aankoop. Rond uw betaling af door in te loggen bij uw bankrekening, de PayTo-overeenkomst te autoriseren en akkoord te gaan met de betalingsvoorwaarden.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Cameratoegang toestaan";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Toegang was eerder geweigerd. Om kaarten te scannen, verleen toegang via Instellingen.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Instellingen openen";

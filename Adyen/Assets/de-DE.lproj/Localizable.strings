@@ -55,9 +55,7 @@
 "adyen.emailItem.invalid" = "Ungültige E-Mail-Adresse";
 "adyen.moreOptions" = "Weitere Optionen";
 "adyen.applePay.total" = "Summe";
-"adyen.mbway.confirmPayment" = "Bestätigen Sie Ihre Zahlung in der MB WAY-App";
 "adyen.await.waitForConfirmation" = "Warten auf Bestätigung";
-"adyen.blik.confirmPayment" = "Öffnen Sie Ihre Banking-App, um die Zahlung zu bestätigen.";
 "adyen.blik.invalid" = "6 Zahlen eingeben";
 "adyen.blik.code" = "6-stelliger Code";
 "adyen.blik.help" = "Rufen Sie den Code über Ihre Banking-App ab.";
@@ -190,8 +188,6 @@
 "adyen.upi.collect.instruction" = "Geben Sie Ihre UPI-ID ein";
 "adyen.upi.mode.enterUpiId" = "UPI-ID";
 "adyen.upi.collect.field.invalidIdError" = "Geben Sie eine gültige UPI ein";
-"adyen.upi.collect.confirmPayment" = "Wir warten auf Ihre Bestätigung…";
-"adyen.upi.vpaWaitingMessage" = "Öffnen Sie Ihre UPI-App, um die Zahlung zu bestätigen.";
 "adyen.upi.qrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";
 "adyen.upi.qrcode.instructions" = "Machen Sie einen Screenshot, um ihn in der UPI-App hochzuladen, oder scannen Sie den QR-Code mit Ihrer bevorzugten UPI-App, um die Zahlung abzuschließen.";
 "adyen.cashAppPay.title" = "";
@@ -268,7 +264,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Geben Sie eine korrekte Bankleitzahl ein";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Geben Sie eine korrekte Kontonummer ein";
 "adyen.payto.payid.description" = "Geben Sie die PayID und die Kontodaten ein, die mit Ihrem PayTo-Konto verknüpft sind.";
-"adyen.payto.await.description" = "Vielen Dank für Ihren Einkauf. Schließen Sie Ihre Zahlung ab, indem Sie sich in Ihr Bankkonto einloggen, die PayTo-Vereinbarung autorisieren und die Zahlungsbedingungen genehmigen.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Kamerazugriff erlauben";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Der Zugang wurde zuvor verweigert. Um Karten zu scannen, gewähren Sie bitte Zugriff über die Einstellungen.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Öffnen Sie die Einstellungen";

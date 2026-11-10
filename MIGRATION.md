@@ -30,6 +30,16 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status`.
+- The payment method specific await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
 ## 6.0.0-alpha.1
 
 See also:
