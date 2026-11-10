@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import CoreGraphics
 import QuartzCore
 import UIKit
