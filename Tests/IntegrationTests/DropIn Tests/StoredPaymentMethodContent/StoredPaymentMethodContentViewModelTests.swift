@@ -68,18 +68,6 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(context.flowManager.submitFromCalled)
     }
 
-    @Test
-    internal func isPaymentInProgress_whenTheDropInFlowManagerChanges_thenFollowsIt() {
-        let context = makeSUTStoredCardWithCVC()
-        #expect(!context.sut.isPaymentInProgress)
-
-        context.flowManager.paymentInProgressSubject.send(true)
-        #expect(context.sut.isPaymentInProgress)
-
-        context.flowManager.paymentInProgressSubject.send(false)
-        #expect(!context.sut.isPaymentInProgress)
-    }
-
     /// Cancelling from the content asks the module that presented it to take it away.
     @Test
     internal func cancel_thenCancelsTheComponentAndAsksToDismiss() {

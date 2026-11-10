@@ -57,7 +57,7 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
         )
         let genericPaymentMethodViewController = NavigationLockingHostingController(
             rootView: GenericPaymentMethodView(viewModel: viewModel, theme: theme),
-            isPaymentInProgress: viewModel.isNavigationLocked,
+            isNavigationLocked: viewModel.isNavigationLocked,
             onPop: { viewModel.dismiss() }
         )
 

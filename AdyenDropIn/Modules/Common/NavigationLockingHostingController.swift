@@ -25,12 +25,12 @@ internal final class NavigationLockingHostingController<Content: View>: UIHostin
 
     /// - Parameters:
     ///   - rootView: The screen to host.
-    ///   - isPaymentInProgress: Whether a payment is in progress, during which the shopper cannot navigate away.
+    ///   - isNavigationLocked: Whether the shopper cannot navigate away from the screen, for example while a payment is in progress.
     ///   - onPop: Called when the shopper went back from the screen.
     ///   - onCancel: When set, the screen gets the system Cancel button, which calls it.
     internal init(
         rootView: Content,
-        isPaymentInProgress: AnyPublisher<Bool, Never>,
+        isNavigationLocked: AnyPublisher<Bool, Never>,
         onPop: @escaping () -> Void,
         onCancel: (() -> Void)? = nil
     ) {
@@ -39,7 +39,7 @@ internal final class NavigationLockingHostingController<Content: View>: UIHostin
         super.init(rootView: rootView)
         isModalInPresentation = true
         setupNavigationItem()
-        observe(isPaymentInProgress)
+        observe(isNavigationLocked)
     }
 
     @available(*, unavailable)
@@ -49,7 +49,7 @@ internal final class NavigationLockingHostingController<Content: View>: UIHostin
 
     override internal func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        applyLock()
+        updateNavigationLock()
     }
 
     override internal func viewWillDisappear(_ animated: Bool) {
@@ -68,19 +68,19 @@ internal final class NavigationLockingHostingController<Content: View>: UIHostin
         navigationItem.leftBarButtonItem = cancelButtonItem
     }
 
-    private func observe(_ isPaymentInProgress: AnyPublisher<Bool, Never>) {
-        isPaymentInProgress
+    private func observe(_ isNavigationLocked: AnyPublisher<Bool, Never>) {
+        isNavigationLocked
             .removeDuplicates()
-            .sink { [weak self] isPaymentInProgress in
+            .sink { [weak self] isNavigationLocked in
                 guard let self else { return }
-                isLocked = isPaymentInProgress
-                cancelButtonItem.isEnabled = !isPaymentInProgress
-                applyLock()
+                isLocked = isNavigationLocked
+                cancelButtonItem.isEnabled = !isNavigationLocked
+                updateNavigationLock()
             }
             .store(in: &cancellables)
     }
 
-    private func applyLock() {
+    private func updateNavigationLock() {
         guard let navigationController, navigationController.topViewController === self else { return }
         navigationController.setNavigationLock(active: isLocked)
         let hasScreenBehind = navigationController.viewControllers.first !== self

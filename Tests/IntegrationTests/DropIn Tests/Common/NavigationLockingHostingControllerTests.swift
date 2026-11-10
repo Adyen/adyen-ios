@@ -63,13 +63,13 @@ struct NavigationLockingHostingControllerTests {
         let environment = makeSUT(onCancel: {})
 
         // When
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
 
         // Then
         #expect(!environment.sut.cancelButtonItem.isEnabled)
 
         // When
-        environment.isPaymentInProgress.send(false)
+        environment.isNavigationLocked.send(false)
 
         // Then
         #expect(environment.sut.cancelButtonItem.isEnabled)
@@ -83,7 +83,7 @@ struct NavigationLockingHostingControllerTests {
         navigationController.loadViewIfNeeded()
 
         // When
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
 
         // Then
         #expect(environment.sut.navigationItem.backAction == nil)
@@ -97,7 +97,7 @@ struct NavigationLockingHostingControllerTests {
         let navigationController = push(environment.sut)
 
         // When
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
 
         // Then
         #expect(!navigationController.navigationBar.isUserInteractionEnabled)
@@ -110,10 +110,10 @@ struct NavigationLockingHostingControllerTests {
         // Given
         let environment = makeSUT()
         let navigationController = push(environment.sut)
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
 
         // When
-        environment.isPaymentInProgress.send(false)
+        environment.isNavigationLocked.send(false)
 
         // Then
         #expect(navigationController.navigationBar.isUserInteractionEnabled)
@@ -132,13 +132,13 @@ struct NavigationLockingHostingControllerTests {
             let contentPopGestureRecognizer = try #require(navigationController.interactiveContentPopGestureRecognizer)
 
             // When
-            environment.isPaymentInProgress.send(true)
+            environment.isNavigationLocked.send(true)
 
             // Then
             #expect(!contentPopGestureRecognizer.isEnabled)
 
             // When
-            environment.isPaymentInProgress.send(false)
+            environment.isNavigationLocked.send(false)
 
             // Then
             #expect(contentPopGestureRecognizer.isEnabled)
@@ -150,7 +150,7 @@ struct NavigationLockingHostingControllerTests {
         // Given
         let environment = makeSUT()
         let (navigationController, window) = pushInWindow(environment.sut)
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
 
         // When
         navigationController.pushViewController(PopGestureLockingViewController(), animated: false)
@@ -161,7 +161,7 @@ struct NavigationLockingHostingControllerTests {
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
 
         // When
-        environment.isPaymentInProgress.send(false)
+        environment.isNavigationLocked.send(false)
 
         // Then
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
@@ -197,7 +197,7 @@ struct NavigationLockingHostingControllerTests {
         navigationController.view.layoutIfNeeded()
 
         // When
-        environment.isPaymentInProgress.send(true)
+        environment.isNavigationLocked.send(true)
         try await Task.sleep(for: .seconds(1))
 
         // Then
@@ -221,20 +221,20 @@ struct NavigationLockingHostingControllerTests {
 
     private struct Environment {
         let sut: NavigationLockingHostingController<Color>
-        let isPaymentInProgress: CurrentValueSubject<Bool, Never>
+        let isNavigationLocked: CurrentValueSubject<Bool, Never>
         let popCounter: PopCounter
     }
 
     private func makeSUT(onCancel: (() -> Void)? = nil) -> Environment {
-        let isPaymentInProgress = CurrentValueSubject<Bool, Never>(false)
+        let isNavigationLocked = CurrentValueSubject<Bool, Never>(false)
         let popCounter = PopCounter()
         let sut = NavigationLockingHostingController(
             rootView: Color.clear,
-            isPaymentInProgress: isPaymentInProgress.eraseToAnyPublisher(),
+            isNavigationLocked: isNavigationLocked.eraseToAnyPublisher(),
             onPop: { popCounter.count += 1 },
             onCancel: onCancel
         )
-        return Environment(sut: sut, isPaymentInProgress: isPaymentInProgress, popCounter: popCounter)
+        return Environment(sut: sut, isNavigationLocked: isNavigationLocked, popCounter: popCounter)
     }
 
     private func push(_ sut: UIViewController) -> UINavigationController {

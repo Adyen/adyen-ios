@@ -7,7 +7,6 @@
 import Adyen
 import AdyenCard
 import AdyenUI
-import Combine
 import SwiftUI
 
 internal struct StoredPaymentMethodContentView: View {
@@ -18,7 +17,7 @@ internal struct StoredPaymentMethodContentView: View {
         static let bottomPadding: CGFloat = 16
     }
 
-    @ObservedObject private var viewModel: StoredPaymentMethodContentViewModel
+    private let viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
         self.viewModel = viewModel
