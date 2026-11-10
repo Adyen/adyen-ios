@@ -6,9 +6,7 @@
 
 import Adyen
 import UIKit
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 
 extension VoucherView {
     

@@ -1,5 +1,4 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-os-compatibility.yml?branch=develop)
-[![Pod](https://img.shields.io/cocoapods/v/Adyen.svg?style=flat)](http://cocoapods.org/pods/Adyen)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&id=Adyen_adyen-ios)
 
@@ -47,13 +46,12 @@ The v6 API documented in this branch is currently alpha. These guides describe t
 * [v6 foundations][docs.github.v6.readme]
 * [v6 card component overview][docs.github.v6.card]
 * [v6 card component: session flow][docs.github.v6.cardSession]
-* [v6 card component: advanced flow][docs.github.v6.cardAdvanced]
 * [v6 checkout theme][docs.github.v6.theme]
 * [v5 to v6 migration notes][docs.github.v6.migration]
 
 ## Installation
 
-Adyen iOS is available through either [CocoaPods](http://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
+Adyen iOS is available through [Swift Package Manager](https://swift.org/package-manager/).
 
 ### Minimum Requirements
 
@@ -90,34 +88,11 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 ### CocoaPods
 
-1. Add `pod 'Adyen'` to your `Podfile`.
-2. Run `pod install`.
-
-You can install all modules or add individual modules, depending on your needs and integration type.
-The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
-The `Adyen/AdyenTwint` module needs to be explicitly added to support Twint native flow.
-The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
-
-```
-pod 'Adyen'               // Add the Checkout subspec, the v6 entry point, with the card, components, actions, encryption and session modules.
-// Add individual modules
-pod 'Adyen/Card'          // Card components.
-pod 'Adyen/Session'       // Handler for the simplified checkout flow.
-pod 'Adyen/Encryption'    // Encryption module.
-pod 'Adyen/Components'    // All other payment components except WeChat Pay.
-pod 'Adyen/Actions'       // Action Components.
-pod 'Adyen/CardScanner'   // Card scanning support.
-pod 'Adyen/WeChatPay'     // WeChat Pay Component.
-pod 'Adyen/CashAppPay'    // Cash App Pay Component.
-pod 'Adyen/AdyenTwint'    // Twint Component.
-pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
-```
-
-:warning: _`Adyen/WeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _CocoaPods is no longer supported. `5.27.0` is the last v5 version and `6.0.0-alpha.1` the last v6 version available on CocoaPods. Use [Swift Package Manager](#swift-package-manager) to get newer versions. See the [migration notes](MIGRATION.md#600-alpha2) for how to switch._
 
 ## Getting started
 
-The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, closure-based flow callbacks, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
+The v6 API is centered around `Checkout.setup(...)` as the entry point, `CheckoutConfiguration` as the shared configuration container, callbacks supplied as a value before setup, and payment components created from the resulting checkout flow. See the [v6 foundations guide][docs.github.v6.readme] for the full reference.
 
 > **Note:** Drop-in is not part of the v6 alpha yet. The v6 alpha exposes individual payment components; Drop-in support is planned for a later release.
 
@@ -140,69 +115,50 @@ let configuration = try CheckoutConfiguration(
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+)
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
 In session flow the effective `amount` comes from the `/sessions` response, and settings such as `storePaymentMethodMode` and installments are session-controlled. See the [session flow guide][docs.github.v6.cardSession].
 
-### Advanced flow
-
-Use the advanced flow when your backend calls `/paymentMethods` and handles `/payments` and `/payments/details` itself.
-
-```swift
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration
-)
-.onSubmit { data in
-    try await callPayments(with: data)
-}
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-`callPayments(with:)` returns a `SubmitResult` and `callDetails(with:)` returns an `AdditionalDetailsResult`. See the [advanced flow guide][docs.github.v6.cardAdvanced].
-
 ### Action-only flow
 
 If your app only needs to handle actions, set up checkout without a `SessionResponse` or `PaymentMethods`, and call `checkout.handle(action:)` when your backend returns an action.
 
 ```swift
-let checkout = try await Checkout.setup(
-    configuration: configuration
+let callbacks = ActionOnlyCheckoutCallbacks(
+    onAdditionalDetails: { data in
+        try await callDetails(with: data)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
 )
 .onAction { actionData, actionViewController in
     present(actionViewController, animated: true)
 }
-.onAdditionalDetails { data in
-    try await callDetails(with: data)
-}
 .onComplete { result in
     print(result.resultCode)
 }
-.onFailure { error in
-    print(error.localizedDescription)
-}
+
+let checkout = try await Checkout.setup(
+    configuration: configuration,
+    callbacks: callbacks
+)
 ```
 
 ### Presenting a payment component
@@ -216,6 +172,8 @@ present(UINavigationController(rootViewController: viewController), animated: tr
 ```
 
 ### Presenting actions
+
+Set `.onAction` on the callbacks value before passing it to `Checkout.setup`.
 
 Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action.
 
@@ -319,7 +277,7 @@ We provide a fully working **Demo App** to explore the checkout integration in a
 
 The Demo App includes:
 
-* Sample integrations for Session Flow and Advanced Flow
+* Sample integrations for the session flow
 * UIKit and SwiftUI examples
 * Common payment methods (Card, Apple Pay, Instant Payments, Issuer List)
 
@@ -352,6 +310,5 @@ This repository is open source and available under the MIT license. For more inf
 [docs.github.v6.readme]: guides/v6/README.md
 [docs.github.v6.card]: guides/v6/card.md
 [docs.github.v6.cardSession]: guides/v6/card-session-flow.md
-[docs.github.v6.cardAdvanced]: guides/v6/card-advanced-flow.md
 [docs.github.v6.theme]: guides/v6/theme.md
 [docs.github.v6.migration]: MIGRATION.md

@@ -6,6 +6,8 @@ Sample project to try out iOS Components integrations.
 
 > **Note:** The Drop-in examples in this project are **not** a supported v6 integration path. Drop-in is not part of the public v6 API yet, and these samples build only because the demo targets have `package` access to the SDK. Use the Components examples as the reference for a v6 integration.
 
+> **Advanced flow:** SDK development only. The advanced flow is unavailable in the public v6 API. These examples remain runnable because the demo targets have `package` access to the SDK. Use the session-flow examples as the reference for a merchant integration.
+
 ---
 
 ## Configuration
@@ -48,7 +50,7 @@ For security reasons, your backend server should act as a proxy between the demo
 **Sessions flow:**
 - `/sessions`
 
-**Advanced flow:**
+**Advanced flow (SDK development only):**
 - `/paymentMethods`
 - `/payments`
 - `/payments/details`
@@ -102,7 +104,9 @@ Located in [`Common/IntegrationExamples/Session/Components/`](Common/Integration
 
 ---
 
-#### Advanced Flow
+#### Advanced Flow (SDK development only)
+
+These examples are for internal SDK development and testing, not merchant integrations. The advanced flow is unavailable in the public v6 API. In either demo app, turn off **Using Session** to test it using the demo targets' `package` access.
 
 ##### Drop-in (with partial payments support, not a supported v6 path)
 

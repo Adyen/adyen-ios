@@ -47,6 +47,7 @@ extension CheckoutLocalizationKey {
     public static let generalClose = CheckoutLocalizationKey(name: "generalClose")
     public static let generalOptional = CheckoutLocalizationKey(localizationKey: .fieldTitleOptional)
     public static let generalSearchHint = CheckoutLocalizationKey(localizationKey: .searchPlaceholder)
+    public static let submitButtonLabelSaveDetails = CheckoutLocalizationKey(localizationKey: .submitButtonLabelSaveDetails)
 }
 
 // MARK: - Address
@@ -67,10 +68,17 @@ extension CheckoutLocalizationKey {
     public static let cardExpiryDateInvalid = CheckoutLocalizationKey(localizationKey: .cardExpiryItemInvalid)
     public static let cardExpiryDateInvalidTooOld = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooOld")
     public static let cardExpiryDateInvalidTooFarInTheFuture = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooFarInTheFuture")
-    public static let cardSecurityCode = CheckoutLocalizationKey(localizationKey: .cardCvcItemTitle)
-    public static let cardSecurityCodeHint3Digits = CheckoutLocalizationKey(name: "cardSecurityCodeHint3Digits")
-    public static let cardSecurityCodeHint4Digits = CheckoutLocalizationKey(name: "cardSecurityCodeHint4Digits")
-    public static let cardSecurityCodeInvalid = CheckoutLocalizationKey(localizationKey: .cardCvcItemInvalid)
+    public static let cardSecurityCode = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeLabel)
+    public static let cardSecurityCodeHintThreeDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeHintThreeDigits)
+    public static let cardSecurityCodeHintFourDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeHintFourDigits)
+    public static let cardSecurityCodeErrorEmptyThreeDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyThreeDigits)
+    public static let cardSecurityCodeErrorEmptyFourDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyFourDigits)
+    public static let cardSecurityCodeErrorIncompleteThreeDigits = CheckoutLocalizationKey(
+        localizationKey: .cardSecurityCodeErrorIncompleteThreeDigits
+    )
+    public static let cardSecurityCodeErrorIncompleteFourDigits = CheckoutLocalizationKey(
+        localizationKey: .cardSecurityCodeErrorIncompleteFourDigits
+    )
     public static let cardHolderName = CheckoutLocalizationKey(localizationKey: .cardNameItemTitle)
     public static let cardHolderNameInvalid = CheckoutLocalizationKey(localizationKey: .cardNameItemInvalid)
     public static let cardStorePaymentMethod = CheckoutLocalizationKey(localizationKey: .cardStoreDetailsButton)
@@ -113,6 +121,18 @@ extension CheckoutLocalizationKey {
     public static let dropInManageFavoritesRemoveConfirmation = CheckoutLocalizationKey(name: "dropInManageFavoritesRemoveConfirmation")
     public static let dropInOtherPaymentMethods = CheckoutLocalizationKey(name: "dropInOtherPaymentMethods")
     public static let dropInPaymentMethodListDescription = CheckoutLocalizationKey(name: "dropInPaymentMethodListDescription")
+    public static let dropInPaymentMethodListDescriptionCompletePayment = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionCompletePayment
+    )
+    public static let dropInPaymentMethodListDescriptionSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListDescriptionSaveDetails
+    )
+    public static let dropInPaymentMethodListTitleSaveDetails = CheckoutLocalizationKey(
+        localizationKey: .dropInPaymentMethodListTitleSaveDetails
+    )
+    public static let dropInPreselectedPaymentMethodButtonLabel = CheckoutLocalizationKey(
+        localizationKey: .dropInPreselectedPaymentMethodButtonLabel
+    )
     // swiftlint:disable:next line_length
     public static let dropInPaymentMethodListFavoritesSectionTitle = CheckoutLocalizationKey(name: "dropInPaymentMethodListFavoritesSectionTitle")
     // swiftlint:disable:next line_length

@@ -6,13 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
 /// A component that provides a form for gift card payments.
@@ -213,7 +209,7 @@ package final class GiftCardComponent: PaymentComponent,
         case .giftCard:
             title = localizedString(.cardPinTitle, localizationParameters)
         case .mealVoucher:
-            title = localizedString(.cardCvcItemTitle, localizationParameters)
+            title = localizedString(.cardSecurityCodeLabel, localizationParameters)
         }
         item.title = title
         item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)

@@ -84,6 +84,7 @@ public enum CheckoutResultCode: RawRepresentable, Decodable, Equatable {
             code
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 }
 
 package extension CheckoutResultCode {

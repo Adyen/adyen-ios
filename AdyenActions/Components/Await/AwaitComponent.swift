@@ -5,10 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 import SwiftUI
 
 /// A component that handles Await action's.

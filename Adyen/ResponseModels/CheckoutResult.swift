@@ -7,7 +7,7 @@
 import Foundation
 
 /// The result of a completed session-based checkout flow.
-public struct SessionCheckoutResult {
+public struct CheckoutResult {
 
     /// The result code indicating the outcome of the payment.
     public let resultCode: CheckoutResultCode
@@ -17,7 +17,7 @@ public struct SessionCheckoutResult {
 
     /// An encoded string that can be used to get the payment outcome on your server.
     /// Pass this value as the `sessionResult` query parameter to the `/sessions/{sessionId}` endpoint,
-    /// where `sessionId` is the ``SessionCheckoutResult/sessionId`` property on this result type.
+    /// where `sessionId` is the ``CheckoutResult/sessionId`` property on this result type.
     public let sessionResult: String
 
     package init(resultCode: CheckoutResultCode, sessionId: String, sessionResult: String) {

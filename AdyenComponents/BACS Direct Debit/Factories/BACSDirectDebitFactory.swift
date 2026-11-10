@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import UIKit
 
 /// Assembly layer responsible for creating `BACSDirectDebitComponent` instances,
@@ -34,7 +32,8 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BACSDirectDebitComponent {
         weak var weakComponent: BACSDirectDebitComponent?
 

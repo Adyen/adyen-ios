@@ -6,14 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import protocol Adyen.PaymentMethod
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormValueItem
-#endif
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
-import Combine
+import AdyenEncryption
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormValueItem
 import Foundation
 
 // sourcery: AutoMockable

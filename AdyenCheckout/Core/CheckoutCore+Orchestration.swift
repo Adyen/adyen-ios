@@ -5,12 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenSession)
-    import AdyenSession
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+import AdyenSession
+@_spi(AdyenInternal) import AdyenActions
 import Foundation
 import UIKit
 
@@ -186,7 +182,7 @@ private extension CheckoutCore {
                 sessionResult: session?.state.sessionResult
             )
         case let .failed(error):
-            resultCallbacks.onFailure?(CheckoutError(error: error))
+            resultCallbacks.onFailure(CheckoutError(error: error))
         }
     }
 

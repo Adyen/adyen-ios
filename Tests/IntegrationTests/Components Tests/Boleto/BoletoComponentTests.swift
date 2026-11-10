@@ -137,13 +137,8 @@ class BoletoComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
-            didSubmitExpectation.fulfill()
-        }
 
         let firstNameItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
             sut.viewController.view.findView(by: ViewIdentifier.firstNameItem)
@@ -171,7 +166,6 @@ class BoletoComponentTests: XCTestCase {
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 

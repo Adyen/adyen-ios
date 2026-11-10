@@ -6,12 +6,10 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenUI
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 
 /// A component that provides a form for BLIK payments.
 @MainActor
@@ -90,8 +88,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
         identifier: ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
-        ),
-        labelStyle: configuration.theme.elements.labels.body
+        )
     )
 
     /// The BLIK code item.

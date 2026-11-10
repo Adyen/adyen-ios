@@ -16,6 +16,7 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
     package typealias Configuration = ApplePayConfiguration
     package typealias Method = ApplePayPaymentMethod
     package typealias Component = ApplePayComponent
+    package typealias Callbacks = ApplePayCallbacks
 
     package init() {}
 
@@ -35,12 +36,14 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
-        configuration: ApplePayConfiguration
+        configuration: ApplePayConfiguration,
+        callbacks: ApplePayCallbacks?
     ) throws -> ApplePayComponent {
         try ApplePayComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks ?? .init()
         )
     }
 

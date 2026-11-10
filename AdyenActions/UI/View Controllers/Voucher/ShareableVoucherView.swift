@@ -7,9 +7,7 @@
 import Adyen
 import PassKit
 import UIKit
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
+@_spi(AdyenInternal) import AdyenUI
 
 internal class ShareableVoucherView: UIView, Localizable {
 

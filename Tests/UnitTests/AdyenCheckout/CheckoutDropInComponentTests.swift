@@ -28,16 +28,12 @@ final class CheckoutDropInComponentTests: XCTestCase {
     }
 
     func test_checkoutDeallocation_whileFacadeIsRetained_shouldNotReleaseDropIn() throws {
-        let callbackStore = AdvancedCheckoutCallbackStore()
         var core: CheckoutCore? = makeCore(
             paymentMethods: makePaymentMethods(),
-            callbackStore: callbackStore
+            callbacks: .test()
         )
         weak var weakCore = core
-        var checkout: AdvancedCheckout? = try AdvancedCheckout(
-            core: XCTUnwrap(core),
-            callbackStore: callbackStore
-        )
+        var checkout: Checkout? = try Checkout(core: XCTUnwrap(core))
         let dropIn = try XCTUnwrap(checkout).createDropIn()
 
         checkout = nil
@@ -99,11 +95,11 @@ final class CheckoutDropInComponentTests: XCTestCase {
 
         let dropIn = try checkout.createDropIn()
         let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
-        let viewController = try XCTUnwrap(navigationController.topViewController)
-        viewController.loadViewIfNeeded()
-        let otherPaymentMethodsButton: FormButton? = viewController.view.findView(by: "secondaryButton")
+        let viewController = try XCTUnwrap(
+            navigationController.topViewController as? PreselectedPaymentMethodViewController
+        )
 
-        XCTAssertTrue(try XCTUnwrap(otherPaymentMethodsButton).isHidden)
+        XCTAssertFalse(viewController.viewModel.showsAllPaymentMethodsButton)
     }
 
     func test_createDropIn_shouldApplyCheckoutThemeToPresentedList() throws {
@@ -193,28 +189,28 @@ final class CheckoutDropInComponentTests: XCTestCase {
     private func makeCheckout(
         paymentMethods: PaymentMethods?,
         configuration: CheckoutConfiguration? = nil
-    ) -> AdvancedCheckout {
-        let callbackStore = AdvancedCheckoutCallbackStore()
+    ) -> Checkout {
+        let callbacks = AdvancedCheckoutCallbacks.test()
         let core = makeCore(
             paymentMethods: paymentMethods,
             configuration: configuration,
-            callbackStore: callbackStore
+            callbacks: callbacks
         )
-        return AdvancedCheckout(core: core, callbackStore: callbackStore)
+        return Checkout(core: core)
     }
 
     private func makeCore(
         paymentMethods: PaymentMethods?,
         configuration: CheckoutConfiguration? = nil,
-        callbackStore: AdvancedCheckoutCallbackStore
+        callbacks: AdvancedCheckoutCallbacks
     ) -> CheckoutCore {
         let configuration = configuration ?? makeConfiguration()
         return CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            resultCallbacks: callbackStore,
-            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
+            resultCallbacks: callbacks,
+            callbackHandler: AdvancedCallbackHandler(callbacks: callbacks)
         )
     }
 

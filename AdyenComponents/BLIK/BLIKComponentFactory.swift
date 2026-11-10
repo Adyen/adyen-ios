@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 
 /// Factory for creating BLIK payment components.
 ///
@@ -31,7 +29,8 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration
+        configuration: BasicComponentConfiguration,
+        callbacks _: Never?
     ) -> BLIKComponent {
         BLIKComponent(
             paymentMethod: paymentMethod,

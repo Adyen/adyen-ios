@@ -16,11 +16,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package typealias Method = ACHDirectDebitPaymentMethod
     package typealias Component = ACHDirectDebitComponent
 
-    private let sessionConfiguration: SessionComponentConfiguration?
-
-    package init(sessionConfiguration: SessionComponentConfiguration? = nil) {
-        self.sessionConfiguration = sessionConfiguration
-    }
+    package init() {}
 
     /// Creates an ACH Direct Debit payment component.
     ///
@@ -32,16 +28,10 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitConfiguration
+        configuration: ACHDirectDebitConfiguration,
+        callbacks _: Never?
     ) -> ACHDirectDebitComponent {
-
-        var configuration = configuration
-
-        if let sessionConfiguration {
-            configuration = configuration.showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
-        }
-
-        return ACHDirectDebitComponent(
+        ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration

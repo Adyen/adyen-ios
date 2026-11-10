@@ -6,13 +6,9 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
-#if canImport(AdyenEncryption)
-    import AdyenEncryption
-#endif
+import AdyenEncryption
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
@@ -121,11 +117,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        if context.amount?.value == 0 {
-            return true
-        }
-
-        return configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -285,10 +277,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if StorePaymentMethodPolicy.shouldShowConsent(
-            configuredVisible: configuration.showStorePaymentMethod,
-            amount: context.amount
-        ) {
+        if configuration.showStorePaymentMethod {
             formViewController.append(storeDetailsItem)
         }
         

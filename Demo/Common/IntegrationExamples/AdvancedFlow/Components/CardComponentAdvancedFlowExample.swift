@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenActions
+import AdyenCard
 import AdyenCheckout
 import AdyenUI
 import PassKit
@@ -15,15 +16,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
-    
     internal var selectedTheme: ExampleAppTheme {
         ConfigurationConstants.current.themeSettings.theme
     }
@@ -60,37 +58,46 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
+        }
+        .localizationProvider(DemoLocalizationProvider())
+        .theme(selectedTheme.theme)
+
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        ) {
+            CardCallbacks()
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { data in
                     print("Bin lookup response \(data)")
                 }
+            if let addressCallbacks = ConfigurationConstants.current.addressCallbacks {
+                addressCallbacks
+            }
         }
-        .localizationProvider(DemoLocalizationProvider())
-        .theme(selectedTheme.theme)
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
 
         self.checkout = checkout
 
@@ -185,7 +192,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 /// Keys grouped by where they show up in the card UI:
 /// - field titles (always visible): `.cardNumber`, `.cardExpiryDate`, `.cardSecurityCode`, `.cardHolderName`
 /// - the "save card" toggle: `.cardStorePaymentMethod`
-/// - validation errors (visible when you submit bad input): `.cardNumberInvalid`, `.cardExpiryDateInvalid`, `.cardSecurityCodeInvalid`
+/// - validation errors (visible when you submit bad input): `.cardNumberInvalid`, `.cardExpiryDateInvalid`
 ///
 /// To eyeball locale routing, change the simulator language under Settings → General → Language & Region.
 private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
@@ -228,11 +235,6 @@ private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
             "en": "Expiry date is invalid",
             "nl": "Vervaldatum is ongeldig",
             "fr": "Date d'expiration invalide"
-        ],
-        .cardSecurityCodeInvalid: [
-            "en": "CVC is invalid",
-            "nl": "CVC is ongeldig",
-            "fr": "CVC invalide"
         ]
     ]
 
@@ -258,8 +260,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Name on card",
             .cardStorePaymentMethod: "Remember this card",
             .cardNumberInvalid: "Card number looks wrong",
-            .cardExpiryDateInvalid: "Expiry date is invalid",
-            .cardSecurityCodeInvalid: "CVC is invalid"
+            .cardExpiryDateInvalid: "Expiry date is invalid"
         ],
         "nl": [
             .cardNumber: "Kaartnummer (Aangepast)",
@@ -268,8 +269,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Naam op kaart",
             .cardStorePaymentMethod: "Onthoud deze kaart",
             .cardNumberInvalid: "Kaartnummer klopt niet",
-            .cardExpiryDateInvalid: "Vervaldatum is ongeldig",
-            .cardSecurityCodeInvalid: "CVC is ongeldig"
+            .cardExpiryDateInvalid: "Vervaldatum is ongeldig"
         ],
         "fr": [
             .cardNumber: "Numéro de carte (perso)",
@@ -278,8 +278,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardHolderName: "Nom sur la carte",
             .cardStorePaymentMethod: "Mémoriser cette carte",
             .cardNumberInvalid: "Numéro de carte incorrect",
-            .cardExpiryDateInvalid: "Date d'expiration invalide",
-            .cardSecurityCodeInvalid: "CVC invalide"
+            .cardExpiryDateInvalid: "Date d'expiration invalide"
         ]
     ]
 

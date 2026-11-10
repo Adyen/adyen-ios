@@ -29,15 +29,12 @@ internal struct CardSettingsView: View {
                 Toggle(isOn: $viewModel.showSecurityCode) {
                     Text("Security Code")
                 }
-                Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
-                    VStack(alignment: .leading) {
-                        Text("Installments")
-                        Text("(Example values for installments)")
-                            .foregroundColor(.gray)
-                            .font(.footnote)
+                Picker("Installment options", selection: $viewModel.installmentOptionsMode) {
+                    ForEach(CardInstallmentOptionsMode.allCases, id: \.self) { mode in
+                        Text(mode.displayName).tag(mode)
                     }
                 }
-                if viewModel.installmentsEnabled {
+                if viewModel.installmentOptionsMode.isEnabled {
                     Toggle(isOn: $viewModel.showInstallmentAmount) {
                         Text("Installment Amount")
                     }

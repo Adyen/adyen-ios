@@ -25,26 +25,32 @@ let configuration = try CheckoutConfiguration(
     clientKey: clientKey
 ) {
     CardConfiguration()
-        .onBinChange { bin in
-            print("BIN: \(bin)")
-        }
-        .onBinLookup { brands in
-            print("Brands: \(brands)")
-        }
     AuthenticationConfiguration()
         .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
+let callbacks = CheckoutCallbacks(
+    onComplete: { result in
+        print(result.resultCode)
+    },
+    onFailure: { error in
+        print(error.localizedDescription)
+    }
+) {
+    CardCallbacks()
+        .onBinChange { bin in
+            print("BIN: \(bin)")
+        }
+        .onBinLookup { data in
+            print("Brands: \(data.brands)")
+        }
+}
+
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration
+    configuration: configuration,
+    callbacks: callbacks
 )
-.onComplete { result in
-    print(result.resultCode)
-}
-.onFailure { error in
-    print(error.localizedDescription)
-}
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
@@ -67,6 +73,5 @@ Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConf
 ## Related docs
 
 - [Card component overview](card.md)
-- [Card component: advanced flow](card-advanced-flow.md)
 - [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)

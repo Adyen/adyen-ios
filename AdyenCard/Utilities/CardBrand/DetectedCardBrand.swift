@@ -49,6 +49,10 @@ package struct DetectedCardBrand: Decodable {
 
     /// The payment method variant, if provided by the backend.
     internal let paymentMethodVariant: String?
+
+    /// Indicates whether the brand was confirmed by `/binLookup` rather than detected locally.
+    /// Not decoded, so brands decoded from the `/binLookup` response are reliable.
+    internal var isReliable: Bool = true
     
     private enum Constants {
         static let plccText = "plcc"
@@ -64,6 +68,7 @@ package struct DetectedCardBrand: Decodable {
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
+    ///   - isReliable: Indicates whether the brand was confirmed by `/binLookup` rather than detected locally.
     internal init(
         brand: CardBrand,
         isSupported: Bool = true,
@@ -73,7 +78,8 @@ package struct DetectedCardBrand: Decodable {
         showSocialSecurityNumber: Bool = false,
         panLength: Int? = nil,
         localeBrand: String? = nil,
-        paymentMethodVariant: String? = nil
+        paymentMethodVariant: String? = nil,
+        isReliable: Bool = true
     ) {
         self.brand = brand
         self.isSupported = isSupported
@@ -84,6 +90,7 @@ package struct DetectedCardBrand: Decodable {
         self.panLength = panLength
         self.localeBrand = localeBrand
         self.paymentMethodVariant = paymentMethodVariant
+        self.isReliable = isReliable
     }
 
     private enum CodingKeys: String, CodingKey {

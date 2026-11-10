@@ -12,54 +12,54 @@ import Foundation
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
-public struct PaymentComponentData {
+package struct PaymentComponentData {
 
     /// The payment method details submitted by the payment component.
-    public let paymentMethod: PaymentMethodDetails
+    package let paymentMethod: PaymentMethodDetails
     
     /// Indicates whether the user has chosen to store the payment method.
-    public let storePaymentMethod: Bool?
+    package let storePaymentMethod: Bool?
 
     /// The partial payment order if any.
-    public let order: PartialPaymentOrder?
+    package let order: PartialPaymentOrder?
     
     /// The installments object.
-    public let installments: Installments?
+    package let installments: Installments?
     
     /// Data applied via onBeforeSubmit callback. Takes priority for its fields.
     private var beforeSubmitData: BeforeSubmitData?
     
     /// Shopper name.
-    public var shopperName: ShopperName? {
+    package var shopperName: ShopperName? {
         beforeSubmitData?.shopperName ?? (paymentMethod as? ShopperInformation)?.shopperName
     }
 
     /// The email address.
-    public var emailAddress: String? {
+    package var emailAddress: String? {
         beforeSubmitData?.shopperEmail ?? (paymentMethod as? ShopperInformation)?.emailAddress
     }
 
     /// The telephone number.
-    public var telephoneNumber: String? {
+    package var telephoneNumber: String? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
         return shopperInfo.telephoneNumber
     }
     
     /// Indicates the device default browser info.
-    public let browserInfo: BrowserInfo?
+    package let browserInfo: BrowserInfo?
 
     /// The billing address information.
-    public var billingAddress: PostalAddress? {
+    package var billingAddress: PostalAddress? {
         beforeSubmitData?.billingAddress ?? (paymentMethod as? ShopperInformation)?.billingAddress
     }
     
     /// The delivery address information.
-    public var deliveryAddress: PostalAddress? {
+    package var deliveryAddress: PostalAddress? {
         beforeSubmitData?.deliveryAddress ?? (paymentMethod as? ShopperInformation)?.deliveryAddress
     }
     
     /// The social security number.
-    public var socialSecurityNumber: String? {
+    package var socialSecurityNumber: String? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
         return shopperInfo.socialSecurityNumber
     }

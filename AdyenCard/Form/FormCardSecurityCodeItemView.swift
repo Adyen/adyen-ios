@@ -5,11 +5,8 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormTextItemView
 import UIKit
 
 /// A view representing a form card security code item.
@@ -24,21 +21,18 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false
         
-        observe(item.$selectedCard) { [weak self] cardsType in
-            guard let self else { return }
-            let number = String(cardsType.expectedSecurityCodeLength)
-            let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
-            
-            // Set placeholder on item - it will be shown in footer label reactively
-            self.item.placeholder = localizedPlaceholder
-            self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
+        observe(item.$placeholder) { [weak self] _ in
+            self?.updateHintAccessibilityLabel()
+        }
+        observe(item.$title) { [weak self] _ in
+            self?.updateHintAccessibilityLabel()
         }
 
         observe(item.$displayMode) { [weak self] _ in
             self?.updateValidation()
         }
         
-        item.$selectedCard.publish(nil)
+        updateHintAccessibilityLabel()
 
         item.focusHandler = { [weak self] in
             self?.becomeFirstResponder()
@@ -123,6 +117,7 @@ extension FormCardSecurityCodeItemView {
         
         internal init(item: FormCardSecurityCodeItem) {
             super.init(frame: .zero)
+            showFront = item.selectedCard == .americanExpress
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstraints()
@@ -190,8 +185,12 @@ extension FormCardSecurityCodeItemView {
         ))
     }
 
-    private func accessibilityLabel(placeholder: String) -> String {
+    private func updateHintAccessibilityLabel() {
+        guard !item.validationState.shouldShowError else { return }
+
         let title = item.title ?? ""
-        return title.isEmpty ? placeholder : "\(title), \(placeholder)"
+        let placeholder = item.placeholder ?? ""
+
+        textField.accessibilityLabel = title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }

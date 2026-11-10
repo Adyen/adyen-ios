@@ -7,22 +7,22 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: make non public
-
 /// A class that defines the behavior of the components in a payment flow.
-public final class AdyenContext {
+package final class AdyenContext {
     
     // MARK: - Properties
     
     /// The API context used to retrieve internal resources.
-    public let apiContext: APIContext
+    package let apiContext: APIContext
     
     package var analyticsProvider: AnyAnalyticsProvider?
 
     package let publicKey: String
 
+    package let browserInfo: BrowserInfo?
+
     /// The payment amount.
-    public var amount: Amount?
+    package var amount: Amount?
 
     // MARK: - Initializers
     
@@ -31,6 +31,7 @@ public final class AdyenContext {
         amount: Amount?,
         publicKey: String,
         checkoutAttemptId: String?,
+        browserInfo: BrowserInfo?,
         analyticsAPIContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
@@ -44,6 +45,7 @@ public final class AdyenContext {
             apiContext: apiContext,
             amount: amount,
             publicKey: publicKey,
+            browserInfo: browserInfo,
             analyticsProvider: analyticsProvider
         )
     }
@@ -53,11 +55,13 @@ public final class AdyenContext {
         apiContext: APIContext,
         amount: Amount?,
         publicKey: String,
+        browserInfo: BrowserInfo?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.publicKey = publicKey
         self.apiContext = apiContext
         self.amount = amount
+        self.browserInfo = browserInfo
         self.analyticsProvider = analyticsProvider
     }
 

@@ -36,14 +36,3 @@ internal struct BillingAddressSummary: View {
         }
     }
 }
-
-#Preview {
-    List {
-        BillingAddressSummary(
-            billingAddress: .full(
-                supportedCountryCodes: ["US", "NL", "GB"],
-                hideForCardBrands: [CardBrand.visa.rawValue, CardBrand.masterCard.rawValue]
-            )
-        )
-    }
-}

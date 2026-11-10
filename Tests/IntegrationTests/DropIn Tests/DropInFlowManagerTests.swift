@@ -416,6 +416,7 @@ struct DropInFlowManagerTests {
             apiContext: Dummy.apiContext,
             amount: Amount(value: 100, currencyCode: "EUR"),
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProvider
         )
 

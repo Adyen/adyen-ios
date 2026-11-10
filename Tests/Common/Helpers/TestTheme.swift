@@ -122,6 +122,12 @@ extension CheckoutTheme {
         return theme(with: newElements)
     }
 
+    private func theme(updatingFootnoteLabel footnoteLabel: AdyenLabelStyle) -> CheckoutTheme {
+        var newElements = elements
+        newElements.labels.footnote = footnoteLabel
+        return theme(with: newElements)
+    }
+
     private func buttonStyle(
         from style: AdyenButtonStyle,
         backgroundColor: UIColor? = nil,
@@ -156,6 +162,21 @@ extension CheckoutTheme {
         newBodyLabel.textAlignment = textAlignment ?? newBodyLabel.textAlignment
 
         return theme(updatingBodyLabel: newBodyLabel)
+    }
+
+    internal func footnoteLabel(
+        font: UIFont? = nil,
+        color: UIColor? = nil,
+        disabledColor: UIColor? = nil,
+        textAlignment: NSTextAlignment? = nil
+    ) -> CheckoutTheme {
+        var newFootnoteLabel = elements.labels.footnote
+        newFootnoteLabel.font = font ?? newFootnoteLabel.font
+        newFootnoteLabel.color = color ?? newFootnoteLabel.color
+        newFootnoteLabel.disabledColor = disabledColor ?? newFootnoteLabel.disabledColor
+        newFootnoteLabel.textAlignment = textAlignment ?? newFootnoteLabel.textAlignment
+
+        return theme(updatingFootnoteLabel: newFootnoteLabel)
     }
 
     internal func primaryButton(

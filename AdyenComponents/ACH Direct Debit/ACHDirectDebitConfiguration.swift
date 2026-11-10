@@ -5,12 +5,9 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import UIKit
-
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Configuration for ACH Direct Debit.
 public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
@@ -84,5 +81,13 @@ extension ACHDirectDebitConfiguration {
         var config = self
         config.billingAddressCountryCodes = billingAddressCountryCodes
         return config
+    }
+}
+
+extension ACHDirectDebitConfiguration {
+
+    /// Returns a copy with the session's store payment method visibility applied.
+    package func applying(_ session: SessionComponentConfiguration) -> Self {
+        showStorePaymentMethod(session.showStorePaymentMethod)
     }
 }

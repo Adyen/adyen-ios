@@ -68,7 +68,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: zeroAmount, localizationParameters: sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(.submitButtonSaveDetails, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.submitButtonLabelSaveDetails, sut.configuration.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -171,18 +171,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is SEPADirectDebitDetails)
-            let data = data.paymentMethod as! SEPADirectDebitDetails
-            XCTAssertEqual(data.iban, "NL13TEST0123456789")
-            XCTAssertEqual(data.ownerName, "A. Klaassen")
-            expectation.fulfill()
-        }
 
         wait(for: .milliseconds(300))
         
@@ -194,8 +184,13 @@ class SEPADirectDebitComponentTests: XCTestCase {
         try self.populate(textItemView: XCTUnwrap(nameItemView), with: "A. Klaassen")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
-        
-        wait(for: [expectation], timeout: 5)
+
+        let arguments = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertTrue(arguments.data.paymentMethod is SEPADirectDebitDetails)
+        let data = try XCTUnwrap(arguments.data.paymentMethod as? SEPADirectDebitDetails)
+        XCTAssertEqual(data.iban, "NL13TEST0123456789")
+        XCTAssertEqual(data.ownerName, "A. Klaassen")
     }
 
     func testViewDidLoadShouldSendInitialCall() {
@@ -229,13 +224,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
-            didSubmitExpectation.fulfill()
-        }
 
         let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
         let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
@@ -247,7 +237,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 }

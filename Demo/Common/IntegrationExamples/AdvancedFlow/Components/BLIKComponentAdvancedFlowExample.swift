@@ -15,14 +15,11 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
-
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
 
     internal init() {}
 
@@ -66,9 +63,24 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 .cornerRadius(8.0)
             )
 
-        let checkout = try await Checkout.setup(
-            with: paymentMethods,
-            configuration: configuration
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
         )
         .onAction { [weak self] _, actionViewController in
             guard let self else { return }
@@ -77,23 +89,12 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 completion: nil
             )
         }
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            callbacks: callbacks
+        )
 
         self.checkout = checkout
 

@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
 import UIKit
 
 extension CardViewController {
@@ -35,6 +33,7 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         private let addressMode: BillingAddressMode
         private let scanCardHandler: (() -> Void)?
+        private let addressCallbacks: AddressCallbacks?
 
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
@@ -52,7 +51,8 @@ extension CardViewController {
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
             addressMode: BillingAddressMode,
-            scanCardHandler: (() -> Void)?
+            scanCardHandler: (() -> Void)?,
+            addressCallbacks: AddressCallbacks? = nil
         ) {
             self.formStyle = formStyle
             self.amount = amount
@@ -66,17 +66,17 @@ extension CardViewController {
             self.presenter = .init(presenter)
             self.addressMode = addressMode
             self.scanCardHandler = scanCardHandler
+            self.addressCallbacks = addressCallbacks
             self.theme = theme
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(_, onLookup, onAddressSelected):
-                let provider = AsyncAddressLookupProvider(
-                    onLookup: onLookup,
-                    onAddressSelected: onAddressSelected
-                )
-                return billingAddressPickerItem(with: provider)
+            case .lookup:
+                if addressCallbacks == nil {
+                    AdyenAssertion.assertionFailure(message: "Address lookup requires AddressCallbacks in the checkout callbacks.")
+                }
+                return billingAddressPickerItem(with: AsyncAddressLookupProvider(callbacks: addressCallbacks))
             case .full:
                 return billingAddressPickerItem(with: nil)
             case .postalCode, .none:
@@ -166,30 +166,6 @@ extension CardViewController {
             setupEventTriggers(for: holderNameItem, target: .holderName)
             
             return holderNameItem
-        }()
-
-        internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
-            let item = FormCoBadgedCardItem(
-                title: localizedString(
-                    .creditCardDualBrandTitle,
-                    configuration.localizationParameters
-                ),
-                subtitle: localizedString(
-                    .creditCardDualBrandDescription,
-                    configuration.localizationParameters
-                ),
-                selectableFormItems: [],
-                style: .init(
-                    title: configuration.style.sectionHeader,
-                    subtitle: configuration.style.footnoteLabel
-                )
-            )
-            item.style.subtitle.textAlignment = .natural
-            item.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: "coBadgedCardItem"
-            )
-            return item
         }()
 
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {

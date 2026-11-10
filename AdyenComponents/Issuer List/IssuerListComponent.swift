@@ -5,11 +5,8 @@
 //
 
 import Adyen
-
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.SearchViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.SearchViewController
 import Foundation
 import UIKit
 
@@ -143,14 +140,14 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
                     paymentMethod: self.issuerListPaymentMethod,
                     issuer: issuer.identifier
                 )
+                
+                self.sendIssuerSelectedEvent(issuer)
+                listItem.startLoading()
+                
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
                     order: self.order
                 ))
-                
-                self.sendIssuerSelectedEvent(issuer)
-                
-                listItem.startLoading()
             }
             return listItem
         }

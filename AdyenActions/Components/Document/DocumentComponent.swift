@@ -7,9 +7,7 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import AdyenNetworking
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
+import AdyenUI
 import UIKit
 
 /// A component that handles document actions.

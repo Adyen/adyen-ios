@@ -531,11 +531,11 @@ class SessionTests: XCTestCase {
         XCTAssertNotNil(componentConfiguration.installmentConfiguration)
         XCTAssertEqual(
             componentConfiguration.installmentConfiguration?.defaultOptions,
-            .init(monthValues: [2, 3, 5], includesRevolving: false)
+            .init(values: [2, 3, 5])
         )
         XCTAssertEqual(
             componentConfiguration.installmentConfiguration?.cardBasedOptions,
-            [.visa: .init(monthValues: [3, 6, 9], includesRevolving: true)]
+            [.visa: .init(values: [3, 6, 9], plans: [.regular, .revolving])]
         )
     }
 
@@ -557,8 +557,50 @@ class SessionTests: XCTestCase {
 
         XCTAssertEqual(
             config.installmentOptions?.defaultOptions,
-            .init(monthValues: [2], includesRevolving: false)
+            .init(values: [2])
         )
+    }
+
+    func test_componentConfiguration_withPreselectedValue_shouldDecodePreselectedValue() throws {
+        let json = """
+        {
+            "installmentOptions": {
+                "card": {
+                    "plans": ["regular"],
+                    "values": [2, 3, 5],
+                    "preselectedValue": 3
+                },
+                "visa": {
+                    "plans": ["regular", "revolving"],
+                    "values": [3, 6, 9],
+                    "preselectedValue": 6
+                }
+            }
+        }
+        """
+        let config = try JSONDecoder().decode(
+            SessionSetupResponse.Configuration.self,
+            from: XCTUnwrap(json.data(using: .utf8))
+        )
+
+        XCTAssertEqual(
+            config.installmentOptions?.defaultOptions,
+            .init(values: [2, 3, 5], preselectedValue: 3)
+        )
+        XCTAssertEqual(
+            config.installmentOptions?.cardBasedOptions,
+            [.visa: .init(values: [3, 6, 9], plans: [.regular, .revolving], preselectedValue: 6)]
+        )
+    }
+
+    func test_installmentOptions_whenEncodedAndDecoded_shouldPreserveAllValues() throws {
+        let optionsWithPreselectedValue = InstallmentOptions(values: [2, 3, 6], plans: [.regular, .revolving], preselectedValue: 3)
+        let optionsWithoutPreselectedValue = InstallmentOptions(values: [2, 3])
+
+        for options in [optionsWithPreselectedValue, optionsWithoutPreselectedValue] {
+            let decodedOptions = try JSONDecoder().decode(InstallmentOptions.self, from: JSONEncoder().encode(options))
+            XCTAssertEqual(decodedOptions, options)
+        }
     }
 
     func test_componentConfiguration_shouldReturnStorePaymentMethodVisibility() {

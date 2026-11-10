@@ -5,12 +5,8 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenDropIn)
-    import AdyenDropIn
-#endif
+import AdyenActions
+import AdyenDropIn
 
 extension CheckoutComponentBuilder {
 

@@ -61,7 +61,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then
@@ -79,7 +80,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then
@@ -96,7 +98,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then
@@ -111,6 +114,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -120,7 +124,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: customContext,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then
@@ -144,7 +149,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let component = factory.create(
             with: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: nil
         )
         
         // Then - Verify types through their properties
@@ -161,8 +167,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let configuration = BasicComponentConfiguration()
         
         // When
-        let component1 = factory.create(with: paymentMethod1, context: context, configuration: configuration)
-        let component2 = factory.create(with: paymentMethod2, context: context, configuration: configuration)
+        let component1 = factory.create(with: paymentMethod1, context: context, configuration: configuration, callbacks: nil)
+        let component2 = factory.create(with: paymentMethod2, context: context, configuration: configuration, callbacks: nil)
         
         // Then - Components should be independent instances
         XCTAssertNotIdentical(component1 as AnyObject, component2 as AnyObject)

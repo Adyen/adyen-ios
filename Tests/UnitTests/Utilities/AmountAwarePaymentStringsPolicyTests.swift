@@ -278,6 +278,28 @@ struct AmountAwarePaymentStringsPolicyTests {
         #expect(subtitle == "Use Visa to pay €10.00")
     }
 
+    // MARK: - Preselected payment method button title
+
+    /// The preselected payment button shows "Save details" for a zero amount,
+    /// and "Use <payment method name>" for nil and positive amounts.
+    @Test(arguments: [
+        (amount: nil, expectedTitle: "Use Visa"),
+        (amount: Amount(value: 0, currencyCode: "EUR"), expectedTitle: "Save details"),
+        (amount: Amount(value: 1000, currencyCode: "EUR"), expectedTitle: "Use Visa")
+    ])
+    func preselectedPaymentMethodButtonTitle_forScenario_when_resolvingTitle_then_returnsExpectedTitle(
+        amount: Amount?,
+        expectedTitle: String
+    ) {
+        let title = makeSUT().preselectedPaymentMethodButtonTitle(
+            for: "Visa",
+            with: amount,
+            localizationParameters: nil
+        )
+
+        #expect(title == expectedTitle)
+    }
+
     private func makeSUT() -> AmountAwarePaymentStringsPolicy.Type {
         AmountAwarePaymentStringsPolicy.self
     }

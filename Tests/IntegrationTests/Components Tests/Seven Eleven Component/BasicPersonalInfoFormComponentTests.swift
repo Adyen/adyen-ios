@@ -175,7 +175,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 //        XCTAssertEqual(textViewTextField?.font, style.text.font)
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let sut = SevenElevenComponent(
             paymentMethod: paymentMethod,
             context: Dummy.context,
@@ -183,22 +183,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is BasicPersonalInfoFormDetails)
-            let data = data.paymentMethod as! BasicPersonalInfoFormDetails
-            XCTAssertEqual(data.firstName, "Mohamed")
-            XCTAssertEqual(data.lastName, "Smith")
-            XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
-            XCTAssertEqual(data.telephoneNumber, "+11233456789")
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.button.showsActivityIndicator, false)
-        }
 
         setupRootViewController(sut.viewController)
         
@@ -219,8 +203,19 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         self.populate(textItemView: phoneNumberView, with: "1233456789")
 
         submitButton?.sendActions(for: .touchUpInside)
-        
-        waitForExpectations(timeout: 10)
+
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertTrue(arguments.data.paymentMethod is BasicPersonalInfoFormDetails)
+        let data = try XCTUnwrap(arguments.data.paymentMethod as? BasicPersonalInfoFormDetails)
+        XCTAssertEqual(data.firstName, "Mohamed")
+        XCTAssertEqual(data.lastName, "Smith")
+        XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
+        XCTAssertEqual(data.telephoneNumber, "+11233456789")
+
+        sut.stopLoading()
+        XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+        XCTAssertEqual(sut.button.showsActivityIndicator, false)
     }
 
     func testBigTitle() {

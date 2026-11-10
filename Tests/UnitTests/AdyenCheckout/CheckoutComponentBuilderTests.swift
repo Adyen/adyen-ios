@@ -112,6 +112,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -172,6 +173,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Amount(value: 500, currencyCode: "USD"),
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -366,11 +368,11 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
     }
 
-    func test_build_withCardCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+    func test_build_withCardCallbacks_shouldDeliverAdditionalCallbacks() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         var receivedBin: String?
         var receivedBinLookupData: BinLookupData?
-        checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
+        let callbacks = CardCallbacks()
             .onBinChange { receivedBin = $0 }
             .onBinLookup { receivedBinLookupData = $0 }
         let expectedBinLookupData = BinLookupData(
@@ -382,11 +384,12 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
             policy: .components(checkoutConfiguration),
+            additionalCallbacks: AdditionalCallbacksStore([callbacks]),
             context: context
         )
         let cardComponent = try XCTUnwrap(component as? CardComponent)
-        cardComponent.configuration.onBinChange?("411111")
-        cardComponent.configuration.onBinLookup?(expectedBinLookupData)
+        cardComponent.didChange(bin: "411111")
+        cardComponent.callbacks.onBinLookup?(expectedBinLookupData)
 
         XCTAssertEqual(receivedBin, "411111")
         XCTAssertEqual(receivedBinLookupData, expectedBinLookupData)
@@ -395,10 +398,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withSessionConfiguration_appliesSessionOverridesToCardComponent() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
         let merchantInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+            defaultOptions: InstallmentOptions(maxInstallments: 3)
         )
         let sessionInstallments = InstallmentConfiguration(
-            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: true)
+            defaultOptions: InstallmentOptions(maxInstallments: 6, plans: [.regular, .revolving])
         )
         checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
             .installmentConfiguration(merchantInstallments)
@@ -529,7 +532,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertNil(weakComponent, "BACSDirectDebitComponent should not be retained after its last reference is released")
     }
 
-    func test_build_withBACSPaymentMethod_whenValidFormIsSubmitted_shouldSubmitToDelegate() async throws {
+    func test_build_withBACSPaymentMethod_whenValidFormIsSubmitted_shouldSubmitToDelegate() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
         let delegate = PaymentComponentDelegateMock()
@@ -542,8 +545,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             ) as? BACSDirectDebitComponent
         )
         component.delegate = delegate
-        let didSubmitExpectation = expectation(description: "didSubmit")
-        delegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
 
         let viewModel = component.bacsViewModel
         viewModel.viewDidLoad()
@@ -558,7 +559,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         component.performSubmit()
 
         // Then
-        await fulfillment(of: [didSubmitExpectation], timeout: 1)
         XCTAssertTrue(delegate.didSubmitReceivedArguments?.component === component)
         XCTAssertTrue(delegate.didSubmitReceivedArguments?.data.paymentMethod is BACSDirectDebitDetails)
     }
@@ -928,6 +928,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -963,7 +964,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Then
         let storedCardComponent = try XCTUnwrap(component as? StoredCardSecurityCodeComponent)
         let localizationParameters = try XCTUnwrap(storedCardComponent.localizationParameters)
-        XCTAssertEqual(localizedString(.cardCvcItemTitle, localizationParameters), "Stored security code")
+        XCTAssertEqual(localizedString(.cardSecurityCodeLabel, localizationParameters), "Stored security code")
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == .cardSecurityCode })
     }
     
@@ -1048,31 +1049,34 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
     }
     
-    func test_build_withApplePayCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+    func test_build_withApplePayCallbacks_shouldDeliverAdditionalCallbacks() throws {
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
-        let applePayConfiguration = try ApplePayConfiguration(
+        checkoutConfiguration.configurations[.payment(.applePay)] = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
-        .onSelectShippingContact { _, summaryItems in
-            PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: summaryItems, shippingMethods: [])
-        }
-        .onSelectShippingMethod { _, summaryItems in
-            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
-        }
-        checkoutConfiguration.configurations[.payment(.applePay)] = applePayConfiguration
+        let callbacks = ApplePayCallbacks()
+            .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
+            .onSelectShippingContact { _, summaryItems in
+                PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: summaryItems, shippingMethods: [])
+            }
+            .onSelectShippingMethod { _, summaryItems in
+                PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+            }
 
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
             policy: .components(checkoutConfiguration),
+            additionalCallbacks: AdditionalCallbacksStore([callbacks]),
             context: context
         )
         let applePayComponent = try XCTUnwrap(component as? ApplePayComponent)
 
-        XCTAssertNotNil(applePayComponent.configuration.onAuthorize)
-        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingContact)
-        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingMethod)
+        XCTAssertNotNil(applePayComponent.callbacks.onAuthorize)
+        XCTAssertNotNil(applePayComponent.callbacks.onSelectShippingContact)
+        XCTAssertNotNil(applePayComponent.callbacks.onSelectShippingMethod)
+        XCTAssertNil(applePayComponent.callbacks.onChangeCouponCode)
+        XCTAssertNil(applePayComponent.callbacks.onSelectPaymentMethod)
     }
 
     func testBuild_WithApplePayAndNoConfiguration_ThrowsMissingConfigurationError() throws {

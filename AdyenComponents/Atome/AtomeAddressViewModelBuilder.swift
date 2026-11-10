@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
 import Foundation
 
 internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {

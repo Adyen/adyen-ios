@@ -6,10 +6,8 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+import AdyenUI
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import PayKit
 import PayKitUI
 import UIKit
@@ -62,13 +60,8 @@ package final class CashAppPayComponent: PaymentComponent,
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
     private var shouldStorePayment: Bool {
-        // Zero amount always stores the payment method.
-        // Otherwise, use the visible toggle or hidden configuration value.
-        if context.amount?.value == 0 {
-            return true
-        }
-
-        return configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
+        // Use the visible toggle or hidden configuration value.
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -111,10 +104,7 @@ package final class CashAppPayComponent: PaymentComponent,
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
-        if StorePaymentMethodPolicy.shouldShowConsent(
-            configuredVisible: configuration.showsStorePaymentMethodField,
-            amount: context.amount
-        ) {
+        if configuration.showsStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
         }
     

@@ -144,6 +144,20 @@ When touching nearby existing `@_spi` usage, prefer migrating to `package` where
 
 The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
 
+### v6 Public API Conventions
+
+- **Component configurations** are standalone public types named without "Component", for example `CardConfiguration`, not nested inside the component. The components themselves are `package`.
+- Configuration properties are not public. The `public init` takes only the values that have no sensible default. Everything else is set through public builder methods that return a modified copy (`-> Self`) and document it with `- Returns:`. See `CardConfiguration`.
+- **Extensible values:** a public type whose set of values can grow, such as values decoded from an API response, is a `RawRepresentable` struct with static members instead of an enum. Adding a case to a public enum breaks merchant code that switches over it. See `ActionType`.
+- **Names:** public type names must be specific enough not to clash with merchant code. Prefix generic names with `Checkout`, for example `CheckoutTheme` and `CheckoutError`.
+- **Public docs** describe behavior from the integrator's point of view, stay concise, and do not use the word "merchant".
+
+### UI Code
+
+- No magic numbers. Put layout values (spacing, sizes, insets, durations) in a `private enum Constants` or `Layout` in the same file.
+- Build accessibility identifiers with `ViewIdentifierBuilder`.
+- Do not add SwiftUI previews (`#Preview` or `PreviewProvider`) to SDK modules, including behind `#if DEBUG`.
+
 ## Important Development Notes
 
 Any change to public API must update `MIGRATION.md` in the same change.
@@ -173,13 +187,20 @@ Localization keys are generated automatically. After modifying `.strings` files,
 swift Scripts/generate_localization_keys.swift
 ```
 
+## Agent Skills
+
+Skills live in `.agents/skills/<name>/SKILL.md`.
+
+| When the work involves | Use |
+|------------------------|-----|
+| Reviewing local changes or a pull request | `ios-review` |
+
 ## CI/CD
 
 The project uses GitHub Actions for CI with the following key workflows:
 - **verify-os-compatibility.yml**: Runs tests on multiple iOS versions (iOS 16, 17, 18)
 - **pr_scan.yml**: Runs linting and validation on pull requests
 - **test-SPM-integration.yml**: Validates Swift Package Manager integration
-- **test_cocoapods_integration.yml**: Validates CocoaPods integration
 
 ## Resources
 

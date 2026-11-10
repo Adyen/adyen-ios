@@ -5,10 +5,8 @@
 //
 
 import Adyen
+import AdyenUI
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 internal final class QRCodeView: UIView, AdyenObserver {
     

@@ -5,9 +5,7 @@
 //
 
 import Adyen
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import class AdyenUI.FormViewController
-#endif
+@_spi(AdyenInternal) import class AdyenUI.FormViewController
 import Combine
 import UIKit
 

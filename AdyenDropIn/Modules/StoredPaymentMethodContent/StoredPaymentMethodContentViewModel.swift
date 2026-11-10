@@ -5,11 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 @MainActor
 internal protocol StoredPaymentMethodContentRouting: AnyObject {
@@ -44,20 +42,14 @@ internal final class StoredPaymentMethodContentViewModel {
 
     // MARK: - Content
 
-    internal var title: String {
-        displayInformation.title
-    }
-
-    internal var subtitle: String {
-        AmountAwarePaymentStringsPolicy.storedPaymentMethodSubtitle(
-            for: component.paymentMethod.name,
-            with: component.context.amount,
-            localizationParameters: localizationParameters
+    internal var header: PaymentMethodContentHeaderViewModel {
+        PaymentMethodContentHeaderViewModel(
+            paymentMethod: component.paymentMethod,
+            context: component.context,
+            localizationParameters: localizationParameters,
+            theme: theme,
+            logoURLProvider: logoURLProvider
         )
-    }
-
-    internal var paymentMethodLogoURL: URL {
-        logoURLProvider.logoURL(withName: displayInformation.logoName)
     }
 
     internal var componentViewController: UIViewController {
@@ -69,12 +61,6 @@ internal final class StoredPaymentMethodContentViewModel {
     internal func cancel() {
         dropInFlowManager.discardPendingSubmission()
         router?.dismiss()
-    }
-
-    // MARK: - Private
-
-    private var displayInformation: DisplayInformation {
-        component.paymentMethod.displayInformation(using: localizationParameters)
     }
 }
 

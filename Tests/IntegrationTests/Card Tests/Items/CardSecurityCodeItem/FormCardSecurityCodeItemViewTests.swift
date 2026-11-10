@@ -252,13 +252,193 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         assert(for: .americanExpress, showsDigits: 4)
     }
 
+    func test_placeholder_givenNoSelectedCard_shouldShowThreeDigits() {
+        XCTAssertEqual(
+            item.placeholder,
+            localizedString(.cardSecurityCodeHintThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_title_shouldUseCanonicalSecurityCodeLabel() {
+        XCTAssertEqual(item.title, localizedString(.cardSecurityCodeLabel, item.localizationParameters))
+    }
+
+    func test_validationFailureMessage_givenEmptyCodeAndNonAmex_shouldUseThreeDigitsEmptyError() {
+        // Setting a brand re-evaluates the message against the (empty) value.
+        item.selectedCard = .masterCard
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorEmptyThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenPartialCodeAndNonAmex_shouldUseThreeDigitsIncompleteError() {
+        item.value = "1"
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorIncompleteThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenEmptyCodeAndAmex_shouldUseFourDigitsEmptyError() {
+        // Given
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+
+        // When - selecting a brand re-evaluates the message against the (empty) value.
+        item.selectedCard = .americanExpress
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorEmptyFourDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenPartialCodeAndAmex_shouldUseFourDigitsIncompleteError() {
+        // Given
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+        item.selectedCard = .americanExpress
+
+        // When
+        item.value = "123"
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorIncompleteFourDigits, item.localizationParameters)
+        )
+    }
+
+    func test_validationFailureMessage_givenOptionalPartialCode_shouldUseThreeDigitsIncompleteError() {
+        // Given
+        item.displayMode = .optional
+
+        // When
+        item.value = "12"
+
+        // Then
+        XCTAssertFalse(item.isValid())
+        XCTAssertEqual(
+            item.validationFailureMessage,
+            localizedString(.cardSecurityCodeErrorIncompleteThreeDigits, item.localizationParameters)
+        )
+    }
+
+    func test_strings_givenCardBrands_shouldSelectMatchingHintsAndErrors() {
+        let sut = CardSecurityCodeStrings.self
+        let cases: [(CardBrand?, LocalizationKey, LocalizationKey, LocalizationKey)] = [
+            (nil, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),
+            (.visa, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),
+            (.americanExpress, .cardSecurityCodeHintFourDigits, .cardSecurityCodeErrorEmptyFourDigits, .cardSecurityCodeErrorIncompleteFourDigits)
+        ]
+        for (brand, hint, empty, incomplete) in cases {
+            XCTAssertEqual(sut.hint(for: brand, localizationParameters: nil), localizedString(hint, nil))
+            XCTAssertEqual(
+                sut.validationMessage(for: .securityCodeEmpty, brand: brand, localizationParameters: nil),
+                localizedString(empty, nil)
+            )
+            XCTAssertEqual(
+                sut.validationMessage(for: .securityCodePartial, brand: brand, localizationParameters: nil),
+                localizedString(incomplete, nil)
+            )
+        }
+    }
+
+    func test_strings_givenNoCvcError_shouldReturnNil() {
+        let sut = CardSecurityCodeStrings.self
+        XCTAssertNil(sut.validationMessage(for: nil, brand: .visa, localizationParameters: nil))
+        XCTAssertNil(sut.validationMessage(for: .cardNumberEmpty, brand: .visa, localizationParameters: nil))
+    }
+
+    func test_item_withoutView_shouldPrepareHintAndErrorForCurrentBrand() {
+        let sut = makeItemSUT()
+        XCTAssertEqual(sut.placeholder, localizedString(.cardSecurityCodeHintThreeDigits, nil))
+        XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardSecurityCodeErrorEmptyThreeDigits, nil))
+
+        sut.selectedCard = .americanExpress
+        XCTAssertEqual(sut.placeholder, localizedString(.cardSecurityCodeHintFourDigits, nil))
+        XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardSecurityCodeErrorEmptyFourDigits, nil))
+
+        sut.selectedCard = nil
+        XCTAssertEqual(sut.placeholder, localizedString(.cardSecurityCodeHintThreeDigits, nil))
+    }
+
+    func test_item_givenOptionalAndHiddenModes_shouldPreserveValidationPolicy() {
+        let sut = makeItemSUT()
+        sut.displayMode = .optional
+        XCTAssertNil(sut.validationFailureMessage)
+        sut.value = "12"
+        XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardSecurityCodeErrorIncompleteThreeDigits, nil))
+        sut.value = "123"
+        XCTAssertNil(sut.validationFailureMessage)
+        sut.displayMode = .hidden
+        XCTAssertNil(sut.validationFailureMessage)
+    }
+
+    func test_view_givenPreselectedAmex_shouldPreserveHintAndInitializeFrontIcon() {
+        let item = makeItemSUT()
+        item.selectedCard = .americanExpress
+        let sut = FormCardSecurityCodeItemView(item: item)
+        XCTAssertEqual(item.placeholder, localizedString(.cardSecurityCodeHintFourDigits, nil))
+        XCTAssertTrue(sut.cardHintView.showFront)
+        XCTAssertEqual(sut.textField.accessibilityLabel, "\(item.title ?? ""), \(item.placeholder ?? "")")
+    }
+
+    func test_view_givenHintAndTitleChanges_shouldUpdateAccessibilityWithoutGeneratingText() {
+        let item = makeItemSUT()
+        let sut = FormCardSecurityCodeItemView(item: item)
+        item.placeholder = "Custom hint"
+        item.title = "Custom title"
+        XCTAssertEqual(sut.textField.accessibilityLabel, "Custom title, Custom hint")
+        sut.showValidation()
+        let errorLabel = sut.textField.accessibilityLabel
+        item.placeholder = "Another hint"
+        XCTAssertEqual(sut.textField.accessibilityLabel, errorLabel)
+    }
+
+    func test_strings_givenLocalizationProvider_shouldUseOverridesAndFallbackForMissingKeys() {
+        let sut = CardSecurityCodeStrings.self
+        let parameters = LocalizationParameters(enforcedLocale: "en-US").withProvider(StringsProvider(values: [
+            .cardSecurityCodeHintThreeDigits: "Custom hint",
+            CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyThreeDigits): "Custom error"
+        ]))
+        XCTAssertEqual(sut.hint(for: .visa, localizationParameters: parameters), "Custom hint")
+        XCTAssertEqual(
+            sut.validationMessage(for: .securityCodeEmpty, brand: .visa, localizationParameters: parameters),
+            "Custom error"
+        )
+        XCTAssertEqual(
+            sut.validationMessage(for: .securityCodePartial, brand: .visa, localizationParameters: parameters),
+            localizedString(.cardSecurityCodeErrorIncompleteThreeDigits, LocalizationParameters(enforcedLocale: "en-US"))
+        )
+    }
+
+    private struct StringsProvider: CheckoutLocalizationProvider {
+        let values: [CheckoutLocalizationKey: String]
+
+        func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+            values[key]
+        }
+    }
+
+    private func makeItemSUT() -> FormCardSecurityCodeItem {
+        FormCardSecurityCodeItem()
+    }
+
     private func assert(
         for brand: CardBrand,
         showsDigits digits: Int,
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        let expectedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, String(digits))
+        let hintKey: LocalizationKey = digits == 4
+            ? .cardSecurityCodeHintFourDigits
+            : .cardSecurityCodeHintThreeDigits
+        let expectedPlaceholder = localizedString(hintKey, item.localizationParameters)
         item.selectedCard = brand
         XCTAssertEqual(item.placeholder, expectedPlaceholder, file: file, line: line)
     }

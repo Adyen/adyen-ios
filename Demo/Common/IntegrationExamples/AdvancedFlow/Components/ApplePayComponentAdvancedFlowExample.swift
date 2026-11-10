@@ -16,15 +16,12 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: AdvancedCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
     private var latestApplePayAmount = ConfigurationConstants.current.amount
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
-
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
 
     /// Whether the app shows its own Apple Pay button instead of the component's button.
     private let usesOwnApplePayButton: Bool
@@ -61,6 +58,28 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         ) {
             try ConfigurationConstants.current
                 .applePayConfiguration(using: .demoWithShippingFields)
+        }
+
+        let callbacks = AdvancedCheckoutCallbacks(
+            onSubmit: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callPayments(with: data)
+            },
+            onAdditionalDetails: { [weak self] data in
+                guard let self else { return .completion(resultCode: "Error") }
+                return await self.callDetails(with: data)
+            },
+            onComplete: { [weak self] result in
+                self?.dismissAndShowAlert(
+                    result.resultCode.isSuccess,
+                    result.resultCode.rawValue
+                )
+            },
+            onFailure: { [weak self] error in
+                self?.dismissAndShowAlert(false, error.localizedDescription)
+            }
+        ) {
+            ApplePayCallbacks()
                 .onAuthorize { payment in
                     if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
                         return PKPaymentAuthorizationResult(status: .success, errors: nil)
@@ -122,25 +141,9 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration
+            configuration: configuration,
+            callbacks: callbacks
         )
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onFailure { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
 
         self.checkout = checkout
 
