@@ -113,33 +113,6 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
 }
 
-class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
-
-    // MARK: - resolveComponentContainerRouter
-
-    var resolveComponentContainerRouterForListenerCallsCount = 0
-    var resolveComponentContainerRouterForListenerCalled: Bool {
-        resolveComponentContainerRouterForListenerCallsCount > 0
-    }
-
-    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PaymentComponent, listener: ComponentContainerRouterListener)?
-    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PaymentComponent, listener: ComponentContainerRouterListener)] = []
-    var resolveComponentContainerRouterForListenerReturnValue: Router!
-    var resolveComponentContainerRouterForListenerClosure: ((PaymentComponent, ComponentContainerRouterListener) -> Router)?
-
-    func resolveComponentContainerRouter(for component: PaymentComponent, listener: ComponentContainerRouterListener) -> Router {
-        resolveComponentContainerRouterForListenerCallsCount += 1
-        resolveComponentContainerRouterForListenerReceivedArguments = (component: component, listener: listener)
-        resolveComponentContainerRouterForListenerReceivedInvocations.append((component: component, listener: listener))
-        if let resolveComponentContainerRouterForListenerClosure {
-            return resolveComponentContainerRouterForListenerClosure(component, listener)
-        } else {
-            return resolveComponentContainerRouterForListenerReturnValue
-        }
-    }
-
-}
-
 class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
     // MARK: - didDismissComponentContainer

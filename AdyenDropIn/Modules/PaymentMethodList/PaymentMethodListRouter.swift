@@ -144,6 +144,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
+            isDropInRoot: false,
             listener: self
         )
         childRouter = componentContainerRouter

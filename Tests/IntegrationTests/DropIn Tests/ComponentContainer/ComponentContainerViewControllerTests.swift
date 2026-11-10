@@ -108,6 +108,41 @@ struct ComponentContainerViewControllerTests {
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
     }
 
+    @Test("As the root of the drop in, the container has no back button, so it gets the system Cancel button.")
+    func navigationItem_givenDropInRoot_shouldShowTheCancelButton() async {
+        // Given
+        let (sut, _, _) = await makeSUT(isDropInRoot: true)
+
+        // When
+        let navigationController = UINavigationController(rootViewController: sut)
+        sut.loadViewIfNeeded()
+
+        // Then
+        #expect(sut.navigationItem.leftBarButtonItem === sut.cancelButtonItem)
+        #expect(sut.cancelButtonItem.isEnabled)
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+    }
+
+    @Test("A submitted payment cannot be cancelled, so the Cancel button is disabled until it ends.")
+    func paymentInProgress_givenDropInRoot_shouldDisableTheCancelButton() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT(isDropInRoot: true)
+        _ = UINavigationController(rootViewController: sut)
+        sut.loadViewIfNeeded()
+
+        // When
+        viewModelMock.paymentInProgressSubject.send(true)
+
+        // Then
+        #expect(!sut.cancelButtonItem.isEnabled)
+
+        // When
+        viewModelMock.paymentInProgressSubject.send(false)
+
+        // Then
+        #expect(sut.cancelButtonItem.isEnabled)
+    }
+
     @Test("A submitted payment cannot be cancelled, so the shopper cannot navigate away from it.")
     func paymentInProgress_shouldLockTheNavigation() async {
         // Given
@@ -193,6 +228,7 @@ struct ComponentContainerViewControllerTests {
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()
+        var isDropInRoot = false
         let paymentInProgressSubject = CurrentValueSubject<Bool, Never>(false)
         var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
             paymentInProgressSubject.eraseToAnyPublisher()
@@ -202,6 +238,12 @@ struct ComponentContainerViewControllerTests {
 
         func cancel() {
             cancelCallsCount += 1
+        }
+
+        var cancelDropInCallsCount = 0
+
+        func cancelDropIn() {
+            cancelDropInCallsCount += 1
         }
     }
 
@@ -214,13 +256,14 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Helper
 
-    private func makeSUT(theme: CheckoutTheme = CheckoutTheme()) async -> (
+    private func makeSUT(theme: CheckoutTheme = CheckoutTheme(), isDropInRoot: Bool = false) async -> (
         sut: ComponentContainerViewController,
         viewModelMock: ComponentContainerViewModelProtocolMock,
         componentViewControllerMock: UIViewController
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
         viewModelMock.theme = theme
+        viewModelMock.isDropInRoot = isDropInRoot
         let componentViewControllerMock = UIViewController()
         componentViewControllerMock.title = "Payment Component"
         viewModelMock.componentViewController = componentViewControllerMock

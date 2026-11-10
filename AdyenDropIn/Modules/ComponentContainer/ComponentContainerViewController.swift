@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import Combine
 import AdyenUI
+import Combine
 import Foundation
 import UIKit
 
@@ -20,6 +20,13 @@ internal class ComponentContainerViewController: UIViewController {
     private var theme: CheckoutTheme {
         viewModel.theme
     }
+
+    internal private(set) lazy var cancelButtonItem = UIBarButtonItem(
+        systemItem: .cancel,
+        primaryAction: UIAction { [weak self] _ in
+            self?.viewModel.cancelDropIn()
+        }
+    )
     
     // MARK: - Initializers
     
@@ -83,13 +90,18 @@ internal class ComponentContainerViewController: UIViewController {
         navigationItem.title = componentViewController.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        if viewModel.isDropInRoot {
+            navigationItem.leftBarButtonItem = cancelButtonItem
+        }
     }
 
     private func observePaymentProgress() {
         viewModel.paymentInProgressPublisher
             .removeDuplicates()
             .sink { [weak self] isPaymentInProgress in
-                guard let self, navigationController?.topViewController === self else { return }
+                guard let self else { return }
+                cancelButtonItem.isEnabled = !isPaymentInProgress
+                guard navigationController?.topViewController === self else { return }
                 navigationController?.setNavigationLock(active: isPaymentInProgress)
             }
             .store(in: &cancellables)

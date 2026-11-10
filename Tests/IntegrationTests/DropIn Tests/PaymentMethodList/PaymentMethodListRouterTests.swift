@@ -258,7 +258,7 @@ struct PaymentMethodListRouterTests {
         #expect(contentAssembler.resolveCallsCount == 1)
         #expect(contentAssembler.receivedIsPresentedModally == false)
         #expect(navigationControllerSpy.capturedPushedViewController === contentRouter.rootViewController)
-        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterCallsCount == 0)
         #expect(sut.childRouter === contentRouter)
     }
 
@@ -329,7 +329,8 @@ struct PaymentMethodListRouterTests {
 
         // Then
         #expect(contentAssembler.resolveCallsCount == 1)
-        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterReceivedArguments?.isDropInRoot == false)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
     }
 
@@ -354,7 +355,7 @@ struct PaymentMethodListRouterTests {
         #expect(genericPaymentMethodAssemblerSpy.resolveCallsCount == 1)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
         #expect(navigationControllerSpy.capturedPushedViewController === genericPaymentMethodRouter.rootViewController)
-        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterCallsCount == 0)
         #expect(sut.childRouter === genericPaymentMethodRouter)
     }
 
@@ -400,7 +401,7 @@ struct PaymentMethodListRouterTests {
         router: RouterMock? = nil
     ) -> ComponentContainerAssemblerProtocolMock {
         let assembler = ComponentContainerAssemblerProtocolMock()
-        assembler.resolveComponentContainerRouterForListenerReturnValue = router ?? RouterMock()
+        assembler.resolveComponentContainerRouterReturnValue = router ?? RouterMock()
         return assembler
     }
 

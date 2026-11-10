@@ -252,7 +252,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
         let componentContainerRouterMock = RouterMock()
         componentContainerRouterMock.rootViewController = UIViewController()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
+        componentContainerAssemblerMock.resolveComponentContainerRouterReturnValue = componentContainerRouterMock
 
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,

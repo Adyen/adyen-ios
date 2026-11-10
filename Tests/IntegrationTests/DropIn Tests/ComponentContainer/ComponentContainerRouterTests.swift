@@ -86,6 +86,7 @@ struct ComponentContainerRouterTests {
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()
+        var isDropInRoot = false
         let paymentInProgressSubject = CurrentValueSubject<Bool, Never>(false)
         var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
             paymentInProgressSubject.eraseToAnyPublisher()
@@ -96,6 +97,8 @@ struct ComponentContainerRouterTests {
         func cancel() {
             cancelCallsCount += 1
         }
+
+        func cancelDropIn() {}
     }
 
     // MARK: - Helpers
