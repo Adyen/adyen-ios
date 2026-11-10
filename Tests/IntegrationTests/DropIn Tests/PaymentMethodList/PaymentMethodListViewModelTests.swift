@@ -287,7 +287,7 @@ struct PaymentMethodListViewModelTests {
         // Then
         #expect(sut.state == .idle)
         #expect(sut.applePayViewController === viewController)
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
+        #expect(dropInFlowManagerMock.failCallsCount == 0)
     }
 
     // MARK: - Select Payment Method Tests

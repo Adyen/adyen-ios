@@ -110,7 +110,7 @@ struct ComponentContainerViewModelTests {
         // Then
         #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
         #expect(dropInFlowManagerMock.dismissDropInCallsCount == 1)
-        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 0)
+        #expect(dropInFlowManagerMock.discardPendingSubmissionCallsCount == 0)
         #expect(routerMock.dismissCompletionCallsCount == 0)
     }
 

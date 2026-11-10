@@ -412,15 +412,14 @@ struct DropInFlowManagerTests {
         #expect(isPaymentInProgress(environment.sut))
     }
 
-    @Test("A submitted payment cannot be cancelled, so cancelling its component does not end it.")
-    func cancelComponent_shouldKeepThePaymentInProgress() {
+    @Test("A submitted payment cannot be cancelled, so discarding its pending submission does not end it.")
+    func discardPendingSubmission_shouldKeepThePaymentInProgress() {
         // Given
         let environment = makeSUT()
-        let component = makePaymentComponent()
-        environment.sut.submit(makePaymentComponentData(), from: component)
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
 
         // When
-        environment.sut.cancel(component: component)
+        environment.sut.discardPendingSubmission()
 
         // Then
         #expect(isPaymentInProgress(environment.sut))
@@ -455,7 +454,7 @@ struct DropInFlowManagerTests {
     }
 
     @MainActor
-    private final class CancellableActionComponentMock: ActionComponent, Cancellable {
+    private final class CancellableActionComponentMock: ActionComponent, Adyen.Cancellable {
         let context = Dummy.context
         weak var delegate: ActionComponentDelegate?
 

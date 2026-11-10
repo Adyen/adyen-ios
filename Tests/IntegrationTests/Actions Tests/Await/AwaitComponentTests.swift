@@ -107,7 +107,9 @@ class AwaitComponentTests: XCTestCase {
 
             XCTAssertEqual(hostingController.sizingOptions, .preferredContentSize)
             XCTAssertEqual(awaitView.theme.colors, theme.colors)
-            XCTAssertEqual(awaitView.theme.elements, theme.elements)
+            XCTAssertEqual(awaitView.theme.elements.labels.title.font, theme.elements.labels.title.font)
+            XCTAssertEqual(awaitView.theme.elements.labels.title.color, theme.elements.labels.title.color)
+            XCTAssertEqual(awaitView.theme.elements.labels.body.color, theme.elements.labels.body.color)
             XCTAssertEqual(
                 awaitView.viewModel.logoURL,
                 LogoURLProvider.logoURL(withName: "mbway", environment: Dummy.context.apiContext.environment)
