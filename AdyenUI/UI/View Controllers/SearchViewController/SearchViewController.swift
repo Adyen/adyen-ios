@@ -23,10 +23,13 @@ package class SearchViewController: UIViewController, AdyenObserver {
         static let searchBarHorizontalInset: CGFloat = 8
         static let headerTopSpacing: CGFloat = 16
         static let headerBottomSpacing: CGFloat = 24
+        static let footerSpacing: CGFloat = 16
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
+    private var currentSearchText = ""
     private var emptyViewBottomConstraint: NSLayoutConstraint?
+    private var footerViewBottomConstraint: NSLayoutConstraint?
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
@@ -35,6 +38,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     /// Optional view shown above the search bar (e.g. a title/description header).
     internal let headerView: UIView?
+
+    /// Optional view pinned below the results, above the keyboard (e.g. a submit button).
+    internal let footerView: UIView?
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
@@ -50,18 +56,22 @@ package class SearchViewController: UIViewController, AdyenObserver {
     /// - Parameters:
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
+    ///   - headerView: The view shown above the search bar.
+    ///   - footerView: The view pinned below the results, above the keyboard.
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
     ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,
         headerView: UIView? = nil,
+        footerView: UIView? = nil,
         resultsHorizontalInset: CGFloat = 0,
         searchTextFieldToResultsSpacing: CGFloat? = nil
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
         self.headerView = headerView
+        self.footerView = footerView
         self.resultsHorizontalInset = resultsHorizontalInset
         self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
         
@@ -120,6 +130,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
             headerView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(headerView)
         }
+
+        if let footerView {
+            footerView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(footerView)
+        }
         
         setupConstraints()
         
@@ -135,6 +150,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
         viewModel.handleViewDidLoad()
     }
     
+    /// Reloads the results for the current search text, for example after the state of the results changed.
+    package func reloadResults() {
+        viewModel.handleSearchTextDidChange(currentSearchText)
+    }
+
     override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -203,11 +223,13 @@ package class SearchViewController: UIViewController, AdyenObserver {
             resultsTopSpacing = contentTopSpacing
         }
         
+        let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
+
         NSLayoutConstraint.activate([
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: resultsHorizontalInset),
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -resultsHorizontalInset),
             resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: resultsBottomAnchor, constant: -resultsBottomSpacing),
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
@@ -248,30 +270,6 @@ package class SearchViewController: UIViewController, AdyenObserver {
         }
     }
     
-    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
-        
-        let updateConstraint: () -> Void = {
-            self.emptyViewBottomConstraint?.constant = -transition.keyboardRect.height
-        }
-        
-        guard view.window != nil else {
-            updateConstraint()
-            return
-        }
-        
-        self.view.setNeedsLayout()
-        UIView.animate(
-            withDuration: transition.animationDuration,
-            delay: 0,
-            options: transition.animationOptions.union(.beginFromCurrentState),
-            animations: {
-                updateConstraint()
-                self.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
-    }
-
     override package var preferredContentSize: CGSize {
         get {
             guard resultsListViewController.isViewLoaded else { return .zero }
@@ -305,9 +303,62 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }
 }
 
+// MARK: - Footer & Keyboard
+
+private extension SearchViewController {
+
+    /// Activates the footer constraints, if a footer is set.
+    ///
+    /// - Returns: The anchor and spacing the results should end at.
+    func setupFooterConstraints() -> (anchor: NSLayoutYAxisAnchor, spacing: CGFloat) {
+        guard let footerView else { return (view.bottomAnchor, 0) }
+
+        let footerViewBottomConstraint = footerView.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -Layout.footerSpacing
+        )
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            footerViewBottomConstraint
+        ])
+        self.footerViewBottomConstraint = footerViewBottomConstraint
+        return (footerView.topAnchor, Layout.footerSpacing)
+    }
+
+    func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
+        
+        let updateConstraint: () -> Void = {
+            let keyboardHeight = transition.keyboardRect.height
+            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            // The footer is pinned to the safe area, which the keyboard already overlaps at the bottom.
+            let footerKeyboardOffset = max(0, keyboardHeight - self.view.safeAreaInsets.bottom)
+            self.footerViewBottomConstraint?.constant = -(Layout.footerSpacing + footerKeyboardOffset)
+        }
+        
+        guard view.window != nil else {
+            updateConstraint()
+            return
+        }
+        
+        self.view.setNeedsLayout()
+        UIView.animate(
+            withDuration: transition.animationDuration,
+            delay: 0,
+            options: transition.animationOptions.union(.beginFromCurrentState),
+            animations: {
+                updateConstraint()
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
+    }
+}
+
 extension SearchViewController: UISearchBarDelegate {
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        currentSearchText = searchText
         viewModel.handleSearchTextDidChange(searchText)
     }
     

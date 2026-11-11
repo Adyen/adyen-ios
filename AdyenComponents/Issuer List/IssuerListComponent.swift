@@ -5,6 +5,7 @@
 //
 
 import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.SearchViewController
 import Foundation
@@ -17,6 +18,14 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 
     private enum Constants {
         static let searchDelay: TimeInterval = 1
+        /// The search bar is shown only when there are more issuers than this.
+        static let searchBarIssuerThreshold = 10
+    }
+
+    private enum Layout {
+        static let resultsHorizontalInset: CGFloat = 16
+        static let listItemSpacing: CGFloat = 12
+        static let listItemHorizontalInset: CGFloat = 14
     }
     
     /// The context object for this component.
@@ -40,6 +49,12 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     private let title: String
     
     private let searchThrottler = Throttler(minimumDelay: Constants.searchDelay)
+
+    /// The index of the selected issuer in the payment method's issuers.
+    private var selectedIssuerIndex: Int?
+
+    /// The search text of the last results, used to send search events only when it changes.
+    private var lastSearchText = ""
     
     /// Initializes the issuer list component.
     ///
@@ -58,7 +73,20 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     }
 
     package func performSubmit() {
-        // TODO: - COSDK-1262: Implementation will be done once the IssuerListComponent is redesigned to have a button.
+        guard let selectedIssuerIndex else {
+            headerView.showsError = true
+            return
+        }
+
+        headerView.showsError = false
+        submitButton.showsActivityIndicator = true
+        searchViewController.view.isUserInteractionEnabled = false
+
+        let details = IssuerListDetails(
+            paymentMethod: issuerListPaymentMethod,
+            issuer: issuerListPaymentMethod.issuers[selectedIssuerIndex].identifier
+        )
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -66,9 +94,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     // MARK: - Presentable Component Protocol
     
     package var viewController: UIViewController {
-        let viewController = searchViewController
-        viewController.title = title
-        return viewController
+        searchViewController
     }
 
     private lazy var searchViewController: SearchViewController = {
@@ -76,7 +102,8 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: configuration.localizationParameters,
             style: configuration.style,
-            theme: configuration.theme
+            theme: configuration.theme,
+            shouldShowSearchBar: issuerListPaymentMethod.issuers.count > Constants.searchBarIssuerThreshold
         ) { [weak self] searchText, handler in
             guard let self else { return }
             handler(self.listItems(for: searchText))
@@ -86,39 +113,64 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             viewModel: viewModel,
             emptyView: IssuerListEmptyView(
                 localizationParameters: configuration.localizationParameters
-            )
+            ),
+            headerView: headerView,
+            footerView: configuration.showsSubmitButton ? submitButton : nil,
+            resultsHorizontalInset: Layout.resultsHorizontalInset
         )
+        searchViewController.separatesResultsIntoSections = true
+        searchViewController.resultsListViewController.sectionSpacing = Layout.listItemSpacing
         searchViewController.delegate = self
         
         return searchViewController
     }()
 
+    private lazy var headerView = IssuerListHeaderView(
+        title: title,
+        description: localizedString(.issuerListDescription, configuration.localizationParameters),
+        errorMessage: localizedString(.issuerListErrorNoSelection, configuration.localizationParameters),
+        theme: configuration.theme,
+        identifierScope: String(describing: self)
+    )
+
+    private lazy var submitButton: FormButton = {
+        let button = FormButton(theme: configuration.theme)
+        button.title = localizedString(.continueTitle, configuration.localizationParameters)
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
+        button.addAction(UIAction { [weak self] _ in self?.performSubmit() }, for: .touchUpInside)
+        return button
+    }()
+
     package func stopLoading() {
-        searchViewController.resultsListViewController.stopLoading()
+        submitButton.showsActivityIndicator = false
+        searchViewController.view.isUserInteractionEnabled = true
     }
 
     // MARK: - Private
 
     private func listItems(for searchText: String) -> [ListItem] {
-        let issuers = filteredIssuers(for: searchText)
-        searchThrottler.throttle { [weak self] in
-            self?.sendSearchIssuerEvent()
+        if searchText != lastSearchText {
+            lastSearchText = searchText
+            searchThrottler.throttle { [weak self] in
+                self?.sendSearchIssuerEvent()
+            }
         }
-        return listItems(from: issuers)
+        return listItems(from: filteredIssuers(for: searchText))
     }
 
-    private func filteredIssuers(for searchText: String) -> [Issuer] {
+    private func filteredIssuers(for searchText: String) -> [(index: Int, issuer: Issuer)] {
+        let issuers = issuerListPaymentMethod.issuers.enumerated().map { (index: $0.offset, issuer: $0.element) }
         if searchText.isEmpty {
-            return issuerListPaymentMethod.issuers
+            return issuers
         }
         
-        return issuerListPaymentMethod.issuers.filter {
-            $0.name.range(of: searchText, options: .caseInsensitive) != nil
+        return issuers.filter {
+            $0.issuer.name.range(of: searchText, options: .caseInsensitive) != nil
         }
     }
     
-    private func listItems(from issuers: [Issuer]) -> [ListItem] {
-        issuers.map { issuer -> ListItem in
+    private func listItems(from issuers: [(index: Int, issuer: Issuer)]) -> [ListItem] {
+        issuers.map { index, issuer -> ListItem in
 
             let logoUrl = LogoURLProvider.logoURL(
                 for: issuer,
@@ -128,29 +180,27 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             )
             let listItem = ListItem(
                 title: issuer.name,
-                icon: .init(url: logoUrl)
+                icon: .init(url: logoUrl),
+                titleEmphasis: .primary,
+                horizontalContentInset: Layout.listItemHorizontalInset,
+                isSelected: index == selectedIssuerIndex,
+                selectionHandler: { [weak self] in
+                    self?.selectIssuer(at: index)
+                }
             )
             listItem.identifier = ViewIdentifierBuilder.build(
                 scopeInstance: self,
                 postfix: listItem.title
             )
-            listItem.selectionHandler = { [weak self, weak listItem] in
-                guard let self, let listItem else { return }
-                let details = IssuerListDetails(
-                    paymentMethod: self.issuerListPaymentMethod,
-                    issuer: issuer.identifier
-                )
-                
-                self.sendIssuerSelectedEvent(issuer)
-                listItem.startLoading()
-                
-                self.submit(data: PaymentComponentData(
-                    paymentMethodDetails: details,
-                    order: self.order
-                ))
-            }
             return listItem
         }
+    }
+
+    private func selectIssuer(at index: Int) {
+        selectedIssuerIndex = index
+        headerView.showsError = false
+        sendIssuerSelectedEvent(issuerListPaymentMethod.issuers[index])
+        searchViewController.reloadResults()
     }
     
     private func sendIssuerSelectedEvent(_ issuer: Issuer) {

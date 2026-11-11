@@ -226,6 +226,54 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(searchViewController.loadingView.frame.minY, expectedMinY, accuracy: 0.1)
     }
 
+    func test_footer_whenAbsent_shouldLetResultsReachTheBottom() {
+        let searchViewController = makeSearchViewController()
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.maxY,
+            searchViewController.view.bounds.maxY,
+            accuracy: 0.1
+        )
+    }
+
+    func test_footer_whenPresent_shouldBePinnedAboveSafeAreaBelowResults() throws {
+        let footerView = UIView()
+        footerView.heightAnchor.constraint(equalToConstant: 52).isActive = true
+        let searchViewController = makeSearchViewController(footerView: footerView)
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        let view = try XCTUnwrap(searchViewController.view)
+        XCTAssertTrue(footerView.isDescendant(of: view))
+        XCTAssertEqual(footerView.frame.maxY, view.safeAreaLayoutGuide.layoutFrame.maxY - 16, accuracy: 0.1)
+        XCTAssertEqual(footerView.frame.minX, view.layoutMarginsGuide.layoutFrame.minX, accuracy: 0.1)
+        XCTAssertEqual(footerView.frame.maxX, view.layoutMarginsGuide.layoutFrame.maxX, accuracy: 0.1)
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.maxY,
+            footerView.frame.minY - 16,
+            accuracy: 0.1
+        )
+    }
+
+    func test_reloadResults_shouldRequestResultsForCurrentSearchText() {
+        var lookups: [String] = []
+        let viewModel = SearchViewController.ViewModel(style: DummyStyle()) { searchTerm, handler in
+            lookups.append(searchTerm)
+            handler([ListItem(title: "Result")])
+        }
+        let searchViewController = SearchViewController(viewModel: viewModel, emptyView: emptyView)
+        searchViewController.loadViewIfNeeded()
+        searchViewController.searchBar(searchViewController.searchBar, textDidChange: "term")
+
+        searchViewController.reloadResults()
+
+        XCTAssertEqual(lookups, ["", "term", "term"])
+    }
+
     func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
         let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
         let barAppearance = UINavigationBarAppearance()
@@ -364,10 +412,30 @@ class SearchViewControllerTests: XCTestCase {
     }
 }
 
+extension SearchViewControllerTests {
+
+    func test_footer_whenKeyboardFrameChanges_shouldMoveAboveKeyboard() throws {
+        let footerView = UIView()
+        let searchViewController = makeSearchViewController(footerView: footerView)
+        searchViewController.loadViewIfNeeded()
+
+        let bottomConstraint = try XCTUnwrap(searchViewController.view.constraints.first {
+            ($0.firstItem as AnyObject?) === footerView && $0.firstAttribute == .bottom
+        })
+        XCTAssertEqual(bottomConstraint.constant, -16, accuracy: 0.1)
+
+        postKeyboardFrameChange(to: makeKeyboardFrame(withHeight: 100))
+
+        wait(until: { abs(bottomConstraint.constant + 116) < 0.1 }, timeout: 1.0, file: #file, line: #line)
+        XCTAssertEqual(bottomConstraint.constant, -116, accuracy: 0.1)
+    }
+}
+
 private extension SearchViewControllerTests {
     
     func makeSearchViewController(
         headerView: UIView? = nil,
+        footerView: UIView? = nil,
         shouldShowSearchBar: Bool = true,
         shouldFocusSearchBarOnAppearance: Bool = false
     ) -> SearchViewController {
@@ -384,7 +452,8 @@ private extension SearchViewControllerTests {
         return SearchViewController(
             viewModel: viewModel,
             emptyView: emptyView,
-            headerView: headerView
+            headerView: headerView,
+            footerView: footerView
         )
     }
 
