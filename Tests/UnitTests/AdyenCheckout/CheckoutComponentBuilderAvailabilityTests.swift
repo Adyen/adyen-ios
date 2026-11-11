@@ -42,7 +42,12 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
             ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "mc"]),
             GenericPaymentMethod(type: .other("paypal"), name: "PayPal"),
             XCTUnwrap(AdyenCoder.decode(["type": "scheme", "name": "Cards", "brands": ["mc", "visa"]]) as CardPaymentMethod),
-            TwintPaymentMethod(type: .twint, name: "Twint")
+            TwintPaymentMethod(type: .twint, name: "Twint"),
+            XCTUnwrap(AdyenCoder.decode([
+                "type": "eps",
+                "name": "EPS",
+                "issuers": [["id": "issuer_1", "name": "Issuer 1"]]
+            ] as [String: Any]) as IssuerListPaymentMethod)
         ]
 
         for paymentMethod in paymentMethods {
