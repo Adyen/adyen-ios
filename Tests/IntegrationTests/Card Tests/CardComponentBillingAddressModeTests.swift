@@ -780,7 +780,7 @@ private struct CardComponentProxy {
         if let selectedCountry {
             #expect(addressFormVC.addressItem.countryPickerItem.value?.identifier == selectedCountry)
         }
-        addressFormVC.dismiss(animated: true)
+        component.viewController.dismiss(animated: true)
         await waitForDismissal()
     }
 
@@ -788,7 +788,7 @@ private struct CardComponentProxy {
     func expectAddressFormPrefilled(with expectedAddress: PostalAddress) async throws {
         let addressFormVC = try await openBillingAddressForm()
         #expect(addressFormVC.addressItem.value == expectedAddress)
-        addressFormVC.dismiss(animated: true)
+        component.viewController.dismiss(animated: true)
         await waitForDismissal()
     }
 
@@ -800,7 +800,7 @@ private struct CardComponentProxy {
             #expect(countryCodes.contains(code), "Expected country \(code) to be in picker")
         }
         #expect(countryCodes.count > expectedCodes.count, "Expected more than \(expectedCodes.count) countries")
-        addressFormVC.dismiss(animated: true)
+        component.viewController.dismiss(animated: true)
         await waitForDismissal()
     }
 
