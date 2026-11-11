@@ -104,6 +104,61 @@ struct GenericPaymentMethodViewModelTests {
         #expect(sut.state == .idle)
     }
 
+    @Test
+    func isPaymentInProgress_whenTheDropInFlowManagerChanges_shouldFollowIt() {
+        // Given
+        let (sut, _, dropInFlowManagerMock, _) = makeSUT()
+        #expect(!sut.isPaymentInProgress)
+
+        // When
+        dropInFlowManagerMock.paymentInProgressSubject.send(true)
+
+        // Then
+        #expect(sut.isPaymentInProgress)
+
+        // When
+        dropInFlowManagerMock.paymentInProgressSubject.send(false)
+
+        // Then
+        #expect(!sut.isPaymentInProgress)
+    }
+
+    @Test("The navigation locks as soon as the payment starts, before Drop-in reports it in progress.")
+    func startPayment_shouldLockTheNavigationImmediately() {
+        // Given
+        let (sut, paymentComponentMock, _, _) = makeSUT()
+        paymentComponentMock.shouldCallDelegateOnSubmit = false
+        var isNavigationLocked: Bool?
+        let cancellable = sut.isNavigationLocked.sink { isNavigationLocked = $0 }
+        #expect(isNavigationLocked == false)
+
+        // When
+        sut.startPayment()
+
+        // Then
+        #expect(isNavigationLocked == true)
+        cancellable.cancel()
+    }
+
+    @Test("When the payment attempt ends, for example after a refused payment, the screen is idle and the navigation unlocks.")
+    func paymentAttempt_whenEnded_shouldResetTheStateAndUnlockTheNavigation() {
+        // Given
+        let (sut, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
+        paymentComponentMock.shouldCallDelegateOnSubmit = false
+        var isNavigationLocked: Bool?
+        let cancellable = sut.isNavigationLocked.sink { isNavigationLocked = $0 }
+        sut.startPayment()
+        dropInFlowManagerMock.paymentInProgressSubject.send(true)
+
+        // When
+        dropInFlowManagerMock.paymentInProgressSubject.send(false)
+
+        // Then
+        #expect(sut.state == .idle)
+        #expect(isNavigationLocked == false)
+        cancellable.cancel()
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(

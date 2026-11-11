@@ -964,7 +964,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Then
         let storedCardComponent = try XCTUnwrap(component as? StoredCardSecurityCodeComponent)
         let localizationParameters = try XCTUnwrap(storedCardComponent.localizationParameters)
-        XCTAssertEqual(localizedString(.cardCvcItemTitle, localizationParameters), "Stored security code")
+        XCTAssertEqual(localizedString(.cardSecurityCodeLabel, localizationParameters), "Stored security code")
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == .cardSecurityCode })
     }
     

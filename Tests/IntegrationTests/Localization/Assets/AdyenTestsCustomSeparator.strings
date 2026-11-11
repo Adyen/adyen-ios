@@ -23,7 +23,6 @@
 "adyen_card_numberItem_invalid" = "TestBundle-Invalid card number";
 "adyen_card_expiryItem_placeholder" = "TestBundle-MM/YY";
 "adyen_card_expiryItem_invalid" = "TestBundle-Invalid expiration date";
-"adyen_card_cvcItem_invalid" = "TestBundle-Invalid security code";
 "adyen_card_cvcItem_title" = "TestBundle-CVC / CVV";
 "adyen_card_cvcItem_placeholder" = "TestBundle-123";
 "adyen_card_stored_title" = "TestBundle-Verify your card";

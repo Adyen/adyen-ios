@@ -50,6 +50,114 @@ class CardComponentTests: XCTestCase {
         }
     }
     
+    func test_supportedCardBrands_whenPaymentMethodBrandsIncludeUSDebitBrands_shouldIncludeUSDebitBrands() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
+        let paymentMethod = CardPaymentMethod(
+            type: .bcmc,
+            name: "Test name",
+            fundingSource: .credit,
+            brands: brands
+        )
+
+        let sut = CardComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        XCTAssertEqual(sut.supportedCardBrands, brands)
+    }
+
+    func test_supportedCardBrands_whenConfiguredBrandsIncludeUSDebitBrands_shouldIncludeUSDebitBrands() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = brands
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertEqual(sut.supportedCardBrands, brands)
+    }
+
+    func test_cardBrandLogos_whenSupportedBrandsIncludeUSDebitBrands_shouldExcludeUSDebitLogos() {
+        let visibleBrands: [CardBrand] = [.visa, .masterCard]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = visibleBrands + [.accel, .pulse, .star, .nyce]
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        let numberContainerItem = sut.cardViewController.items.numberContainerItem
+        XCTAssertEqual(numberContainerItem.cardBrandLogos.map(\.brand), visibleBrands)
+        XCTAssertEqual(numberContainerItem.numberItem.cardBrandLogos.map(\.brand), visibleBrands)
+    }
+
+    func test_binLookup_whenSupportedBrandsIncludeUSDebitBrands_shouldSendUSDebitBrandsAsSupported() {
+        let brands: [CardBrand] = [.visa, .masterCard, .accel, .pulse, .star, .nyce]
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = brands
+        let binInfoProviderMock = BinInfoProviderMock()
+        let fetchExpectation = expectation(description: "Bin lookup requested")
+        binInfoProviderMock.onFetch = { _ in fetchExpectation.fulfill() }
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            binProvider: binInfoProviderMock
+        )
+        sut.didChange(pan: "41111111111")
+
+        wait(for: [fetchExpectation], timeout: 2)
+        XCTAssertEqual(binInfoProviderMock.receivedSupportedTypes, brands)
+    }
+
+    func test_selectedBrand_whenBinLookupReturnsVisaAndStar_shouldBeNil() {
+        var configuration = CardConfiguration()
+        configuration.supportedCardBrands = [.visa, .masterCard, .star]
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        sut.viewController.loadViewIfNeeded()
+
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .star)],
+            issuingCountryCode: "US",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(response)
+
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.brandDisplayMode, .dualUnselectable)
+        XCTAssertNil(sut.cardViewController.selectedBrand)
+    }
+
+    func test_selectedBrand_whenBinLookupReturnsSingleBrand_shouldBeDetectedBrand() {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+        sut.viewController.loadViewIfNeeded()
+
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa)],
+            issuingCountryCode: "US",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(response)
+
+        XCTAssertEqual(sut.cardViewController.selectedBrand, CardBrand.visa.rawValue)
+    }
+
     func test_cardViewController_shouldRequireKeyboardInput() throws {
         // Given
         let sut = CardComponent(
@@ -95,9 +203,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, sut.configuration.localizationParameters))
-        XCTAssertNil(items.securityCodeItem.placeholder)
-        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardCvcItemInvalid, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.placeholder, localizedString(.cardSecurityCodeHintThreeDigits, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardSecurityCodeErrorEmptyThreeDigits, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.configuration.localizationParameters))
@@ -124,9 +232,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.configuration.localizationParameters))
-        XCTAssertNil(items.securityCodeItem.placeholder)
-        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_cvcItem_invalid"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_label"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.placeholder, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_hint_three_digits"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_three_digits"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.configuration.localizationParameters))
@@ -150,7 +258,7 @@ class CardComponentTests: XCTestCase {
         let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
     }
 
@@ -389,11 +497,11 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertNotNil(securityCodeCvvHint)
         XCTAssertFalse(try XCTUnwrap(securityCodeCvvHint?.showFront))
-        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits on back of card")
 
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "370000")
         XCTAssertTrue(try XCTUnwrap(securityCodeCvvHint?.showFront))
-        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits on front of card")
 
     }
 
@@ -773,7 +881,7 @@ class CardComponentTests: XCTestCase {
         // no focus change without panglength till max (19)
         
         var newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         XCTAssertTrue(cardNumberItemView.isFirstResponder)
@@ -785,7 +893,7 @@ class CardComponentTests: XCTestCase {
         
         // focus should change with pan length set
         newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress, panLength: 15)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
@@ -797,7 +905,7 @@ class CardComponentTests: XCTestCase {
 
         // focus should also change when reaching default max length 19
         newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .maestro)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
@@ -942,7 +1050,7 @@ class CardComponentTests: XCTestCase {
         sut.stopLoading()
         
         let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: false)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
 
         wait(until: brazilSSNItemView, at: \.isHidden, is: true)
     }
@@ -962,7 +1070,7 @@ class CardComponentTests: XCTestCase {
         
         // config is always hide, so item is not added to view
         let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: true)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         
         XCTAssertNil(brazilSSNItemView)
     }
@@ -984,12 +1092,12 @@ class CardComponentTests: XCTestCase {
         
         // config is always show, so bin response is ignored
         let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: false)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
     }
 
-    func test_cardNumberValidation_withLuhnCheckEnabled_shouldValidateChecksum() throws {
+    func test_cardNumberValidation_withLuhnCheckEnabled_shouldValidateChecksum() {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -1008,7 +1116,7 @@ class CardComponentTests: XCTestCase {
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        try cardNumberItem.selectBrand(cardBrand: XCTUnwrap(brands.last))
+        cardNumberItem.selectBrand(from: .secondary)
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
@@ -1036,7 +1144,7 @@ class CardComponentTests: XCTestCase {
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         
         let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isSupported: true)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
 
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
     }
@@ -1744,7 +1852,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
 
-        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
 
         XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
         XCTAssertNil(sut.cardViewController.installments)
@@ -1757,11 +1865,11 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
 
-        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
         XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
 
         // Same brand with otherwise identical properties, now confirmed by `/binLookup`
-        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
         XCTAssertEqual(installmentsItem.selectableValues.count, 3)
     }
@@ -1774,10 +1882,10 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
 
-        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: false))
         XCTAssertEqual(installmentsItem.selectableValues.count, 4)
 
-        sut.cardViewController.update(binInfo: BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isReliable: false)]))
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
         XCTAssertEqual(installmentsItem.selectableValues.count, 2)
     }
@@ -1788,21 +1896,22 @@ class CardComponentTests: XCTestCase {
         ))
         setupRootViewController(sut.viewController)
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+        let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         let visa = DetectedCardBrand(brand: .visa)
         let carteBancaire = DetectedCardBrand(brand: .carteBancaire)
         let preselectedInstallments = Installments(totalMonths: 3, plan: .regular)
 
-        sut.cardViewController.update(
-            binInfo: BinLookupResponse(brands: [visa, carteBancaire], issuingCountryCode: "FR", isCreatedLocally: false)
+        sut.cardViewController.handleBinLookupResponse(
+            BinLookupResponse(brands: [visa, carteBancaire], issuingCountryCode: "FR", isCreatedLocally: false)
         )
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
         XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
 
-        sut.cardViewController.handleSelection(carteBancaire)
+        numberItem.selectBrand(from: .secondary)
         XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
         XCTAssertNil(sut.cardViewController.installments)
 
-        sut.cardViewController.handleSelection(visa)
+        numberItem.selectBrand(from: .primary)
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
         XCTAssertEqual(installmentsItem.selectableValues.count, 3)
         XCTAssertEqual(sut.cardViewController.installments, preselectedInstallments)
@@ -1863,9 +1972,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView.isHidden)
     }
 
-    func test_coBadgedCardsUI_forEUCard_shouldBeVisible() throws {
-        // Given
-
+    func test_brandDisplayMode_withSelectableCoBadgedBrands_shouldBeDualSelectable() {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -1874,75 +1981,64 @@ class CardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-
-        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-    }
-
-    func test_coBadgedCardsUI_forAUCard_shouldBeHidden() throws {
-        // Given
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration()
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard), DetectedCardBrand(brand: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
-
-        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-    }
-
-    func test_coBadgedCardsUI_shouldShowCorrectBrandNames() {
-        // Given
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration()
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let newResponse = BinLookupResponse(
-            brands: [
-                DetectedCardBrand(
-                    brand: .bcmc,
-                    localeBrand: "Bancontact card"
-                ),
-                DetectedCardBrand(
-                    brand: .maestro,
-                    localeBrand: nil
-                )
-            ],
-            issuingCountryCode: "BE",
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)],
+            issuingCountryCode: "FR",
             isCreatedLocally: false
         )
 
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(response)
 
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[0].title, newResponse.brands?[0].localeBrand)
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].brand.rawValue)
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.brandDisplayMode, .dualSelectable)
     }
 
-    func test_coBadgedCardsUI_whenDisplayed_shouldSendAnalyticsInfo() {
-        // Given
+    func test_brandDisplayMode_withUnselectableCoBadgedBrands_shouldBeDualUnselectable() {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .masterCard), DetectedCardBrand(brand: .other(named: "eftpos_australia"))],
+            issuingCountryCode: "AU",
+            isCreatedLocally: false
+        )
+
+        sut.cardViewController.handleBinLookupResponse(response)
+
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.brandDisplayMode, .dualUnselectable)
+    }
+
+    func test_brandDisplayMode_whenSubsequentBinLookupReturnsSingleBrand_shouldResetToSingle() {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        let dualBrandResponse = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)],
+            issuingCountryCode: "FR",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(dualBrandResponse)
+
+        let singleBrandResponse = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa)],
+            issuingCountryCode: "FR",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(singleBrandResponse)
+
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.brandDisplayMode, .single)
+    }
+
+    func test_dualBrandAnalytics_whenSelectableBrandsAppear_shouldSendDisplayedEvent() {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
@@ -1957,10 +2053,16 @@ class CardComponentTests: XCTestCase {
             configuration: CardConfiguration()
         )
 
-        let brands = [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)]
         sut.viewController.loadViewIfNeeded()
 
-        sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)],
+            issuingCountryCode: "FR",
+            isCreatedLocally: false
+        )
+
+        sut.cardViewController.handleBinLookupResponse(response)
+
         let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
         XCTAssertNotNil(dualBrandDisplayedCalled)
         XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
@@ -1968,8 +2070,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(dualBrandDisplayedCalled?.brand)
     }
 
-    func test_coBadgedCardsUI_whenSelected_shouldSendAnalyticsInfo() {
-        // Given
+    func test_dualBrandAnalytics_whenUserSelectsBrand_shouldSendSelectedEvent() {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
@@ -1986,18 +2087,21 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        let response = BinLookupResponse(
+            brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)],
+            issuingCountryCode: "FR",
+            isCreatedLocally: false
+        )
+        sut.cardViewController.handleBinLookupResponse(response)
 
-        sut.cardViewController.update(binInfo: newResponse)
-        sut.cardViewController.items.coBadgedCardItem.selectableFormItems.first?.selectionHandler?()
+        sut.cardViewController.items.numberContainerItem.numberItem.selectBrand(from: .primary)
 
         wait(for: .aMoment)
 
-        // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         let dualBrandSelectedCalled = analyticsProviderMock.infos.filter { $0.type == .selected }.first
         XCTAssertNotNil(dualBrandSelectedCalled)
-        XCTAssertEqual(dualBrandSelectedCalled?.brand, newResponse.brands?.first?.brand.rawValue)
+        XCTAssertEqual(dualBrandSelectedCalled?.brand, response.brands?.first?.brand.rawValue)
         XCTAssertEqual(dualBrandSelectedCalled?.target, .dualBrandButton)
         XCTAssertNil(dualBrandSelectedCalled?.configData)
     }
@@ -2395,7 +2499,7 @@ extension CardComponentTests {
 
         XCTAssertEqual(items.numberContainerItem.numberItem.title, "Card #")
         // Security code was not overridden — falls back to the SDK bundle.
-        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, nil))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, nil))
     }
 
     func test_cardComponent_withProviderAndEnforcedLocale_shouldReceiveEnforcedLocale() {
