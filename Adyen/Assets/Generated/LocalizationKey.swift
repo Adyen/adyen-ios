@@ -142,8 +142,6 @@ public struct LocalizationKey {
     public static let moreOptions = LocalizationKey(key: "adyen.moreOptions")
     /// Total
     public static let applePayTotal = LocalizationKey(key: "adyen.applePay.total")
-    /// Waiting for confirmation
-    public static let awaitWaitForConfirmation = LocalizationKey(key: "adyen.await.waitForConfirmation")
     /// Enter 6 numbers
     public static let blikInvalid = LocalizationKey(key: "adyen.blik.invalid")
     /// 6-digit code

@@ -32,8 +32,10 @@
 
 ### Await action screen
 
-- The await action screen shows the same texts for every payment method. Override them with `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status`.
-- The payment method specific await texts are removed, together with their `LocalizationKey` constants:
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
   - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
   - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
   - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
