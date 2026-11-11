@@ -257,7 +257,7 @@ let package = Package(
             path: "AdyenCheckout",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(

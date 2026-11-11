@@ -8,6 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
         with apiClient: AsyncAPIClientProtocol?
@@ -19,6 +20,7 @@ internal protocol CheckoutAttemptIdProviding {
 /// as that would imply that there should not be any analytics events sent.
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail.
 /// If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed.
+@MainActor
 internal struct CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
     internal func fetchCheckoutAttemptId(
         with apiClient: AsyncAPIClientProtocol?

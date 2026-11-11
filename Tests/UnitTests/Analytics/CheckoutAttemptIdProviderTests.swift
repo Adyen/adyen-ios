@@ -10,6 +10,7 @@ import AdyenNetworking
 @testable import AdyenSession
 import XCTest
 
+@MainActor
 final class CheckoutAttemptIdProviderTests: XCTestCase {
 
     func test_fetchCheckoutAttemptId_returnsCheckoutAttemptId_whenAPIClientSucceeds() async {

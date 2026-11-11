@@ -9,6 +9,7 @@ import AdyenNetworking
 import AdyenSession
 import Foundation
 
+@MainActor
 internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
@@ -28,6 +29,7 @@ internal protocol CheckoutProviding: AdyenSessionProviding {
     ) async throws -> CheckoutCoreProtocol
 }
 
+@MainActor
 internal protocol AdyenSessionProviding {
     func setupSession(
         with sessionResponse: SessionResponse,

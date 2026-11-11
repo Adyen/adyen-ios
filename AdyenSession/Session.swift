@@ -11,6 +11,7 @@ import Foundation
 
 /// ``Session`` manages the checkout session lifecycle, handling
 /// `/payments`, `/payment/details`, and partial payment calls internally.
+@MainActor
 package final class Session: SessionProtocol {
     
     /// The session context information.

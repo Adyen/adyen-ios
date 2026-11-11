@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenNetworking
 
+@MainActor
 package protocol SessionProtocol: AnyObject {
     var state: Session.State { get }
     

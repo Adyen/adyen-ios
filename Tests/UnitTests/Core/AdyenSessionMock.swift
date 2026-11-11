@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenSession
 
+@MainActor
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
     public var showRemovePaymentMethodButton = false
