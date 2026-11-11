@@ -185,9 +185,9 @@ let checkout = try await Checkout.setup(
 
 The advanced flow is not available in this release. Use the session flow for payment components.
 The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
-`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment`, `PaymentComponentData`, `PartialPaymentOrder` and
-`BrowserInfo` are package-only and cannot be used by merchant integrations. In the session flow, inspect or patch
-shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
+`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment`, `PaymentComponentData`, `PartialPaymentOrder`,
+`BrowserInfo` and `PaymentMethods` are package-only and cannot be used by merchant integrations. In the session flow,
+inspect or patch shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Checkout callbacks

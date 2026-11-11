@@ -99,7 +99,7 @@ For card-specific session-controlled settings such as `showStorePaymentMethod(_:
 
 ## Action-only flow
 
-If your app only needs to handle actions, you can set up checkout without `PaymentMethods` or `SessionResponse`:
+If your app only needs to handle actions, you can set up checkout without a `SessionResponse`:
 
 ```swift
 let callbacks = ActionOnlyCheckoutCallbacks(

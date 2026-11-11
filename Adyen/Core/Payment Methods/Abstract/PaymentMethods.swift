@@ -12,23 +12,23 @@ import Foundation
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
  */
-public struct PaymentMethods: Codable {
+package struct PaymentMethods: Codable {
 
     /// The already paid payment methods, in case of partial payments.
-    public var paid: [PaymentMethod] = []
+    package var paid: [PaymentMethod] = []
     
     /// The regular payment methods.
-    public var regular: [PaymentMethod]
+    package var regular: [PaymentMethod]
     
     /// The stored payment methods.
-    public var stored: [StoredPaymentMethod]
+    package var stored: [StoredPaymentMethod]
     
     /// Initializes the PaymentMethods.
     ///
     /// - Parameters:
     ///   - regular: An array of the regular payment methods.
     ///   - stored: An array of the stored payment methods.
-    public init(regular: [PaymentMethod], stored: [StoredPaymentMethod]) {
+    package init(regular: [PaymentMethod], stored: [StoredPaymentMethod]) {
         self.regular = regular
         self.stored = stored
     }
@@ -37,7 +37,7 @@ public struct PaymentMethods: Codable {
     ///
     /// - Parameter type: The type of payment method to retrieve.
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(ofType type: T.Type) -> T? {
+    package func paymentMethod<T: PaymentMethod>(ofType type: T.Type) -> T? {
         regular.first { $0 is T } as? T
     }
     
@@ -49,7 +49,7 @@ public struct PaymentMethods: Codable {
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
     /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(
+    package func paymentMethod<T: PaymentMethod>(
         ofType type: T.Type,
         where predicate: (T) -> Bool
     ) -> T? {
@@ -60,7 +60,7 @@ public struct PaymentMethods: Codable {
     ///
     /// - Parameter type: The `PaymentMethodType` of payment method to retrieve.
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
-    public func paymentMethod(ofType type: PaymentMethodType) -> PaymentMethod? {
+    package func paymentMethod(ofType type: PaymentMethodType) -> PaymentMethod? {
         regular.first { $0.type == type }
     }
     
@@ -72,7 +72,7 @@ public struct PaymentMethods: Codable {
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
     /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(
+    package func paymentMethod<T: PaymentMethod>(
         ofType type: PaymentMethodType,
         where predicate: (T) -> Bool
     ) -> T? {
@@ -81,7 +81,7 @@ public struct PaymentMethods: Codable {
     
     // MARK: - Decoding
     
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.regular = try container.decode(
@@ -97,7 +97,7 @@ public struct PaymentMethods: Codable {
         } ?? []
     }
     
-    public func encode(to encoder: Encoder) throws {
+    package func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(

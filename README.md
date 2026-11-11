@@ -137,7 +137,7 @@ In session flow the effective `amount` comes from the `/sessions` response, and 
 
 ### Action-only flow
 
-If your app only needs to handle actions, set up checkout without a `SessionResponse` or `PaymentMethods`, and call `checkout.handle(action:)` when your backend returns an action.
+If your app only needs to handle actions, set up checkout without a `SessionResponse`, and call `checkout.handle(action:)` when your backend returns an action.
 
 ```swift
 let callbacks = ActionOnlyCheckoutCallbacks(

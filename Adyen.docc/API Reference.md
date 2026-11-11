@@ -45,8 +45,6 @@ The entry points for integrating the SDK.
 
 ## Payment Methods
 
-- ``PaymentMethods``
-
 ### Abstract payment methods
 
 - ``PaymentMethod``
