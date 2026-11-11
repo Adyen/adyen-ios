@@ -95,8 +95,6 @@ package enum CheckoutComponentBuilder {
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
-                // TODO: add other card methods like stored or write a generic one.
-            
         #endif
             
         // twint module

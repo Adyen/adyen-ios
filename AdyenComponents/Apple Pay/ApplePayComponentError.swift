@@ -10,7 +10,7 @@ import PassKit
 
 extension ApplePayComponent {
 
-    // TODO: Make package and decide
+    // TODO: Eren: Make package and decide
     // how to connect with CheckoutError
     /// Describes the errors that can occur during Apple Pay payment.
     public enum Error: Swift.Error, LocalizedError {
