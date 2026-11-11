@@ -147,20 +147,20 @@ extension AwaitComponent: ActionComponentDelegate {
         _ data: ActionComponentData,
         from component: any ActionComponent
     ) {
-        delegate?.didProvide(data, from: component)
+        delegate?.didProvide(data, from: self)
     }
     
     package func didComplete(
         from component: any ActionComponent
     ) {
-        delegate?.didComplete(from: component)
+        delegate?.didComplete(from: self)
     }
     
     package func didFail(
         with error: any Error,
         from component: any ActionComponent
     ) {
-        delegate?.didFail(with: error, from: component)
+        delegate?.didFail(with: error, from: self)
     }
 }
 

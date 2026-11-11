@@ -216,4 +216,53 @@ class AwaitComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    func test_pollingHandlerDidProvide_shouldForwardDataFromAwaitComponent() {
+        let handler = PollingHandlerMock()
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
+            actionPresentationDelegate: actionPresentationDelegate,
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+        )
+
+        let delegate = ActionComponentDelegateMock()
+        let provideExpectation = expectation(description: "ActionComponentDelegate.didProvide() must be called.")
+        delegate.onDidProvide = { data, component in
+            XCTAssertEqual(data.paymentData, "data")
+            XCTAssertTrue(component === sut)
+            provideExpectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        let data = ActionComponentData(details: AwaitActionDetails(payload: "payload"), paymentData: "data")
+        handler.delegate?.didProvide(data, from: handler)
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func test_pollingHandlerDidFail_shouldForwardErrorFromAwaitComponent() {
+        let handler = PollingHandlerMock()
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
+            actionPresentationDelegate: actionPresentationDelegate,
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+        )
+
+        let delegate = ActionComponentDelegateMock()
+        let failExpectation = expectation(description: "ActionComponentDelegate.didFail() must be called.")
+        delegate.onDidFail = { error, component in
+            XCTAssertEqual(error as? Dummy, .error)
+            XCTAssertTrue(component === sut)
+            failExpectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        handler.delegate?.didFail(with: Dummy.error, from: handler)
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
 }
