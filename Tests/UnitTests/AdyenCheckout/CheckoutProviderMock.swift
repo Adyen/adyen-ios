@@ -11,6 +11,7 @@
 import AdyenNetworking
 @testable import AdyenSession
 
+@MainActor
 internal class CheckoutProviderMock: CheckoutProviding {
     var sessionCallbacks: CheckoutCallbacks?
     var advancedCallbacks: AdvancedCheckoutCallbacks?
