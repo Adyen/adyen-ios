@@ -90,8 +90,12 @@ internal class ComponentContainerViewController: UIViewController {
     
     private func setupNavigationItem() {
         navigationItem.title = componentViewController.title
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
+        // Components that show their title in their content leave it empty; reserving a large title would leave a blank area.
+        let hasTitle = componentViewController.title?.isEmpty == false
+        navigationItem.largeTitleDisplayMode = hasTitle ? .always : .never
+        if hasTitle {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
         if viewModel.isDropInRoot {
             navigationItem.leftBarButtonItem = cancelButtonItem
         }

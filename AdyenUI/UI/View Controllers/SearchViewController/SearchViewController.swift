@@ -102,7 +102,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     override package func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = viewModel.style.backgroundColor
+        view.backgroundColor = viewModel.theme.colors.background
 
         view.addSubview(loadingView)
         
@@ -291,7 +291,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     private func hideNavigationBarHairline() {
         let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = viewModel.style.backgroundColor
+        appearance.backgroundColor = viewModel.theme.colors.background
         appearance.shadowColor = .clear
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
