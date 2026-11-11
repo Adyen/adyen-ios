@@ -11,7 +11,7 @@ import Foundation
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
 @MainActor
 internal final class PollingComponent: AnyPollingHandler {
-
+    
     private let maxErrorNumber = 1
 
     private let apiClient: AnyRetryAPIClient
@@ -19,13 +19,13 @@ internal final class PollingComponent: AnyPollingHandler {
     private var errorCount = 0
 
     internal let context: AdyenContext
-
+    
     internal weak var actionPresentationDelegate: ActionPresentationDelegate?
-
+    
     internal weak var delegate: ActionComponentDelegate?
-
+    
     internal let componentName = "mbWayAwait"
-
+    
     /// Initializes the Polling Await component.
     ///
     /// - Parameter context: The context object for this component.
@@ -37,7 +37,7 @@ internal final class PollingComponent: AnyPollingHandler {
         self.context = context
         self.apiClient = apiClient
     }
-
+    
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
@@ -45,9 +45,9 @@ internal final class PollingComponent: AnyPollingHandler {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         startPolling(action)
     }
-
+    
     private var isCancelled: Bool = false
-
+    
     internal func didCancel() {
         isCancelled = true
     }
@@ -66,7 +66,7 @@ internal final class PollingComponent: AnyPollingHandler {
             self?.handle(finalResult: result, paymentData: action.paymentData)
         })
     }
-
+    
     /// Decides whether the status request should be repeated.
     ///
     /// - Parameter result: The request result.
@@ -83,7 +83,7 @@ internal final class PollingComponent: AnyPollingHandler {
             return errorCount <= maxErrorNumber
         }
     }
-
+    
     /// Decides whether the status request should be repeated.
     ///
     /// - Parameter response: The request response.
@@ -97,7 +97,7 @@ internal final class PollingComponent: AnyPollingHandler {
             return false
         }
     }
-
+    
     /// Handles the final request result.
     ///
     /// - Parameter result: The request result.
@@ -114,7 +114,7 @@ internal final class PollingComponent: AnyPollingHandler {
             delegate?.didFail(with: error, from: self)
         }
     }
-
+    
     private func deliverData(_ response: PaymentStatusResponse, paymentData: String) {
         let additionalDetails = AwaitActionDetails(payload: response.payload)
         let actionData = ActionComponentData(details: additionalDetails, paymentData: paymentData)
