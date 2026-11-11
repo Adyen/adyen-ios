@@ -18,8 +18,12 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PaymentComponent,
-    LoadingComponent {
+package class CardComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
 
     internal enum Constant {
         internal static let defaultCountryCode = "US"

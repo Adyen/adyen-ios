@@ -26,9 +26,17 @@
 
 - With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenCheckout`, `import AdyenUI`, `import AdyenCard`) next to `import Adyen`.
 
+### Requirements
+
+- Building the SDK requires Xcode 26 (Swift 6.2) or later. The minimum deployment target is still iOS 16.
+
 ### Internal types
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
+
+### Concurrency
+
+- `CardBrand` conforms to `Sendable`, so you can pass card brands across actors and concurrent tasks with strict concurrency checking enabled.
 
 ## 6.0.0-alpha.1
 

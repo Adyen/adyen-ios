@@ -70,7 +70,7 @@ extension CardComponent {
     }
 }
 
-extension CardComponent: TrackableComponent {
+extension CardComponent: @MainActor TrackableComponent {
     
     package func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
@@ -81,7 +81,7 @@ extension CardComponent: TrackableComponent {
     }
 }
 
-extension CardComponent: ViewControllerDelegate {
+extension CardComponent: @MainActor ViewControllerDelegate {
 
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()

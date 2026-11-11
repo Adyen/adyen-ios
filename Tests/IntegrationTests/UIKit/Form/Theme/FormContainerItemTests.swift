@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormContainerItemTests: XCTestCase {
 
     func test_formContainerItem_shouldBeVisibleByDefault() {

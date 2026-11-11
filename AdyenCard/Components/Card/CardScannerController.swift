@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol CardScannerAvailability {
     var isScannerAvailable: Bool { get }
 }
@@ -15,10 +16,12 @@ internal protocol CardScannerAvailability {
 internal typealias CardScannerAnalyticsHandler = (_ subtype: AnalyticsEventLog.LogSubType) -> Void
 internal typealias CardScannerCardDetails = (number: String?, expirationDate: Date?)
 
+@MainActor
 internal protocol CardScannerProviding {
     func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController?
 }
 
+@MainActor
 internal protocol CardScannerControlling: CardScannerAvailability {
     func openCardScanner()
     func dismiss(completion: (() -> Void)?)
@@ -71,6 +74,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
+    @MainActor
     internal final class CardScannerController: CardScannerControlling {
         internal enum CardScannerError: Error {
             case scanningError

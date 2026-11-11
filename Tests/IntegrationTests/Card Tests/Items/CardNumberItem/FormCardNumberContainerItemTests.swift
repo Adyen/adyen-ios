@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormCardNumberContainerItemTests: XCTestCase {
 
     private func makeContainerItem() -> FormCardNumberContainerItem {

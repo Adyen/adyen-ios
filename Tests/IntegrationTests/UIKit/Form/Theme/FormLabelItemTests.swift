@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormLabelItemTests: XCTestCase {
 
     func test_formLabelItem_shouldApplyThemeAttributes() {

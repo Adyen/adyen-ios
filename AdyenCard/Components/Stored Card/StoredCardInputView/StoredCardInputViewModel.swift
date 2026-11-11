@@ -12,6 +12,7 @@ import AdyenUI
 import Foundation
 
 // sourcery: AutoMockable
+@MainActor
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var securityCodeItem: FormCardSecurityCodeItem { get }
 
@@ -27,6 +28,7 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     func viewDidLoad()
 }
 
+@MainActor
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
 
     private let localizationParameters: LocalizationParameters?

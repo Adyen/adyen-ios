@@ -13,9 +13,12 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 @MainActor
-package final class GiftCardComponent: PaymentComponent,
-    Localizable,
-    LoadingComponent,
+package final class GiftCardComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor Localizable,
+    @MainActor LoadingComponent,
     AdyenObserver {
 
     internal let amount: Amount
@@ -469,4 +472,4 @@ extension GiftCardComponent {
     }
 }
 
-extension GiftCardComponent: PartialPaymentComponent {}
+extension GiftCardComponent: @MainActor PartialPaymentComponent {}

@@ -10,6 +10,7 @@ import AdyenNetworking
 import Foundation
 
 /// Provide cardBrand detection based on BinLookup API.
+@MainActor
 internal protocol AnyBinLookupService {
     
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
@@ -17,6 +18,7 @@ internal protocol AnyBinLookupService {
     func requestCardBrand(for bin: String, supportedCardBrands: [CardBrand], completion: @escaping CompletionHandler)
 }
 
+@MainActor
 internal final class BinLookupService: AnyBinLookupService {
     
     private let publicKey: String

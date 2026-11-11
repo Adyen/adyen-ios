@@ -21,7 +21,7 @@ public protocol FormItem: AnyObject {
     var subitems: [FormItem] { get }
     
     /// Builds the corresponding `AnyFormItemView`.
-    func build(with builder: FormItemViewBuilder) -> AnyFormItemView
+    @MainActor func build(with builder: FormItemViewBuilder) -> AnyFormItemView
 }
 
 @_spi(AdyenInternal)

@@ -104,7 +104,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
             brandDetected || numberItem.isValid() || errorShown
     }
     
-    internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    @MainActor internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -144,13 +144,13 @@ internal final class FormCardLogosItem: FormItem {
         self.cardLogos = cardLogos
     }
     
-    internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    @MainActor internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
 }
 
-extension FormItemViewBuilder {
+@MainActor extension FormItemViewBuilder {
     internal func build(with item: FormCardLogosItem) -> FormItemView<FormCardLogosItem> {
         FormCardLogosItemView(item: item, theme: theme)
     }

@@ -108,7 +108,7 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem, AdyenObserver 
     }
 }
 
-extension FormItemViewBuilder {
+@MainActor extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item, theme: theme)
     }

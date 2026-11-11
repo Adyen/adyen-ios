@@ -115,6 +115,7 @@ public struct FormItemViewBuilder {
     }
 
     @_spi(AdyenInternal)
+    @MainActor
     public static func build(_ item: FormItem) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier

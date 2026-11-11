@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 /// Fall back to local regex-based detector if API not available or BIN too short.
+@MainActor
 internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
     internal func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void) {

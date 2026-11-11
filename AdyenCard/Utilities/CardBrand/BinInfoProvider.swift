@@ -8,11 +8,13 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol AnyBinInfoProvider: AnyObject {
     func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void)
 }
 
 /// Provide cardBrand detection based on BinLookup API.
+@MainActor
 internal final class BinInfoProvider: AnyBinInfoProvider {
     
     private let minBinLength: Int

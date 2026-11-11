@@ -7,6 +7,7 @@
 @testable import AdyenCard
 import XCTest
 
+@MainActor
 class CardBrandProviderTests: XCTestCase {
 
     var apiClientMock: APIClientMock!

@@ -10,6 +10,7 @@
     @testable import AdyenCardScanner
     import XCTest
 
+    @MainActor
     class CardScannerControllerTests: XCTestCase {
         
         private var currentEventSubtype: AnalyticsEventLog.LogSubType?

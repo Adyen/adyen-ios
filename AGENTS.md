@@ -10,8 +10,8 @@ Adyen iOS is a modular payment SDK providing both Drop-in (all-in-one) and Compo
 
 **Minimum Requirements:**
 - iOS 16.0+
-- Xcode 15.0+
-- Swift 5.7+
+- Xcode 26.0+
+- Swift 6.2+
 
 **Main Branch for v6 PRs:** `develop`
 

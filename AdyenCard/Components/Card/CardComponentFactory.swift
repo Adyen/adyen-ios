@@ -12,7 +12,7 @@ import Adyen
 /// This factory is generic over any payment method that conforms to `AnyCardPaymentMethod`,
 /// allowing it to handle regular cards, stored cards, and BCMC payments.
 @MainActor
-package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentComponentFactory {
+package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: @MainActor PaymentComponentFactory {
     
     package typealias Method = CardMethod
     package typealias Configuration = CardConfiguration

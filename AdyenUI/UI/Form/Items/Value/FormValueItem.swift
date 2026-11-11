@@ -50,7 +50,7 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
         self.subitems = []
     }
 
-    open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    @MainActor open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
