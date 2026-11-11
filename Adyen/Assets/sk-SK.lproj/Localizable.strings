@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Neplatná emailová adresa";
 "adyen.moreOptions" = "Viac možností";
 "adyen.applePay.total" = "Celkom";
+"adyen.mbway.confirmPayment" = "Potvrďte svoju platbu v aplikácii MB WAY";
 "adyen.await.waitForConfirmation" = "Čaká sa na potvrdenie";
+"adyen.blik.confirmPayment" = "Otvorte svoju bankovú aplikáciu a potvrďte platbu.";
 "adyen.blik.invalid" = "Zadajte 6 číslic";
 "adyen.blik.code" = "6-ciferný kód";
 "adyen.blik.help" = "Získajte kód zo svojej bankovej aplikácie.";
@@ -184,6 +186,8 @@
 "adyen.upi.collect.instruction" = "Zadajte svoje UPI ID";
 "adyen.upi.mode.enterUpiId" = "ID UPI";
 "adyen.upi.collect.field.invalidIdError" = "Zadajte platné UPI";
+"adyen.upi.collect.confirmPayment" = "Čakáme na vaše potvrdenie…";
+"adyen.upi.vpaWaitingMessage" = "Otvorte aplikáciu UPI a potvrďte platbu";
 "adyen.upi.qrcode.timerMessage" = "Na schválenie máte %@";
 "adyen.upi.qrcode.instructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";
 "adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
@@ -258,6 +262,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Zadajte správnu štátnu pobočku banky";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Zadajte správne číslo bankového účtu";
 "adyen.payto.payid.description" = "Zadajte PayID a údaje o účte, ktoré sú pripojené k vášmu účtu PayTo.";
+"adyen.payto.await.description" = "Ďakujeme vám za nákup. Na dokončenie platby sa prihláste do svojho bankového účtu, autorizujte zmluvu s PayTo a schváľte platobné podmienky.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Povoliť prístup k fotoaparátu";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Prístup bol predtým odmietnutý. Na nasnímanie kariet udeľte v ponuke Nastavenia prístup.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otvoriť ponuku Nastavenia";

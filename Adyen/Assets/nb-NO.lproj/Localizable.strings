@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Ugyldig e-postadresse";
 "adyen.moreOptions" = "Flere alternativer";
 "adyen.applePay.total" = "Total";
+"adyen.mbway.confirmPayment" = "Bekreft betalingen din i MB WAY-appen";
 "adyen.await.waitForConfirmation" = "Venter på bekreftelse";
+"adyen.blik.confirmPayment" = "Åpne bank-appen din for å bekrefte betalingen.";
 "adyen.blik.invalid" = "Tast inn 6 tall";
 "adyen.blik.code" = "6-sifret kode";
 "adyen.blik.help" = "Hent koden fra bank-appen din.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Skriv inn UPI-ID-en din";
 "adyen.upi.mode.enterUpiId" = "UPI-ID";
 "adyen.upi.collect.field.invalidIdError" = "Skriv inn en gyldig UPI";
+"adyen.upi.collect.confirmPayment" = "Venter på bekreftelsen din…";
+"adyen.upi.vpaWaitingMessage" = "Åpne UPI-appen for å bekrefte betalingen";
 "adyen.upi.qrcode.timerMessage" = "Du har %@ å godkjenne";
 "adyen.upi.qrcode.instructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Skriv inn en korrekt Bank State Branch";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Skriv inn et korrekt bankkontonummer";
 "adyen.payto.payid.description" = "Skriv inn PayID og kontoopplysningene som er tilknyttet PayTo-kontoen din.";
+"adyen.payto.await.description" = "Takk for kjøpet. Fullfør betalingen ved å logge deg på bankkontoen din, godkjenne PayTo-avtalen og deretter godkjenne betalingsvilkårene.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Gi kameratilgang";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Tilgang ble nektet tidligere. For å skanne kort må du gi tilgang fra Innstillinger.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Åpne Innstillinger";

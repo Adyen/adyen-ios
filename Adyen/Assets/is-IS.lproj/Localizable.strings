@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Ógilt netfang";
 "adyen.moreOptions" = "Fleiri valkostir";
 "adyen.applePay.total" = "Samtals";
+"adyen.mbway.confirmPayment" = "Staðfestu greiðsluna þína í MB WAY-forritinu";
 "adyen.await.waitForConfirmation" = "Bíður eftir staðfestingu";
+"adyen.blik.confirmPayment" = "Opnaðu bankaforritið þitt til að staðfesta greiðsluna.";
 "adyen.blik.invalid" = "Sláðu inn 6 tölur";
 "adyen.blik.code" = "6 stafa kóði";
 "adyen.blik.help" = "Sæktu kóðann úr bankaforritinu þínu.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Sláðu in UPI-auðkennið þitt";
 "adyen.upi.mode.enterUpiId" = "UPI-auðkenni";
 "adyen.upi.collect.field.invalidIdError" = "Sláið inn gilt UPI";
+"adyen.upi.collect.confirmPayment" = "Bíður staðfestingar þinnar…";
+"adyen.upi.vpaWaitingMessage" = "Opnaðu UPI-forritið þitt til að staðfesta greiðsluna";
 "adyen.upi.qrcode.timerMessage" = "Þú hefur %@ til að samþykkja";
 "adyen.upi.qrcode.instructions" = "Taktu skjámynd til að hlaða upp í UPI-forritinu eða skannaðu QR-kóðann með því að nota UPI-forrit sem þú vilt til að ljúka greiðslunni.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Sláðu inn rétt bankanúmer banka";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sláðu inn rétt bankareikningsnúmer";
 "adyen.payto.payid.description" = "Sláðu inn PayID og reikningsupplýsingar sem eru tengjast PayTo-reikningnum þínum.";
+"adyen.payto.await.description" = "Takk fyrir kaupin. Ljúktu við greiðsluna með því að skrá þig inn á bankareikninginn, heimila PayTo-samninginn og samþykkja greiðsluskilmálana.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Gefðu aðgang að myndavél";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Aðgangi var áður hafnað. Til að skanna kort skaltu gefa aðgang í stillingum.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Opna stillingar";

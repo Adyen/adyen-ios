@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "La dirección de correo electrónico no es válida";
 "adyen.moreOptions" = "Más opciones";
 "adyen.applePay.total" = "Total";
+"adyen.mbway.confirmPayment" = "Confirme su pago en la aplicación MB WAY";
 "adyen.await.waitForConfirmation" = "Esperando confirmación";
+"adyen.blik.confirmPayment" = "Abra la aplicación de su banco para confirmar el pago.";
 "adyen.blik.invalid" = "Introduzca 6 dígitos";
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Consiga el código en la aplicación de su banco.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Ingrese su ID de la UPI";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Introduzca un UPI válido";
+"adyen.upi.collect.confirmPayment" = "Esperando confirmación…";
+"adyen.upi.vpaWaitingMessage" = "Abra la aplicación UPI para confirmar el pago";
 "adyen.upi.qrcode.timerMessage" = "Tiempo que tiene para aprobar: %@";
 "adyen.upi.qrcode.instructions" = "Haga una captura de pantalla para subirla en la aplicación UPI o escanee el código QR con la aplicación UPI que prefiera para completar el pago.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Escriba una sucursal estatal bancaria correcta";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Escriba un número de cuenta bancaria correcto";
 "adyen.payto.payid.description" = "Introduzca el PayID y los detalles de la cuenta que están conectados a su cuenta PayTo.";
+"adyen.payto.await.description" = "Gracias por su compra. Para completar el pago, inicie sesión en su cuenta bancaria, autorice el acuerdo PayTo y apruebe los términos de pago.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Permita el acceso a la cámara";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Anteriormente se había denegado el acceso. Para escanear tarjetas, conceda acceso desde Configuraciones.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Abrir Configuraciones";

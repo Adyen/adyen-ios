@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Érvénytelen e-mail-cím";
 "adyen.moreOptions" = "További lehetőségek";
 "adyen.applePay.total" = "Összesen";
+"adyen.mbway.confirmPayment" = "Fizetés jóváhagyása az MB WAY alkalmazásban";
 "adyen.await.waitForConfirmation" = "Várakozás a jóváhagyásra";
+"adyen.blik.confirmPayment" = "A fizetés jóváhagyásához nyissa meg a banki alkalmazást.";
 "adyen.blik.invalid" = "Adjon meg 6 számjegyet";
 "adyen.blik.code" = "6 számjegyű kód";
 "adyen.blik.help" = "Kód lekérése a banki alkalmazásból.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Adja meg az UPI-azonosítóját";
 "adyen.upi.mode.enterUpiId" = "UPI-azonosító";
 "adyen.upi.collect.field.invalidIdError" = "Adja meg egy érvényes UPI-t";
+"adyen.upi.collect.confirmPayment" = "Várakozás a megerősítésre…";
+"adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
 "adyen.upi.qrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
 "adyen.upi.qrcode.instructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Adja meg a helyes bankfiókkódot";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Adja meg a helyes bankszámlaszámot";
 "adyen.payto.payid.description" = "Adja meg a PayTo-fiókjához kapcsolódó PayID-t és a számlaadatait.";
+"adyen.payto.await.description" = "Köszönjük a vásárlást! A fizetés véglegesítéséhez jelentkezzen be bankszámlájára, hagyja jóvá a PayTo megállapodást, és fogadja el a fizetési feltételeket.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Engedélyezze a kamerához való hozzáférését";
 "adyen.card.scanner.camera.access.denied.alert.message" = "A hozzáférés korábban meg lett tagadva. A kártyaolvasáshoz adjon hozzáférési engedélyt a Beállításokban.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Beállítások megnyitása";

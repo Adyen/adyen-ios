@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Neplatná e-mailová adresa";
 "adyen.moreOptions" = "Další možnosti";
 "adyen.applePay.total" = "Celkem";
+"adyen.mbway.confirmPayment" = "Potvrďte platbu v aplikaci MB WAY";
 "adyen.await.waitForConfirmation" = "Čeká se na potvrzení";
+"adyen.blik.confirmPayment" = "Spusťte bankovní aplikaci a potvrďte platbu.";
 "adyen.blik.invalid" = "Zadejte 6 čísel";
 "adyen.blik.code" = "Šestimístný kód";
 "adyen.blik.help" = "Získejte kód z bankovní aplikace.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Zadejte své ID UPI";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Zadejte platné UPI";
+"adyen.upi.collect.confirmPayment" = "Čekáme na vaše potvrzení…";
+"adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
 "adyen.upi.qrcode.timerMessage" = "Máte %@ na schválení";
 "adyen.upi.qrcode.instructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Zadejte správnou pobočku banky ve státě";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Zadejte správné číslo bankovního účtu";
 "adyen.payto.payid.description" = "Zadejte PayID a údaje o účtu, které jsou propojeny s vaším účtem PayTo.";
+"adyen.payto.await.description" = "Děkujeme vám za váš nákup, platbu dokončíte tak, že se přihlásíte ke svému bankovnímu účtu, autorizujte smlouvu PayTo a odsouhlasíte platební podmínky.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Povolte přístup k fotoaparátu";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Přístup byl dříve odepřen. Chcete-li skenovat karty, povolte přístup v Nastaveních.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otevřít Nastavení";

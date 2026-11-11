@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Adresă de e-mail incorectă";
 "adyen.moreOptions" = "Mai multe opțiuni";
 "adyen.applePay.total" = "Total";
+"adyen.mbway.confirmPayment" = "Confirmați plata în aplicația MB WAY";
 "adyen.await.waitForConfirmation" = "Se așteaptă confirmarea";
+"adyen.blik.confirmPayment" = "Deschideți aplicația dvs. de banking pentru a confirma plata.";
 "adyen.blik.invalid" = "Introduceți 6 cifre";
 "adyen.blik.code" = "Cod din 6 cifre";
 "adyen.blik.help" = "Obțineți codul din aplicația dvs. de banking.";
@@ -184,6 +186,8 @@
 "adyen.upi.collect.instruction" = "Completați identificatorul dvs. UPI";
 "adyen.upi.mode.enterUpiId" = "ID-ul UPI";
 "adyen.upi.collect.field.invalidIdError" = "Completați un UPI valabil";
+"adyen.upi.collect.confirmPayment" = "Se așteaptă confirmarea dvs…";
+"adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
 "adyen.upi.qrcode.timerMessage" = "Aveți %@ ca să aprobați";
 "adyen.upi.qrcode.instructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
@@ -258,6 +262,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Completează o sucursală bancară statală corectă";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Completează un număr de cont bancar corect";
 "adyen.payto.payid.description" = "Completați PayID și detaliile contului care sunt conectate la contul dvs. PayTo.";
+"adyen.payto.await.description" = "Vă mulțumim pentru achiziție! Finalizați plata conectându-vă la contul dvs. bancar, autorizând acordul PayTo și aprobând condițiile de plată.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Permiteți accesul la cameră";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Accesul a fost refuzat anterior. Pentru a scana carduri, acordați accesul din Setări.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Deschideți Setările";

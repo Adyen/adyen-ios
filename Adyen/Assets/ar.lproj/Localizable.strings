@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "عنوان بريد إلكتروني غير صحيح";
 "adyen.moreOptions" = "المزيد من الخيارات";
 "adyen.applePay.total" = "الإجمالي";
+"adyen.mbway.confirmPayment" = "تأكيد الدفع على تطبيق MB WAY";
 "adyen.await.waitForConfirmation" = "في انتظار التأكيد";
+"adyen.blik.confirmPayment" = "افتح تطبيقك البنكي لتأكيد الدفع.";
 "adyen.blik.invalid" = "أدخل 6 أرقام";
 "adyen.blik.code" = "رمز مكون من 6 أرقام";
 "adyen.blik.help" = "احصل على الرمز من تطبيقك البنكي.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "أدخل معرّف UPI الخاص بك";
 "adyen.upi.mode.enterUpiId" = "معرف UPI";
 "adyen.upi.collect.field.invalidIdError" = "أدخل UPI صالحًا";
+"adyen.upi.collect.confirmPayment" = "في انتظار تأكيدك…";
+"adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.upi.qrcode.timerMessage" = "أمامك %@ للموافقة";
 "adyen.upi.qrcode.instructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "أدخل رمز فرع بنك صحيحًا";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "أدخل رقم حساب مصرفي صحيحًا";
 "adyen.payto.payid.description" = "أدخل معرف PayID وتفاصيل الحساب المرتبطة بحساب PayTo الخاص بك.";
+"adyen.payto.await.description" = "نشكرك على عملية الشراء. يُرجى إكمال عملية الدفع من خلال تسجيل الدخول إلى حسابك المصرفي والموافقة على اتفاقية PayTo وعلى شروط الدفع.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "امنح الإذن بالوصول إلى الكاميرا";
 "adyen.card.scanner.camera.access.denied.alert.message" = "لقد رُفِضَ الوصول إليها من قبل. لمسح البطاقات ضوئيًا؛ يُرجى منح الإذن بالوصول إلى الكاميرا من خلال Settings (الإعدادات).";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "افتح Settings (الإعدادات)";

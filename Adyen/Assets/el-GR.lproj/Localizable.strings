@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "Μη έγκυρη διεύθυνση email";
 "adyen.moreOptions" = "Περισσότερες επιλογές";
 "adyen.applePay.total" = "Σύνολο";
+"adyen.mbway.confirmPayment" = "Επιβεβαιώστε την πληρωμή στην εφαρμογή MB WAY";
 "adyen.await.waitForConfirmation" = "Αναμονή για επιβεβαίωση…";
+"adyen.blik.confirmPayment" = "Ανοίξτε την εφαρμογή τραπεζικής σας για να επιβεβαιώσετε την πληρωμή.";
 "adyen.blik.invalid" = "Εισαγάγετε 6 ψηφία";
 "adyen.blik.code" = "6ψήφιος κωδικός";
 "adyen.blik.help" = "Λάβετε τον κωδικό από την εφαρμογή τραπεζικής σας.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Εισαγάγετε το αναγνωριστικό UPI";
 "adyen.upi.mode.enterUpiId" = "Αναγνωριστικό UPI";
 "adyen.upi.collect.field.invalidIdError" = "Εισαγάγετε έγκυρο UPI";
+"adyen.upi.collect.confirmPayment" = "Αναμονή για την επιβεβαίωσή σας…";
+"adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
 "adyen.upi.qrcode.timerMessage" = "%@ προς έγκριση";
 "adyen.upi.qrcode.instructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Εισαγάγετε σωστό υποκατάστημα τράπεζας";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Εισαγάγετε σωστό αριθμό τραπεζικού λογαριασμού";
 "adyen.payto.payid.description" = "Εισαγάγετε το PayID και τα στοιχεία λογαριασμού που είναι συνδεδεμένα με τον λογαριασμό PayTo που διαθέτετε.";
+"adyen.payto.await.description" = "Σας ευχαριστούμε για την αγορά σας. Ολοκληρώστε την πληρωμή σας συνδεόμενοι στον τραπεζικό λογαριασμό σας. Εξουσιοδοτήστε τη συμφωνία PayTo και εγκρίνετε τους όρους πληρωμής.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Επιτρέψτε την πρόσβαση στην κάμερα";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Η πρόσβαση είχε προηγουμένως απορριφθεί. Για να σαρώσετε κάρτες, παραχωρήστε πρόσβαση από τις Ρυθμίσεις.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Ανοίξτε τις Ρυθμίσεις";

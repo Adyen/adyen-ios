@@ -55,7 +55,9 @@
 "adyen.emailItem.invalid" = "L'adreça electrònica no és vàlida";
 "adyen.moreOptions" = "Més opcions";
 "adyen.applePay.total" = "Total";
+"adyen.mbway.confirmPayment" = "Confirmeu el vostre pagament a l'aplicació MB WAY";
 "adyen.await.waitForConfirmation" = "A l'espera de confirmació";
+"adyen.blik.confirmPayment" = "Obriu la vostra aplicació bancària per confirmar el pagament.";
 "adyen.blik.invalid" = "Introduïu 6 números";
 "adyen.blik.code" = "codi de 6 dígits";
 "adyen.blik.help" = "Obteniu el codi de la vostra aplicació bancària.";
@@ -188,6 +190,8 @@
 "adyen.upi.collect.instruction" = "Introdueix el teu ID d'UPI";
 "adyen.upi.mode.enterUpiId" = "Identificador UPI";
 "adyen.upi.collect.field.invalidIdError" = "Introduïu un UPI vàlid";
+"adyen.upi.collect.confirmPayment" = "Esperant la vostra confirmació…";
+"adyen.upi.vpaWaitingMessage" = "Obriu la vostra aplicació UPI per confirmar el pagament";
 "adyen.upi.qrcode.timerMessage" = "Teniu %@ per aprovar";
 "adyen.upi.qrcode.instructions" = "Feu una captura de pantalla per pujar-la a l'aplicació UPI o escanegeu el codi QR mitjançant l'aplicació UPI preferida per completar el pagament.";
 "adyen.cashAppPay.title" = "";
@@ -264,6 +268,7 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Introduïu una sucursal bancària estatal correcta";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Introduïu un número de compte bancari correcte";
 "adyen.payto.payid.description" = "Introduïu el PayID i les dades del compte que estan connectades al vostre compte PayTo.";
+"adyen.payto.await.description" = "Gràcies per la compra, completeu el pagament iniciant sessió al vostre compte bancari, autoritzeu l'acord PayTo i aproveu les condicions de pagament.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Permeteu l'accés a la càmera";
 "adyen.card.scanner.camera.access.denied.alert.message" = "L'accés havia estat denegat prèviament. Per escanejar targetes, si us plau, concediu accés des de la Configuració.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Obriu la Configuració";
