@@ -99,6 +99,21 @@ struct ComponentContainerViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
+    @Test("Closing the drop in from the container notifies the merchant and dismisses the whole drop in.")
+    func cancelDropIn_shouldCancelAndDismissTheDropIn() {
+        // Given
+        let (sut, _, _, dropInFlowManagerMock, routerMock) = makeSUT()
+
+        // When
+        sut.cancelDropIn()
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
+        #expect(dropInFlowManagerMock.dismissDropInCallsCount == 1)
+        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 0)
+        #expect(routerMock.dismissCompletionCallsCount == 0)
+    }
+
     // MARK: - Mocks
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {
@@ -151,7 +166,8 @@ struct ComponentContainerViewModelTests {
             theme: CheckoutTheme(),
             configuration: DropInConfiguration(),
             dropInFlowManager: dropInFlowManagerMock,
-            partialPaymentDelegate: nil
+            partialPaymentDelegate: nil,
+            isDropInRoot: false
         )
 
         let routerMock = ComponentContainerRoutingMock()

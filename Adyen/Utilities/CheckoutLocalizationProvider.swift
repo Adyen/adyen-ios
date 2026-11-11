@@ -68,10 +68,17 @@ extension CheckoutLocalizationKey {
     public static let cardExpiryDateInvalid = CheckoutLocalizationKey(localizationKey: .cardExpiryItemInvalid)
     public static let cardExpiryDateInvalidTooOld = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooOld")
     public static let cardExpiryDateInvalidTooFarInTheFuture = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooFarInTheFuture")
-    public static let cardSecurityCode = CheckoutLocalizationKey(localizationKey: .cardCvcItemTitle)
-    public static let cardSecurityCodeHint3Digits = CheckoutLocalizationKey(name: "cardSecurityCodeHint3Digits")
-    public static let cardSecurityCodeHint4Digits = CheckoutLocalizationKey(name: "cardSecurityCodeHint4Digits")
-    public static let cardSecurityCodeInvalid = CheckoutLocalizationKey(localizationKey: .cardCvcItemInvalid)
+    public static let cardSecurityCode = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeLabel)
+    public static let cardSecurityCodeHintThreeDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeHintThreeDigits)
+    public static let cardSecurityCodeHintFourDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeHintFourDigits)
+    public static let cardSecurityCodeErrorEmptyThreeDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyThreeDigits)
+    public static let cardSecurityCodeErrorEmptyFourDigits = CheckoutLocalizationKey(localizationKey: .cardSecurityCodeErrorEmptyFourDigits)
+    public static let cardSecurityCodeErrorIncompleteThreeDigits = CheckoutLocalizationKey(
+        localizationKey: .cardSecurityCodeErrorIncompleteThreeDigits
+    )
+    public static let cardSecurityCodeErrorIncompleteFourDigits = CheckoutLocalizationKey(
+        localizationKey: .cardSecurityCodeErrorIncompleteFourDigits
+    )
     public static let cardHolderName = CheckoutLocalizationKey(localizationKey: .cardNameItemTitle)
     public static let cardHolderNameInvalid = CheckoutLocalizationKey(localizationKey: .cardNameItemInvalid)
     public static let cardStorePaymentMethod = CheckoutLocalizationKey(localizationKey: .cardStoreDetailsButton)
