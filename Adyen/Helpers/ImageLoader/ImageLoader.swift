@@ -15,18 +15,26 @@ package final class ImageLoader: ImageLoading {
 
     internal let urlSession: URLSession
     
+    /// Keeps loaded images in memory so that reloading them, for example in reused cells, does not flash an empty image.
+    private let cache = NSCache<NSURL, UIImage>()
+    
     public init(urlSession: URLSession = .init(configuration: .default)) {
         self.urlSession = urlSession
     }
     
     @discardableResult
     public func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable {
+        if let cachedImage = cache.object(forKey: url as NSURL) {
+            completion(cachedImage)
+            return AdyenTask {}
+        }
+        
         var urlSessionTask: URLSessionTask?
         let task = AdyenTask { urlSessionTask?.cancel() }
         
         urlSessionTask = urlSession.dataTask(with: url) { [weak self] data, _, _ in
             guard !task.isCancelled else { return }
-            self?.handleImageResponse(data: data, completion: completion)
+            self?.handleImageResponse(url: url, data: data, completion: completion)
         }
         
         urlSessionTask?.resume()
@@ -34,13 +42,15 @@ package final class ImageLoader: ImageLoading {
         return task
     }
     
-    private func handleImageResponse(data: Data?, completion: @escaping ((UIImage?) -> Void)) {
+    private func handleImageResponse(url: URL, data: Data?, completion: @escaping ((UIImage?) -> Void)) {
         guard let data, let image = UIImage(data: data, scale: 1.0) else {
             DispatchQueue.main.async {
                 completion(nil)
             }
             return
         }
+        
+        cache.setObject(image, forKey: url as NSURL)
         
         DispatchQueue.main.async {
             completion(image)

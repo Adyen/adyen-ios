@@ -55,6 +55,50 @@ class ImageLoaderTests: XCTestCase {
         wait(for: [completionExpectation], timeout: 1)
     }
     
+    func test_loading_whenImageWasAlreadyLoaded_shouldCallCompletionImmediately() {
+        
+        // Given: An image that was loaded before
+        
+        let imageLoader = makeSUT()
+        let firstLoadExpectation = expectation(description: "First load completed")
+        imageLoader.load(url: dummyImageUrl) { _ in firstLoadExpectation.fulfill() }
+        wait(for: [firstLoadExpectation], timeout: 1)
+        
+        // When: Loading the same image again
+        
+        var loadedImage: UIImage?
+        imageLoader.load(url: dummyImageUrl) { loadedImage = $0 }
+        
+        // Then: The image is provided before `load` returns
+        
+        XCTAssertNotNil(loadedImage)
+    }
+    
+    func test_loading_whenPreviousLoadFailed_shouldNotCallCompletionImmediately() {
+        
+        // Given: An image that failed to load before
+        
+        let imageLoader = makeSUT(shouldFail: true)
+        let firstLoadExpectation = expectation(description: "First load completed")
+        imageLoader.load(url: dummyImageUrl) { _ in firstLoadExpectation.fulfill() }
+        wait(for: [firstLoadExpectation], timeout: 1)
+        
+        // When: Loading the same image again
+        
+        var isCompleted = false
+        let retryExpectation = expectation(description: "Retry completed")
+        imageLoader.load(url: dummyImageUrl) { image in
+            XCTAssertNil(image)
+            isCompleted = true
+            retryExpectation.fulfill()
+        }
+        
+        // Then: The image is requested again instead of being served from the cache
+        
+        XCTAssertFalse(isCompleted)
+        wait(for: [retryExpectation], timeout: 1)
+    }
+    
     func test_cancelLoading_shouldNotCallCompletion() {
         
         // Given
@@ -204,9 +248,10 @@ class ImageLoaderTests: XCTestCase {
         
         imageView.load(url: dummyImageUrl, using: imageLoader, placeholder: placeholderImage)
         
-        // Then: The placeholder is applied during the loading process regardless of the current image
+        // Then: The already loaded image is applied immediately instead of the placeholder
         
-        XCTAssertTrue(imageView.image === placeholderImage)
+        XCTAssertNotNil(imageView.image)
+        XCTAssertFalse(imageView.image === placeholderImage)
     }
 }
 
