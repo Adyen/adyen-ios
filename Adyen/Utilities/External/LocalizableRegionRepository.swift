@@ -30,9 +30,11 @@ package enum RegionRepository {
 
     package static func regions(
         from locale: NSLocale,
-        with countryCodes: [String]? = nil
+        with countryCodes: Set<String>? = nil
     ) -> [Region] {
-        (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
+        let isoCountryCodes = NSLocale.isoCountryCodes
+        let filteredCodes = countryCodes.map { codes in isoCountryCodes.filter(codes.contains) } ?? isoCountryCodes
+        return filteredCodes.map { countryCode in
             Region(
                 identifier: countryCode,
                 name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode
