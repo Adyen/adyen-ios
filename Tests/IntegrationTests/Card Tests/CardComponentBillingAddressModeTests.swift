@@ -16,7 +16,7 @@ struct CardComponentBillingAddressModeTests {
 
     // MARK: - Arbitrary test values (do not influence outcomes)
 
-    private static let anySupportedCountryCodes = ["US"]
+    private static let anySupportedCountryCodes: Set<String> = ["US"]
     private static let anyCardBrand = CardBrand.visa
     private static let anyHideForCardBrands: Set<CardBrand> = []
     private static let anyOnAddressLookup: @MainActor @Sendable (String) async -> [AddressLookupResult] = { _ in [] }
@@ -133,7 +133,7 @@ struct CardComponentBillingAddressModeTests {
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "US")
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "NL")
     }
 
     @Test
@@ -240,7 +240,7 @@ struct CardComponentBillingAddressModeTests {
         let configData = try analyticsConfigData(for: .full(supportedCountryCodes: ["US", "NL"], hideForCardBrands: Self.anyHideForCardBrands))
 
         #expect(configData["billingAddressMode"] == "full")
-        #expect(configData["billingAddressAllowedCountries"] == "US,NL")
+        #expect(configData["billingAddressAllowedCountries"] == "NL,US")
         #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 

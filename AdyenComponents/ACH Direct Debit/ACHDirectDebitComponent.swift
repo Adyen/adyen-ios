@@ -225,7 +225,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         return FormAddressPickerItem(
             for: .billing,
             initialCountry: initialCountry,
-            supportedCountryCodes: configuration.billingAddressCountryCodes,
+            supportedCountryCodes: Set(configuration.billingAddressCountryCodes),
             prefillAddress: prefillAddress,
             theme: configuration.theme,
             style: configuration.style,

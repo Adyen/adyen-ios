@@ -105,7 +105,6 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
             from: locale as NSLocale,
             with: self.configuration.supportedCountryCodes
         )
-        .sorted { $0.name < $1.name }
         
         let defaultCountry = countries.first { $0.identifier == initialCountry }
         

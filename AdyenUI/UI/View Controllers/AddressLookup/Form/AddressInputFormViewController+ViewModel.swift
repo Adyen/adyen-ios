@@ -14,7 +14,7 @@ extension AddressInputFormViewController {
     /// The view model for ``AddressInputFormViewController``
     public struct ViewModel {
         
-        internal let supportedCountryCodes: [String]?
+        internal let supportedCountryCodes: Set<String>?
         internal let prefillAddress: PostalAddress?
         internal let initialCountry: String
         internal let style: FormComponentStyle
@@ -49,7 +49,7 @@ extension AddressInputFormViewController {
             localizationParameters: LocalizationParameters?,
             initialCountry: String,
             prefillAddress: PostalAddress?,
-            supportedCountryCodes: [String]?,
+            supportedCountryCodes: Set<String>?,
             addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
             handleShowSearch: ShowSearchHandler? = nil,
             completionHandler: @escaping (PostalAddress?) -> Void

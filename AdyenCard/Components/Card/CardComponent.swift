@@ -234,7 +234,7 @@ private extension CardComponent {
         }
 
         return
-            configuration.billingAddressMode.supportedCountryCodes?.first ??
+            configuration.billingAddressMode.supportedCountryCodes?.min() ??
             Locale.current.region?.identifier ??
             CardComponent.Constant.defaultCountryCode
     }
@@ -298,7 +298,7 @@ extension CardComponent {
 
 extension BillingAddressMode {
 
-    internal var supportedCountryCodes: [String]? {
+    internal var supportedCountryCodes: Set<String>? {
         switch self {
         case let .full(supportedCountryCodes, _):
             return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes

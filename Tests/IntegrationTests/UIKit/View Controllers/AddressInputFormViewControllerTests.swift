@@ -441,7 +441,7 @@ private extension AddressInputFormViewControllerTests {
         initialCountry: String = "NL",
         prefillAddress: PostalAddress? = nil,
         style: FormComponentStyle = .init(),
-        supportedCountryCodes: [String]? = nil,
+        supportedCountryCodes: Set<String>? = nil,
         searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil
     ) -> AddressInputFormViewController.ViewModel {
         

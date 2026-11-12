@@ -21,7 +21,7 @@ package extension AddressLookupViewController {
         internal let style: AddressLookupStyle
         internal let theme: CheckoutTheme
         internal let localizationParameters: LocalizationParameters?
-        internal let supportedCountryCodes: [String]?
+        internal let supportedCountryCodes: Set<String>?
         internal let initialCountry: String
         
         internal let lookupProvider: AddressLookupProvider
@@ -59,7 +59,7 @@ package extension AddressLookupViewController {
             style: AddressLookupStyle = .init(),
             theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters?,
-            supportedCountryCodes: [String]?,
+            supportedCountryCodes: Set<String>?,
             initialCountry: String,
             prefillAddress: PostalAddress? = nil,
             lookupProvider: AddressLookupProvider,

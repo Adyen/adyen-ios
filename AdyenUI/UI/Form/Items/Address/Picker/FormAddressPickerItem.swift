@@ -38,7 +38,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
     package init(
         for addressType: AddressType,
         initialCountry: String,
-        supportedCountryCodes: [String]?,
+        supportedCountryCodes: Set<String>?,
         prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
         style: FormComponentStyle,
@@ -150,7 +150,7 @@ extension FormAddressPickerItem {
         with prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
         initialCountry: String,
-        supportedCountryCodes: [String]?,
+        supportedCountryCodes: Set<String>?,
         lookupProvider: AddressLookupProvider?,
         presenter: ViewControllerPresenter,
         style: FormComponentStyle,
@@ -183,7 +183,7 @@ extension FormAddressPickerItem {
         with prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
         initialCountry: String,
-        supportedCountryCodes: [String]?,
+        supportedCountryCodes: Set<String>?,
         lookupProvider: AddressLookupProvider?,
         style: FormComponentStyle,
         completionHandler: @escaping (PostalAddress?) -> Void
