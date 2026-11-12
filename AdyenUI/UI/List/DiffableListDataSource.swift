@@ -23,6 +23,11 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
         set { coreDataSource.theme = newValue }
     }
     
+    internal var rowHorizontalInset: CGFloat {
+        get { coreDataSource.rowHorizontalInset }
+        set { coreDataSource.rowHorizontalInset = newValue }
+    }
+    
     private let coreDataSource = CoreListDataSource()
     
     // MARK: - UITableViewDataSource

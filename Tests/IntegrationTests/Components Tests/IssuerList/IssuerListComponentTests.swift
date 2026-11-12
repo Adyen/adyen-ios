@@ -68,6 +68,26 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertEqual(selectedRowIndices(in: listViewController), [2])
     }
 
+    func test_selectedIssuer_shouldShowRoundedBackgroundInsetInsideFullWidthList() throws {
+        // Given
+        let listViewController = try presentList()
+        let tableView: UITableView = listViewController.tableView
+
+        // When
+        selectRow(at: 0, in: listViewController)
+        tableView.layoutIfNeeded()
+
+        // Then
+        let selectedCell = try XCTUnwrap(tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? ListCell)
+        selectedCell.layoutIfNeeded()
+        let background = try XCTUnwrap(selectedCell.backgroundConfiguration)
+        XCTAssertEqual(tableView.style, .grouped)
+        XCTAssertEqual(tableView.bounds.width, sut.viewController.view.bounds.width)
+        XCTAssertEqual(selectedCell.bounds.width, tableView.bounds.width)
+        XCTAssertEqual(background.cornerRadius, AdyenUIConstants.defaultCornerRadius)
+        XCTAssertEqual(background.backgroundInsets, NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+    }
+
     func test_performSubmit_withSelectedIssuer_shouldSubmitSelectedIssuer() throws {
         // Given
         paymentMethod = try makePaymentMethod(issuerCount: 3)

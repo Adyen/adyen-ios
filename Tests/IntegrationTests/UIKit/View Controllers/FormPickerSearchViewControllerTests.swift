@@ -218,8 +218,8 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             selectedCell.findView(by: "checkmark")
         )
 
-        XCTAssertEqual(selectedCell.backgroundColor, selectedBackgroundColor)
-        XCTAssertEqual(selectedCell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
+        XCTAssertEqual(selectedCell.backgroundConfiguration?.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(selectedCell.backgroundConfiguration?.cornerRadius, CGFloat(AdyenUIConstants.defaultCornerRadius))
         XCTAssertFalse(checkmarkImageView.isHidden)
         XCTAssertTrue(selectedCell.accessibilityTraits.contains(.selected))
     }

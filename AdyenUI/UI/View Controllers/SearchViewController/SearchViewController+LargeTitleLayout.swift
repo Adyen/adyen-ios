@@ -31,19 +31,9 @@ extension SearchViewController {
     internal func makeResultsListViewController() -> ListViewController {
         // A large title only collapses when the scroll view spans the navigation bar's width,
         // so the large title layout insets the rows inside a full-width table instead.
-        let listViewController = ListViewController(
-            style: viewModel.style,
-            theme: viewModel.theme,
-            tableStyle: usesLargeTitleLayout ? .insetGrouped : .grouped
-        )
+        let listViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
         if usesLargeTitleLayout {
-            listViewController.viewRespectsSystemMinimumLayoutMargins = false
-            listViewController.view.directionalLayoutMargins = NSDirectionalEdgeInsets(
-                top: 0,
-                leading: resultsHorizontalInset,
-                bottom: 0,
-                trailing: resultsHorizontalInset
-            )
+            listViewController.rowHorizontalInset = resultsHorizontalInset
         }
         return listViewController
     }

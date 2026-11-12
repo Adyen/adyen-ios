@@ -212,7 +212,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         let placeholderTopAnchor = usesLargeTitleLayout ? scrollingHeaderView.bottomAnchor : resultsTopAnchor
         let placeholderTopSpacing = usesLargeTitleLayout ? 0 : resultsTopSpacing
         let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
-        // The large title layout insets the rows through the table's margins.
+        // The large title layout insets the rows inside the table instead.
         let tableHorizontalInset = usesLargeTitleLayout ? 0 : resultsHorizontalInset
 
         NSLayoutConstraint.activate([

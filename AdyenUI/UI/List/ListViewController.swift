@@ -26,15 +26,18 @@ package final class ListViewController: UITableViewController {
     /// Vertical spacing below each section that has no footer.
     package var sectionSpacing: CGFloat = 0
 
+    /// The horizontal distance between each row, including its background, and the table view edges.
+    /// Configure before loading the view.
+    package var rowHorizontalInset: CGFloat = 0
+
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
     /// - Parameter theme: The theme to use for styling. Defaults to `.default`.
-    /// - Parameter tableStyle: The style of the table view. Defaults to `.grouped`.
-    package init(style: ViewStyle, theme: CheckoutTheme = .default, tableStyle: UITableView.Style = .grouped) {
+    package init(style: ViewStyle, theme: CheckoutTheme = .default) {
         self.style = style
         self.theme = theme
-        super.init(style: tableStyle)
+        super.init(style: .grouped)
     }
 
     @available(*, unavailable)
@@ -53,6 +56,7 @@ package final class ListViewController: UITableViewController {
             self?.dataSource.cell(for: tableView, at: indexPath)
         })
         dataSource.theme = theme
+        dataSource.rowHorizontalInset = rowHorizontalInset
         return dataSource
     }()
 
