@@ -14,14 +14,14 @@ public enum CardEncryptor: AnyEncryptor {
     /// Encrypts a card.
     ///
     /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
+    ///   - card: CheckoutCard containing the data to be encrypted.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted card containing the individually encrypted fields.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidCard` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
-    public static func encrypt(card: Card, with publicKey: String) throws -> EncryptedCard {
+    public static func encrypt(card: CheckoutCard, with publicKey: String) throws -> CheckoutEncryptedCard {
         guard !card.isEmpty else { throw Error.invalidCard }
 
         var encryptedNumber: String?
@@ -42,7 +42,7 @@ public enum CardEncryptor: AnyEncryptor {
             encryptedYear = try encrypt(CardPayload().add(expiryYear: expiryYear), with: publicKey)
         }
 
-        return EncryptedCard(
+        return CheckoutEncryptedCard(
             number: encryptedNumber,
             securityCode: encryptedCode,
             expiryMonth: encryptedMonth,
@@ -153,14 +153,14 @@ public enum CardEncryptor: AnyEncryptor {
 
     /// Encrypts a card as a token.
     /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
+    ///   - card: CheckoutCard containing the data to be encrypted.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: A string token containing encrypted card data.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
-    public static func encryptToken(from card: Card, with publicKey: String) throws -> String {
+    public static func encryptToken(from card: CheckoutCard, with publicKey: String) throws -> String {
         guard !card.isEmpty else { throw CardEncryptor.Error.invalidCard }
         let payload = CardPayload()
             .add(number: card.number)

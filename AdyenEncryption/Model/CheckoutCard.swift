@@ -7,7 +7,7 @@
 import Foundation
 
 /// Contains the information of a card that is yet to be encrypted.
-public struct Card {
+public struct CheckoutCard {
 
     /// The card number.
     public var number: String?

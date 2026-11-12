@@ -425,7 +425,7 @@ extension GiftCardComponent {
 
     private func createPaymentData(order: PartialPaymentOrder?, cardPublicKey: String) -> Result<PaymentComponentData, Swift.Error> {
         do {
-            let card = Card(
+            let card = CheckoutCard(
                 number: numberItem.value,
                 securityCode: securityCodeItem.value,
                 expiryMonth: expiryDateItem.expiryMonth,

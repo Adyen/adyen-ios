@@ -41,7 +41,7 @@ public struct MealVoucherDetails: PartialPaymentMethodDetails {
     /// - Parameters:
     ///   - paymentMethod: The used gift card payment method.
     ///   - encryptedCard: The encrypted card .
-    public init(paymentMethod: MealVoucherPaymentMethod, encryptedCard: EncryptedCard) throws {
+    public init(paymentMethod: MealVoucherPaymentMethod, encryptedCard: CheckoutEncryptedCard) throws {
         guard let number = encryptedCard.number,
               let securityCode = encryptedCard.securityCode else { throw GiftCardComponent.Error.cardEncryptionFailed }
 

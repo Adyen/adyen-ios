@@ -148,11 +148,11 @@ internal class CardViewController: FormViewController {
 
     internal weak var cardDelegate: CardViewControllerDelegate?
 
-    internal var card: Card {
+    internal var card: CheckoutCard {
         let expiryMonth = items.expiryDateItem.expiryMonth
         let expiryYear = items.expiryDateItem.expiryYear
         
-        return Card(
+        return CheckoutCard(
             number: cardNumberItem.value,
             securityCode: configuration.showSecurityCode ? items.securityCodeItem.nonEmptyValue : nil,
             expiryMonth: expiryMonth,

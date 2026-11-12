@@ -10,12 +10,12 @@ import XCTest
 
 class CardEncryptorCardTests: XCTestCase {
 
-    let correctCard = Card(number: "1234567890", securityCode: "123", expiryMonth: "12", expiryYear: "2025", holder: "J. Smidt")
+    let correctCard = CheckoutCard(number: "1234567890", securityCode: "123", expiryMonth: "12", expiryYear: "2025", holder: "J. Smidt")
 
     // MARK: - Test encrypt card
     
     func testEncryptCardShouldThrowOnInvalidCard() {
-        let card = Card()
+        let card = CheckoutCard()
         XCTAssertThrowsError(try CardEncryptor.encrypt(card: card, with: "test_key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidCard, "Thrown Error is not CardEncryptor.Error.invalidCard")
@@ -24,7 +24,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptCardWithOneFieldShouldSucceed() {
-        var card = Card()
+        var card = CheckoutCard()
         card.number = "1233467890"
         let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(card: card, with: key))
@@ -145,7 +145,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptToToken() {
-        XCTAssertThrowsError(try CardEncryptor.encryptToken(from: Card(), with: "test_key")) { error in
+        XCTAssertThrowsError(try CardEncryptor.encryptToken(from: CheckoutCard(), with: "test_key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidCard, "Thrown Error is not CardEncryptor.Error.invalidCard")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidCard.localizedDescription)
@@ -153,7 +153,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptToTokenWithOneFieldShouldSucceed() {
-        var card = Card()
+        var card = CheckoutCard()
         card.number = "1233467890"
         let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encryptToken(from: card, with: key))

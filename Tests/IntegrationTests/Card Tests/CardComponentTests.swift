@@ -2393,7 +2393,7 @@ extension CardComponentTests {
         return makeSUT(configuration: configuration)
     }
 
-    func fillCard(on view: UIView, with card: Card) {
+    func fillCard(on view: UIView, with card: CheckoutCard) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")

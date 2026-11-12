@@ -7,7 +7,7 @@
 import Foundation
 
 /// Contains encrypted card information.
-public struct EncryptedCard {
+public struct CheckoutEncryptedCard {
 
     /// The encrypted card number.
     public let number: String?
