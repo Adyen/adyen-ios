@@ -11,6 +11,8 @@ import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {
     
+    private let secondaryScreenPresenter = SecondaryScreenPresenterMock()
+    
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -411,6 +413,7 @@ private extension AddressInputFormViewControllerTests {
     func presentCountryPicker(
         for viewController: AddressInputFormViewController
     ) throws -> FormPickerSearchViewController<FormPickerElement> {
+        secondaryScreenPresenter.source = viewController
         setupRootViewController(viewController)
         let view: UIView = viewController.view
         let countryItemView: FormPickerItemView<FormPickerElement> = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
@@ -421,11 +424,8 @@ private extension AddressInputFormViewControllerTests {
     func searchViewController(
         from pickerSearchViewController: FormPickerSearchViewController<FormPickerElement>
     ) throws -> SearchViewController {
-        let searchViewController = try XCTUnwrap(
-            pickerSearchViewController.viewControllers.first as? SearchViewController
-        )
-        searchViewController.loadViewIfNeeded()
-        return searchViewController
+        pickerSearchViewController.loadViewIfNeeded()
+        return pickerSearchViewController
     }
 
     func firstListItem(from pickerSearchViewController: FormPickerSearchViewController<FormPickerElement>) throws -> ListItem {
@@ -453,6 +453,7 @@ private extension AddressInputFormViewControllerTests {
             prefillAddress: prefillAddress,
             supportedCountryCodes: supportedCountryCodes,
             handleShowSearch: searchHandler,
+            secondaryScreenPresenter: secondaryScreenPresenter,
             completionHandler: { _ in }
         )
     }

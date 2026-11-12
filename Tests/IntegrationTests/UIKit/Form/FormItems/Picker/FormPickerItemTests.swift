@@ -19,44 +19,59 @@ class FormPickerItemTests: XCTestCase {
         }
     }
     
-    // TODO: FIX testPresentation test
-//    func testPresentation() throws {
-//
-//        let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
-//        let dismissViewControllerExpectation = expectation(description: "presenter.dismissViewController was called")
-//
-//        var presentedViewController: FormPickerSearchViewController<FormPickerElement>?
-//
-//        let mockPresenter = PresenterMock { viewController, animated in
-//            presentedViewController = viewController as? FormPickerSearchViewController<FormPickerElement>
-//            presentViewControllerExpectation.fulfill()
-//        } dismiss: { animated in
-//            dismissViewControllerExpectation.fulfill()
-//        }
-//
-//        let formPickerItem = FormPickerItem(
-//            preselectedValue: nil,
-//            selectableValues: [FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
-//            title: "",
-//            placeholder: "",
-//            style: .init(),
-//            presenter: mockPresenter
-//        )
-//
-//        // Setting up formPickerItem
-//        _ = FormPickerItemView(item: formPickerItem)
-//
-//        formPickerItem.selectionHandler()
-//
-//        wait(for: [presentViewControllerExpectation], timeout: 10)
-//
-//        setupRootViewController(presentedViewController!)
-//
-//        let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
-//        searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
-//
-//        wait(for: [dismissViewControllerExpectation], timeout: 10)
-//    }
+    /// When a shopper opens a picker and chooses an option, the field must update and the presenter must close that same picker.
+    /// The picker is content-only, so it delegates dismissal rather than assuming it is presented modally or pushed.
+    func test_pickerItem_whenOptionSelected_shouldUpdateValueAndDismissPresentedPicker() throws {
+        final class PresenterSpy: ViewControllerPresenter {
+            var presentations: [(viewController: UIViewController, animated: Bool)] = []
+            var dismissals: [(viewController: UIViewController, animated: Bool)] = []
+
+            func presentViewController(_ viewController: UIViewController, animated: Bool) {
+                presentations.append((viewController, animated))
+            }
+
+            func dismissViewController(_ viewController: UIViewController, animated: Bool) {
+                dismissals.append((viewController, animated))
+            }
+        }
+
+        let presenter = PresenterSpy()
+        let option = FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
+        let item = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [option],
+            placeholder: "",
+            style: .init(),
+            presenter: presenter,
+            configuration: .init(title: "Choose an option")
+        )
+        let itemView = FormPickerItemView(item: item, theme: .default)
+
+        // Keep the view alive because the selection handler captures it weakly; a view hierarchy normally retains it.
+        try withExtendedLifetime(itemView) {
+            // Opening the field requests one animated presentation of the content-only picker.
+            item.selectionHandler()
+
+            XCTAssertEqual(presenter.presentations.count, 1)
+            let presentation = try XCTUnwrap(presenter.presentations.first)
+            XCTAssertTrue(presentation.animated)
+            let picker = try XCTUnwrap(presentation.viewController as? FormPickerSearchViewController<FormPickerElement>)
+            picker.loadViewIfNeeded()
+            // Opening the picker alone must not request dismissal.
+            XCTAssertTrue(presenter.dismissals.isEmpty)
+            let result = try XCTUnwrap(picker.viewModel.interfaceState.results?.first)
+            let select = try XCTUnwrap(result.selectionHandler)
+
+            // Simulate the shopper choosing the available option.
+            select()
+
+            // Selection updates the field and requests animated dismissal of the exact picker that was presented.
+            XCTAssertEqual(item.value?.identifier, option.identifier)
+            XCTAssertEqual(presenter.dismissals.count, 1)
+            let dismissal = try XCTUnwrap(presenter.dismissals.first)
+            XCTAssertTrue(dismissal.viewController === picker)
+        }
+    }
     
     func test_abstractMethods_whenNotOverridden_shouldTriggerAssertions() {
         
@@ -175,7 +190,7 @@ class FormPickerItemTests: XCTestCase {
         let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
         setupRootViewController(pickerViewController)
 
-        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerViewController
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
         XCTAssertEqual(headerView.titleLabel.text, "Installments")
         XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
@@ -220,7 +235,7 @@ class FormPickerItemTests: XCTestCase {
         let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
         setupRootViewController(pickerViewController)
 
-        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerViewController
         XCTAssertNil(searchViewController.headerView)
         XCTAssertEqual(searchViewController.title, "Country/Region")
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))

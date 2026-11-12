@@ -32,7 +32,7 @@ package final class FormPhoneNumberItem: FormTextItem {
         phoneNumber: PhoneNumber?,
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,
-        presenter: WeakReferenceViewControllerPresenter
+        presenter: ViewControllerPresenter
     ) {
         self.init(
             phoneNumber: phoneNumber,
@@ -48,7 +48,7 @@ package final class FormPhoneNumberItem: FormTextItem {
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,
         localizationParameters: LocalizationParameters? = nil,
-        presenter: WeakReferenceViewControllerPresenter
+        presenter: ViewControllerPresenter
     ) {
         phonePrefixItem = .init(
             preselectedExtension: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),

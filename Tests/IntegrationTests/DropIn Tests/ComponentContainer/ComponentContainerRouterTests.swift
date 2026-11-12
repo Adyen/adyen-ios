@@ -92,10 +92,12 @@ struct ComponentContainerRouterTests {
             paymentInProgressSubject.eraseToAnyPublisher()
         }
 
-        var cancelCallsCount = 0
+        var viewDidDisappearCallsCount = 0
+        var viewDidDisappearReceivedIsLeavingScreen: Bool?
 
-        func cancel() {
-            cancelCallsCount += 1
+        func viewDidDisappear(isLeavingScreen: Bool) {
+            viewDidDisappearCallsCount += 1
+            viewDidDisappearReceivedIsLeavingScreen = isLeavingScreen
         }
 
         func cancelDropIn() {}

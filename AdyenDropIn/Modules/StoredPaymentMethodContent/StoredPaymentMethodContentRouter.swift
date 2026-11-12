@@ -35,3 +35,7 @@ internal final class StoredPaymentMethodContentRouter: Router, StoredPaymentMeth
         listener?.dismissStoredPaymentMethodContent()
     }
 }
+
+// MARK: - DropInSecondaryScreenRouting
+
+extension StoredPaymentMethodContentRouter: DropInSecondaryScreenRouting {}

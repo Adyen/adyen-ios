@@ -69,7 +69,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
         initialCountry: String,
         configuration: Configuration,
         identifier: String? = nil,
-        presenter: ViewControllerPresenter?,
+        presenter: ViewControllerPresenter,
         addressViewModelBuilder: AddressViewModelBuilder
     ) {
         self.initialCountry = initialCountry
