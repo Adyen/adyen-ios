@@ -46,8 +46,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         style: configuration.style
     )
 
-    private var defaultCountryCode: String {
-        configuration.billingAddressCountryCodes.first ?? "US"
+    private var defaultCountryCode: String? {
+        RegionRepository.initialCountryCode(
+            supportedCountryCodes: Set(configuration.billingAddressCountryCodes)
+        )
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod

@@ -40,7 +40,11 @@ package enum RegionRepository {
         }
     }
 
-    /// The first supported ISO country code, or `nil` when no ISO country code is supported.
+    /// The first supported country code in `NSLocale.isoCountryCodes` order,
+    /// or `nil` when no ISO country code is supported.
+    ///
+    /// Ordering always follows `NSLocale.isoCountryCodes`, never the order in which
+    /// the supported codes were supplied.
     package static func initialCountryCode(supportedCountryCodes: Set<String>?) -> String? {
         filteredCountryCodes(with: supportedCountryCodes).first
     }

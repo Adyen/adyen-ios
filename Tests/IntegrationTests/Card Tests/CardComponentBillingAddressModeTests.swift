@@ -849,7 +849,7 @@ private struct CardComponentProxy {
     /// tap billing address picker -> fill address fields via views -> tap Done.
     func fillBillingAddressViaForm(with address: PostalAddress) async throws {
         let addressFormVC = try await openBillingAddressForm()
-        fillAddressFields(in: addressFormVC.view, with: address)
+        try fillAddressFields(in: addressFormVC, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }
@@ -875,7 +875,7 @@ private struct CardComponentProxy {
         searchVM.handleSwitchToManualEntry()
         await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
         let addressFormVC = try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
-        fillAddressFields(in: addressFormVC.view, with: address)
+        try fillAddressFields(in: addressFormVC, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }
@@ -1018,8 +1018,19 @@ private struct CardComponentProxy {
     }
 
     /// Fills address form fields by finding views via accessibility identifiers.
-    private func fillAddressFields(in formView: UIView, with address: PostalAddress) {
+    /// Selects the address' country first so country-dependent fields (e.g. the state picker) are rebuilt before filling.
+    private func fillAddressFields(in addressFormVC: AddressInputFormViewController, with address: PostalAddress) throws {
+        let formView: UIView = addressFormVC.view
         let prefix = "AddressInputFormViewController.address"
+
+        if let country = address.country {
+            let countryPickerItem = addressFormVC.addressItem.countryPickerItem
+            let match = try #require(
+                countryPickerItem.selectableValues.first { $0.identifier == country },
+                "Country \(country) not found in address form country picker"
+            )
+            countryPickerItem.value = match
+        }
 
         if let street = address.street {
             let view: FormTextInputItemView? = formView.findView(with: "\(prefix).street")
