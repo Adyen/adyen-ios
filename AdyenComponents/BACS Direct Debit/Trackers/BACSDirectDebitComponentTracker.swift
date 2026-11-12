@@ -7,11 +7,13 @@
 import Adyen
 import Foundation
 
+@MainActor
 package protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
     func sendDidLoadEvent()
 }
 
+@MainActor
 package class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties

@@ -23,7 +23,7 @@ package struct AnalyticsEventLog: AnalyticsEvent {
     
     public var message: String?
     
-    public enum LogType: String, Encodable {
+    public enum LogType: String, Encodable, Sendable {
         case action = "Action"
         case submit = "Submit"
         case redirect = "Redirect"
@@ -32,7 +32,7 @@ package struct AnalyticsEventLog: AnalyticsEvent {
         case cardScanner = "CardScanner"
     }
     
-    public enum LogSubType: String, Encodable {
+    public enum LogSubType: String, Encodable, Sendable {
         case threeDS2 = "ThreeDS2"
         case redirect = "Redirect"
         case voucher = "Voucher"

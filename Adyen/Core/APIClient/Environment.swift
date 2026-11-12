@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Struct that defines the environment to retrieve resources from.
-public struct Environment: AnyAPIEnvironment {
+public struct Environment: AnyAPIEnvironment, Sendable {
     
     public var baseURL: URL
 

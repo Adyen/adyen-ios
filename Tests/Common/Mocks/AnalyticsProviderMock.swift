@@ -7,7 +7,7 @@
 @testable import Adyen
 import Foundation
 
-class AnalyticsProviderMock: AnyAnalyticsProvider {
+class AnalyticsProviderMock {
     static let testCheckoutAttemptId = "testCheckoutAttemptId"
     var checkoutAttemptId: String
     init(checkoutAttemptId: String = AnalyticsProviderMock.testCheckoutAttemptId) {
@@ -46,3 +46,5 @@ class AnalyticsProviderMock: AnyAnalyticsProvider {
         errors = []
     }
 }
+
+extension AnalyticsProviderMock: AnyAnalyticsProvider {}

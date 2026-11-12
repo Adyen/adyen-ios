@@ -7,6 +7,7 @@
 import UIKit
 
 /// Delegate to handle different viewController events.
+@MainActor
 package protocol ViewControllerDelegate: AnyObject {
 
     /// Handles the UIViewController.viewDidLoad() event.

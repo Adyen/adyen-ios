@@ -65,7 +65,7 @@ extension AddressLookupSearchViewController {
             switchToManualEntryHandler()
         }
         
-        internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+        @MainActor internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
             
             lookupProvider?.lookUp(searchTerm: searchTerm) { result in
                 DispatchQueue.main.async { [self] in
@@ -76,7 +76,7 @@ extension AddressLookupSearchViewController {
             }
         }
         
-        internal func handleDidSelect(item: ListItem, addressModel: AddressLookupResult) {
+        @MainActor internal func handleDidSelect(item: ListItem, addressModel: AddressLookupResult) {
             guard let lookupProvider else { return }
             
             item.startLoading()

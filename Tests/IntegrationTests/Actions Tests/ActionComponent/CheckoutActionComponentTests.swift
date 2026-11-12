@@ -183,7 +183,8 @@ class CheckoutActionComponentTests: XCTestCase {
         let expectation = expectation(description: "Assertion Expectation")
 
         AdyenAssertion.listener = { message in
-            XCTAssertNil(sut.currentActionComponent)
+            // The listener runs synchronously on the main thread from `AdyenAssertion.assertionFailure`.
+            MainActor.assumeIsolated { XCTAssertNil(sut.currentActionComponent) }
             XCTAssertEqual(message, "WeChatPaySDKActionComponent can only work on a real device.")
             expectation.fulfill()
         }

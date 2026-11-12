@@ -10,7 +10,7 @@ import Foundation
 package final class AnalyticsForSession {
     
     /// Needed to be able to determine if using session
-    public static var sessionId: String?
+    @MainActor public static var sessionId: String?
     
     private init() { /* Private empty init */ }
 }

@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes the amount of a payment.
-public struct Amount: Codable, Equatable {
+public struct Amount: Codable, Equatable, Sendable {
 
     /// The value of the amount in minor units.
     public let value: Int

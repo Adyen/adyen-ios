@@ -142,6 +142,7 @@ extension FormAddressPickerItem {
 
 // MARK: - Picker Presentation
 
+@MainActor
 extension FormAddressPickerItem {
 
     // swiftlint:disable function_parameter_count

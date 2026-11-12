@@ -5,15 +5,25 @@
 //
 
 import Foundation
+import os
 
 /// Provides access to injected dependencies.
 package struct AdyenDependencyValues {
-    
+    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    private static let currentStorage = OSAllocatedUnfairLock(initialState: AdyenDependencyValues())
+
     /// The currently injected values
-    fileprivate static var current = AdyenDependencyValues()
-    
+    fileprivate static var current: AdyenDependencyValues {
+        get {
+            currentStorage.withLock { $0 }
+        }
+        set {
+            currentStorage.withLock { $0 = newValue }
+        }
+    }
+
     /// Stores the testValues during ``runTestWithValues``
-    private var storage: [ObjectIdentifier: Any] = [:]
+    private var storage: [ObjectIdentifier: any Sendable] = [:]
     
     /// A subscript for updating the `currentValue` of `AdyenDependencyKey` instances.
     public subscript<K>(key: K.Type) -> K.Value where K: AdyenDependencyKey {
@@ -84,6 +94,6 @@ package struct AdyenDependency<T> {
 // MARK: - DependencyKey Protocol
 
 package protocol AdyenDependencyKey {
-    associatedtype Value
+    associatedtype Value: Sendable
     static var liveValue: Self.Value { get }
 }

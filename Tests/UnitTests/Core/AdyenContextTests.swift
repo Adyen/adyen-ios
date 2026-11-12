@@ -10,6 +10,7 @@
 @testable import AdyenNetworking
 import Testing
 
+@MainActor
 struct AdyenContextTests {
 
     @Test func amountMutability() throws {

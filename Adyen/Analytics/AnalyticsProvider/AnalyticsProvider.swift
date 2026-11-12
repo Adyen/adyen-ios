@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-internal final class AnalyticsProvider: AnyAnalyticsProvider {
+@MainActor internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     // MARK: - Properties
 

@@ -21,7 +21,7 @@ package struct AnalyticsEventError: AnalyticsEvent {
     
     public var message: String?
     
-    public enum ErrorType: String, Encodable {
+    public enum ErrorType: String, Encodable, Sendable {
         case network = "Network"
         case implementation = "Implementation"
         case `internal` = "Internal"

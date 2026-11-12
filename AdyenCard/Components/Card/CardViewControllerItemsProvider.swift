@@ -19,6 +19,7 @@ extension CardViewController {
         internal let error: AnalyticsValidationError?
     }
 
+    @MainActor
     internal final class ItemsProvider {
         private let formStyle: FormComponentStyle
         private let theme: CheckoutTheme

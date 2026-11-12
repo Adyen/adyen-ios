@@ -59,7 +59,7 @@ package class ListItem: FormItem {
     package let isSelected: Bool
 
     /// The handler to invoke when the item is selected.
-    package var selectionHandler: (() -> Void)?
+    package var selectionHandler: (@MainActor () -> Void)?
 
     /// The handler to invoke when the item is deleted.
     package var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
@@ -98,7 +98,7 @@ package class ListItem: FormItem {
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         isSelected: Bool = false,
-        selectionHandler: (() -> Void)? = nil
+        selectionHandler: (@MainActor () -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle

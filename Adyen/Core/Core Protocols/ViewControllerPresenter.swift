@@ -6,6 +6,7 @@
 
 import UIKit
 
+@MainActor
 package protocol ViewControllerPresenter: AnyObject {
     
     func presentViewController(_ viewController: UIViewController, animated: Bool)

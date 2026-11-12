@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import os
 
 internal enum LocalizationSource: String, Hashable {
     case bundle
@@ -18,9 +19,23 @@ internal struct LocalizationWarning: Hashable {
 }
 
 internal enum LocalizationWarningLog {
-    internal static var onEmit: ((LocalizationWarning) -> Void)?
-    private static var emittedWarnings = Set<LocalizationWarning>()
-    private static let lock = NSLock()
+
+    /// TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    private struct State {
+        internal var onEmit: (@Sendable (LocalizationWarning) -> Void)?
+        internal var emittedWarnings = Set<LocalizationWarning>()
+    }
+
+    private static let state = OSAllocatedUnfairLock(initialState: State())
+
+    internal static var onEmit: (@Sendable (LocalizationWarning) -> Void)? {
+        get {
+            state.withLock { $0.onEmit }
+        }
+        set {
+            state.withLock { $0.onEmit = newValue }
+        }
+    }
 
     internal static func emit(source: LocalizationSource, localeIdentifier: String, key: String) {
         let warning = LocalizationWarning(
@@ -29,11 +44,9 @@ internal enum LocalizationWarningLog {
             source: source
         )
 
-        let onEmit: ((LocalizationWarning) -> Void)?
-        lock.lock()
-        let didInsert = emittedWarnings.insert(warning).inserted
-        onEmit = LocalizationWarningLog.onEmit
-        lock.unlock()
+        let (didInsert, onEmit) = state.withLock {
+            ($0.emittedWarnings.insert(warning).inserted, $0.onEmit)
+        }
 
         guard didInsert else { return }
         onEmit?(warning)
@@ -46,10 +59,7 @@ internal enum LocalizationWarningLog {
     }
 
     internal static func reset() {
-        lock.lock()
-        onEmit = nil
-        emittedWarnings.removeAll()
-        lock.unlock()
+        state.withLock { $0 = State() }
     }
 }
 

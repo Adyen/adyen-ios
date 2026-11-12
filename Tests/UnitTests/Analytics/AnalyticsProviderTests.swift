@@ -8,6 +8,7 @@
 @testable import AdyenNetworking
 import XCTest
 
+@MainActor
 class AnalyticsProviderTests: XCTestCase {
     
     func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() {

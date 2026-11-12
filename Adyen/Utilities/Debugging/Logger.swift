@@ -4,15 +4,27 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenNetworking
+// AdyenNetworking does not annotate `Logging.isEnabled` for concurrency; remove `@preconcurrency` once it does.
+@preconcurrency import AdyenNetworking
 import func Darwin.fputs
+import os
 
 /// Provides control over SDK logging.
 public enum AdyenLogging {
+
+// TODO: 
+    private static let storage = OSAllocatedUnfairLock(initialState: false)
+
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool = false {
-        didSet {
-            AdyenNetworking.Logging.isEnabled = isEnabled
+    public static var isEnabled: Bool {
+        get {
+            storage.withLock { $0 }
+        }
+        set {
+            storage.withLock {
+                $0 = newValue
+                AdyenNetworking.Logging.isEnabled = newValue
+            }
         }
     }
 }

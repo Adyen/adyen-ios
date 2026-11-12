@@ -8,6 +8,7 @@
 @testable import AdyenComponents
 import XCTest
 
+@MainActor
 class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
     var apiContext: APIContext!

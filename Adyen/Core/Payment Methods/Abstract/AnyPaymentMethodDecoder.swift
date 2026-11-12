@@ -32,7 +32,7 @@ private struct PaymentMethodField: Decodable {
 // swiftlint:disable file_length
 internal enum AnyPaymentMethodDecoder {
     
-    private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
+    private static let decoders: [PaymentMethodType: PaymentMethodDecoder] = [
         // Unsupported payment methods
         .bcmcMobileQR: UnsupportedPaymentMethodDecoder(),
         .weChatMiniProgram: UnsupportedPaymentMethodDecoder(),
@@ -94,7 +94,7 @@ internal enum AnyPaymentMethodDecoder {
         .payTo: PayToPaymentMethodDecoder()
     ]
     
-    private static var defaultDecoder: PaymentMethodDecoder = GenericPaymentMethodDecoder()
+    private static let defaultDecoder: PaymentMethodDecoder = GenericPaymentMethodDecoder()
     
     internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
@@ -122,7 +122,7 @@ internal enum AnyPaymentMethodDecoder {
     }
 }
 
-private protocol PaymentMethodDecoder {
+private protocol PaymentMethodDecoder: Sendable {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod?
 }

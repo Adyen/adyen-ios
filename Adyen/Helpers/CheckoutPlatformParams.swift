@@ -5,17 +5,23 @@
 //
 
 import Foundation
+import os
 
 @_spi(AdyenInternal)
 /// Reference to the Android counterpart: https://github.com/Adyen/adyen-android/blob/main/core/src/main/java/com/adyen/checkout/core/common/internal/helper/CheckoutPlatformParams.kt
-public final class CheckoutPlatformParams {
+public final class CheckoutPlatformParams: Sendable {
 
     // MARK: - Types
 
-    public enum Platform: String {
+    public enum Platform: String, Sendable {
         case ios
         case reactNative = "react-native"
         case flutter
+    }
+
+    private struct State {
+        internal var version: String
+        internal var platform: Platform
     }
 
     // MARK: - Global shared instance
@@ -24,34 +30,40 @@ public final class CheckoutPlatformParams {
 
     // MARK: - Properties
 
-    public private(set) var version: String = adyenSdkVersion
-    public private(set) var platform: Platform = .ios
+    private let state: OSAllocatedUnfairLock<State>
+    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    public var version: String {
+        state.withLock { $0.version }
+    }
+
+    public var platform: Platform {
+        state.withLock { $0.platform }
+    }
+
     public let channel: String = "ios"
 
     // MARK: - Initializers
 
-    private init() {}
+    private init() {
+        state = OSAllocatedUnfairLock(initialState: State(version: adyenSdkVersion, platform: .ios))
+    }
 
     /// Internal initializer for testing purposes.
     internal init(version: String, platform: Platform) {
-        self.version = version
-        self.platform = platform
+        state = OSAllocatedUnfairLock(initialState: State(version: version, platform: platform))
     }
 
     // MARK: - Mutation (restricted)
-
-    private let lock = NSLock()
 
     @_spi(AdyenInternal)
     public func overrideForCrossPlatform(
         platform: Platform,
         version: String
     ) {
-        lock.lock()
-        defer { lock.unlock() }
-
-        self.version = version
-        self.platform = platform
+        state.withLock {
+            $0.platform = platform
+            $0.version = version
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
+@MainActor
 extension AdyenScope where Base: UIView {
 
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.
@@ -103,6 +104,7 @@ extension AdyenScope where Base: UIView {
     }
 
     /// An enum to specify an anchor source
+    @MainActor
     package enum LayoutAnchorSource {
 
         /// Regular `UIView` object
@@ -153,6 +155,7 @@ extension AdyenScope where Base: UIView {
     }
 }
 
+@MainActor
 private protocol AnyAnchorSet {
     var topAnchor: NSLayoutYAxisAnchor { get }
     var leadingAnchor: NSLayoutXAxisAnchor { get }

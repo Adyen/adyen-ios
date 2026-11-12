@@ -58,7 +58,7 @@ package extension ShopperInformation {
 }
 
 /// Shopper name.
-public struct ShopperName: Codable, Equatable {
+public struct ShopperName: Codable, Equatable, Sendable {
     
     /// The first Name.
     public let firstName: String

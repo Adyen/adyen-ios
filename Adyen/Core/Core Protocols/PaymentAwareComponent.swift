@@ -7,6 +7,7 @@
 import Foundation
 
 /// Any component with a partial payment property.
+@MainActor
 package protocol PartialPaymentOrderAware {
 
     /// The partial payment order if any.
@@ -26,6 +27,7 @@ extension PartialPaymentOrderAware {
     }
 }
 
+@MainActor
 private enum AssociatedKeys {
 
     internal static var order: Void?

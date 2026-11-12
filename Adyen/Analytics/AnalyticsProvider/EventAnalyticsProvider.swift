@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
+@MainActor internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
 
     private enum Constants {
         static let batchInterval: TimeInterval = 10
@@ -33,10 +33,10 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.batchInterval = batchInterval
         self.checkoutAttemptId = checkoutAttemptId
         
-        Task { await startNextTimer() }
+        Task { startNextTimer() }
     }
     
-    deinit {
+    isolated deinit {
         batchTimer?.invalidate()
         // fire-and-forget remaining events without capturing self
         if let request = requestWithAllEvents() {
@@ -105,7 +105,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     private func startNextTimer() {
         batchTimer?.invalidate()
         batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
-            self?.sendEventsIfNeeded()
+            Task { @MainActor in self?.sendEventsIfNeeded() }
         }
     }
 }

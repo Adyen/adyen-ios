@@ -8,6 +8,7 @@
 @testable import AdyenNetworking
 import XCTest
 
+@MainActor
 final class EventAnalyticsProviderTests: XCTestCase {
     
     var eventDataSource = AnalyticsEventDataSource()

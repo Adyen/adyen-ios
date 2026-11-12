@@ -103,7 +103,7 @@ let package = Package(
             ],
             resources: [.process("PrivacyInfo.xcprivacy")],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -212,8 +212,7 @@ let package = Package(
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent",
             swiftSettings: [
-                .swiftLanguageMode(.v5),
-                .defaultIsolation(MainActor.self)
+                .swiftLanguageMode(.v5)
             ]
         ),
         .target(

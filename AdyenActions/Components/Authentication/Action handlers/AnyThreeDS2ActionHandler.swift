@@ -31,6 +31,7 @@ internal protocol ComponentWrapper: Component {
 
 }
 
+@MainActor
 extension ComponentWrapper {
 
     internal var apiContext: APIContext {

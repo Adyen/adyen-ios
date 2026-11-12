@@ -6,17 +6,20 @@
 
 import Foundation
 
+@MainActor
 package protocol AnyInitialAnalyticsProvider {
 
     /// Sends the initial data and retrieves the checkout attempt id as a response.
     func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
 }
 
+@MainActor
 package protocol AnalyticsCheckoutAttemptIdProvider {
     var checkoutAttemptId: String { get }
 }
 
 // sourcery:AutoMockable
+@MainActor
 package protocol AnyEventAnalyticsProvider {
     /// Adds an info event to be sent.
     func add(info: AnalyticsEventInfo)

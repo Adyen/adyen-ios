@@ -5,13 +5,24 @@
 //
 
 import Foundation
+import os
 
 /// A typealias for a closure that handles a URL through which the application was opened.
-package typealias AssertionListener = (String) -> Void
+package typealias AssertionListener = @Sendable (String) -> Void
 
 package enum AdyenAssertion {
 
-    internal static var listener: AssertionListener?
+    /// TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    private static let listenerStorage = OSAllocatedUnfairLock<AssertionListener?>(initialState: nil)
+
+    internal static var listener: AssertionListener? {
+        get {
+            listenerStorage.withLock { $0 }
+        }
+        set {
+            listenerStorage.withLock { $0 = newValue }
+        }
+    }
 
     /// Calls `assertionFailure` when not running Tests.
     package static func assertionFailure(message: @autoclosure () -> String) {

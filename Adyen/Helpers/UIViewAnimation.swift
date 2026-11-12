@@ -6,6 +6,7 @@
 
 import UIKit
 
+@MainActor
 private enum AssociatedKeys {
     internal static var animations: Void?
 }
@@ -92,6 +93,7 @@ package final class SpringAnimationContext: AnimationContext {
     }
 }
 
+@MainActor
 extension AdyenScope where Base: UIView {
     
     package func cancelAnimations(with key: String) {

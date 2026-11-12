@@ -20,11 +20,12 @@ class ImageLoaderMock: ImageLoading {
     }
 
     private(set) var loadCallsCount = 0
-    private var completions: [(UIImage?) -> Void] = []
-    func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> any AdyenCancellable {
+    private var completions: [@MainActor @Sendable (UIImage?) -> Void] = []
+    func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> any AdyenCancellable {
         loadCallsCount += 1
         completions.append(completion)
-        completion(self.imageProvider(url))
+        // Tests call the loader on the main thread; keeps the mock's completion synchronous.
+        MainActor.assumeIsolated { completion(self.imageProvider(url)) }
         return cancellable
     }
 }

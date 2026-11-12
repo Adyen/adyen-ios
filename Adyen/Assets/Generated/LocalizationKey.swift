@@ -6,7 +6,7 @@
 
 // swiftlint:disable all
 @_spi(AdyenInternal)
-public struct LocalizationKey {
+public struct LocalizationKey: Sendable {
 
     /// Pay
     public static let submitButton = LocalizationKey(key: "adyen.submitButton")

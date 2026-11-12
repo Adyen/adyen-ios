@@ -21,7 +21,7 @@ struct BrowserInfoTests {
         #expect(updatedPaymentComponentData.browserInfo?.userAgent != nil)
     }
 
-    @Test func initialization_whenCached() async {
+    @Test @MainActor func initialization_whenCached() async {
         let mockedCachedUserAgent = "testValue"
         BrowserInfo.cachedUserAgent = mockedCachedUserAgent
         let browserInfo = await BrowserInfo()

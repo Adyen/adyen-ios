@@ -32,7 +32,7 @@ package struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var configData: AnalyticsStringDictionaryConvertible?
 
-    public enum InfoType: String, Encodable {
+    public enum InfoType: String, Encodable, Sendable {
         case selected = "Selected"
         case focus = "Focus"
         case unfocus = "Unfocus"
@@ -79,7 +79,7 @@ package struct AnalyticsEventInfo: AnalyticsEvent {
 }
 
 /// Protocol that requires a string only dictionary for analytics. Only meant for analytics as it uses mirroring.
-package protocol AnalyticsStringDictionaryConvertible: Encodable {
+package protocol AnalyticsStringDictionaryConvertible: Encodable, Sendable {
     var stringOnlyDictionary: [String: String]? { get }
 }
 

@@ -54,7 +54,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
         }
     }
     
-    private func sendApiErrorEvent() {
+    @MainActor private func sendApiErrorEvent() {
         var errorEvent = AnalyticsEventError(component: Constants.fingerprintEvent, type: .api)
         errorEvent.code = AnalyticsConstants.ErrorCode.apiErrorThreeDS2.stringValue
         context.analyticsProvider?.add(error: errorEvent)

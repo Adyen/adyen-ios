@@ -9,6 +9,7 @@
 import Foundation
 import XCTest
 
+@MainActor
 class AddressInputFormViewControllerTests: XCTestCase {
     
     override func run() {
