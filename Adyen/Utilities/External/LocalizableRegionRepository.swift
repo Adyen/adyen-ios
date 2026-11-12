@@ -40,14 +40,9 @@ package enum RegionRepository {
         }
     }
 
-    /// The country to select first: `prefilledCountryCode` when the supported ISO country codes contain it,
-    /// otherwise the first supported ISO country code. `nil` when no ISO country code is supported.
-    package static func initialCountryCode(
-        prefilled prefilledCountryCode: String?,
-        supportedCountryCodes: Set<String>?
-    ) -> String? {
-        let countryCodes = filteredCountryCodes(with: supportedCountryCodes)
-        return prefilledCountryCode.flatMap { countryCodes.contains($0) ? $0 : nil } ?? countryCodes.first
+    /// The first supported ISO country code, or `nil` when no ISO country code is supported.
+    package static func initialCountryCode(supportedCountryCodes: Set<String>?) -> String? {
+        filteredCountryCodes(with: supportedCountryCodes).first
     }
 
     private static func filteredCountryCodes(with countryCodes: Set<String>?) -> [String] {

@@ -226,7 +226,6 @@ private extension CardComponent {
 
     private var initialCountryCode: String? {
         RegionRepository.initialCountryCode(
-            prefilled: configuration.shopperInformation?.billingAddress?.country,
             supportedCountryCodes: configuration.billingAddressMode.supportedCountryCodes
         )
     }

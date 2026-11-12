@@ -154,13 +154,13 @@ struct CardComponentBillingAddressModeTests {
         let nonMatchingPrefill = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .full(supportedCountryCodes: ["UK"], hideForCardBrands: []),
+            billingAddressMode: .full(supportedCountryCodes: ["GB"], hideForCardBrands: []),
             shopperInformation: PrefilledShopperInformation(billingAddress: nonMatchingPrefill)
         )
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["UK"], selectedCountry: "UK")
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["GB"], selectedCountry: "GB")
     }
 
     @Test
