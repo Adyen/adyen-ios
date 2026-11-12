@@ -30,10 +30,11 @@ package final class ListViewController: UITableViewController {
     ///
     /// - Parameter style: The UI style.
     /// - Parameter theme: The theme to use for styling. Defaults to `.default`.
-    package init(style: ViewStyle, theme: CheckoutTheme = .default) {
+    /// - Parameter tableStyle: The style of the table view. Defaults to `.grouped`.
+    package init(style: ViewStyle, theme: CheckoutTheme = .default, tableStyle: UITableView.Style = .grouped) {
         self.style = style
         self.theme = theme
-        super.init(style: .grouped)
+        super.init(style: tableStyle)
     }
 
     @available(*, unavailable)

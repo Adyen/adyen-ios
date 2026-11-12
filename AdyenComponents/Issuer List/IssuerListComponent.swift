@@ -74,11 +74,11 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 
     package func performSubmit() {
         guard let selectedIssuerIndex else {
-            headerView.showsError = true
+            setShowsError(true)
             return
         }
 
-        headerView.showsError = false
+        setShowsError(false)
         submitButton.showsActivityIndicator = true
         searchViewController.view.isUserInteractionEnabled = false
 
@@ -116,8 +116,10 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             ),
             headerView: headerView,
             footerView: configuration.showsSubmitButton ? submitButton : nil,
-            resultsHorizontalInset: Layout.resultsHorizontalInset
+            resultsHorizontalInset: Layout.resultsHorizontalInset,
+            usesLargeTitleLayout: true
         )
+        searchViewController.title = title
         searchViewController.separatesResultsIntoSections = true
         searchViewController.resultsListViewController.sectionSpacing = Layout.listItemSpacing
         searchViewController.delegate = self
@@ -126,7 +128,6 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     }()
 
     private lazy var headerView = IssuerListHeaderView(
-        title: title,
         description: localizedString(.issuerListDescription, configuration.localizationParameters),
         errorMessage: localizedString(.issuerListErrorNoSelection, configuration.localizationParameters),
         theme: configuration.theme,
@@ -199,11 +200,18 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     private func selectIssuer(at index: Int) {
         searchViewController.view.endEditing(true)
         selectedIssuerIndex = index
-        headerView.showsError = false
+        setShowsError(false)
         sendIssuerSelectedEvent(issuerListPaymentMethod.issuers[index])
         searchViewController.reloadResults()
     }
     
+    /// Shows or hides the validation error, scrolling the header into view when the error appears.
+    private func setShowsError(_ showsError: Bool) {
+        guard headerView.showsError != showsError else { return }
+        headerView.showsError = showsError
+        searchViewController.updateHeaderLayout(revealingHeader: showsError)
+    }
+
     private func sendIssuerSelectedEvent(_ issuer: Issuer) {
         var event = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .selected)
         event.issuer = issuer.name

@@ -33,7 +33,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
-    private let resultsHorizontalInset: CGFloat
+    internal let resultsHorizontalInset: CGFloat
     private let searchTextFieldToResultsSpacing: CGFloat?
 
     /// Optional view shown above the search bar (e.g. a title/description header).
@@ -45,11 +45,20 @@ package class SearchViewController: UIViewController, AdyenObserver {
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
+    package lazy var resultsListViewController = makeResultsListViewController()
 
     /// Displays each result in its own section when enabled.
     /// Configure before loading the view.
     package var separatesResultsIntoSections = false
+
+    /// Whether the search bar is shown in the navigation bar and the header scrolls with the results.
+    internal let usesLargeTitleLayout: Bool
+
+    /// Holds the header as the results' table header when ``usesLargeTitleLayout`` is enabled.
+    internal lazy var scrollingHeaderView = UIView()
+
+    /// Shows the search bar in the navigation bar when ``usesLargeTitleLayout`` is enabled.
+    internal lazy var searchController = makeSearchController()
 
     /// Initializes the search view controller.
     ///
@@ -60,13 +69,16 @@ package class SearchViewController: UIViewController, AdyenObserver {
     ///   - footerView: The view pinned below the results, above the keyboard.
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
     ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
+    ///   - usesLargeTitleLayout: Shows the search bar in the navigation bar, where it stays visible while scrolling,
+    ///     and scrolls the header with the results, so a large navigation title can collapse.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,
         headerView: UIView? = nil,
         footerView: UIView? = nil,
         resultsHorizontalInset: CGFloat = 0,
-        searchTextFieldToResultsSpacing: CGFloat? = nil
+        searchTextFieldToResultsSpacing: CGFloat? = nil,
+        usesLargeTitleLayout: Bool = false
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
@@ -74,6 +86,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         self.footerView = footerView
         self.resultsHorizontalInset = resultsHorizontalInset
         self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
+        self.usesLargeTitleLayout = usesLargeTitleLayout
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -93,7 +106,10 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        .prominent(
+        if usesLargeTitleLayout {
+            return searchController.searchBar
+        }
+        return .prominent(
             placeholder: viewModel.searchBarPlaceholder,
             theme: viewModel.theme,
             delegate: self
@@ -120,15 +136,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
         resultsListViewController.didMove(toParent: self)
         resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        if viewModel.shouldShowSearchBar {
-            searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
-            searchBar.setContentHuggingPriority(.required, for: .vertical)
-            view.addSubview(searchBar)
-        }
+        headerView?.translatesAutoresizingMaskIntoConstraints = false
 
-        if let headerView {
-            headerView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(headerView)
+        if usesLargeTitleLayout {
+            setupLargeTitleLayout()
+        } else {
+            if viewModel.shouldShowSearchBar {
+                searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+                searchBar.setContentHuggingPriority(.required, for: .vertical)
+                view.addSubview(searchBar)
+            }
+            headerView.map(view.addSubview)
         }
 
         if let footerView {
@@ -150,9 +168,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
         viewModel.handleViewDidLoad()
     }
     
-    /// Reloads the results for the current search text, for example after the state of the results changed.
-    package func reloadResults() {
-        viewModel.handleSearchTextDidChange(currentSearchText)
+    override package func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutScrollingHeaderIfNeeded()
     }
 
     override package func viewWillAppear(_ animated: Bool) {
@@ -186,6 +204,41 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func setupConstraints() {
+        // With a large title, the results start at the top of the view, under the navigation bar, and the header is part of their content.
+        let (resultsTopAnchor, resultsTopSpacing) = usesLargeTitleLayout
+            ? (view.topAnchor, 0)
+            : setupFixedHeaderConstraints()
+        // The empty and loading views sit below the header, wherever it is.
+        let placeholderTopAnchor = usesLargeTitleLayout ? scrollingHeaderView.bottomAnchor : resultsTopAnchor
+        let placeholderTopSpacing = usesLargeTitleLayout ? 0 : resultsTopSpacing
+        let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
+        // The large title layout insets the rows through the table's margins.
+        let tableHorizontalInset = usesLargeTitleLayout ? 0 : resultsHorizontalInset
+
+        NSLayoutConstraint.activate([
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: tableHorizontalInset),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -tableHorizontalInset),
+            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: resultsBottomAnchor, constant: -resultsBottomSpacing),
+            
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: placeholderTopAnchor, constant: placeholderTopSpacing),
+            
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            loadingView.topAnchor.constraint(equalTo: placeholderTopAnchor, constant: placeholderTopSpacing),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
+        ])
+        
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        emptyViewBottomConstraint?.isActive = true
+    }
+
+    /// Activates the constraints of the header and the search bar shown above the results.
+    ///
+    /// - Returns: The anchor and spacing the results should start at.
+    private func setupFixedHeaderConstraints() -> (anchor: NSLayoutYAxisAnchor, spacing: CGFloat) {
 
         let contentTopAnchor: NSLayoutYAxisAnchor
         let contentTopSpacing: CGFloat
@@ -223,33 +276,15 @@ package class SearchViewController: UIViewController, AdyenObserver {
             resultsTopSpacing = contentTopSpacing
         }
         
-        let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
-
-        NSLayoutConstraint.activate([
-            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: resultsHorizontalInset),
-            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -resultsHorizontalInset),
-            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: resultsBottomAnchor, constant: -resultsBottomSpacing),
-            
-            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            emptyView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            
-            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            loadingView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
-        ])
-        
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        emptyViewBottomConstraint?.isActive = true
+        return (resultsTopAnchor, resultsTopSpacing)
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {
         
         emptyView.isHidden = true
         loadingView.stopAnimating()
-        resultsListViewController.view.isHidden = true
+        // The header is part of the results, so they stay visible to keep it on screen.
+        resultsListViewController.view.isHidden = !usesLargeTitleLayout
         
         switch interfaceState {
             
@@ -259,6 +294,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
         case let .empty(searchTerm):
             emptyView.isHidden = false
             emptyView.searchTerm = searchTerm
+            if usesLargeTitleLayout {
+                resultsListViewController.reload(newSections: [])
+            }
             
         case let .showingResults(results):
             let sections = separatesResultsIntoSections
@@ -300,6 +338,16 @@ package class SearchViewController: UIViewController, AdyenObserver {
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
+    }
+}
+
+// MARK: - Results & Header
+
+extension SearchViewController {
+
+    /// Reloads the results for the current search text, for example after the state of the results changed.
+    package func reloadResults() {
+        viewModel.handleSearchTextDidChange(currentSearchText)
     }
 }
 

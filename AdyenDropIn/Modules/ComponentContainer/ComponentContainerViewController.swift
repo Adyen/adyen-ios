@@ -82,6 +82,8 @@ internal class ComponentContainerViewController: UIViewController {
         view.addSubview(componentViewController.view)
         componentViewController.didMove(toParent: self)
         setupLayout()
+        // The navigation bar tracks the container, so adopt the scroll view the component declares, e.g. to collapse a large title.
+        setContentScrollView(componentViewController.contentScrollView(for: .top), for: .top)
     }
         
     private func setupLayout() {
@@ -90,11 +92,19 @@ internal class ComponentContainerViewController: UIViewController {
     
     private func setupNavigationItem() {
         navigationItem.title = componentViewController.title
-        // Components that show their title in their content leave it empty; reserving a large title would leave a blank area.
-        let hasTitle = componentViewController.title?.isEmpty == false
-        navigationItem.largeTitleDisplayMode = hasTitle ? .always : .never
-        if hasTitle {
-            navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        // The navigation bar shows the container's item, so adopt the component's search controller.
+        let componentNavigationItem = componentViewController.navigationItem
+        if let searchController = componentNavigationItem.searchController {
+            navigationItem.searchController = searchController
+            navigationItem.preferredSearchBarPlacement = componentNavigationItem.preferredSearchBarPlacement
+            navigationItem.hidesSearchBarWhenScrolling = componentNavigationItem.hidesSearchBarWhenScrolling
+            if #available(iOS 26.0, *) {
+                navigationItem.searchBarPlacementAllowsToolbarIntegration =
+                    componentNavigationItem.searchBarPlacementAllowsToolbarIntegration
+            }
+            definesPresentationContext = true
         }
         if viewModel.isDropInRoot {
             navigationItem.leftBarButtonItem = cancelButtonItem

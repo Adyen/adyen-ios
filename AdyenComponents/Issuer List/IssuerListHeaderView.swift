@@ -8,11 +8,10 @@ import Adyen
 import AdyenUI
 import UIKit
 
-/// The header of the issuer list, showing a title, a description and a validation error.
+/// The header of the issuer list, showing a description and a validation error.
 internal final class IssuerListHeaderView: UIView {
 
     private enum Layout {
-        static let titleToDescriptionSpacing: CGFloat = 8
         static let descriptionToErrorSpacing: CGFloat = 16
     }
 
@@ -29,16 +28,6 @@ internal final class IssuerListHeaderView: UIView {
     }
 
     // MARK: - Subviews
-
-    internal lazy var titleLabel: AdyenLabel = {
-        let label = makeLabel(
-            text: title,
-            style: theme.elements.labels.title,
-            postfix: "titleLabel"
-        )
-        label.accessibilityTraits = .header
-        return label
-    }()
 
     internal lazy var descriptionLabel: AdyenLabel = makeLabel(
         text: descriptionText,
@@ -57,10 +46,9 @@ internal final class IssuerListHeaderView: UIView {
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, errorLabel])
+        let stackView = UIStackView(arrangedSubviews: [descriptionLabel, errorLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.setCustomSpacing(Layout.titleToDescriptionSpacing, after: titleLabel)
         stackView.setCustomSpacing(Layout.descriptionToErrorSpacing, after: descriptionLabel)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -68,7 +56,6 @@ internal final class IssuerListHeaderView: UIView {
 
     // MARK: - Properties
 
-    private let title: String
     private let descriptionText: String
     private let errorMessage: String
     private let theme: CheckoutTheme
@@ -79,19 +66,16 @@ internal final class IssuerListHeaderView: UIView {
     /// Initializes the header view.
     ///
     /// - Parameters:
-    ///   - title: The title of the header.
     ///   - description: The description shown below the title.
     ///   - errorMessage: The message shown when ``showsError`` is `true`.
     ///   - theme: The theme to use for styling.
     ///   - identifierScope: The scope used to build the accessibility identifiers.
     internal init(
-        title: String,
         description: String,
         errorMessage: String,
         theme: CheckoutTheme,
         identifierScope: String
     ) {
-        self.title = title
         self.descriptionText = description
         self.errorMessage = errorMessage
         self.theme = theme

@@ -178,7 +178,7 @@ class IssuerListComponentTests: XCTestCase {
 
         // Then
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
-        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertNil(searchViewController.navigationItem.searchController)
     }
 
     func test_searchBar_withMoreThanTenIssuers_shouldBeShown() throws {
@@ -190,7 +190,7 @@ class IssuerListComponentTests: XCTestCase {
 
         // Then
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
-        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertNotNil(searchViewController.navigationItem.searchController)
     }
 
     func test_selection_whenSearchChanges_shouldBeKept() throws {
@@ -270,7 +270,8 @@ class IssuerListComponentTests: XCTestCase {
         wait(for: .seconds(1))
         
         // should update after throttle delay
-        XCTAssertTrue(listViewController.view.isHidden)
+        XCTAssertTrue(listViewController.sections.isEmpty)
+        XCTAssertFalse(searchViewController.emptyView.isHidden)
         XCTAssertEqual(analyticsProviderMock.infos.count, 2)
     }
 
