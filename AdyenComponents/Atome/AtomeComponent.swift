@@ -20,10 +20,6 @@ package final class AtomeComponent: AbstractPersonalInformationComponent {
         static let billingAddress = "billingAddressItem"
     }
 
-    // MARK: - Items
-
-    private let personalDetailsHeaderItem: FormLabelItem
-
     // MARK: - Initializers
 
     /// Initializes the Atome component.
@@ -36,8 +32,6 @@ package final class AtomeComponent: AbstractPersonalInformationComponent {
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
-        personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
-
         let fields: [PersonalInformation] = [
             .firstName,
             .lastName,
@@ -60,7 +54,6 @@ package final class AtomeComponent: AbstractPersonalInformationComponent {
     // MARK: - Private
 
     private func setupItems() {
-        personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         phoneItem?.title = localizedString(.phoneNumberTitle, configuration.localizationParameters)
     }
 

@@ -30,6 +30,10 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Colors
+
+- `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
 ## 6.0.0-alpha.1
 
 See also:
@@ -185,9 +189,9 @@ let checkout = try await Checkout.setup(
 
 The advanced flow is not available in this release. Use the session flow for payment components.
 The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
-`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment` and `PaymentComponentData` are package-only and cannot be
-used by merchant integrations. In the session flow, inspect or patch shopper data with
-`CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
+`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment`, `PaymentComponentData`, `PartialPaymentOrder` and
+`BrowserInfo` are package-only and cannot be used by merchant integrations. In the session flow, inspect or patch
+shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Checkout callbacks

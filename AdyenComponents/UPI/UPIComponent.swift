@@ -120,11 +120,8 @@ package final class UPIComponent: PaymentComponent,
             text: localizedString(
                 .upiModeSelection,
                 configuration.localizationParameters
-            ),
-            style: configuration.style.footnoteLabel
+            )
         )
-        item.style.color = .Adyen.componentLabel
-        item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.instructionsItem
@@ -160,10 +157,8 @@ package final class UPIComponent: PaymentComponent,
             text: localizedString(
                 .upiCollectInstruction,
                 configuration.localizationParameters
-            ),
-            style: configuration.style.footnoteLabel
+            )
         )
-        item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.vpaInputTitleItem
@@ -196,10 +191,8 @@ package final class UPIComponent: PaymentComponent,
             text: localizedString(
                 .upiIntentInstruction,
                 configuration.localizationParameters
-            ),
-            style: configuration.style.footnoteLabel
+            )
         )
-        item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.vpaInputTitleItem
