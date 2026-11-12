@@ -38,7 +38,7 @@ import UIKit
     public init(
         font: UIFont,
         color: UIColor,
-        disabledColor: UIColor = UIColor.Adyen.componentSecondaryLabel,
+        disabledColor: UIColor = .secondaryLabel,
         textAlignment: NSTextAlignment,
         cornerRounding: CornerRounding = .none,
         backgroundColor: UIColor = .clear

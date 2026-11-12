@@ -46,8 +46,7 @@ final class FormLabelItemTests: XCTestCase {
 
     func test_formLabelItem_convenienceInitializer_shouldUseDefaultTheme() {
         let item = FormLabelItem(
-            text: "Test",
-            style: TextStyle(font: .systemFont(ofSize: 16), color: .black)
+            text: "Test"
         )
         let defaultTheme = CheckoutTheme.default
         let sut = FormLabelItemView(item: item, theme: defaultTheme)
@@ -64,8 +63,7 @@ final class FormLabelItemTests: XCTestCase {
 
     func test_formLabelItem_whenHiddenBeforeBuild_shouldStartHidden() {
         let item = FormLabelItem(
-            text: "Test",
-            style: TextStyle(font: .systemFont(ofSize: 16), color: .black)
+            text: "Test"
         )
         item.isHidden.wrappedValue = true
 

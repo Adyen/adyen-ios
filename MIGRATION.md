@@ -42,6 +42,10 @@
   - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
   - `adyen.payto.await.description` (`paytoAwaitDescription`)
 
+### Colors
+
+- `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
 ## 6.0.0-alpha.1
 
 See also:
