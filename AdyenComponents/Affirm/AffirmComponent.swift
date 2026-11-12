@@ -39,7 +39,7 @@ package final class AffirmComponent: AbstractPersonalInformationComponent {
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
-        personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
+        personalDetailsHeaderItem = FormLabelItem(text: "")
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
         let fields: [PersonalInformation] = [

@@ -36,7 +36,7 @@ package final class AtomeComponent: AbstractPersonalInformationComponent {
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
-        personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
+        personalDetailsHeaderItem = FormLabelItem(text: "")
 
         let fields: [PersonalInformation] = [
             .firstName,

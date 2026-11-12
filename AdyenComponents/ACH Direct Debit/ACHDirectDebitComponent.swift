@@ -124,8 +124,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     
     internal lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(
-            text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
-            style: configuration.style.sectionHeader
+            text: localizedString(.achBankAccountTitle, configuration.localizationParameters)
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
