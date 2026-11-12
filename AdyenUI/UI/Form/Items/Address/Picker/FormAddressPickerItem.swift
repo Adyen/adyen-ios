@@ -16,7 +16,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         case delivery
     }
     
-    private var initialCountry: String
+    private var initialCountry: String?
     private let theme: CheckoutTheme
     private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
@@ -37,7 +37,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
 
     package init(
         for addressType: AddressType,
-        initialCountry: String,
+        initialCountry: String?,
         supportedCountryCodes: Set<String>?,
         prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
@@ -149,7 +149,7 @@ extension FormAddressPickerItem {
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
-        initialCountry: String,
+        initialCountry: String?,
         supportedCountryCodes: Set<String>?,
         lookupProvider: AddressLookupProvider?,
         presenter: ViewControllerPresenter,
@@ -182,7 +182,7 @@ extension FormAddressPickerItem {
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
         theme: CheckoutTheme = .default,
-        initialCountry: String,
+        initialCountry: String?,
         supportedCountryCodes: Set<String>?,
         lookupProvider: AddressLookupProvider?,
         style: FormComponentStyle,

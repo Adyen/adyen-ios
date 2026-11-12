@@ -35,7 +35,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
     
     private var publisherObservers: [AddressField: Observation] = [:]
     
-    private var initialCountry: String
+    private var initialCountry: String?
     
     private lazy var validationMessage = localizedString(.validationAlertTitle, configuration.localizationParameters)
     
@@ -61,12 +61,12 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
     
     /// Initializes the form address item.
     /// - Parameters:
-    ///   - initialCountry: The initially set country
+    ///   - initialCountry: The initially set country, or `nil` to select no country.
     ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The Address view model builder
     package init(
-        initialCountry: String,
+        initialCountry: String?,
         configuration: Configuration,
         identifier: String? = nil,
         presenter: ViewControllerPresenter?,
@@ -149,7 +149,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
     }
     
     private func reloadFields() {
-        let subRegions = RegionRepository.subRegions(for: context.countryCode)
+        let subRegions = context.countryCode.flatMap(RegionRepository.subRegions(for:))
         addressViewModel = addressViewModelBuilder.build(context: context)
         
         let header: FormItem? = configuration.showsHeader ? headerItem.padding() : nil

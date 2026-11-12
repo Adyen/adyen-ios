@@ -16,7 +16,7 @@ extension AddressInputFormViewController {
         
         internal let supportedCountryCodes: Set<String>?
         internal let prefillAddress: PostalAddress?
-        internal let initialCountry: String
+        internal let initialCountry: String?
         internal let style: FormComponentStyle
         internal let theme: CheckoutTheme
         internal let addressViewModelBuilder: AddressViewModelBuilder
@@ -35,7 +35,7 @@ extension AddressInputFormViewController {
         /// - Parameters:
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
-        ///   - initialCountry: The initially selected country.
+        ///   - initialCountry: The initially selected country, or `nil` to select none.
         ///   - prefillAddress: The address to prefill the form with. If `nil` the search screen is shown on first appearance.
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
         ///   - addressViewModelBuilder: A closure providing addresses based on a search term
@@ -47,7 +47,7 @@ extension AddressInputFormViewController {
             style: FormComponentStyle,
             theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters?,
-            initialCountry: String,
+            initialCountry: String?,
             prefillAddress: PostalAddress?,
             supportedCountryCodes: Set<String>?,
             addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),

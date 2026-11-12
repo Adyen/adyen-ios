@@ -306,9 +306,14 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         let pickerSearchViewController = try presentCountryPicker(for: viewController)
         let firstListItem = try firstListItem(from: pickerSearchViewController)
+
+        // The picker lists `NSLocale.isoCountryCodes` in order, whose first entry is OS-dependent.
+        let expectedCode = try XCTUnwrap(NSLocale.isoCountryCodes.first)
+        let expectedTitle = (Locale(identifier: Locale.current.identifier) as NSLocale)
+            .displayName(forKey: .countryCode, value: expectedCode)
         XCTAssertNil(firstListItem.icon)
-        XCTAssertEqual(firstListItem.title, "Afghanistan")
-        XCTAssertEqual(firstListItem.subtitle, "AF")
+        XCTAssertEqual(firstListItem.title, expectedTitle)
+        XCTAssertEqual(firstListItem.subtitle, expectedCode)
     }
 
     func test_countryPicker_whenPresented_shouldShowHeaderSearchAndSelectedCountry() throws {

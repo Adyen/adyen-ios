@@ -32,14 +32,27 @@ package enum RegionRepository {
         from locale: NSLocale,
         with countryCodes: Set<String>? = nil
     ) -> [Region] {
-        let isoCountryCodes = NSLocale.isoCountryCodes
-        let filteredCodes = countryCodes.map { codes in isoCountryCodes.filter(codes.contains) } ?? isoCountryCodes
-        return filteredCodes.map { countryCode in
+        filteredCountryCodes(with: countryCodes).map { countryCode in
             Region(
                 identifier: countryCode,
                 name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode
             )
         }
+    }
+
+    /// The country to select first: `prefilledCountryCode` when the supported ISO country codes contain it,
+    /// otherwise the first supported ISO country code. `nil` when no ISO country code is supported.
+    package static func initialCountryCode(
+        prefilled prefilledCountryCode: String?,
+        supportedCountryCodes: Set<String>?
+    ) -> String? {
+        let countryCodes = filteredCountryCodes(with: supportedCountryCodes)
+        return prefilledCountryCode.flatMap { countryCodes.contains($0) ? $0 : nil } ?? countryCodes.first
+    }
+
+    private static func filteredCountryCodes(with countryCodes: Set<String>?) -> [String] {
+        let isoCountryCodes = NSLocale.isoCountryCodes
+        return countryCodes.map { codes in isoCountryCodes.filter(codes.contains) } ?? isoCountryCodes
     }
 
     package static func subRegions(for countryCode: String) -> [Region]? {

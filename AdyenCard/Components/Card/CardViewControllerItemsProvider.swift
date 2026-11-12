@@ -28,7 +28,7 @@ extension CardViewController {
         private let shopperInformation: PrefilledShopperInformation?
         private let cardLogos: [FormCardLogosItem.CardBrandLogo]
         private let scope: String
-        private let initialCountry: String
+        private let initialCountry: String?
         private let addressViewModelBuilder: AddressViewModelBuilder
         private let presenter: WeakReferenceViewControllerPresenter
         private let addressMode: BillingAddressMode
@@ -46,7 +46,7 @@ extension CardViewController {
             shopperInformation: PrefilledShopperInformation?,
             cardLogos: [FormCardLogosItem.CardBrandLogo],
             scope: String,
-            initialCountryCode: String,
+            initialCountryCode: String?,
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
