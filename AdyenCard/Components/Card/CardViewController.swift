@@ -156,9 +156,12 @@ internal class CardViewController: FormViewController {
             number: cardNumberItem.value,
             securityCode: configuration.showSecurityCode ? items.securityCodeItem.nonEmptyValue : nil,
             expiryMonth: expiryMonth,
-            expiryYear: expiryYear,
-            holder: configuration.showCardholderName ? items.holderNameItem.nonEmptyValue : nil
+            expiryYear: expiryYear
         )
+    }
+
+    internal var holderName: String? {
+        configuration.showCardholderName ? items.holderNameItem.nonEmptyValue : nil
     }
     
     internal var selectedBrand: String? {

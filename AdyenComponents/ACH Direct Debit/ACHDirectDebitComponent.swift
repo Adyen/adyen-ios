@@ -89,13 +89,15 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     
     private func submitEncryptedData(publicKey: String) {
         do {
-            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(
-                accountNumber: bankAccountNumberItem.value,
-                with: publicKey
+            let encryptedBankAccountNumber = try CheckoutEncryptor.encrypt(
+                field: .bankAccountNumber,
+                value: bankAccountNumberItem.value,
+                publicKey: publicKey
             )
-            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(
-                routingNumber: bankRoutingNumberItem.value,
-                with: publicKey
+            let encryptedBankRoutingNumber = try CheckoutEncryptor.encrypt(
+                field: .bankRoutingNumber,
+                value: bankRoutingNumberItem.value,
+                publicKey: publicKey
             )
             
             let details = ACHDirectDebitDetails(

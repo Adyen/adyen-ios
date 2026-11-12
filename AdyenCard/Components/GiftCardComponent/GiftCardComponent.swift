@@ -431,7 +431,7 @@ extension GiftCardComponent {
                 expiryMonth: expiryDateItem.expiryMonth,
                 expiryYear: expiryDateItem.expiryYear
             )
-            let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
+            let encryptedCard = try CheckoutEncryptor.encrypt(card: card, publicKey: cardPublicKey)
             
             let details: PartialPaymentMethodDetails
             
