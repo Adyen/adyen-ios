@@ -30,6 +30,39 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Encryption
+
+`CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:
+
+| Before | After |
+|---|---|
+| `CardEncryptor.encrypt(card: card, with: publicKey)` | `CheckoutEncryptor.encrypt(card: card, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(number: number, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .cardNumber, value: number, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(securityCode: securityCode, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .securityCode, value: securityCode, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationMonth: month, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryMonth, value: month, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationYear: year, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryYear, value: year, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(password: password, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .kcpPassword, value: password, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(accountNumber: accountNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankAccountNumber, value: accountNumber, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(routingNumber: routingNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankRoutingNumber, value: routingNumber, publicKey: publicKey)` |
+| `CardEncryptor.encryptToken(from: card, with: publicKey)` | Removed. Encrypt each field separately. |
+| `CardEncryptor.encrypt(bin: bin, with: publicKey)` | Removed. To call `/cardDetails`, encrypt the card number with `.cardNumber`. |
+
+The card models are renamed. Their properties are unchanged:
+
+| Before | After |
+|---|---|
+| `Card` | `CheckoutCard` |
+| `EncryptedCard` | `CheckoutEncryptedCard` |
+
+The `encryptedCard` parameter of the `CardDetails`, `GiftCardDetails` and `MealVoucherDetails` initializers now takes a `CheckoutEncryptedCard`.
+
+Other changes:
+
+- `Card.holder` and the `holder` parameter of the initializer are removed. The holder name is never encrypted, so send it in plain text, for example as `holderName` of `CardDetails`.
+- Every failure throws `CheckoutEncryptor.Error`. Check its `code`: `.invalidCard` when all fields of the card are `nil`, `.invalidPublicKey` when the public key is invalid, and `.encryptionFailed` for any other failure. The original error, if any, is in `underlyingError`. `CardEncryptor.Error` and `BankDetailsEncryptor.Error` are removed.
+- Values are no longer validated. Empty and non-numeric values are encrypted instead of throwing an error, so validate them before you encrypt them.
+- The public key must be a 2048-bit RSA key in the format `Exponent|Modulus`, in uppercase hexadecimal: 5 characters, `|`, then 512 characters, with nothing before or after. Any other key throws `.invalidPublicKey`.
+
 ## 6.0.0-alpha.1
 
 See also:

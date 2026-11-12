@@ -36,7 +36,7 @@ internal struct JWAInput {
 }
 
 /// Indicates encryption related errors.
-package enum EncryptionError: LocalizedError {
+internal enum EncryptionError: LocalizedError {
 
     /// Indicates a problem with the key
     case invalidKey
@@ -59,7 +59,7 @@ package enum EncryptionError: LocalizedError {
     /// Any other error.
     case other(Error)
     
-    package var errorDescription: String? {
+    internal var errorDescription: String? {
         switch self {
         case .invalidKey:
             return "Key is invalid."

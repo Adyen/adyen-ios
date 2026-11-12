@@ -21,22 +21,17 @@ public struct CheckoutCard {
     /// The year the card expires.
     public var expiryYear: String?
 
-    /// The name of the card holder.
-    public var holder: String?
-
     /// Create new unencrypted card from collected strings.
     /// - Parameters:
     ///   - number: The card number.
     ///   - securityCode: The card's security code.
     ///   - expiryMonth: The month the card expires.
     ///   - expiryYear: The year the card expires.
-    ///   - holder: The name of the card holder.
-    public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil, holder: String? = nil) {
+    public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
         self.number = number
         self.securityCode = securityCode
         self.expiryMonth = expiryMonth
         self.expiryYear = expiryYear
-        self.holder = holder
     }
 
     internal var isEmpty: Bool {
