@@ -22,7 +22,7 @@ internal struct FieldPayload: Payload {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: Key.self)
         try container.encode(value, forKey: Key(field.key))
-        try container.encode(ISO8601DateFormatter().string(from: timestamp), forKey: Key("generationtime"))
+        try container.encode(timestamp.ISO8601Format(), forKey: Key("generationtime"))
     }
 
     private struct Key: CodingKey {
