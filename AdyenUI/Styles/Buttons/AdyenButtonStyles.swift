@@ -36,5 +36,5 @@ package struct AdyenButtonStyles {
         self.destructive = destructive
     }
 
-    internal static let `default`: AdyenButtonStyles = AdyenElements.default.buttons
+    @MainActor internal static let `default`: AdyenButtonStyles = AdyenElements.default.buttons
 }

@@ -22,16 +22,17 @@ package final class BasicPersonalInfoFormComponent: AbstractPersonalInformationC
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    @MainActor
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration? = nil
     ) {
         super.init(
             paymentMethod: paymentMethod,
             context: context,
             fields: [.firstName, .lastName, .phone, .email],
-            configuration: configuration
+            configuration: configuration ?? .init()
         )
     }
 

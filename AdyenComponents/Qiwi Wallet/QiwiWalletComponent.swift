@@ -24,17 +24,18 @@ package final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Qiwi Wallet payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    @MainActor
     package init(
         paymentMethod: QiwiWalletPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration? = nil
     ) {
         self.qiwiWalletPaymentMethod = paymentMethod
         super.init(
             paymentMethod: paymentMethod,
             context: context,
             fields: [.phone],
-            configuration: configuration
+            configuration: configuration ?? .init()
         )
     }
 

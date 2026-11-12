@@ -60,6 +60,7 @@ package final class BCMCComponent: CardComponent {
 
 private extension CardConfiguration {
     
+    @MainActor
     func bcmcConfiguration() -> CardConfiguration {
         var configuration = CardConfiguration()
         configuration.style = style

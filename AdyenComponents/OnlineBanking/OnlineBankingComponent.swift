@@ -110,14 +110,15 @@ package final class OnlineBankingComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Online Banking payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
+    @MainActor
     package init(
         paymentMethod: OnlineBankingPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.onlineBankingPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
 
     package func performSubmit() {

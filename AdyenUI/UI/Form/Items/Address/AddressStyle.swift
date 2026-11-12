@@ -18,7 +18,7 @@ package struct AddressStyle: FormValueItemStyle {
     )
 
     /// The text field style.
-    package var textField = FormTextItemStyle()
+    package var textField: FormTextItemStyle
 
     /// The tint color of the view.
     package var tintColor: UIColor? {
@@ -54,5 +54,8 @@ package struct AddressStyle: FormValueItemStyle {
     }
     
     /// Initializes the form address item configuration with default values
-    package init() {}
+    @MainActor
+    package init() {
+        textField = FormTextItemStyle()
+    }
 }

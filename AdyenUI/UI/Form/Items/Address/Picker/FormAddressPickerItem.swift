@@ -35,6 +35,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         }
     }
 
+    @MainActor
     package init(
         for addressType: AddressType,
         initialCountry: String,

@@ -7,18 +7,19 @@
 import Adyen
 import UIKit
 
-public struct CheckoutTheme {
+public struct CheckoutTheme: Sendable {
 
     public private(set) var colors: CheckoutColors
     package private(set) var attributes: AdyenAttributes
     package private(set) var elements: AdyenElements
 
     /// A default instance of CheckoutTheme.
-    public static let `default` = CheckoutTheme()
+    @MainActor public static let `default` = CheckoutTheme()
 
     /// Initializes the theme with optional color palette overrides.
     ///
     /// - Parameter colors: Shared checkout color tokens. Defaults to `.default`.
+    @MainActor
     public init(colors: CheckoutColors = .default) {
         self.colors = colors
         self.attributes = .default
@@ -28,6 +29,7 @@ public struct CheckoutTheme {
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `CheckoutTheme` instance.
+    @MainActor
     public func colors(_ colors: CheckoutColors) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
@@ -39,6 +41,7 @@ public struct CheckoutTheme {
     /// Returns a new theme with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to apply to UI elements.
     /// - Returns: A new `CheckoutTheme` instance.
+    @MainActor
     public func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
@@ -53,6 +56,7 @@ public struct CheckoutTheme {
 extension CheckoutTheme {
 
     /// Internal initializer that accepts elements (for SDK use).
+    @MainActor
     internal init(
         colors: CheckoutColors = .default,
         elements: AdyenElements = .default,
@@ -66,6 +70,7 @@ extension CheckoutTheme {
     /// Returns a new theme with the specified attributes.
     /// - Parameter attributes: The UI attributes to apply.
     /// - Returns: A new `CheckoutTheme` instance.
+    @MainActor
     internal func attributes(_ attributes: AdyenAttributes) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,

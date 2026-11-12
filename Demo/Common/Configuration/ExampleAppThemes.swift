@@ -88,6 +88,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     internal static let defaultOption = ExampleAppTheme.defaultTheme
 
     /// Returns the corresponding CheckoutTheme for this appearance style.
+    @MainActor
     internal var theme: CheckoutTheme {
         switch self {
         case .defaultTheme:
@@ -104,11 +105,13 @@ internal enum ExampleAppTheme: String, CaseIterable {
     // MARK: - Theme Definitions
 
     /// Default theme - SDK defaults
+    @MainActor
     private var defaultAppTheme: CheckoutTheme {
         CheckoutTheme.default
     }
 
     /// Midnight theme - Dark purple accent (Dynamic)
+    @MainActor
     private var midnightTheme: CheckoutTheme {
         CheckoutTheme(
             colors: .init(
@@ -131,6 +134,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     }
 
     /// Sunset theme - Warm orange tones (Dynamic)
+    @MainActor
     private var sunsetTheme: CheckoutTheme {
         CheckoutTheme(
             colors: .init(
@@ -153,6 +157,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     }
 
     /// Static Brand theme - Non-dynamic colors (does NOT adapt to dark mode)
+    @MainActor
     private var staticBrandTheme: CheckoutTheme {
         let brandPrimary = UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
         let brandAccent = UIColor(red: 1.0, green: 0.58, blue: 0.0, alpha: 1.0)

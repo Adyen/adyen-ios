@@ -320,6 +320,7 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
+    @MainActor
     internal var cardConfiguration: CardConfiguration {
         CardConfiguration()
             .showCardholderName(cardSettings.showCardholderName)
@@ -332,6 +333,7 @@ internal struct DemoAppSettings: Codable {
             .billingAddressMode(cardSettings.billingAddress.billingAddressMode)
     }
 
+    @MainActor
     internal var dropInConfiguration: DropInConfiguration {
         var dropInConfiguration = DropInConfiguration()
             .hideStoredPaymentMethods(dropInSettings.hideStoredPaymentMethods)
@@ -344,6 +346,7 @@ internal struct DemoAppSettings: Codable {
         cardSettings.billingAddress.addressCallbacks
     }
 
+    @MainActor
     internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
         var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
         authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations

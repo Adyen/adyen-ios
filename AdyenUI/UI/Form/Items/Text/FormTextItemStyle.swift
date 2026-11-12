@@ -28,13 +28,7 @@ import UIKit
     public var placeholderText: TextStyle?
     
     /// The icons' style.
-    package var icon = ImageStyle(
-        borderColor: UIColor.Adyen.componentSeparator,
-        borderWidth: 1.0 / UIScreen.main.nativeScale,
-        cornerRadius: 4.0,
-        clipsToBounds: true,
-        contentMode: .scaleAspectFit
-    )
+    package var icon: ImageStyle
     
     /// The tint color of text field and separator in focused state.
     public var tintColor: UIColor? {
@@ -46,7 +40,7 @@ import UIKit
     public var backgroundColor: UIColor = .clear
     
     /// The accent color for warnings and error messages.
-    public var errorColor = CheckoutTheme().colors.destructive
+    public var errorColor = CheckoutColors.default.destructive
     
     /// The color for separator element.
     /// If value is nil, the default color would be used.
@@ -72,12 +66,23 @@ import UIKit
     
     /// Initializes the text item's style with the default style and custom tint for all elements.
     /// - Parameter tintColor: The color for tinting the item and validation icon.
+    @MainActor
     public init(tintColor: UIColor) {
+        self.init()
         self.tintColor = tintColor
         icon.tintColor = tintColor
     }
     
     /// Initializes the text item's style with the default style.
-    public init() {}
+    @MainActor
+    public init() {
+        icon = ImageStyle(
+            borderColor: UIColor.Adyen.componentSeparator,
+            borderWidth: 1.0 / UIScreen.main.nativeScale,
+            cornerRadius: 4.0,
+            clipsToBounds: true,
+            contentMode: .scaleAspectFit
+        )
+    }
     
 }

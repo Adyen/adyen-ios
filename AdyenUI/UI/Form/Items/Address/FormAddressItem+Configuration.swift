@@ -27,6 +27,7 @@ package extension FormAddressItem {
         ///   - localizationParameters: The localization parameters.
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
         ///   - showsHeader: Whether to show a title header.
+        @MainActor
         package init(
             style: AddressStyle = AddressStyle(),
             supportedCountryCodes: [String]? = nil,
@@ -40,6 +41,7 @@ package extension FormAddressItem {
             )
         }
 
+        @MainActor
         package init(
             style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,

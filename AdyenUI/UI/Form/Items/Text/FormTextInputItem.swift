@@ -21,6 +21,7 @@ open class FormTextInputItem: FormTextItem {
     
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
+    @MainActor
     override public init(style: FormTextItemStyle = FormTextItemStyle()) {
         super.init(style: style)
     }

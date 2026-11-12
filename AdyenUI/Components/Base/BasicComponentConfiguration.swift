@@ -28,7 +28,7 @@ package struct BasicComponentConfiguration: CheckoutComponentConfiguration {
     package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: CheckoutTheme = .init()
+    package var theme: CheckoutTheme
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     package var showsSubmitButton: Bool
@@ -45,6 +45,7 @@ package struct BasicComponentConfiguration: CheckoutComponentConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
+    @MainActor
     package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true
@@ -56,12 +57,14 @@ package struct BasicComponentConfiguration: CheckoutComponentConfiguration {
         )
     }
 
+    @MainActor
     package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.style = style
+        self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.localizationParameters = localizationParameters
     }
@@ -75,7 +78,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: CheckoutTheme = .init()
+    package var theme: CheckoutTheme
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     package let showsSubmitButton: Bool
@@ -92,6 +95,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
+    @MainActor
     package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
@@ -105,6 +109,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
         )
     }
 
+    @MainActor
     package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
@@ -112,6 +117,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.style = style
+        self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters

@@ -73,7 +73,7 @@ package final class SecuredViewController<ChildViewController: UIViewController>
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
+    isolated deinit {
         backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
     }
 

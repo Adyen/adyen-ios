@@ -10,6 +10,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
+@MainActor
 internal final class NameFormItemInjector: FormItemInjector, Localizable {
 
     internal let contentType: UITextContentType

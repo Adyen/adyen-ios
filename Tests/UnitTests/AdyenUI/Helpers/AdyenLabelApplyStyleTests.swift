@@ -7,6 +7,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class AdyenLabelApplyStyleTests: XCTestCase {
     
     func test_apply_shouldSetAllPropertiesFromStyle() {

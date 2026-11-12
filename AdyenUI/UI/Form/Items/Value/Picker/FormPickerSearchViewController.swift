@@ -111,6 +111,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
 
 private extension FormPickable {
 
+    @MainActor
     func toListItem(
         isSelected: Bool,
         selectionHandler: @escaping (Self) -> Void

@@ -58,16 +58,17 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     ///   - configuration: Configuration for the component.
     ///   - viewModel: The view model backing the component's form.
     ///   - viewController: The view controller presented by the component.
+    @MainActor
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init(),
+        configuration: BasicComponentConfiguration? = nil,
         viewModel: BACSViewModel,
         viewController: UIViewController
     ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
         self.bacsViewModel = viewModel
         self.viewController = viewController
     }

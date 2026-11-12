@@ -37,14 +37,15 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
+    @MainActor
     package init(
         paymentMethod: SEPADirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
 
     package func performSubmit() {

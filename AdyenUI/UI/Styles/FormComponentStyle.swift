@@ -24,7 +24,7 @@ package struct FormComponentStyle: TintableStyle {
     }
     
     /// The text field style.
-    package var textField = FormTextItemStyle() {
+    package var textField: FormTextItemStyle {
         didSet {
             addressStyle.textField = textField
         }
@@ -84,7 +84,7 @@ package struct FormComponentStyle: TintableStyle {
     /// Set tint color of form.
     /// When set, updates tint colors for all underlying styles.
     /// If value is nil, the default color would be used.
-    package var tintColor: UIColor? {
+    @MainActor package var tintColor: UIColor? {
         didSet {
             setTintColor(tintColor)
         }
@@ -146,16 +146,20 @@ package struct FormComponentStyle: TintableStyle {
     
     /// Initializes the form style with the default style and custom tint for all elements.
     /// - Parameter tintColor: The color for tinting buttons. textfields, icons and switches.
+    @MainActor
     package init(tintColor: UIColor) {
-        self.addressStyle = .init(title: sectionHeader, textField: textField)
+        self.init()
         setTintColor(tintColor)
     }
     
     /// Initializes the form style with the default style.
+    @MainActor
     package init() {
+        textField = FormTextItemStyle()
         self.addressStyle = .init(title: sectionHeader, textField: textField)
     }
 
+    @MainActor
     private mutating func setTintColor(_ value: UIColor?) {
         guard let tintColor = value else { return }
         mainButtonItem.button.backgroundColor = tintColor

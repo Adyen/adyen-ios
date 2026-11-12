@@ -24,17 +24,18 @@ package final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    @MainActor
     package init(
         paymentMethod: DokuPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration? = nil
     ) {
         self.dokuPaymentMethod = paymentMethod
         super.init(
             paymentMethod: paymentMethod,
             context: context,
             fields: [.firstName, .lastName, .email],
-            configuration: configuration
+            configuration: configuration ?? .init()
         )
     }
 

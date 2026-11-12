@@ -13,7 +13,7 @@ import UIKit
 /// The component submits directly, so its view controller renders only the payment button.
 /// Drop-in embeds this controller below its stored payment method header.
 @MainActor
-package final class StoredPaymentMethodComponent: StoredPaymentComponent, Localizable, LoadingComponent {
+package final class StoredPaymentMethodComponent: @MainActor StoredPaymentComponent, @MainActor Localizable, @MainActor LoadingComponent {
 
     /// Set before the view controller is accessed, so that the payment button picks it up.
     package var localizationParameters: LocalizationParameters?

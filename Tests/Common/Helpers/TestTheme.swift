@@ -53,6 +53,7 @@ internal enum TestTheme {
     // MARK: - Theme Creation
 
     /// Creates a distinctive theme for UI testing with easily verifiable colors.
+    @MainActor
     internal static func distinctive() -> CheckoutTheme {
         let colors = CheckoutColors(
             container: Colors.container,
@@ -94,6 +95,7 @@ internal enum TestTheme {
     }
 }
 
+@MainActor
 extension CheckoutTheme {
 
     private func theme(with elements: AdyenElements) -> CheckoutTheme {

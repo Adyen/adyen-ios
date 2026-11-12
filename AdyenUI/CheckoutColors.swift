@@ -42,7 +42,7 @@ internal enum DefaultColorsDark {
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-public struct CheckoutColors: Equatable {
+public struct CheckoutColors: Equatable, Sendable {
 
     public var background: UIColor
     public var container: UIColor

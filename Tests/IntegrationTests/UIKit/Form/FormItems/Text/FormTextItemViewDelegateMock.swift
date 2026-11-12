@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import Foundation
 
+@MainActor
 final class FormTextItemViewDelegateMock<ItemType: FormTextItem, TextViewType: FormTextItemView<ItemType>>: FormTextItemViewDelegate {
     
     var handleDidReachMaximumLength: ((_ itemView: TextViewType) -> Void)?

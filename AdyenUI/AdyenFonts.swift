@@ -46,7 +46,7 @@ public struct AdyenFonts {
     }
     
     /// A static default AdyenFonts.
-    public static var `default`: AdyenFonts = .init()
+    @MainActor public static var `default`: AdyenFonts = .init()
 }
 
-extension AdyenFonts: Equatable {}
+extension AdyenFonts: Equatable, Sendable {}

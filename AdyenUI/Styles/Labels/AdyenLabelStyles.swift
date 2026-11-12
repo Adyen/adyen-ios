@@ -18,7 +18,7 @@ package struct AdyenLabelStyles {
     package var label: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
-    internal static let `default` = AdyenElements.default.labels
+    @MainActor internal static let `default` = AdyenElements.default.labels
 
     /// Initializes the label styles with all parameters required.
     ///

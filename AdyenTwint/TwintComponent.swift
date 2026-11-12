@@ -50,14 +50,15 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     /// - Parameter paymentMethod: The Twint  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
+    @MainActor
     package init(
         paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.

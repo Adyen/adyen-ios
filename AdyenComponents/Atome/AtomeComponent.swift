@@ -31,11 +31,13 @@ package final class AtomeComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Atome payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    @MainActor
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration? = nil
     ) {
+        let configuration = configuration ?? .init()
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
 
         let fields: [PersonalInformation] = [

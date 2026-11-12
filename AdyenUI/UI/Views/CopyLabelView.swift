@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
-package final class CopyLabelView: UIView, Localizable {
+package final class CopyLabelView: UIView, @MainActor Localizable {
 
     package var localizationParameters: LocalizationParameters?
 

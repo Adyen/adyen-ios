@@ -10,6 +10,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
 import Foundation
 
+@MainActor
 package protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
@@ -20,6 +21,7 @@ package protocol BACSItemsFactoryProtocol {
     func createLegalConsentToggle() -> FormToggleItem
 }
 
+@MainActor
 internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     private enum ViewIdentifier {

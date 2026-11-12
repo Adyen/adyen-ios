@@ -59,11 +59,13 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
+    @MainActor
     package init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitConfiguration = .init()
+        configuration: ACHDirectDebitConfiguration? = nil
     ) {
+        let configuration = configuration ?? .init()
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.context = context

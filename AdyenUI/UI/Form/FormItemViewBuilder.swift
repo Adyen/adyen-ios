@@ -8,7 +8,7 @@ import Foundation
 
 /// Builds different types of `FormItemView's`  from the corresponding concrete `FormItem`.
 @_spi(AdyenInternal)
-public struct FormItemViewBuilder {
+@MainActor public struct FormItemViewBuilder {
 
     /// The theme to use for building views.
     package let theme: CheckoutTheme

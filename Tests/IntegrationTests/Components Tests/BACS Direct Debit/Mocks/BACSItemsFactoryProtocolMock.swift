@@ -8,6 +8,7 @@
 @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 
+@MainActor
 class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     // MARK: - createHolderNameItem

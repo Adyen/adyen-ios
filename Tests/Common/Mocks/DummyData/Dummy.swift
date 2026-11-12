@@ -133,13 +133,14 @@ enum Dummy: Error {
         )
     }
 
+    @MainActor
     internal static func getConfiguration(
         with shopperInfo: PrefilledShopperInformation? = nil,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
         BoletoComponent.Configuration(
-            style: style,
+            style: style ?? FormComponentStyle(),
             shopperInformation: shopperInfo,
             showEmailAddress: showEmailAddress
         )

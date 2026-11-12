@@ -58,6 +58,7 @@ public struct CheckoutConfiguration {
     /// - Throws: `CheckoutError` with one of the following codes if the configuration is invalid:
     ///   - ``CheckoutError/Code/invalidClientKey`` — the client key is malformed.
     ///   - ``CheckoutError/Code/invalidConfiguration`` — a component configuration (e.g. Apple Pay) is invalid.
+    @MainActor
     public init(
         environment: Environment,
         clientKey: String,
@@ -94,6 +95,7 @@ public struct CheckoutConfiguration {
         )
     }
     
+    @MainActor
     internal init(
         apiContext: APIContext,
         analyticsApiContext: APIContext?,

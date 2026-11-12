@@ -35,7 +35,8 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     func stopLoading(_ tableView: UITableView)
 }
 
-internal final class CoreListDataSource: NSObject, ListViewControllerDataSource {
+@MainActor
+internal final class CoreListDataSource: NSObject, @MainActor ListViewControllerDataSource {
     
     internal var sections: [ListSection] = []
     

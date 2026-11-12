@@ -16,6 +16,7 @@ package struct AdyenElements {
     /// This is the SINGLE SOURCE OF TRUTH for all default styling values.
     ///
     /// - Parameter colors: The color scheme to use.
+    @MainActor
     internal init(colors: CheckoutColors) {
         // ALL default styling configuration is defined HERE in one place
 
@@ -96,5 +97,5 @@ package struct AdyenElements {
         )
     }
 
-    internal static let `default` = AdyenElements(colors: .default)
+    @MainActor internal static let `default` = AdyenElements(colors: .default)
 }

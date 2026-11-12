@@ -246,6 +246,7 @@ private extension CardComponent {
 
 private extension CardConfiguration {
 
+    @MainActor
     func addressLookupViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
@@ -264,6 +265,7 @@ private extension CardConfiguration {
         )
     }
 
+    @MainActor
     func addressInputFormViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,

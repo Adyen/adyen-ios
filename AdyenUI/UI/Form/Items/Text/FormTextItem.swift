@@ -44,6 +44,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     /// Closure that is called when the view of this item ends editing.
     public var onDidEndEditing: (() -> Void)?
 
+    @MainActor
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)
     }

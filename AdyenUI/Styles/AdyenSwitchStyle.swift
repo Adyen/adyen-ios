@@ -21,7 +21,7 @@ package struct AdyenSwitchStyle {
     package var cornerRadius: CornerRounding
     
     /// A default instance of AdyenSwitchStyle.
-    internal static let `default` = AdyenElements.default.switch
+    @MainActor internal static let `default` = AdyenElements.default.switch
 
     /// Initializes the form switch item style with all parameters required.
     ///

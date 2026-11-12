@@ -10,7 +10,7 @@ import UIKit
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-package final class GenericPaymentComponent: PaymentComponent, LoadingComponent {
+package final class GenericPaymentComponent: @MainActor PaymentComponent, @MainActor LoadingComponent {
 
     package lazy var viewController: UIViewController = paymentButtonViewController
 

@@ -33,6 +33,7 @@ public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, 
     package var billingAddressCountryCodes: [String]
 
     /// Initializes the configuration for ACH Direct Debit.
+    @MainActor
     public init() {
         self.style = FormComponentStyle()
         self.showsSubmitButton = true

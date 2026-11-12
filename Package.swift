@@ -267,7 +267,7 @@ let package = Package(
             path: "AdyenUI",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .binaryTarget(

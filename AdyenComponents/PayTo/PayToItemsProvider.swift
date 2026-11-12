@@ -10,6 +10,7 @@ import Adyen
 @_spi(AdyenInternal) import AdyenUI
 import UIKit
 
+@MainActor
 internal protocol PayToItemsProviding {
     
     func createFlowSelectionTitleItem() -> FormLabelItem
@@ -29,6 +30,7 @@ internal protocol PayToItemsProviding {
     func createContinueButtonItem() -> FormButtonItem
 }
 
+@MainActor
 internal class PayToItemsProvider: PayToItemsProviding {
     
     private enum ViewIdentifier {

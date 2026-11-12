@@ -81,6 +81,7 @@ private extension AddressLookupViewController {
 
 extension AddressLookupViewController.ViewModel {
     
+    @MainActor
     internal func buildAddressInputFormViewModel(
         with prefillAddress: PostalAddress?
     ) -> AddressInputFormViewController.ViewModel {
@@ -98,6 +99,7 @@ extension AddressLookupViewController.ViewModel {
         )
     }
     
+    @MainActor
     internal func buildAddressSearchViewModel(
         presentationHandler: @escaping (UIViewController) -> Void
     ) -> AddressLookupSearchViewController.ViewModel {

@@ -11,7 +11,7 @@ import Adyen
 /// This factory creates `GenericPaymentComponent` instances configured with the
 /// provided generic payment method and component configuration.
 @MainActor
-package struct GenericPaymentComponentFactory: PaymentComponentFactory {
+package struct GenericPaymentComponentFactory: @MainActor PaymentComponentFactory {
     package typealias Configuration = BasicComponentConfiguration
     package typealias Method = GenericPaymentMethod
     package typealias Component = GenericPaymentComponent

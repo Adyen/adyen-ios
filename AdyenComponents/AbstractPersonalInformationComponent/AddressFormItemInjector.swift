@@ -9,6 +9,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormViewController
 import UIKit
 
+@MainActor
 internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     
     internal var localizationParameters: LocalizationParameters?

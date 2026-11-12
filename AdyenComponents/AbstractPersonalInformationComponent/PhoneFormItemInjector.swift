@@ -9,6 +9,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormViewController
 import Foundation
 
+@MainActor
 internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
 
     internal var localizationParameters: LocalizationParameters?

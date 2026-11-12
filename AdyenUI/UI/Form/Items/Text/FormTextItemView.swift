@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 
 /// The interface of the delegate of a text item view.
+@MainActor
 package protocol FormTextItemViewDelegate: AnyObject {
 
     /// Invoked when the text entered in the item view's text field has reached the maximum length.

@@ -68,6 +68,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     // updates including last 4 digits, or add it here after deciding on alignment.
 
     /// Initializes a new instance of `CardComponentConfiguration`.
+    @MainActor
     public init() {
         self.theme = .init()
         self.style = FormComponentStyle()
