@@ -148,17 +148,6 @@ class QRCodeActionComponentTests: XCTestCase {
         
         let copyCodeExpectation = expectation(description: "Copy code completion was called.")
         
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            instructionLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
-        
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: "",
@@ -173,7 +162,7 @@ class QRCodeActionComponentTests: XCTestCase {
                 copyCodeExpectation.fulfill()
             }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, theme: .default)
         
         setupRootViewController(qrCodeViewController)
         
@@ -198,17 +187,6 @@ class QRCodeActionComponentTests: XCTestCase {
         
         let saveImageExpectation = expectation(description: "Save image completion was called.")
         
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            instructionLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
-        
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: "",
@@ -222,7 +200,7 @@ class QRCodeActionComponentTests: XCTestCase {
                 saveImageExpectation.fulfill()
             }, onCopyCode: { _ in /* Empty implementation */ }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, theme: .default)
         
         setupRootViewController(qrCodeViewController)
         

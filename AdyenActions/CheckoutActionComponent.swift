@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -34,8 +35,8 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         /// Localization parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// The UI style configurations.
-        package var style: ActionComponentStyle = .init()
+        /// The theme applied to action screens.
+        package var theme: CheckoutTheme
 
         /// Authentication configuration.
         package var authentication: AuthenticationConfiguration
@@ -46,17 +47,17 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         /// Initializes a new instance.
         ///
         /// - Parameters:
-        ///   - style: The UI style configurations.
+        ///   - theme: The theme applied to action screens.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
         package init(
-            style: ActionComponentStyle = .init(),
+            theme: CheckoutTheme = .default,
             authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.init(
                 localizationParameters: nil,
-                style: style,
+                theme: theme,
                 authentication: authentication,
                 twint: twint
             )
@@ -64,12 +65,12 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
 
         package init(
             localizationParameters: LocalizationParameters? = nil,
-            style: ActionComponentStyle = .init(),
+            theme: CheckoutTheme = .default,
             authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters
-            self.style = style
+            self.theme = theme
             self.authentication = authentication
             self.twint = twint
         }
@@ -130,7 +131,6 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     
     private func handle(_ action: RedirectAction) {
         let component = RedirectComponent(context: context)
-        component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -205,7 +205,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     
     private func handle(_ action: AwaitAction) {
         let component = AwaitComponent(context: context)
-        component.configuration.style = configuration.style.awaitComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -218,7 +218,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
 
     private func handle(_ action: RedirectableAwaitAction) {
         let component = AwaitComponent(context: context)
-        component.configuration.style = configuration.style.awaitComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -231,7 +231,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
 
     private func handle(_ action: VoucherAction) {
         let component = VoucherComponent(context: context)
-        component.configuration.style = configuration.style.voucherComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -243,7 +243,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     
     private func handle(_ action: QRCodeAction) {
         let component = QRCodeActionComponent(context: context)
-        component.configuration.style = configuration.style.qrCodeComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -255,7 +255,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     
     private func handle(_ action: DocumentAction) {
         let component = DocumentComponent(context: context)
-        component.configuration.style = configuration.style.documentActionComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.configuration.localizationParameters = configuration.localizationParameters

@@ -24,22 +24,18 @@ package final class AwaitComponent: ActionComponent, Cancellable {
 
     /// The await component configurations.
     package struct Configuration {
-        
-        /// The component UI style.
-        package var style: AwaitComponentStyle
-        
+
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme
+
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
-        package init(style: AwaitComponentStyle = .init()) {
-            self.init(style: style, localizationParameters: nil)
-        }
 
         package init(
-            style: AwaitComponentStyle = .init(),
+            theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters? = nil
         ) {
-            self.style = style
+            self.theme = theme
             self.localizationParameters = localizationParameters
         }
     }
@@ -116,7 +112,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             with: action.paymentMethodType,
             localizationParameters: configuration.localizationParameters
         )
-        let awaitView = AwaitView(viewModel: viewModel, style: configuration.style)
+        let awaitView = AwaitView(viewModel: viewModel, theme: configuration.theme)
         let viewController = ActionViewController(view: awaitView)
 
         if let actionPresentationDelegate {

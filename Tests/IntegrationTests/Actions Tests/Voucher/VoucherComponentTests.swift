@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenUI
 import UIKit
 import XCTest
 
@@ -28,6 +29,7 @@ class VoucherComponentTests: XCTestCase {
         super.setUp()
         actionPresentationDelegate = ActionPresentationDelegateMock()
         sut = VoucherComponent(context: Dummy.context)
+        sut.configuration.theme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.actionPresentationDelegate = actionPresentationDelegate
     }
@@ -191,12 +193,11 @@ class VoucherComponentTests: XCTestCase {
         _ model: VoucherView.Model,
         forAction action: VoucherAction
     ) {
-        XCTAssertEqual(model.style.mainButton, sut.configuration.style.mainButton)
-        XCTAssertEqual(model.style.secondaryButton, sut.configuration.style.secondaryButton)
-        XCTAssertEqual(model.style.amountLabel, sut.configuration.style.amountLabel)
-        XCTAssertEqual(model.style.currencyLabel, sut.configuration.style.currencyLabel)
-        XCTAssertEqual(model.style.codeConfirmationColor, sut.configuration.style.codeConfirmationColor)
-        XCTAssertEqual(model.style.backgroundColor, sut.configuration.style.backgroundColor)
+        XCTAssertEqual(model.theme.colors, sut.configuration.theme.colors)
+        XCTAssertEqual(model.theme.elements.buttons.primary, sut.configuration.theme.elements.buttons.primary)
+        XCTAssertEqual(model.theme.elements.buttons.tertiary, sut.configuration.theme.elements.buttons.tertiary)
+        XCTAssertEqual(model.theme.elements.labels.title.font, sut.configuration.theme.elements.labels.title.font)
+        XCTAssertEqual(model.theme.elements.labels.title.color, sut.configuration.theme.elements.labels.title.color)
         
         let comps = action.anyAction.totalAmount.formattedComponents
         
