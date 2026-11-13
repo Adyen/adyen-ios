@@ -171,4 +171,30 @@ struct CheckoutEncryptorTests {
 
         #expect(error?.localizedDescription == error?.message)
     }
+
+    @Test func error_fromEveryThrowSite_shouldHaveMessage() throws {
+        let unparsablePublicKey = String(repeating: "0", count: 5) + "|" + String(repeating: "0", count: 512)
+        let generator = JSONWebEncryptionGeneratorMock()
+        generator.onGenerate = { _, _, _ in throw Dummy.error }
+        let key = try CheckoutEncryptor.makeSecKey(from: Dummy.publicKey)
+
+        let errors = [
+            thrownError { try CheckoutEncryptor.encrypt(card: CheckoutCard(), publicKey: Dummy.publicKey) },
+            thrownError { try CheckoutEncryptor.encrypt(field: .cardNumber, value: "1234", publicKey: "test_key") },
+            thrownError { try CheckoutEncryptor.encrypt(field: .cardNumber, value: "1234", publicKey: unparsablePublicKey) },
+            thrownError { try CheckoutEncryptor.encrypt(FieldPayload(field: .cardNumber, value: "1234"), with: key, generator: generator) }
+        ]
+
+        #expect(errors.map { $0?.code } == [.invalidCard, .invalidPublicKey, .invalidPublicKey, .encryptionFailed])
+        for error in errors {
+            #expect(error?.message?.isEmpty == false, "\(error?.code.rawValue ?? "no error")")
+        }
+    }
+
+    private func thrownError(
+        sourceLocation: SourceLocation = #_sourceLocation,
+        _ body: () throws -> some Any
+    ) -> CheckoutEncryptor.Error? {
+        #expect(throws: CheckoutEncryptor.Error.self, sourceLocation: sourceLocation, performing: body)
+    }
 }
