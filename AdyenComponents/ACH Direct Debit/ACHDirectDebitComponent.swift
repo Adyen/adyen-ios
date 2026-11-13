@@ -221,7 +221,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         
         if
             let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
-            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+            supportedCountryCodes?.contains(prefillCountryCode) ?? true {
             initialCountry = prefillCountryCode
         }
         
