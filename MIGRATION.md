@@ -30,6 +30,10 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Colors
+
+- `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
 ### Encryption
 
 `CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:

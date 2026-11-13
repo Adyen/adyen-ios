@@ -101,7 +101,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         let brandDetected = !numberItem.detectedBrands.isEmpty
         let errorShown = state.shouldShowError
         supportedCardLogosItem.isHidden.wrappedValue =
-            brandDetected || numberItem.isValid() || errorShown
+            brandDetected || errorShown
     }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
