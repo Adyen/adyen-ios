@@ -6,15 +6,20 @@
 
 import Adyen
 import AdyenUI
+import Combine
 import Foundation
 import UIKit
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     var theme: CheckoutTheme { get }
+    var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
+    /// Whether the container is the root of the drop in, in which case it lets the shopper close the drop in.
+    var isDropInRoot: Bool { get }
     func cancel()
+    /// Closes the drop in, notifying the merchant that the shopper left it before submitting a payment.
+    func cancelDropIn()
 }
 
 @MainActor
@@ -23,6 +28,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     internal let theme: CheckoutTheme
+    internal let isDropInRoot: Bool
     internal weak var router: ComponentContainerRouting?
     private let component: PaymentComponent
     private let configuration: DropInConfiguration
@@ -36,13 +42,15 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         theme: CheckoutTheme,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        isDropInRoot: Bool
     ) {
         self.component = component
         self.theme = theme
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.isDropInRoot = isDropInRoot
         setupComponent()
     }
 
@@ -52,11 +60,20 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.viewController
     }
 
+    internal var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
+        dropInFlowManager.paymentInProgressPublisher
+    }
+
     internal func cancel() {
         dropInFlowManager.cancel(component: component)
         
         stopLoading()
         router?.dismiss(completion: nil)
+    }
+
+    internal func cancelDropIn() {
+        dropInFlowManager.cancelDropIn()
+        dropInFlowManager.dismissDropIn()
     }
 
     // MARK: - Private

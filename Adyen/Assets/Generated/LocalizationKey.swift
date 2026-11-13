@@ -74,8 +74,6 @@ public struct LocalizationKey {
     public static let cardExpiryItemInvalid = LocalizationKey(key: "adyen.card.expiryItem.invalid")
     /// Month, 2 digits, Year, 2 digits
     public static let cardExpiryItemAccessibilityLabel = LocalizationKey(key: "adyen.card.expiryItem.accessibilityLabel")
-    /// Invalid CVC / CVV format
-    public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
     /// Enter security code
@@ -100,8 +98,8 @@ public struct LocalizationKey {
     public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
     /// Card Brand
     public static let creditCardDualBrandTitle = LocalizationKey(key: "adyen.creditCard.dualBrand.title")
-    /// Select the card brand you prefer to pay with. This is optional.
-    public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen.creditCard.dualBrand.description")
+    /// You can select the card brand you prefer to pay with. This is optional.
+    public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen_checkout_card_dual_brand_selector_description")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
@@ -358,6 +356,20 @@ public struct LocalizationKey {
     public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description")
     /// %@ monthly payments of %@
     public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen_checkout_card_installments_option_regular_description_with_price")
+    /// Security code
+    public static let cardSecurityCodeLabel = LocalizationKey(key: "adyen_checkout_card_security_code_label")
+    /// 3 digits on back of card
+    public static let cardSecurityCodeHintThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_hint_three_digits")
+    /// 4 digits on front of card
+    public static let cardSecurityCodeHintFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_hint_four_digits")
+    /// Enter the security code. 3 digits on back of card.
+    public static let cardSecurityCodeErrorEmptyThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_three_digits")
+    /// Enter the security code. 4 digits on front of card.
+    public static let cardSecurityCodeErrorEmptyFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_empty_four_digits")
+    /// Enter the complete security code. 3 digits on back of card.
+    public static let cardSecurityCodeErrorIncompleteThreeDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_incomplete_three_digits")
+    /// Enter the complete security code. 4 digits on front of card.
+    public static let cardSecurityCodeErrorIncompleteFourDigits = LocalizationKey(key: "adyen_checkout_card_security_code_error_incomplete_four_digits")
     /// Bank account holder name
     public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
     /// Bank account number

@@ -24,4 +24,6 @@ package protocol AnyDropInComponent: Component {
         with order: PartialPaymentOrder,
         _ paymentMethods: PaymentMethods
     ) throws
+
+    func endPaymentAttempt()
 }
