@@ -49,7 +49,9 @@ final class CheckoutTests: XCTestCase {
     func test_actionHandlingComponent_withCheckoutLocalizationProvider_shouldResolveLocalizationParametersForActionAndAuthenticationConfigurations() throws {
         // Given
         let provider = CheckoutLocalizationProviderMock(values: [
-            .awaitLoading: "Await custom",
+            .awaitTitle: "Await title custom",
+            .awaitDescription: "Await description custom",
+            .awaitStatus: "Await status custom",
             .cardNumber: "Card number"
         ])
         configuration = configuration.localizationProvider(provider)
@@ -61,7 +63,9 @@ final class CheckoutTests: XCTestCase {
         // Then
         let actionLocalizationParameters = try XCTUnwrap(actionComponent.configuration.localizationParameters)
         let authenticationLocalizationParameters = try XCTUnwrap(actionComponent.configuration.authentication.localizationParameters)
-        XCTAssertEqual(localizedString(.awaitWaitForConfirmation, actionLocalizationParameters), "Await custom")
+        XCTAssertEqual(localizedString(.checkoutAwaitTitle, actionLocalizationParameters), "Await title custom")
+        XCTAssertEqual(localizedString(.checkoutAwaitDescription, actionLocalizationParameters), "Await description custom")
+        XCTAssertEqual(localizedString(.checkoutAwaitStatus, actionLocalizationParameters), "Await status custom")
         XCTAssertEqual(localizedString(.cardNumberItemTitle, authenticationLocalizationParameters), "Card number")
     }
 

@@ -7,20 +7,11 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenUI
 import Foundation
+import SwiftUI
 
 /// A component that handles Await action's.
 @MainActor
 package final class AwaitComponent: ActionComponent, Cancellable {
-
-    /// The context object for this component.
-    package let context: AdyenContext
-
-    /// Delegates view controller presentation.
-    package weak var actionPresentationDelegate: ActionPresentationDelegate?
-
-    package weak var delegate: ActionComponentDelegate?
-
-    internal var appLauncher: AnyAppLauncher = AppLauncher()
 
     /// The await component configurations.
     package struct Configuration {
@@ -39,48 +30,76 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             self.localizationParameters = localizationParameters
         }
     }
-    
-    /// The await component configurations.
-    package var configuration: Configuration
 
-    private let awaitComponentBuilder: AnyPollingHandlerProvider
-    
-    /// Initializes the `AwaitComponent`.
-    ///
-    /// - Parameter context: The context object for this component.
-    /// - Parameter configuration: The await component configurations.
-    package convenience init(
-        context: AdyenContext,
-        configuration: Configuration = .init()
-    ) {
-        self.init(
-            context: context,
-            awaitComponentBuilder: PollingHandlerProvider(context: context),
-            configuration: configuration
-        )
+    /// The await flow handled by the component.
+    internal enum Flow {
+        case standard(AwaitAction)
+        case redirectable(RedirectableAwaitAction)
     }
-    
+
+    // MARK: - Properties
+
+    /// The context object for this component.
+    package let context: AdyenContext
+
+    package weak var delegate: ActionComponentDelegate?
+
+    /// Delegates view controller presentation.
+    private weak var actionPresentationDelegate: ActionPresentationDelegate?
+
+    /// The await component configurations.
+    private let configuration: Configuration
+
+    private let flow: Flow
+
+    private let appLauncher: AnyAppLauncher
+
+    private let pollingHandler: AnyPollingHandler
+
+    private let componentName = "await"
+
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter context: The context object for this component.
-    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
-    /// - Parameter configuration: The Component UI style.
+    /// - Parameter flow: The await flow to handle.
+    /// - Parameter actionPresentationDelegate: The delegate presenting the component's view controller.
+    /// - Parameter configuration: The await component configurations.
+    /// - Parameter appLauncher: The app launcher used to open the redirect URL.
+    /// - Parameter pollingHandlerProvider: The payment method specific polling handler provider.
     internal init(
         context: AdyenContext,
-        awaitComponentBuilder: AnyPollingHandlerProvider,
-        configuration: Configuration = .init()
+        flow: Flow,
+        actionPresentationDelegate: ActionPresentationDelegate,
+        configuration: Configuration = .init(),
+        appLauncher: AnyAppLauncher = AppLauncher(),
+        pollingHandlerProvider: AnyPollingHandlerProvider
     ) {
         self.context = context
+        self.flow = flow
+        self.actionPresentationDelegate = actionPresentationDelegate
         self.configuration = configuration
-        self.awaitComponentBuilder = awaitComponentBuilder
+        self.appLauncher = appLauncher
+        self.pollingHandler = pollingHandlerProvider.handler(for: flow.paymentMethodType)
+        pollingHandler.delegate = self
     }
-    
-    private let componentName = "await"
-    
-    /// Handles redirect await action.
-    ///
-    /// - Parameter action: The await action object.
-    package func handle(_ action: RedirectableAwaitAction) {
+
+    /// Handles the await action provided at initialization.
+    package func handle() {
+        switch flow {
+        case let .standard(action):
+            handle(action)
+        case let .redirectable(action):
+            handle(action)
+        }
+    }
+
+    package func didCancel() {
+        pollingHandler.didCancel()
+    }
+
+    // MARK: - Private
+
+    private func handle(_ action: RedirectableAwaitAction) {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
             guard let self else { return }
             if success {
@@ -98,36 +117,61 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         }
     }
 
-    package func didCancel() {
-        paymentMethodSpecificPollingComponent?.didCancel()
-    }
-
-    /// Handles await action.
-    ///
-    /// - Parameter action: The await action object.
-    package func handle(_ action: AwaitAction) {
+    private func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
 
-        let viewModel = AwaitComponentViewModel.viewModel(
-            with: action.paymentMethodType,
-            localizationParameters: configuration.localizationParameters
-        )
-        let awaitView = AwaitView(viewModel: viewModel, theme: configuration.theme)
-        let viewController = ActionViewController(view: awaitView)
-
-        if let actionPresentationDelegate {
-            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .await))
-        } else {
+        guard let actionPresentationDelegate else {
             let message = "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)
+            return
         }
 
-        paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
-        paymentMethodSpecificPollingComponent?.delegate = delegate
+        let viewModel = AwaitComponentViewModel(
+            paymentMethodType: action.paymentMethodType,
+            environment: context.apiContext.environment,
+            localizationParameters: configuration.localizationParameters
+        )
+        let viewController = UIHostingController(rootView: AwaitView(viewModel: viewModel, theme: configuration.theme))
+        viewController.sizingOptions = .preferredContentSize
 
-        paymentMethodSpecificPollingComponent?.handle(action)
+        actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .await))
+        pollingHandler.handle(action)
     }
+}
 
-    private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
+// MARK: - ActionComponentDelegate
+
+extension AwaitComponent: ActionComponentDelegate {
+
+    package func didProvide(
+        _ data: ActionComponentData,
+        from component: any ActionComponent
+    ) {
+        delegate?.didProvide(data, from: self)
+    }
     
+    package func didComplete(
+        from component: any ActionComponent
+    ) {
+        delegate?.didComplete(from: self)
+    }
+    
+    package func didFail(
+        with error: any Error,
+        from component: any ActionComponent
+    ) {
+        delegate?.didFail(with: error, from: self)
+    }
+}
+
+private extension AwaitComponent.Flow {
+
+    var paymentMethodType: AwaitPaymentMethod {
+        switch self {
+        case let .standard(action):
+            return action.paymentMethodType
+        case let .redirectable(action):
+            return action.paymentMethodType
+        }
+    }
 }

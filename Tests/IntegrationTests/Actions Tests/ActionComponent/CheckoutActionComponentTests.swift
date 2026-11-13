@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @_spi(AdyenInternal) @testable import AdyenUI
 import SafariServices
+import SwiftUI
 import XCTest
 
 #if canImport(AdyenTwint)
@@ -124,12 +125,12 @@ class CheckoutActionComponentTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
-        XCTAssertNotNil(awaitViewController.view as? AwaitView)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: UIHostingController<AwaitView>.self)
+        XCTAssertEqual(awaitViewController.rootView.viewModel.title, localizedString(.checkoutAwaitTitle, nil))
 
         (sut.actionPresentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
+            XCTAssertNil(topPresentedViewController as? UIHostingController<AwaitView>)
 
             waitExpectation.fulfill()
         }
@@ -164,12 +165,12 @@ class CheckoutActionComponentTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
-        XCTAssertNotNil(awaitViewController.view as? AwaitView)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: UIHostingController<AwaitView>.self)
+        XCTAssertEqual(awaitViewController.rootView.viewModel.title, localizedString(.checkoutAwaitTitle, nil))
 
         try XCTUnwrap(sut.actionPresentationDelegate as? UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
+            XCTAssertNil(topPresentedViewController as? UIHostingController<AwaitView>)
 
             waitExpectation.fulfill()
         }
@@ -303,6 +304,19 @@ class CheckoutActionComponentTests: XCTestCase {
             _ = TwintActionConfiguration(callbackAppScheme: scheme)
         }
     }
+
+    func test_didCancel_shouldCancelTheCurrentActionComponent() {
+        // Given
+        let sut = CheckoutActionComponent(context: Dummy.context)
+        let currentActionComponent = CancellableActionComponentMock()
+        sut.currentActionComponent = currentActionComponent
+
+        // When
+        sut.didCancel()
+
+        // Then
+        XCTAssertEqual(currentActionComponent.didCancelCallsCount, 1)
+    }
     
     func testHandleRedirectEvent() throws {
         let redirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
@@ -367,4 +381,16 @@ class CheckoutActionComponentTests: XCTestCase {
         }
     }
     
+}
+
+@MainActor
+private final class CancellableActionComponentMock: ActionComponent, Cancellable {
+    let context = Dummy.context
+    weak var delegate: ActionComponentDelegate?
+
+    var didCancelCallsCount = 0
+
+    func didCancel() {
+        didCancelCallsCount += 1
+    }
 }

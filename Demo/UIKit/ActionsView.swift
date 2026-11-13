@@ -26,6 +26,10 @@ internal final class ActionsViewModel: ObservableObject {
         present(actionJSON: DummyAction.qrCode)
     }
 
+    internal func presentAwait() {
+        present(actionJSON: DummyAction.awaitAction)
+    }
+
     private func present(actionJSON: String) {
         let example = ActionComponentExample(actionJSON: actionJSON)
         example.presenter = presenter
@@ -52,6 +56,11 @@ internal struct ActionsView: View {
                     title: "QR Code",
                     subtitle: "Pix QR code (QRCodeView)",
                     action: viewModel.presentQRCode
+                )
+                actionRow(
+                    title: "Await",
+                    subtitle: "BLIK await (AwaitView)",
+                    action: viewModel.presentAwait
                 )
             }
         }

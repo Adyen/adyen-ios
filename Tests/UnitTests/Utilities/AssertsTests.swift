@@ -54,8 +54,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitActionViewControllerPreferredContentSizeAssertion() {
-        let awaitView = AwaitView(viewModel: AwaitComponentViewModel(icon: "", message: "", spinnerTitle: ""))
-        let sut = ActionViewController(view: awaitView)
+        let sut = ActionViewController(view: UIView())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -70,7 +69,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(context: context)
+        let sut = CheckoutActionComponent(context: context)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -78,7 +77,7 @@ class AssertsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        sut.handle(AwaitAction(paymentData: "", paymentMethodType: .blik))
+        sut.handle(.await(AwaitAction(paymentData: "", paymentMethodType: .blik)))
 
         wait(for: [expectation], timeout: 10)
 

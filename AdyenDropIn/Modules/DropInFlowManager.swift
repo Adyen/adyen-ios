@@ -29,7 +29,8 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Handles the action returned by the payment session for the pending submission.
     func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
-    func cancel(component: PaymentComponent)
+    /// The shopper left the payment method before its submission completed, so a late action is ignored.
+    func discardPendingSubmission()
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
@@ -73,7 +74,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponent?.delegate
     }
 
-    private lazy var actionComponent: CheckoutActionComponent = {
+    internal private(set) lazy var actionComponent: CheckoutActionComponent = {
         let actionComponent = CheckoutActionComponent(
             context: context,
             configuration: actionComponentConfiguration
@@ -112,11 +113,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 
-    internal func cancel(component: PaymentComponent) {
+    internal func discardPendingSubmission() {
         endSubmission()
-
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
     internal func cancelDropIn() {
@@ -124,6 +122,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         didCancelDropIn = true
 
         endSubmission()
+        actionComponent.cancel()
         sendExitEvent()
 
         guard let dropInComponent else { return }
@@ -189,6 +188,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         // Dismissing an action, for example by closing the web page of a redirect,
         // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
+            guard !didCancelDropIn else { return }
             cancelDropIn()
             return dismissDropIn()
         }

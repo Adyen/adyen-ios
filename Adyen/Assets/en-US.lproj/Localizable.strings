@@ -64,9 +64,6 @@
 "adyen.emailItem.invalid" = "Invalid email address";
 "adyen.moreOptions" = "More options";
 "adyen.applePay.total" = "Total";
-"adyen.mbway.confirmPayment" = "Confirm your payment on the MB WAY app";
-"adyen.await.waitForConfirmation" = "Waiting for confirmation";
-"adyen.blik.confirmPayment" = "Open your banking app to confirm the payment.";
 "adyen.blik.invalid" = "Enter 6 numbers";
 "adyen.blik.code" = "6-digit code";
 "adyen.blik.help" = "Get the code from your banking app.";
@@ -218,8 +215,6 @@
 "adyen.upi.collect.instruction" = "Enter your UPI ID";
 "adyen.upi.mode.enterUpiId" = "UPI ID";
 "adyen.upi.collect.field.invalidIdError" = "Enter a valid UPI";
-"adyen.upi.collect.confirmPayment" = "Awaiting your confirmation…";
-"adyen.upi.vpaWaitingMessage" = "Open your UPI app to confirm the payment";
 "adyen.upi.qrcode.timerMessage" = "You have %@ to approve";
 "adyen.upi.qrcode.instructions" = "Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.";
 "adyen.cashAppPay.title" = "Cash App Pay";
@@ -296,7 +291,6 @@
 "adyen.payto.bsb.bankStateBranch.invalid" = "Enter a correct Bank State Branch";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Enter a correct bank account number";
 "adyen.payto.payid.description" = "Enter the PayID and account details that are connected to your PayTo account.";
-"adyen.payto.await.description" = "Thank you for your purchase, complete your payment by logging into you bank account, authorize the PayTo agreement and approve the payment terms.";
 "adyen.card.scanner.camera.access.denied.alert.title" = "Allow camera access";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Access was previously denied. To scan cards, please grant access from Settings.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Open Settings";
@@ -314,3 +308,6 @@
 "adyen.storedPaymentMethod.expired" = "Expired";
 "adyen.checkout.dropin.generic.payment.method.description" = "You will be guided to the next step of the process.";
 "adyen.checkout.dropin.generic.payment.method.progress.title" = "Processing...";
+"adyen.checkout.await.title" = "Awaiting";
+"adyen.checkout.await.description" = "Complete the payment in the provider's application or website.";
+"adyen.checkout.await.status" = "Awaiting completion…";

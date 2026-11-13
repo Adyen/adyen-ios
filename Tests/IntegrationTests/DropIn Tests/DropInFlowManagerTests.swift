@@ -66,12 +66,12 @@ struct DropInFlowManagerTests {
     }
 
     @Test
-    func receive_afterTheSubmissionWasCancelled_shouldNotHandleTheAction() {
+    func receive_afterThePendingSubmissionWasDiscarded_shouldNotHandleTheAction() {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
         environment.sut.submit(makePaymentComponentData(), from: component)
-        environment.sut.cancel(component: component)
+        environment.sut.discardPendingSubmission()
 
         // When
         environment.sut.receive(action: makeAction())
@@ -132,20 +132,6 @@ struct DropInFlowManagerTests {
     // MARK: - Cancellation Tests
 
     @Test
-    func cancelComponent_shouldNotifyTheMerchantOfTheCancelledComponent() {
-        // Given
-        let environment = makeSUT()
-        let component = makePaymentComponent()
-
-        // When
-        environment.sut.cancel(component: component)
-
-        // Then
-        #expect(environment.dropInComponentDelegate.didCancelComponentFromCallsCount == 1)
-        #expect(environment.dropInComponentDelegate.didCancelComponentFromReceivedArguments?.component === component)
-    }
-
-    @Test
     func cancelDropIn_shouldNotifyTheMerchantWithACancellationError() {
         // Given
         let environment = makeSUT()
@@ -196,6 +182,20 @@ struct DropInFlowManagerTests {
 
         // Then
         #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 0)
+    }
+
+    @Test("Cancelling the drop in stops the action in progress, for example the polling of an await action.")
+    func cancelDropIn_shouldCancelTheActionInProgress() {
+        // Given
+        let environment = makeSUT()
+        let actionComponent = CancellableActionComponentMock()
+        environment.sut.actionComponent.currentActionComponent = actionComponent
+
+        // When
+        environment.sut.cancelDropIn()
+
+        // Then
+        #expect(actionComponent.didCancelCallsCount == 1)
     }
 
     @Test
@@ -295,6 +295,20 @@ struct DropInFlowManagerTests {
         #expect(environment.dropInComponentDelegate.didFailActionWithFromInCallsCount == 0)
         #expect(isCancellation(environment.dropInComponentDelegate.didFailWithFromReceivedArguments?.error))
         #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 1)
+    }
+
+    @Test("A cancelled action reports its cancellation after the drop in was already cancelled and dismissed, which must not dismiss it again.")
+    func didFailAction_givenACancellationAfterTheDropInWasCancelled_shouldNotDismissTheDropInAgain() {
+        // Given
+        let environment = makeSUT()
+        environment.sut.cancelDropIn()
+
+        // When
+        environment.sut.didFail(with: ComponentError.cancelled, from: ActionComponentMock())
+
+        // Then
+        #expect(environment.dropInComponentDelegate.didFailWithFromCallsCount == 1)
+        #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 0)
     }
 
     // MARK: - ActionPresentationDelegate Tests
@@ -398,15 +412,14 @@ struct DropInFlowManagerTests {
         #expect(isPaymentInProgress(environment.sut))
     }
 
-    @Test("A submitted payment cannot be cancelled, so cancelling its component does not end it.")
-    func cancelComponent_shouldKeepThePaymentInProgress() {
+    @Test("A submitted payment cannot be cancelled, so discarding its pending submission does not end it.")
+    func discardPendingSubmission_shouldKeepThePaymentInProgress() {
         // Given
         let environment = makeSUT()
-        let component = makePaymentComponent()
-        environment.sut.submit(makePaymentComponentData(), from: component)
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
 
         // When
-        environment.sut.cancel(component: component)
+        environment.sut.discardPendingSubmission()
 
         // Then
         #expect(isPaymentInProgress(environment.sut))
@@ -437,6 +450,18 @@ struct DropInFlowManagerTests {
 
         func stopLoading() {
             stopLoadingCallsCount += 1
+        }
+    }
+
+    @MainActor
+    private final class CancellableActionComponentMock: ActionComponent, Adyen.Cancellable {
+        let context = Dummy.context
+        weak var delegate: ActionComponentDelegate?
+
+        var didCancelCallsCount = 0
+
+        func didCancel() {
+            didCancelCallsCount += 1
         }
     }
 

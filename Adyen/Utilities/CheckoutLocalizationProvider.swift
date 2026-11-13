@@ -152,7 +152,9 @@ extension CheckoutLocalizationKey {
 // MARK: - Await
 
 extension CheckoutLocalizationKey {
-    public static let awaitLoading = CheckoutLocalizationKey(localizationKey: .awaitWaitForConfirmation)
+    public static let awaitTitle = CheckoutLocalizationKey(localizationKey: .checkoutAwaitTitle)
+    public static let awaitDescription = CheckoutLocalizationKey(localizationKey: .checkoutAwaitDescription)
+    public static let awaitStatus = CheckoutLocalizationKey(localizationKey: .checkoutAwaitStatus)
 }
 
 // MARK: - MBWay

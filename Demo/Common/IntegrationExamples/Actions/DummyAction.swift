@@ -32,4 +32,12 @@ internal enum DummyAction {
             "type" : "qrCode"
           }
     """
+
+    internal static let awaitAction = """
+          {
+            "paymentMethodType" : "blik",
+            "paymentData" : "paymentData",
+            "type" : "await"
+          }
+    """
 }
