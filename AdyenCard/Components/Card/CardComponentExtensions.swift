@@ -27,13 +27,13 @@ extension CardComponent {
     private func submitEncryptedCardData(cardPublicKey: String) {
         do {
             let card = cardViewController.card
-            let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
+            let encryptedCard = try CheckoutEncryptor.encrypt(card: card, publicKey: cardPublicKey)
             let kcpDetails = try cardViewController.kcpDetails?.encrypt(with: cardPublicKey)
 
             let details = CardDetails(
                 paymentMethod: cardPaymentMethod,
                 encryptedCard: encryptedCard,
-                holderName: card.holder,
+                holderName: cardViewController.holderName,
                 selectedBrand: cardViewController.selectedBrand,
                 billingAddress: cardViewController.validAddress,
                 kcpDetails: kcpDetails,
@@ -94,7 +94,7 @@ extension KCPDetails {
     fileprivate func encrypt(with publicKey: String) throws -> KCPDetails {
         try KCPDetails(
             taxNumber: taxNumber,
-            password: CardEncryptor.encrypt(password: password, with: publicKey)
+            password: CheckoutEncryptor.encrypt(field: .kcpPassword, value: password, publicKey: publicKey)
         )
     }
 

@@ -14,7 +14,7 @@ class CardDetailsTests: XCTestCase {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.maestro, .accel])
         let sut = CardDetails(
             paymentMethod: paymentMethod,
-            encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
+            encryptedCard: CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
             holderName: "holder",
             billingAddress: PostalAddress(
                 city: "city",
@@ -43,7 +43,7 @@ class CardDetailsTests: XCTestCase {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: .other("test_type"), name: "test name", brands: [.visa, .alphaBankBonusVISA])
         let sut = CardDetails(
             paymentMethod: paymentMethod,
-            encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
+            encryptedCard: CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
             billingAddress: PostalAddress(postalCode: "postal")
         )
         let data = try JSONEncoder().encode(sut)

@@ -77,7 +77,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - kcpDetails: The additional details for KCP authentication.
     public init(
         paymentMethod: AnyCardPaymentMethod,
-        encryptedCard: EncryptedCard,
+        encryptedCard: CheckoutEncryptedCard,
         holderName: String? = nil,
         selectedBrand: String? = nil,
         billingAddress: PostalAddress? = nil,
