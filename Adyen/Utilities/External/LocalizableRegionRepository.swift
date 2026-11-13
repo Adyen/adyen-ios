@@ -56,7 +56,8 @@ package enum RegionRepository {
 
     private static func filteredCountryCodes(with countryCodes: Set<String>?) -> [String] {
         let isoCountryCodes = NSLocale.isoCountryCodes
-        return countryCodes.map { codes in isoCountryCodes.filter(codes.contains) } ?? isoCountryCodes
+        guard let countryCodes else { return isoCountryCodes }
+        return isoCountryCodes.filter(countryCodes.contains)
     }
 
     package static func subRegions(for countryCode: String) -> [Region]? {
