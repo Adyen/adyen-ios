@@ -24,12 +24,12 @@ public enum BillingAddressMode {
     /// Displays the full billing address form with all address fields.
     ///
     /// - Parameters:
-    ///   - supportedCountryCodes: List of ISO country codes supported for the billing address.
+    ///   - supportedCountryCodes: Set of uppercase ISO 3166-1 alpha-2 country codes supported for the billing address.
     ///     When empty, all countries are available.
     ///   - hideForCardBrands: Card brands for which the address form should be hidden
     ///     when detected via BIN lookup.
     case full(
-        supportedCountryCodes: [String] = [],
+        supportedCountryCodes: Set<String> = [],
         hideForCardBrands: Set<CardBrand> = []
     )
     

@@ -16,7 +16,7 @@ struct CardComponentBillingAddressModeTests {
 
     // MARK: - Arbitrary test values (do not influence outcomes)
 
-    private static let anySupportedCountryCodes = ["US"]
+    private static let anySupportedCountryCodes: Set<String> = ["US"]
     private static let anyCardBrand = CardBrand.visa
     private static let anyHideForCardBrands: Set<CardBrand> = []
     private static let anyOnAddressLookup: @MainActor @Sendable (String) async -> [AddressLookupResult] = { _ in [] }
@@ -133,7 +133,7 @@ struct CardComponentBillingAddressModeTests {
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "US")
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "NL")
     }
 
     @Test
@@ -154,13 +154,13 @@ struct CardComponentBillingAddressModeTests {
         let nonMatchingPrefill = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .full(supportedCountryCodes: ["UK"], hideForCardBrands: []),
+            billingAddressMode: .full(supportedCountryCodes: ["GB"], hideForCardBrands: []),
             shopperInformation: PrefilledShopperInformation(billingAddress: nonMatchingPrefill)
         )
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["UK"], selectedCountry: "UK")
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["GB"], selectedCountry: "GB")
     }
 
     @Test
@@ -240,7 +240,7 @@ struct CardComponentBillingAddressModeTests {
         let configData = try analyticsConfigData(for: .full(supportedCountryCodes: ["US", "NL"], hideForCardBrands: Self.anyHideForCardBrands))
 
         #expect(configData["billingAddressMode"] == "full")
-        #expect(configData["billingAddressAllowedCountries"] == "US,NL")
+        #expect(configData["billingAddressAllowedCountries"] == "NL,US")
         #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 
@@ -849,7 +849,7 @@ private struct CardComponentProxy {
     /// tap billing address picker -> fill address fields via views -> tap Done.
     func fillBillingAddressViaForm(with address: PostalAddress) async throws {
         let addressFormVC = try await openBillingAddressForm()
-        fillAddressFields(in: addressFormVC.view, with: address)
+        try fillAddressFields(in: addressFormVC, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }
@@ -875,7 +875,7 @@ private struct CardComponentProxy {
         searchVM.handleSwitchToManualEntry()
         await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
         let addressFormVC = try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
-        fillAddressFields(in: addressFormVC.view, with: address)
+        try fillAddressFields(in: addressFormVC, with: address)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }
@@ -1018,8 +1018,19 @@ private struct CardComponentProxy {
     }
 
     /// Fills address form fields by finding views via accessibility identifiers.
-    private func fillAddressFields(in formView: UIView, with address: PostalAddress) {
+    /// Selects the address' country first so country-dependent fields (e.g. the state picker) are rebuilt before filling.
+    private func fillAddressFields(in addressFormVC: AddressInputFormViewController, with address: PostalAddress) throws {
+        let formView: UIView = addressFormVC.view
         let prefix = "AddressInputFormViewController.address"
+
+        if let country = address.country {
+            let countryPickerItem = addressFormVC.addressItem.countryPickerItem
+            let match = try #require(
+                countryPickerItem.selectableValues.first { $0.identifier == country },
+                "Country \(country) not found in address form country picker"
+            )
+            countryPickerItem.value = match
+        }
 
         if let street = address.street {
             let view: FormTextInputItemView? = formView.findView(with: "\(prefix).street")

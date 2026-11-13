@@ -17,7 +17,7 @@ package extension FormAddressItem {
         /// The localization parameters.
         internal let localizationParameters: LocalizationParameters?
         /// Supported country codes. If `nil`, all country codes are listed.
-        internal let supportedCountryCodes: [String]?
+        internal let supportedCountryCodes: Set<String>?
         /// Whether to show a title header.
         internal let showsHeader: Bool
         
@@ -29,7 +29,7 @@ package extension FormAddressItem {
         ///   - showsHeader: Whether to show a title header.
         package init(
             style: AddressStyle = AddressStyle(),
-            supportedCountryCodes: [String]? = nil,
+            supportedCountryCodes: Set<String>? = nil,
             showsHeader: Bool = true
         ) {
             self.init(
@@ -43,7 +43,7 @@ package extension FormAddressItem {
         package init(
             style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,
-            supportedCountryCodes: [String]? = nil,
+            supportedCountryCodes: Set<String>? = nil,
             showsHeader: Bool = true
         ) {
             self.style = style

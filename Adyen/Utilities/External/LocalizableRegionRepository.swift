@@ -28,16 +28,36 @@ package struct Region: Decodable, CustomStringConvertible, Equatable {
 /// Fetch localized geographic regions from external.
 package enum RegionRepository {
 
+    /// - Parameter countryCodes: Supported country codes, or `nil` to include all `NSLocale.isoCountryCodes`.
+    ///   An empty set yields no regions.
     package static func regions(
         from locale: NSLocale,
-        with countryCodes: [String]? = nil
+        with countryCodes: Set<String>? = nil
     ) -> [Region] {
-        (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
+        filteredCountryCodes(with: countryCodes).map { countryCode in
             Region(
                 identifier: countryCode,
                 name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode
             )
         }
+    }
+
+    /// The first supported country code in `NSLocale.isoCountryCodes` order,
+    /// or `nil` when no ISO country code is supported.
+    ///
+    /// Ordering always follows `NSLocale.isoCountryCodes`, never the order in which
+    /// the supported codes were supplied.
+    ///
+    /// - Parameter supportedCountryCodes: Supported country codes, or `nil` to support all
+    ///   `NSLocale.isoCountryCodes`. An empty set yields a `nil` result.
+    package static func initialCountryCode(supportedCountryCodes: Set<String>?) -> String? {
+        filteredCountryCodes(with: supportedCountryCodes).first
+    }
+
+    private static func filteredCountryCodes(with countryCodes: Set<String>?) -> [String] {
+        let isoCountryCodes = NSLocale.isoCountryCodes
+        guard let countryCodes else { return isoCountryCodes }
+        return isoCountryCodes.filter(countryCodes.contains)
     }
 
     package static func subRegions(for countryCode: String) -> [Region]? {

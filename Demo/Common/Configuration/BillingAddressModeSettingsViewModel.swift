@@ -108,10 +108,10 @@ internal struct BillingAddressModeSettingsViewModel {
 
     internal func toggleCountryCode(_ code: String) {
         var countryCodes = supportedCountryCodes
-        if let index = countryCodes.firstIndex(of: code) {
-            countryCodes.remove(at: index)
+        if countryCodes.contains(code) {
+            countryCodes.remove(code)
         } else {
-            countryCodes.append(code)
+            countryCodes.insert(code)
         }
         billingAddress = billingAddress.withConfiguration(
             hideForCardBrands: hideForCardBrands,
@@ -138,14 +138,14 @@ internal struct BillingAddressModeSettingsViewModel {
         }
     }
 
-    private var supportedCountryCodes: [String] {
+    private var supportedCountryCodes: Set<String> {
         guard case let .full(countryCodes, _) = billingAddress else { return [] }
         return countryCodes
     }
 }
 
 private extension BillingAddressModeDemoSetting {
-    func withConfiguration(hideForCardBrands: Set<String>, supportedCountryCodes: [String]) -> BillingAddressModeDemoSetting {
+    func withConfiguration(hideForCardBrands: Set<String>, supportedCountryCodes: Set<String>) -> BillingAddressModeDemoSetting {
         switch self {
         case .none: return .none
         case .postalCode: return .postalCode(hideForCardBrands: hideForCardBrands)

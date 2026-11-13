@@ -46,8 +46,13 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         style: configuration.style
     )
 
-    private var defaultCountryCode: String {
-        configuration.billingAddressCountryCodes.first ?? "US"
+    private var defaultCountryCode: String? {
+        RegionRepository.initialCountryCode(supportedCountryCodes: supportedCountryCodes)
+    }
+
+    private var supportedCountryCodes: Set<String>? {
+        let codes = Set(configuration.billingAddressCountryCodes)
+        return codes.isEmpty ? nil : codes
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod
@@ -215,7 +220,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         
         if
             let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
-            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+            supportedCountryCodes?.contains(prefillCountryCode) ?? true {
             initialCountry = prefillCountryCode
         }
         
@@ -224,7 +229,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         return FormAddressPickerItem(
             for: .billing,
             initialCountry: initialCountry,
-            supportedCountryCodes: configuration.billingAddressCountryCodes,
+            supportedCountryCodes: supportedCountryCodes,
             prefillAddress: prefillAddress,
             theme: configuration.theme,
             style: configuration.style,

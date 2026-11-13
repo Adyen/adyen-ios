@@ -40,7 +40,7 @@ package class AddressInputFormViewController: FormViewController {
         
         // The done button should only be enabled once at least one field is filled in.
         // Either by prefilling or manually entering.
-        // The country field is excluded as it is always prefilled.
+        // The country field is excluded as it is prefilled whenever there is an initial country.
         var itemWithoutCountry = addressItem.value
         itemWithoutCountry.country = nil
         navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty

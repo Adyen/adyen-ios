@@ -141,7 +141,7 @@ internal struct CardSettings: Codable {
 internal enum BillingAddressModeDemoSetting: Codable, Hashable, CaseIterable {
     case none
     case postalCode(hideForCardBrands: Set<String> = [])
-    case full(supportedCountryCodes: [String] = [], hideForCardBrands: Set<String> = [])
+    case full(supportedCountryCodes: Set<String> = [], hideForCardBrands: Set<String> = [])
     case lookup(hideForCardBrands: Set<String> = [])
     case lookupMapKit(hideForCardBrands: Set<String> = [])
 
