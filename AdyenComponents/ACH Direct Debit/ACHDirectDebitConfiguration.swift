@@ -76,6 +76,7 @@ extension ACHDirectDebitConfiguration {
 
     /// Sets the list of ISO country codes supported for the billing address.
     /// - Parameter billingAddressCountryCodes: An array of ISO country codes.
+    ///   When empty, all countries are supported.
     /// - Returns: A modified configuration with the updated country codes.
     public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
         var config = self

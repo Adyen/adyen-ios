@@ -28,6 +28,8 @@ package struct Region: Decodable, CustomStringConvertible, Equatable {
 /// Fetch localized geographic regions from external.
 package enum RegionRepository {
 
+    /// - Parameter countryCodes: Supported country codes, or `nil` to include all `NSLocale.isoCountryCodes`.
+    ///   An empty set yields no regions.
     package static func regions(
         from locale: NSLocale,
         with countryCodes: Set<String>? = nil
@@ -45,6 +47,9 @@ package enum RegionRepository {
     ///
     /// Ordering always follows `NSLocale.isoCountryCodes`, never the order in which
     /// the supported codes were supplied.
+    ///
+    /// - Parameter supportedCountryCodes: Supported country codes, or `nil` to support all
+    ///   `NSLocale.isoCountryCodes`. An empty set yields a `nil` result.
     package static func initialCountryCode(supportedCountryCodes: Set<String>?) -> String? {
         filteredCountryCodes(with: supportedCountryCodes).first
     }
