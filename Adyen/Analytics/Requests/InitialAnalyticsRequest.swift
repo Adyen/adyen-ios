@@ -7,7 +7,6 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: Robert: Rename this to something that updates the analytics with some Analytics Data. Think enrichment, as this is no longer the `initial` AnalyticsRequest.
 internal struct InitialAnalyticsRequest: APIRequest {
 
     /// This request actually generates a `CheckoutAttemptIdResponse` response type. But we ignore this response.
