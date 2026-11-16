@@ -485,11 +485,41 @@ struct PaymentMethodListViewModelTests {
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
     }
 
+    // MARK: - Card Brand Logos Tests
+
+    @Test
+    func didLoad_givenUSDebitCardBrands_shouldExcludeUSDebitLogos() throws {
+        // Given
+        let cardPaymentMethod = CardPaymentMethod(
+            type: .scheme,
+            name: "Cards",
+            fundingSource: .credit,
+            brands: [.accel, .visa, .pulse, .masterCard, .star, .nyce]
+        )
+        let (sut, _, _) = makeSUT(regularPaymentMethods: [cardPaymentMethod])
+
+        // When
+        sut.didLoad()
+
+        // Then
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected loaded state")
+            return
+        }
+        let cardItem = try #require(sections.flatMap(\.items).first { $0.title == "Cards" })
+        let trailingInfoData = try #require(cardItem.trailingInfoData)
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let expectedLogoUrls = [CardBrand.visa, .masterCard].map { logoURLProvider.logoURL(withName: $0.rawValue) }
+        #expect(trailingInfoData.logoUrls == expectedLogoUrls)
+        #expect(trailingInfoData.text == nil)
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(
         includeApplePay: Bool = true,
         storedPaymentMethods: [any StoredPaymentMethod]? = nil,
+        regularPaymentMethods: [any PaymentMethod]? = nil,
         supportsStoredPaymentMethodManagement: Bool = false,
         amount: Amount? = .init(value: 100, currencyCode: "EUR"),
         configuration: DropInConfiguration = .init()
@@ -509,6 +539,9 @@ struct PaymentMethodListViewModelTests {
         var methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
         if let storedPaymentMethods {
             methods.stored = storedPaymentMethods
+        }
+        if let regularPaymentMethods {
+            methods.regular = regularPaymentMethods
         }
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,

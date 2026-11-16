@@ -400,3 +400,11 @@ extension CardBrand {
         }
     }
 }
+
+extension CardBrand {
+
+    /// US debit brands are sent in the bin lookup, but their logos are not shown.
+    package var isLogoHidden: Bool {
+        [.accel, .pulse, .star, .nyce].contains(self)
+    }
+}
