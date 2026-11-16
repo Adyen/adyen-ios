@@ -201,6 +201,12 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(pan: String) {
+        guard pan.count >= Constant.thresholdBINLength else {
+            // Replaces a pending /binlookup call so its result can't override the local detection.
+            panThrottler.throttle {}
+            updateBrand(with: pan)
+            return
+        }
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
         }
