@@ -70,7 +70,7 @@ public struct LocalizationKey {
     public static let cardExpiryItemTitle = LocalizationKey(key: "adyen.card.expiryItem.title")
     /// Expiry date (optional)
     public static let cardExpiryItemTitleOptional = LocalizationKey(key: "adyen.card.expiryItem.title.optional")
-    /// MM/YY
+    /// Front of card in MM/YY format
     public static let cardExpiryItemPlaceholder = LocalizationKey(key: "adyen.card.expiryItem.placeholder")
     /// Invalid expiry date
     public static let cardExpiryItemInvalid = LocalizationKey(key: "adyen.card.expiryItem.invalid")

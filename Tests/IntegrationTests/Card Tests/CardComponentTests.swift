@@ -2503,6 +2503,15 @@ extension CardComponentTests {
         XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
     }
 
+    func test_expiryDateItem_withEnglishLocale_shouldShowFrontOfCardHint() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.expiryDateItem.placeholder, "Front of card in MM/YY format")
+    }
+
     func test_storeDetailsItem_withEnglishLocale_shouldShowCardSpecificTitle() {
         var configuration = CardConfiguration()
         configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
