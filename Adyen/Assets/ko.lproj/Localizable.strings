@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "위의 버튼을 누르면 지정된 금액이 귀하의 은행 계좌에서 인출된다는 데 동의하는 것입니다.";
 "adyen.sepa.nameItem.invalid" = "소유자 이름이 유효하지 않음";
 "adyen.card.storeDetailsButton" = "다음을 위해 저장";
+"adyen_checkout_store_payment_method_label" = "다음을 위해 저장";
 "adyen.card.nameItem.title" = "카드상의 이름";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "카드에 표시된 대로 이름을 입력합니다.";

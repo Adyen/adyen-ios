@@ -50,8 +50,10 @@ public struct LocalizationKey {
     public static let sepaConsentLabel = LocalizationKey(key: "adyen.sepa.consentLabel")
     /// Holder name invalid
     public static let sepaNameItemInvalid = LocalizationKey(key: "adyen.sepa.nameItem.invalid")
-    /// Remember for next time
+    /// Remember my card details for future payments
     public static let cardStoreDetailsButton = LocalizationKey(key: "adyen.card.storeDetailsButton")
+    /// Remember for next time
+    public static let storePaymentMethodLabel = LocalizationKey(key: "adyen_checkout_store_payment_method_label")
     /// Name on card
     public static let cardNameItemTitle = LocalizationKey(key: "adyen.card.nameItem.title")
     /// J. Smith

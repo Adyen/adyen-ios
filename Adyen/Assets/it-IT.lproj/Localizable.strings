@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "Premendo il pulsante qui sopra accetti che l'importo specificato sia addebitato sul tuo conto bancario.";
 "adyen.sepa.nameItem.invalid" = "Nome del titolare non valido";
 "adyen.card.storeDetailsButton" = "Ricorda per la prossima volta";
+"adyen_checkout_store_payment_method_label" = "Ricorda per la prossima volta";
 "adyen.card.nameItem.title" = "Titolare carta";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Immetti il nome riportato sulla carta";

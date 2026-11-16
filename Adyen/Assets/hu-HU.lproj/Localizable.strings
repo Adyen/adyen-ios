@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "A fenti gomb megnyomásával elfogadja bankszámlája megadott összeggel történő megterhelését.";
 "adyen.sepa.nameItem.invalid" = "A tulajdonos neve érvénytelen";
 "adyen.card.storeDetailsButton" = "Megjegyzés a következő alkalomra";
+"adyen_checkout_store_payment_method_label" = "Megjegyzés a következő alkalomra";
 "adyen.card.nameItem.title" = "A kártyán szereplő név";
 "adyen.card.nameItem.placeholder" = "Gipsz Jakab";
 "adyen.card.nameItem.invalid" = "Adja meg a kártyán szereplő nevet";

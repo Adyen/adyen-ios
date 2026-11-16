@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "Ved å trykke på knappen over, godtar du at det spesifiserte beløpet vil bli trukket fra din bankkonto.";
 "adyen.sepa.nameItem.invalid" = "Kortholders navn ugyldig";
 "adyen.card.storeDetailsButton" = "Husk til neste gang";
+"adyen_checkout_store_payment_method_label" = "Husk til neste gang";
 "adyen.card.nameItem.title" = "Navn på kortet";
 "adyen.card.nameItem.placeholder" = "O. Nordmann";
 "adyen.card.nameItem.invalid" = "Skriv inn navnet som vist på kortet";

@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "Ved at trykke på knappen ovenfor accepterer du, at det angivne beløb trækkes på din bankkonto.";
 "adyen.sepa.nameItem.invalid" = "Ugyldigt kontohavernavn";
 "adyen.card.storeDetailsButton" = "Husk til næste gang";
+"adyen_checkout_store_payment_method_label" = "Husk til næste gang";
 "adyen.card.nameItem.title" = "Navn på kort";
 "adyen.card.nameItem.placeholder" = "J. Hansen";
 "adyen.card.nameItem.invalid" = "Indtast navn som vist på kortet";

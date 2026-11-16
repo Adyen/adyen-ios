@@ -2503,6 +2503,15 @@ extension CardComponentTests {
         XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
     }
 
+    func test_storeDetailsItem_withEnglishLocale_shouldShowCardSpecificTitle() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember my card details for future payments")
+    }
+
     func test_cardComponent_withProviderReturningNil_shouldFallbackToSDKLocalization() {
         var configuration = CardConfiguration()
         configuration.localizationProvider = CardLocalizationProviderMock(values: [:])

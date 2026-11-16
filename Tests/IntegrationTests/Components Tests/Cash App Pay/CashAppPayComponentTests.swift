@@ -120,6 +120,17 @@ import XCTest
             //  XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
+        func test_storeDetailsItem_withEnglishLocale_shouldShowGenericTitle() throws {
+            let config = try CashAppPayConfiguration(
+                redirectURL: XCTUnwrap(URL(string: "test")),
+                showsStorePaymentMethodField: true,
+                localizationParameters: LocalizationParameters(enforcedLocale: "en-US")
+            )
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+
+            XCTAssertEqual(sut.storeDetailsItem.title, "Remember for next time")
+        }
+
         func testSwitchVisible() throws {
             
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: true)

@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "Stlačením tlačidla vyššie vyjadrujete súhlas s tým, že uvedená čiastka bude odpísaná z vášho bankového účtu.";
 "adyen.sepa.nameItem.invalid" = "Meno držiteľa je neplatné";
 "adyen.card.storeDetailsButton" = "Zapamätať na budúce použitie";
+"adyen_checkout_store_payment_method_label" = "Zapamätať na budúce použitie";
 "adyen.card.nameItem.title" = "Meno na karte";
 "adyen.card.nameItem.placeholder" = "J. Novák";
 "adyen.card.nameItem.invalid" = "Zadajte meno tak, ako je uvedené na karte";

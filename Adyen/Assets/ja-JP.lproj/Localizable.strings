@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "上記のボタンを押して頂くと、銀行口座から特定の金額の引き落としに同意したとみなされます";
 "adyen.sepa.nameItem.invalid" = "口座名義が無効です";
 "adyen.card.storeDetailsButton" = "次回のために保存します";
+"adyen_checkout_store_payment_method_label" = "次回のために保存します";
 "adyen.card.nameItem.title" = "カード上の名前";
 "adyen.card.nameItem.placeholder" = "Taro Yamada";
 "adyen.card.nameItem.invalid" = "カードに記載されている名前を入力してください";

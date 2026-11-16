@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "Paspaudę aukščiau esantį mygtuką, sutinkate, kad nurodyta suma bus nurašyta iš jūsų banko sąskaitos.";
 "adyen.sepa.nameItem.invalid" = "Turėtojo vardas ir pavardė netinkami";
 "adyen.card.storeDetailsButton" = "Prisiminti kitą kartą";
+"adyen_checkout_store_payment_method_label" = "Prisiminti kitą kartą";
 "adyen.card.nameItem.title" = "Vardas ant kortelės";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Įveskite vardą ir pavardę, kaip nurodyta ant kortelės";

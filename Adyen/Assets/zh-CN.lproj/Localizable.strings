@@ -19,6 +19,7 @@
 "adyen.sepa.consentLabel" = "按上面的按钮即表示您同意从您的银行账户扣除指定金额。";
 "adyen.sepa.nameItem.invalid" = "持卡人姓名无效";
 "adyen.card.storeDetailsButton" = "记住以便下次使用";
+"adyen_checkout_store_payment_method_label" = "记住以便下次使用";
 "adyen.card.nameItem.title" = "卡片上的姓名";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "输入卡片上显示的姓名";
