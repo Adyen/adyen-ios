@@ -417,6 +417,52 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         )
     }
 
+    func test_accessory_givenEmptyCode_shouldShowCvvHint() {
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
+    func test_accessory_whenValidCodeEnteredWhileEditing_shouldShowCheckmark() {
+        // Given
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+
+        // When
+        sut.textField.text = "123"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .valid)
+    }
+
+    func test_accessory_givenValidThreeDigitCode_whenAmexSelected_shouldShowCvvHint() {
+        // Given
+        let item = makeItemSUT()
+        let sut = FormCardSecurityCodeItemView(item: item)
+        sut.textField.text = "123"
+        sut.textField.sendActions(for: .editingChanged)
+        XCTAssertEqual(sut.accessory, .valid, "Precondition: checkmark should be shown for a valid code")
+
+        // When
+        item.selectedCard = .americanExpress
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
+    func test_accessory_givenOptionalModeAndEmptyCode_shouldShowCvvHint() {
+        // Given
+        let item = makeItemSUT()
+        let sut = FormCardSecurityCodeItemView(item: item)
+
+        // When
+        item.displayMode = .optional
+
+        // Then
+        XCTAssertTrue(item.isValid())
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
     private struct StringsProvider: CheckoutLocalizationProvider {
         let values: [CheckoutLocalizationKey: String]
 
