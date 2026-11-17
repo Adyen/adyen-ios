@@ -10,6 +10,8 @@ import Foundation
 
 /// Validates a card's security code.
 public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
+
+    private var cardBrandPublisher: AdyenObservable<CardBrand?>?
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {
@@ -21,6 +23,7 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
     public init(publisher: AdyenObservable<CardBrand?>) {
         super.init(minimumLength: 3, maximumLength: 4)
         
+        cardBrandPublisher = publisher
         updateExpectedLength(from: publisher.wrappedValue)
         
         observe(publisher) { [weak self] cardBrand in
@@ -52,6 +55,10 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
 extension CardSecurityCodeValidator: StatusValidator {
     
     public func validate(_ value: String) -> ValidationStatus {
+        if let cardBrandPublisher {
+            updateExpectedLength(from: cardBrandPublisher.wrappedValue)
+        }
+        
         if super.isValid(value) {
             return .valid
         }
