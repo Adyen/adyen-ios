@@ -34,6 +34,19 @@
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
 
+### Logging
+
+- `AdyenLogging` is no longer public. Set the log level with `Checkout.setLogLevel(_:)` instead:
+
+| Before | After |
+|---|---|
+| `AdyenLogging.isEnabled = true` | `Checkout.setLogLevel(.verbose)` |
+| `AdyenLogging.isEnabled = false` | `Checkout.setLogLevel(.off)` |
+
+- Logging is off by default, as before. `.verbose` logs everything the SDK logs, including request URLs with the client key, and request and response headers and bodies, so only use it during development.
+
+For more details, see [Logging](guides/v6/README.md#logging).
+
 ## 6.0.0-alpha.1
 
 See also:

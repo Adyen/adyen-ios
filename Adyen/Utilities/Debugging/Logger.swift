@@ -20,9 +20,9 @@ public enum CheckoutLogLevel: Sendable {
 }
 
 /// Provides control over SDK logging.
-public enum AdyenLogging {
+package enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool = false {
+    package static var isEnabled: Bool = false {
         didSet {
             AdyenNetworking.Logging.isEnabled = isEnabled
         }
