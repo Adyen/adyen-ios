@@ -9,7 +9,6 @@ The flow for Cash App Pay starts with the `CashAppPayComponent`. After pressing 
 See [Cash App Pay url handling](https://github.com/cashapp/cash-app-pay-ios-sdk#implement-url-handling-) for more details.
 
 After returning to your app from Cash App, the component will be ready for the payment. If using `AdyenSession` as your component's delegate, the payment will be handled automatically.
-If not, the `didSubmit` method will be triggered for your server to make the `/payments` call. 
 
 ### Drop-in
 To support Cash App Pay in Drop-in, set the `cashAppPay` property of Drop-in's configuration instance.
@@ -64,7 +63,4 @@ Showing the switch for storing the payment will be based on the response of the 
 - storePaymentMethod: To store the payment method. This property is ignored if `showsStorePaymentMethodField` is `true`.
 ```
 
-If you are using the Advanced Flow (`/paymentMethods` endpoint instead of `/sessions`), then you can modify the `showsStorePaymentMethodField` yourself and if set to `false`, you will need to set `storePaymentMethod` as well for storing the payment method.
-
 After the above configurations, on the default flow, `AdyenSession` will make the required `/payments` call to authorize/store the payment.
-On the Advanced Flow, the `didSubmit` method of the component's delegate will contain the required data for your server to make the `/payments` call.

@@ -213,12 +213,10 @@ The entry points for integrating the SDK.
 - ``PaymentMethodDetails``
 - ``PartialPaymentMethodDetails``
 - ``OpaqueEncodable``
-- ``AdyenContextAware``
 - ``PresentationDelegate``
 
 ## Models
 
-- ``AdyenContext``
 - ``Amount``
 - ``Environment``
 - ``ActionComponentData``
