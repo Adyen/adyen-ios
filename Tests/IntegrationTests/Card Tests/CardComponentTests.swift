@@ -544,6 +544,26 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
+    func test_securityCodeAccessory_givenValidThreeDigitCode_whenAmexNumberEntered_shouldShowHint() throws {
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: CardConfiguration())
+        setupRootViewController(sut.viewController)
+        let securityCodeItemView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(
+            with: "AdyenCard.CardComponent.securityCodeItem"
+        )
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(
+            with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+        )
+
+        try populate(textItemView: XCTUnwrap(securityCodeItemView), with: "123")
+        XCTAssertEqual(securityCodeItemView?.accessory, .valid, "Precondition: checkmark should be shown for a valid code")
+
+        try populate(textItemView: XCTUnwrap(cardNumberItemView), with: "371449")
+
+        let securityCodeView = try XCTUnwrap(securityCodeItemView)
+        XCTAssertFalse(securityCodeView.isValid)
+        XCTAssertEqual(securityCodeView.accessory, .customView(securityCodeView.cardHintView))
+    }
+
     func test_securityCodeFormatter_whenCardBrandChanges_shouldUpdateMaxLength() throws {
         
         let sut = CardComponent(
