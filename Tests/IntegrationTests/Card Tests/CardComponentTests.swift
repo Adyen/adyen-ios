@@ -2503,6 +2503,20 @@ extension CardComponentTests {
         XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
     }
 
+    func test_validationMessages_withEnglishLocale_shouldAskForValidCardNumberAndExpiryDate() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        let items = sut.cardViewController.items
+        XCTAssertEqual(items.numberContainerItem.numberItem.validationFailureMessage, "Enter a valid card number")
+        XCTAssertEqual(
+            items.expiryDateItem.validationFailureMessage,
+            "Enter a valid expiration date. Front of card in MM/YY format"
+        )
+    }
+
     func test_expiryDateItem_withEnglishLocale_shouldShowFrontOfCardHint() {
         var configuration = CardConfiguration()
         configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")

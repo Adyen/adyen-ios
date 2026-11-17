@@ -348,6 +348,22 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         }
     }
 
+    func test_strings_withEnglishLocale_shouldAskForValidSecurityCodeForEmptyAndPartialCodes() {
+        let sut = CardSecurityCodeStrings.self
+        let parameters = LocalizationParameters(enforcedLocale: "en-US")
+        let threeDigits = "Enter a valid security code. 3 digits on back of card"
+        let fourDigits = "Enter a valid security code. 4 digits on front of card"
+        let cases: [(CardValidationError, CardBrand?, String)] = [
+            (.securityCodeEmpty, .visa, threeDigits),
+            (.securityCodePartial, .visa, threeDigits),
+            (.securityCodeEmpty, .americanExpress, fourDigits),
+            (.securityCodePartial, .americanExpress, fourDigits)
+        ]
+        for (error, brand, expected) in cases {
+            XCTAssertEqual(sut.validationMessage(for: error, brand: brand, localizationParameters: parameters), expected)
+        }
+    }
+
     func test_strings_givenNoCvcError_shouldReturnNil() {
         let sut = CardSecurityCodeStrings.self
         XCTAssertNil(sut.validationMessage(for: nil, brand: .visa, localizationParameters: nil))
