@@ -189,10 +189,9 @@ The entry points for integrating the SDK.
 
 ## Encryption
 
-- ``CardEncryptor``
-- ``BankDetailsEncryptor``
-- ``Card``
-- ``EncryptedCard``
+- ``CheckoutEncryptor``
+- ``CheckoutCard``
+- ``CheckoutEncryptedCard``
 
 ## Theming and UI
 
