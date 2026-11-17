@@ -301,6 +301,39 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(lookups, ["", "term"])
     }
 
+    func test_largeTitleLayout_withoutSearchBar_shouldSpaceHeaderBelowTitleAndAboveResults() throws {
+        try assertLargeTitleHeaderSpacing(shouldShowSearchBar: false, expectedTopSpacing: 12)
+    }
+
+    func test_largeTitleLayout_withSearchBar_shouldOnlyKeepNavigationBarSpacingAboveHeader() throws {
+        try assertLargeTitleHeaderSpacing(shouldShowSearchBar: true, expectedTopSpacing: 0)
+    }
+
+    private func assertLargeTitleHeaderSpacing(shouldShowSearchBar: Bool, expectedTopSpacing: CGFloat) throws {
+        let headerView = UIView()
+        headerView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        let viewModel = SearchViewController.ViewModel(
+            style: DummyStyle(),
+            shouldShowSearchBar: shouldShowSearchBar
+        ) { _, handler in
+            handler([ListItem(title: "Result")])
+        }
+        let searchViewController = SearchViewController(
+            viewModel: viewModel,
+            emptyView: emptyView,
+            headerView: headerView,
+            usesLargeTitleLayout: true
+        )
+        setupRootViewController(UINavigationController(rootViewController: searchViewController))
+        let tableView: UITableView = searchViewController.resultsListViewController.tableView
+        tableView.layoutIfNeeded()
+
+        let headerFrame = headerView.convert(headerView.bounds, to: tableView)
+        let firstCell = try XCTUnwrap(tableView.cellForRow(at: IndexPath(row: 0, section: 0)))
+        XCTAssertEqual(headerFrame.minY, expectedTopSpacing, accuracy: 0.1)
+        XCTAssertEqual(firstCell.frame.minY - headerFrame.maxY, 24, accuracy: 0.1)
+    }
+
     func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
         let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
         let barAppearance = UINavigationBarAppearance()

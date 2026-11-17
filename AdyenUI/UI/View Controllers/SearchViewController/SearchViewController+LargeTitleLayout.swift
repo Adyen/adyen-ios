@@ -7,7 +7,8 @@
 import UIKit
 
 private enum LargeTitleLayout {
-    static let headerTopSpacing: CGFloat = 8
+    static let headerTopSpacing: CGFloat = 12
+    static let headerTopSpacingBelowSearchBar: CGFloat = 0
     static let headerBottomSpacing: CGFloat = 24
 }
 
@@ -59,8 +60,11 @@ extension SearchViewController {
 
         if let headerView {
             scrollingHeaderView.addSubview(headerView)
+            let headerTopSpacing = viewModel.shouldShowSearchBar
+                ? LargeTitleLayout.headerTopSpacingBelowSearchBar
+                : LargeTitleLayout.headerTopSpacing
             NSLayoutConstraint.activate([
-                headerView.topAnchor.constraint(equalTo: scrollingHeaderView.topAnchor, constant: LargeTitleLayout.headerTopSpacing),
+                headerView.topAnchor.constraint(equalTo: scrollingHeaderView.topAnchor, constant: headerTopSpacing),
                 headerView.leadingAnchor.constraint(equalTo: scrollingHeaderView.leadingAnchor, constant: resultsHorizontalInset),
                 headerView.trailingAnchor.constraint(equalTo: scrollingHeaderView.trailingAnchor, constant: -resultsHorizontalInset),
                 scrollingHeaderView.bottomAnchor.constraint(
