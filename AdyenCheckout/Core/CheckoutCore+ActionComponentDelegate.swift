@@ -11,15 +11,15 @@ import Foundation
 
 extension CheckoutCore: ActionComponentDelegate {
 
-    public func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+    package func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         performAdditionalDetails(data, from: component)
     }
 
-    public func didComplete(from component: any ActionComponent) {
+    package func didComplete(from component: any ActionComponent) {
         completeAction(from: pendingPaymentComponent)
     }
 
-    public func didFail(with error: any Error, from component: any ActionComponent) {
+    package func didFail(with error: any Error, from component: any ActionComponent) {
         // Route back to the payment component that started this flow so any UI
         // it's still holding open (e.g. the Apple Pay sheet) can dismiss.
         handle(error, from: pendingPaymentComponent)

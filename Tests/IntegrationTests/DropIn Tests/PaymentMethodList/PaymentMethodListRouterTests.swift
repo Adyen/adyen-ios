@@ -256,8 +256,9 @@ struct PaymentMethodListRouterTests {
         sut.present(component: storedPaymentComponent)
 
         #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(contentAssembler.receivedIsPresentedModally == false)
         #expect(navigationControllerSpy.capturedPushedViewController === contentRouter.rootViewController)
-        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterCallsCount == 0)
         #expect(sut.childRouter === contentRouter)
     }
 
@@ -268,6 +269,30 @@ struct PaymentMethodListRouterTests {
     func dismissStoredPaymentMethodContent_shouldPopAndReleaseChildRouter() throws {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            storedPaymentMethodContentAssembler: contentAssembler
+        )
+        sut.present(component: makeStoredPaymentComponentMock())
+        try #require(sut.childRouter != nil)
+        navigationControllerSpy.viewControllers = [UIViewController(), contentRouter.rootViewController]
+
+        // When
+        sut.dismissStoredPaymentMethodContent()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(sut.childRouter == nil)
+    }
+
+    /// When the shopper swipes or taps back from the stored payment screen, the navigation stack already popped it,
+    /// so the list only drops its reference and does not pop the screen now on top.
+    @Test
+    func dismissStoredPaymentMethodContent_whenAlreadyPopped_shouldReleaseChildRouterWithoutPopping() throws {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
         let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
@@ -275,12 +300,13 @@ struct PaymentMethodListRouterTests {
         )
         sut.present(component: makeStoredPaymentComponentMock())
         try #require(sut.childRouter != nil)
+        navigationControllerSpy.viewControllers = [UIViewController()]
 
         // When
         sut.dismissStoredPaymentMethodContent()
 
         // Then
-        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 0)
         #expect(sut.childRouter == nil)
     }
 
@@ -303,7 +329,8 @@ struct PaymentMethodListRouterTests {
 
         // Then
         #expect(contentAssembler.resolveCallsCount == 1)
-        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterReceivedArguments?.isDropInRoot == false)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
     }
 
@@ -328,7 +355,7 @@ struct PaymentMethodListRouterTests {
         #expect(genericPaymentMethodAssemblerSpy.resolveCallsCount == 1)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
         #expect(navigationControllerSpy.capturedPushedViewController === genericPaymentMethodRouter.rootViewController)
-        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterCallsCount == 0)
         #expect(sut.childRouter === genericPaymentMethodRouter)
     }
 
@@ -374,7 +401,7 @@ struct PaymentMethodListRouterTests {
         router: RouterMock? = nil
     ) -> ComponentContainerAssemblerProtocolMock {
         let assembler = ComponentContainerAssemblerProtocolMock()
-        assembler.resolveComponentContainerRouterForListenerReturnValue = router ?? RouterMock()
+        assembler.resolveComponentContainerRouterReturnValue = router ?? RouterMock()
         return assembler
     }
 
@@ -450,6 +477,7 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
+    private(set) var receivedIsPresentedModally: Bool?
 
     init(router: Router?) {
         self.router = router
@@ -457,9 +485,11 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
+        receivedIsPresentedModally = isPresentedModally
         return router
     }
 }

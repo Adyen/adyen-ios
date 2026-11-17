@@ -45,21 +45,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
-            }
-        }
-        .navigationBarBackButtonHidden(true)
         .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
-    }
-
-    private var backButton: some View {
-        Button {
-            viewModel.cancel()
-        } label: {
-            Image(systemName: "chevron.backward")
-        }
     }
 }
 

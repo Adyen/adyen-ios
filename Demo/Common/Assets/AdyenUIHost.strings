@@ -23,7 +23,6 @@
 "adyen.card.numberItem.invalid" = "Test-Invalid card number";
 "adyen.card.expiryItem.placeholder" = "Test-MM/YY";
 "adyen.card.expiryItem.invalid" = "Test-Invalid expiration date";
-"adyen.card.cvcItem.invalid" = "Test-Invalid security code";
 "adyen.card.cvcItem.title" = "Test-CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "Test-123";
 "adyen.card.stored.title" = "Test-Verify your card";
@@ -31,6 +30,13 @@
 "adyen.card.stored.expires" = "Test-Expires %@";
 "adyen.card.securityCode.title" = "Test-Enter security code";
 "adyen.card.securityCode.description" = "Test-Enter the security code for %@";
+"adyen_checkout_card_security_code_label" = "Test-CVC / CVV";
+"adyen_checkout_card_security_code_hint_three_digits" = "Test-3 digits on back of card";
+"adyen_checkout_card_security_code_hint_four_digits" = "Test-4 digits on front of card";
+"adyen_checkout_card_security_code_error_empty_three_digits" = "Test-Enter the security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_empty_four_digits" = "Test-Enter the security code. 4 digits on front of card.";
+"adyen_checkout_card_security_code_error_incomplete_three_digits" = "Test-Enter the complete security code. 3 digits on back of card.";
+"adyen_checkout_card_security_code_error_incomplete_four_digits" = "Test-Enter the complete security code. 4 digits on front of card.";
 "adyen.dropIn.stored.title" = "Test-Confirm %@ payment";
 "adyen.phoneNumber.title" = "Test-Phone Number";
 "adyen.phoneNumber.placeholder" = "Test-123 456 789";

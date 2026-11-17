@@ -31,6 +31,7 @@ struct GenericPaymentMethodRouterTests {
         let viewController = ViewControllerSpy()
         let navigationControllerSpy = NavigationControllerSpy()
         viewController.setNavigationController(navigationControllerSpy)
+        navigationControllerSpy.viewControllers = [UIViewController(), viewController]
         let listener = GenericPaymentMethodRouterListenerMock()
         let sut = makeSUT(viewController: viewController, listener: listener)
 
@@ -39,6 +40,24 @@ struct GenericPaymentMethodRouterTests {
 
         // Then
         #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(listener.didDismissGenericPaymentMethodCallsCount == 1)
+    }
+
+    @Test("Going back already popped the screen, so dismissing only releases it and does not pop the screen now on top.")
+    func dismiss_whenAlreadyPopped_shouldOnlyNotifyListener() {
+        // Given
+        let viewController = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewController.setNavigationController(navigationControllerSpy)
+        navigationControllerSpy.viewControllers = [UIViewController()]
+        let listener = GenericPaymentMethodRouterListenerMock()
+        let sut = makeSUT(viewController: viewController, listener: listener)
+
+        // When
+        sut.dismiss()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 0)
         #expect(listener.didDismissGenericPaymentMethodCallsCount == 1)
     }
 

@@ -114,6 +114,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())

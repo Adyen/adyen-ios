@@ -68,10 +68,22 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(context.flowManager.submitFromCalled)
     }
 
+    /// Cancelling from the content asks the module that presented it to take it away.
+    @Test
+    internal func cancel_thenCancelsTheComponentAndAsksToDismiss() {
+        let context = makeSUTStoredCardWithCVC()
+
+        context.sut.cancel()
+
+        #expect(context.flowManager.cancelComponentCallsCount == 1)
+        #expect(context.router.dismissCallsCount == 1)
+    }
+
     private struct TestContext {
         let sut: StoredPaymentMethodContentViewModel
         let component: any StoredPaymentComponent
         let flowManager: DropInFlowManagingMock
+        let router: StoredPaymentMethodContentRoutingSpy
     }
 
     private func makeSUTStoredCardWithCVC(amount: Amount? = Dummy.amount) -> TestContext {
@@ -91,6 +103,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
             apiContext: Dummy.apiContext,
             amount: amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: nil
         )
         let component = StoredCardSecurityCodeComponent(
@@ -110,7 +123,9 @@ internal struct StoredPaymentMethodContentViewModelTests {
             localizationParameters: nil,
             dropInFlowManager: flowManager
         )
-        return TestContext(sut: sut, component: component, flowManager: flowManager)
+        let router = StoredPaymentMethodContentRoutingSpy()
+        sut.router = router
+        return TestContext(sut: sut, component: component, flowManager: flowManager, router: router)
     }
 }
 

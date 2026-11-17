@@ -97,6 +97,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     ) {
         guard let router = storedPaymentMethodContentAssembler.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: true,
             listener: self
         ) else {
             // No dedicated stored payment content exists for this component; fall back to the generic component presentation.
@@ -144,6 +145,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
+            isDropInRoot: false,
             listener: self
         )
         childRouter = componentContainerRouter

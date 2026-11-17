@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Combine
 import Foundation
 import UIKit
 
@@ -25,6 +26,8 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     internal weak var router: GenericPaymentMethodRouting?
 
     @Published internal var state: State = .idle
+    @Published internal private(set) var isPaymentInProgress = false
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializers
 
@@ -40,6 +43,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
         self.localizationParameters = localizationParameters
 
         self.component.delegate = self
+        observePaymentProgress()
     }
 
     // MARK: - Localization
@@ -71,6 +75,30 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     internal func dismiss() {
         router?.dismiss()
+    }
+
+    /// Locks the navigation from the moment the payment starts, before Drop-in reports it in progress, until the attempt ends.
+    internal var isNavigationLocked: AnyPublisher<Bool, Never> {
+        $state
+            .combineLatest($isPaymentInProgress)
+            .map { state, isPaymentInProgress in state == .loading || isPaymentInProgress }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+
+    // MARK: - Private
+
+    private func observePaymentProgress() {
+        dropInFlowManager.paymentInProgressPublisher
+            .removeDuplicates()
+            .sink { [weak self] isPaymentInProgress in
+                guard let self else { return }
+                if self.isPaymentInProgress, !isPaymentInProgress {
+                    state = .idle
+                }
+                self.isPaymentInProgress = isPaymentInProgress
+            }
+            .store(in: &cancellables)
     }
 }
 

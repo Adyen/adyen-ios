@@ -25,11 +25,6 @@ class PayToComponentUITests: XCTestCase {
         FormComponentStyle()
     }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        BrowserInfo.cachedUserAgent = "some_value"
-    }
-
     func test_UI_configuration() {
         var style = style
         style.backgroundColor = .green
@@ -161,29 +156,11 @@ class PayToComponentUITests: XCTestCase {
 
         wait(for: .aMoment)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         // Then
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton.button"))
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! PayToDetails
-            XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.accountIdentifier, "+61-4123466")
-            XCTAssertEqual(details.shopperName?.firstName, "test")
-            XCTAssertEqual(details.shopperName?.lastName, "lastname")
-
-            sut.stopLoading()
-            self.wait(for: .aMoment)
-
-            self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_mobile")
-            didSubmitExpectation.fulfill()
-        }
 
         let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
         identifierPickerItem.select(value: .init(
@@ -205,7 +182,19 @@ class PayToComponentUITests: XCTestCase {
 
         continueButton.sendActions(for: .touchUpInside)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? PayToDetails)
+        XCTAssertEqual(details.type, .payTo)
+        XCTAssertEqual(details.accountIdentifier, "+61-4123466")
+        XCTAssertEqual(details.shopperName?.firstName, "test")
+        XCTAssertEqual(details.shopperName?.lastName, "lastname")
+
+        sut.stopLoading()
+        wait(for: .aMoment)
+
+        assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_mobile")
     }
 
     func test_payTo_component_details_for_pay_id_flow_using_email() throws {
@@ -224,30 +213,11 @@ class PayToComponentUITests: XCTestCase {
 
         wait(for: .aMoment)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         // Then
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton.button"))
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! PayToDetails
-            XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.accountIdentifier, "test@adyen.com")
-            XCTAssertEqual(details.shopperName?.firstName, "test")
-            XCTAssertEqual(details.shopperName?.lastName, "lastname")
-
-            sut.stopLoading()
-            self.wait(for: .aMoment)
-
-            self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_email")
-
-            didSubmitExpectation.fulfill()
-        }
 
         let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
         identifierPickerItem.select(value: .init(
@@ -271,7 +241,20 @@ class PayToComponentUITests: XCTestCase {
         wait(for: .aMoment)
 
         continueButton.sendActions(for: .touchUpInside)
-        wait(for: [didSubmitExpectation], timeout: 10)
+
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? PayToDetails)
+        XCTAssertEqual(details.type, .payTo)
+        XCTAssertEqual(details.accountIdentifier, "test@adyen.com")
+        XCTAssertEqual(details.shopperName?.firstName, "test")
+        XCTAssertEqual(details.shopperName?.lastName, "lastname")
+
+        sut.stopLoading()
+        wait(for: .aMoment)
+
+        assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_email")
     }
 
     func test_payTo_component_details_for_pay_id_flow_using_abn() throws {
@@ -290,30 +273,11 @@ class PayToComponentUITests: XCTestCase {
 
         wait(for: .aMoment)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         // Then
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton.button"))
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! PayToDetails
-            XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.accountIdentifier, "12345678900")
-            XCTAssertEqual(details.shopperName?.firstName, "test")
-            XCTAssertEqual(details.shopperName?.lastName, "lastname")
-
-            sut.stopLoading()
-            self.wait(for: .aMoment)
-
-            self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_abn")
-
-            didSubmitExpectation.fulfill()
-        }
 
         let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
         identifierPickerItem.select(value: .init(
@@ -338,7 +302,20 @@ class PayToComponentUITests: XCTestCase {
         wait(for: .aMoment)
 
         continueButton.sendActions(for: .touchUpInside)
-        wait(for: [didSubmitExpectation], timeout: 10)
+
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? PayToDetails)
+        XCTAssertEqual(details.type, .payTo)
+        XCTAssertEqual(details.accountIdentifier, "12345678900")
+        XCTAssertEqual(details.shopperName?.firstName, "test")
+        XCTAssertEqual(details.shopperName?.lastName, "lastname")
+
+        sut.stopLoading()
+        wait(for: .aMoment)
+
+        assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_abn")
     }
 
     func test_payTo_component_details_for_pay_id_flow_using_organizationId() throws {
@@ -357,30 +334,11 @@ class PayToComponentUITests: XCTestCase {
 
         wait(for: .aMoment)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         // Then
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton.button"))
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! PayToDetails
-            XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.accountIdentifier, "123123")
-            XCTAssertEqual(details.shopperName?.firstName, "test")
-            XCTAssertEqual(details.shopperName?.lastName, "lastname")
-
-            sut.stopLoading()
-            self.wait(for: .aMoment)
-
-            self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_organizationId")
-
-            didSubmitExpectation.fulfill()
-        }
 
         let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
         identifierPickerItem.select(value: .init(
@@ -406,7 +364,20 @@ class PayToComponentUITests: XCTestCase {
         wait(for: .aMoment)
 
         continueButton.sendActions(for: .touchUpInside)
-        wait(for: [didSubmitExpectation], timeout: 10)
+
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? PayToDetails)
+        XCTAssertEqual(details.type, .payTo)
+        XCTAssertEqual(details.accountIdentifier, "123123")
+        XCTAssertEqual(details.shopperName?.firstName, "test")
+        XCTAssertEqual(details.shopperName?.lastName, "lastname")
+
+        sut.stopLoading()
+        wait(for: .aMoment)
+
+        assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_organizationId")
     }
 
     // MARK: - BSB flow tests
@@ -427,28 +398,11 @@ class PayToComponentUITests: XCTestCase {
 
         wait(for: .aMoment)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
         // Then
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton.button"))
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! PayToDetails
-            XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.shopperName?.firstName, "test")
-            XCTAssertEqual(details.shopperName?.lastName, "lastname")
-
-            sut.stopLoading()
-            self.wait(for: .aMoment)
-
-            self.assertViewControllerImage(matching: sut.viewController, named: "payto_bsb_flow")
-            didSubmitExpectation.fulfill()
-        }
 
         sut.selectedPaymentOption = .BSB
 
@@ -458,7 +412,19 @@ class PayToComponentUITests: XCTestCase {
         wait(for: .aMoment)
 
         continueButton.sendActions(for: .touchUpInside)
-        wait(for: [didSubmitExpectation], timeout: 10)
+
+        let submitted = try XCTUnwrap(delegateMock.didSubmitReceivedArguments)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? PayToDetails)
+        XCTAssertEqual(details.type, .payTo)
+        XCTAssertEqual(details.shopperName?.firstName, "test")
+        XCTAssertEqual(details.shopperName?.lastName, "lastname")
+
+        sut.stopLoading()
+        wait(for: .aMoment)
+
+        assertViewControllerImage(matching: sut.viewController, named: "payto_bsb_flow")
     }
 
     private func populateMobileNumberField(sut: PayToComponent) throws {

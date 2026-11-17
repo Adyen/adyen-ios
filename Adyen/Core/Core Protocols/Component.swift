@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component provides payment method-specific UI and handling.
-public protocol Component: AdyenContextAware {}
+package protocol Component: AdyenContextAware {}
 
 /// Provides convenience functions to `Component` instances.
 extension Component {
@@ -24,13 +24,13 @@ extension Component {
     }
 
     /// Called when the user cancels the component.
-    public func cancel() {
+    package func cancel() {
         (self as? Cancellable)?.didCancel()
         stopLoading()
     }
 
     /// Stops any processing animation that might be running.
-    public func stopLoading() {
+    package func stopLoading() {
         (self as? LoadingComponent)?.stopLoading()
     }
 }

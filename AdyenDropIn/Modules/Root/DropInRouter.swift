@@ -61,6 +61,7 @@ internal class DropInRouter: DropInRouting {
         case let .component(paymentComponent):
             router = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,
+                isDropInRoot: true,
                 listener: self
             )
         case .paymentMethodList:

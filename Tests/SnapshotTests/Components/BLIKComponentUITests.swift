@@ -22,6 +22,7 @@ final class BLIKComponentUITests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
     }
@@ -76,26 +77,20 @@ final class BLIKComponentUITests: XCTestCase {
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
 
-        let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is BLIKDetails)
-            let data = data.paymentMethod as! BLIKDetails
-            XCTAssertEqual(data.blikCode, "123456")
-
-            sut.stopLoading()
-            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.button.showsActivityIndicator, false)
-            
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
-            
-            delegateExpectation.fulfill()
-        }
-        
         submitButton.sendActions(for: .touchUpInside)
         
-        wait(for: [delegateExpectation], timeout: 120)
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertTrue(submitted.data.paymentMethod is BLIKDetails)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? BLIKDetails)
+        XCTAssertEqual(details.blikCode, "123456")
+
+        sut.stopLoading()
+        XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+        XCTAssertEqual(sut.button.showsActivityIndicator, false)
+
+        wait(for: .aMoment)
+        assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
     }
 }

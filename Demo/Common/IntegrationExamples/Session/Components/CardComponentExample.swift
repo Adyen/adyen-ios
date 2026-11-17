@@ -22,8 +22,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal var context: AdyenContext?
-
     // MARK: - Initializers
 
     internal init() {}

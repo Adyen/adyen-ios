@@ -38,7 +38,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: "Global number",
-            securityCodeTitle: localizedString(.cardCvcItemTitle, localizationParameters)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, localizationParameters)
         )
     }
 
@@ -54,7 +54,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: "Card #",
-            securityCodeTitle: localizedString(.cardCvcItemTitle, localizationParameters)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, localizationParameters)
         )
     }
 
@@ -64,20 +64,21 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         expectVisibleTitles(
             of: sut,
             numberTitle: localizedString(.cardNumberItemTitle, nil),
-            securityCodeTitle: localizedString(.cardCvcItemTitle, nil)
+            securityCodeTitle: localizedString(.cardSecurityCodeLabel, nil)
         )
     }
 
     func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderCoBadgedSelectorStrings() throws {
         let provider = CardComponentLocalizationFlowProviderMock(values: [
-            .cardDualBrandSelectorTitle: "Pick your card",
             .cardDualBrandSelectorDescription: "Choose the brand for this payment"
         ])
 
         let sut = try makeSUT(globalProvider: provider)
 
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.title, "Pick your card")
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.subtitle, "Choose the brand for this payment")
+        XCTAssertEqual(
+            sut.cardViewController.items.numberContainerItem.brandDescriptionItem.content.text,
+            "Choose the brand for this payment"
+        )
     }
 
     func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderInstallmentsStrings() throws {

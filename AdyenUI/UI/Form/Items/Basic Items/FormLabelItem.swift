@@ -15,35 +15,23 @@ package class FormLabelItem: FormItem {
 
     package var subitems: [FormItem] = []
 
-    package init(text: String, style: TextStyle, identifier: String? = nil) {
-        self.identifier = identifier
-        self.style = style
-        self.text = text
-        self.labelStyle = AdyenLabelStyle()
-    }
-
     package init(
         text: String,
         identifier: String? = nil,
-        labelStyle: AdyenLabelStyle
+        labelStyle: @escaping (CheckoutTheme) -> AdyenLabelStyle = { $0.elements.labels.body }
     ) {
         self.identifier = identifier
         self.text = text
         self.labelStyle = labelStyle
-        // TODO: TO remove later
-        self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
     }
 
     package var identifier: String?
 
-    /// The style of the label.
-    package var style: TextStyle
-
     /// The text of the label.
     package var text: String
 
-    /// The labelStyle from the adyen theme
-    internal var labelStyle: AdyenLabelStyle = .init()
+    /// Picks the label style from the form's theme when the view is built.
+    package let labelStyle: (CheckoutTheme) -> AdyenLabelStyle
 
     package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormLabelItemView(item: self, theme: builder.theme)
@@ -69,8 +57,9 @@ internal final class FormLabelItemView: AdyenLabel, AnyFormItemView {
         text = item.text
         numberOfLines = 0
         accessibilityIdentifier = item.identifier
+        isHidden = item.isHidden.wrappedValue
 
-        apply(theme.elements.labels.body)
+        apply(item.labelStyle(theme))
     }
 
     // MARK: - AnyFormItemView

@@ -71,7 +71,7 @@ struct DropInRouterTests {
         let paymentComponent = makePaymentComponent()
         let componentContainerRouter = RouterMock()
         let componentContainerAssembler = ComponentContainerAssemblerProtocolMock()
-        componentContainerAssembler.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouter
+        componentContainerAssembler.resolveComponentContainerRouterReturnValue = componentContainerRouter
         let sut = makeSUT(
             root: .component(paymentComponent),
             componentContainerAssembler: componentContainerAssembler
@@ -82,8 +82,9 @@ struct DropInRouterTests {
 
         // Then
         #expect(sut.childRouter === componentContainerRouter)
-        let receivedArguments = try #require(componentContainerAssembler.resolveComponentContainerRouterForListenerReceivedArguments)
+        let receivedArguments = try #require(componentContainerAssembler.resolveComponentContainerRouterReceivedArguments)
         #expect(receivedArguments.component === paymentComponent)
+        #expect(receivedArguments.isDropInRoot)
     }
 
     // MARK: - Drop In Dismissal Tests
@@ -271,7 +272,7 @@ struct DropInRouterTests {
     func didDismissComponentContainer_shouldReleaseChildRouterAndCallCompletion() throws {
         // Given
         let componentContainerAssembler = ComponentContainerAssemblerProtocolMock()
-        componentContainerAssembler.resolveComponentContainerRouterForListenerReturnValue = RouterMock()
+        componentContainerAssembler.resolveComponentContainerRouterReturnValue = RouterMock()
         let sut = makeSUT(
             root: .component(makePaymentComponent()),
             componentContainerAssembler: componentContainerAssembler

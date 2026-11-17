@@ -121,23 +121,7 @@ class AffirmComponentTests: XCTestCase {
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         setupRootViewController(sut.viewController)
-        
-        // Then
-        let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! AffirmDetails
-            XCTAssertEqual(details.shopperName?.firstName, "Katrina")
-            XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "+12025550146")
-            XCTAssertEqual(details.emailAddress, "katrina@mail.com")
-            XCTAssertEqual(details.billingAddress, expectedBillingAddress)
-            XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
-            
-            sut.stopLoading()
-            didSubmitExpectation.fulfill()
-        }
-        
+
         let view: UIView = sut.viewController.view
         
         let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
@@ -171,8 +155,19 @@ class AffirmComponentTests: XCTestCase {
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
-        
-        waitForExpectations(timeout: 10, handler: nil)
+
+        // Then
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        let details = try XCTUnwrap(arguments.data.paymentMethod as? AffirmDetails)
+        XCTAssertEqual(details.shopperName?.firstName, "Katrina")
+        XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
+        XCTAssertEqual(details.telephoneNumber, "+12025550146")
+        XCTAssertEqual(details.emailAddress, "katrina@mail.com")
+        XCTAssertEqual(details.billingAddress, expectedBillingAddress)
+        XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
+
+        sut.stopLoading()
     }
     
     func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() {

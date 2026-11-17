@@ -63,7 +63,7 @@ final class MBWayComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let sut = MBWayComponent(paymentMethod: paymentMethod, context: context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -73,25 +73,20 @@ final class MBWayComponentUITests: XCTestCase {
         let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
         self.populate(textItemView: phoneNumberView, with: "1233456789")
 
-        let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is MBWayDetails)
-            let data = data.paymentMethod as! MBWayDetails
-            XCTAssertEqual(data.telephoneNumber, "+3511233456789")
-
-            sut.stopLoading()
-            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.button.showsActivityIndicator, false)
-            
-            self.verifyViewControllerImage(matching: sut.viewController, named: "mbway_flow")
-            delegateExpectation.fulfill()
-        }
-        
         submitButton?.sendActions(for: .touchUpInside)
         
-        wait(for: [delegateExpectation], timeout: 60)
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        XCTAssertTrue(submitted.data.paymentMethod is MBWayDetails)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? MBWayDetails)
+        XCTAssertEqual(details.telephoneNumber, "+3511233456789")
+
+        sut.stopLoading()
+        XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+        XCTAssertEqual(sut.button.showsActivityIndicator, false)
+
+        verifyViewControllerImage(matching: sut.viewController, named: "mbway_flow")
     }
 
     // MARK: - Private

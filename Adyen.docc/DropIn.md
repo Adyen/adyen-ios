@@ -6,4 +6,4 @@ The Drop-in handles the presentation of available payment methods and the subseq
 
 The v6 Drop-in integration is being migrated to the new ``Checkout`` API. Up-to-date integration steps and code samples will be published here once the migration is complete.
 
-In the meantime, see the <doc:Components> and <doc:AdvancedFlow> guides for integrating individual payment methods with the v6 ``Checkout`` API.
+In the meantime, see the <doc:Components> guide for integrating individual payment methods with the v6 ``Checkout`` API.

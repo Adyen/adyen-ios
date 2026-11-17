@@ -12,6 +12,8 @@ import Adyen
 /// - Observe changes to the card's bank identification number (BIN).
 /// - Receive card-brand and issuing-country information from BIN lookup.
 ///
+/// The callbacks run on the main actor.
+///
 /// For example:
 /// ```swift
 /// CardCallbacks()
@@ -24,8 +26,8 @@ import Adyen
 /// ```
 public struct CardCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditionalCallbacks {
 
-    package private(set) var onBinChange: ((String) -> Void)?
-    package private(set) var onBinLookup: ((BinLookupData) -> Void)?
+    package private(set) var onBinChange: (@MainActor @Sendable (String) -> Void)?
+    package private(set) var onBinLookup: (@MainActor @Sendable (BinLookupData) -> Void)?
 
     /// The address callbacks, which merchants supply as a separate entry.
     /// The card component factory attaches them.
@@ -39,7 +41,7 @@ public struct CardCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditi
     /// - Parameter handler: The callback invoked when the BIN changes.
     ///   - bin: The entered BIN prefix, up to eight digits.
     /// - Returns: A modified copy of the callbacks.
-    public func onBinChange(_ handler: @escaping (_ bin: String) -> Void) -> Self {
+    public func onBinChange(_ handler: @escaping @MainActor @Sendable (_ bin: String) -> Void) -> Self {
         var callbacks = self
         callbacks.onBinChange = handler
         return callbacks
@@ -50,7 +52,7 @@ public struct CardCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditi
     /// - Parameter handler: The callback invoked when BIN lookup returns card information.
     ///   - data: The `BinLookupData` containing the issuing country code and detected card brands.
     /// - Returns: A modified copy of the callbacks.
-    public func onBinLookup(_ handler: @escaping (_ data: BinLookupData) -> Void) -> Self {
+    public func onBinLookup(_ handler: @escaping @MainActor @Sendable (_ data: BinLookupData) -> Void) -> Self {
         var callbacks = self
         callbacks.onBinLookup = handler
         return callbacks

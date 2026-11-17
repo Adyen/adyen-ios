@@ -21,9 +21,6 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
-    /// Comes from the demo app protocol and is unused by Checkout.
-    internal var context: AdyenContext?
-
     // MARK: - Initializers
 
     internal init() {}

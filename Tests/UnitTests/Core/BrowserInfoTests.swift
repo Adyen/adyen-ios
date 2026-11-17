@@ -13,7 +13,6 @@ struct BrowserInfoTests {
     @Test @MainActor func browserInfoInitialize() async {
         let browserInfo = await BrowserInfo()
         #expect(browserInfo?.userAgent != nil)
-        #expect(browserInfo?.webView == nil)
     }
     
     @Test func paymentComponentDataBrowserInfo() async {

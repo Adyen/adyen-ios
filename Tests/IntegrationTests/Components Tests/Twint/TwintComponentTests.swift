@@ -43,59 +43,47 @@ class TwintComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCustomPaymentData() {
-        let delegateExpectation = expectation(description: "expect delegate to be called.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
-            let details = data.paymentMethod as! TwintDetails
-            XCTAssertEqual(details.type, .twint)
-            XCTAssertEqual(details.subType, "sdk")
-            delegateExpectation.fulfill()
-        }
+    func testCustomPaymentData() throws {
         sut.delegate = delegate
 
         sut.performSubmit()
 
-        waitForExpectations(timeout: 2, handler: nil)
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? TwintDetails)
+        XCTAssertEqual(details.type, .twint)
+        XCTAssertEqual(details.subType, "sdk")
     }
 
-    func testInitiatePaymentShouldCallPaymentComponentDelegateDidSubmit() {
+    func testInitiatePaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
         // Given
         let sut = TwintComponent(paymentMethod: paymentMethod, context: context)
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
         let paymentComponentDelegate = PaymentComponentDelegateMock()
-        paymentComponentDelegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-
-            didSubmitExpectation.fulfill()
-        }
         sut.delegate = paymentComponentDelegate
 
         // When
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let submittedComponent = try XCTUnwrap(paymentComponentDelegate.didSubmitReceivedArguments?.component)
+        XCTAssertTrue(submittedComponent === sut)
+        XCTAssertEqual(paymentComponentDelegate.didSubmitCallsCount, 1)
     }
 
     func testViewControllerHasCorrectTitle() {
         XCTAssertEqual(sut.viewController.title, paymentMethod.displayInformation(using: nil).title)
     }
 
-    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() {
+    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() throws {
         sut.viewController.loadViewIfNeeded()
-
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
-            didSubmitExpectation.fulfill()
-        }
 
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(by: "payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let submittedComponent = try XCTUnwrap(delegate.didSubmitReceivedArguments?.component)
+        XCTAssertTrue(submittedComponent === sut)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
     }
 
     func testPerformSubmitStartsLoadingOnPayButton() throws {

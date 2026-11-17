@@ -26,6 +26,14 @@
 
 - With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenCheckout`, `import AdyenUI`, `import AdyenCard`) next to `import Adyen`.
 
+### Internal types
+
+- `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
+
+### Colors
+
+- `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
 ## 6.0.0-alpha.1
 
 See also:
@@ -181,7 +189,9 @@ let checkout = try await Checkout.setup(
 
 The advanced flow is not available in this release. Use the session flow for payment components.
 The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
-`CheckoutSubmitHandler`, `SubmitResult` and `PartialPayment` are package-only and cannot be used by merchant integrations.
+`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment`, `PaymentComponentData`, `PartialPaymentOrder` and
+`BrowserInfo` are package-only and cannot be used by merchant integrations. In the session flow, inspect or patch
+shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Checkout callbacks
@@ -193,6 +203,11 @@ Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavi
 
 Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
 modifiers are optional. All handlers are supplied before setup, and callbacks cannot be changed on an active checkout.
+
+`CheckoutCallbacks`, `ActionOnlyCheckoutCallbacks`, `CardCallbacks`, `AddressCallbacks` and `ApplePayCallbacks` conform to
+`Sendable`, and `CheckoutAdditionalCallbacks` refines `Sendable`. Every closure passed to these types is `@MainActor @Sendable`
+and runs on the main actor. With strict concurrency checking enabled, a closure can't mutate captured local variables or
+capture non-`Sendable` values; capture main-actor-isolated objects, such as view models, instead.
 
 #### Checkout instances
 
@@ -366,6 +381,8 @@ as `CardCallbacks`. Configure the UI separately with `CardConfiguration().billin
 The lookup closure still receives a search term and asynchronously returns `[AddressLookupResult]`.
 The selection closure still receives the selected result and asynchronously returns a `PostalAddress`,
 or throws. Without the selection handler, the result's postal address is used as-is.
+Both closures are now `@MainActor @Sendable` and start on the main actor. Await your address service
+rather than doing slow synchronous work in them.
 When a card configuration uses `.lookup()` and the checkout callbacks contain no `AddressCallbacks`,
 `Checkout.setup` throws `CheckoutError` with the `.invalidConfiguration` code before making any network request.
 
@@ -436,8 +453,8 @@ try ApplePayConfiguration(paymentRequest: paymentRequest)
 #### Apple Pay callbacks
 
 The `onAuthorize(_:)`, `onSelectShippingContact(_:)`, `onSelectShippingMethod(_:)`, `onChangeCouponCode(_:)` and
-`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closure signatures
-are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
+`onSelectPaymentMethod(_:)` modifiers moved from `ApplePayConfiguration` to `ApplePayCallbacks`. Their closures are now
+`@MainActor @Sendable`; the parameters and return types are unchanged. Put `ApplePayCallbacks` in the additional callbacks block of `CheckoutCallbacks`, and keep only
 configuration in `ApplePayConfiguration`.
 
 ##### Before
@@ -490,9 +507,8 @@ In v6, the component has a single screen:
 - To use your own submit button, set `showsSubmitButton(false)` on `CheckoutConfiguration` and call `submit()` on the
   component when the shopper taps it.
 - Create the component with `checkout.createPaymentComponent(for: .bacsDirectDebit)`.
-- `BACSDirectDebitDetails` has a new `shopperEmail` property containing the email address the shopper entered, and
-  `PaymentComponentData.emailAddress` now returns it. The initializer has a matching `shopperEmail` parameter that
-  defaults to `nil`, so existing code keeps compiling.
+- `BACSDirectDebitDetails` has a new `shopperEmail` property containing the email address the shopper entered. The
+  initializer has a matching `shopperEmail` parameter that defaults to `nil`, so existing code keeps compiling.
 
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.

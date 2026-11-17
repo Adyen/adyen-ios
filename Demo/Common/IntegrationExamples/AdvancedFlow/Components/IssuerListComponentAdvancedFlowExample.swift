@@ -18,9 +18,8 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
-
+    
     // MARK: - Action Handling
 
     private lazy var actionComponent: CheckoutActionComponent = {
@@ -41,7 +40,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
         presenter?.showLoadingIndicator()
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
+                context = try await makeExampleAdyenContext()
                 requestPaymentMethods(order: nil) { [weak self] result in
                     guard let self else { return }
 

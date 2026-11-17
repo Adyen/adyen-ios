@@ -15,28 +15,22 @@ class PayByBankUSComponentTests: XCTestCase {
     let context = Dummy.context
     let paymentMethod = PayByBankUSPaymentMethod(type: .payByBankAISDD, name: "Plaid")
     
-    func test_initiatePaymentShouldCallPaymentComponentDelegateDidSubmit() {
-        
+    func test_initiatePaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
+
         let sut = PayByBankUSComponent(
             paymentMethod: paymentMethod,
             context: context
         )
-        
-        let delegateExpectation = expectation(description: "onDidSubmit is called once")
-        
+
         let delegate = PaymentComponentDelegateMock()
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! GenericPaymentDetails
-            XCTAssertEqual(details.type, .payByBankAISDD)
-            delegateExpectation.fulfill()
-        }
-        
         sut.delegate = delegate
-        
+
         sut.performSubmit()
-        
-        wait(for: [delegateExpectation], timeout: 1)
+
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        let details = try XCTUnwrap(arguments.data.paymentMethod as? GenericPaymentDetails)
+        XCTAssertEqual(details.type, .payByBankAISDD)
     }
     
     func test_viewControllerLifecycle() throws {

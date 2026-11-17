@@ -93,6 +93,22 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidDisappear()
     }
 
+    override internal func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // Report the size at the current width so the parent can fit wrapped validation messages.
+        let width = view.bounds.width
+        guard width > 0 else { return }
+
+        let fittingSize = view.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        guard preferredContentSize != fittingSize else { return }
+        preferredContentSize = fittingSize
+    }
+
     // MARK: - setup & configurations
 
     private func setupView() {

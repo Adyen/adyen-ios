@@ -109,6 +109,7 @@ private final class StoredPaymentMethodContentAssemblerStub: StoredPaymentMethod
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
+        isPresentedModally: Bool,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         RouterMock()

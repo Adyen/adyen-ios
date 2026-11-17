@@ -12,7 +12,7 @@ package protocol PaymentMethodAware {
 
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
-    
+
 }
 
 /// A component that handles stored payment methods.
@@ -44,40 +44,37 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
 }
 
 extension PaymentComponent {
-    
+
     /// Submits payment data to the payment delegate.
     /// - Parameters:
     ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
     package func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
-        Task { [weak self] in
-            guard let self else { return }
-            sendSubmitEvent()
-            let component = component ?? self
-            let updatedData = await prepareSubmitData(from: data)
-            self.delegate?.didSubmit(updatedData, from: component)
-        }
+        sendSubmitEvent()
+        let component = component ?? self
+        let updatedData = prepareSubmitData(from: data)
+        self.delegate?.didSubmit(updatedData, from: component)
     }
-    
+
     package var checkoutAttemptId: String {
         context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
     }
-    
+
     /// Adds SDK related info to payment data object and returns the final data in the completion.
-    package func prepareSubmitData(from data: PaymentComponentData) async -> PaymentComponentData {
+    package func prepareSubmitData(from data: PaymentComponentData) -> PaymentComponentData {
 
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
             paymentMethodBehavior: paymentMethodBehavior,
             authenticationProvider: data.paymentMethod as? SDKDataAuthenticationProvider
         )
-        
-        return await data
+
+        return data
             .replacing(checkoutAttemptId: checkoutAttemptId)
             .replacing(sdkData: sdkData)
-            .replacing(browserInfo: BrowserInfo())
+            .replacing(browserInfo: context.browserInfo)
     }
-    
+
     private func sendSubmitEvent() {
         let logEvent = AnalyticsEventLog(component: paymentMethod.type.rawValue, type: .submit)
         context.analyticsProvider?.add(log: logEvent)
@@ -94,12 +91,12 @@ package protocol PaymentComponentDelegate: AnyObject {
     ///   - data: The data supplied by the payment component.
     ///   - component: The payment component from which the payment details were submitted.
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent)
-    
+
     /// Invoked when the payment component fails.
     ///
     /// - Parameters:
     ///   - error: The error that occurred.
     ///   - component: The payment component that failed.
     func didFail(with error: Error, from component: PaymentComponent)
-    
+
 }

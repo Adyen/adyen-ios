@@ -20,7 +20,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
     internal var context: AdyenContext?
-
+    
     // MARK: - Initializers
 
     internal init() {}
@@ -29,7 +29,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
         presenter?.showLoadingIndicator()
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
+                context = try await makeExampleAdyenContext()
                 loadSession { [weak self] response in
                     guard let self else { return }
 

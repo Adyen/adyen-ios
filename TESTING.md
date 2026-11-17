@@ -170,6 +170,21 @@ func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
 func test_submit_withValidPaymentData_shouldSucceed()
 ```
 
+### Swift Testing
+
+`@Test` functions follow the same `<subject>_<condition>_<expectedBehavior>` structure without the `test_` prefix, since `@Test` already marks them as tests. A display name in `@Test("...")` is optional.
+
+```swift
+// ✅ Correct
+@Test func didSubmit_shouldCallDropInFlowManagerSubmit()
+@Test func selectPaymentMethod_givenRegularComponent_shouldCallRouterPresent()
+
+// ❌ Avoid
+@Test func test_didSubmit_shouldCallDropInFlowManagerSubmit()   // redundant prefix
+@Test func nilAmount_when_resolvingTitle_then_returnsDefaultSubmitTitle()   // use one segment per part
+@Test func browserInfoIsStored()   // missing structure
+```
+
 ## Running Tests
 
 ### Default Test Scheme

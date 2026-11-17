@@ -20,10 +20,6 @@ internal struct GenericPaymentMethodView: View {
         static let progressViewWidth: CGFloat = 4
     }
 
-    private enum Images {
-        static let backwardChevron = "chevron.backward"
-    }
-
     // MARK: - Properties
 
     @ObservedObject internal var viewModel: GenericPaymentMethodViewModel
@@ -38,22 +34,11 @@ internal struct GenericPaymentMethodView: View {
             progressView
                 .padding(.top, Constants.progressViewTopPadding)
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    viewModel.dismiss()
-                } label: {
-                    Image(systemName: Images.backwardChevron)
-                }
-                .disabled(viewModel.state == .loading)
-            }
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
         .background(Color(uiColor: theme.colors.background))
         .disabled(viewModel.state == .loading)
         .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.screen)
-        .navigationBarBackButtonHidden(true)
         .task {
             viewModel.startPayment()
         }

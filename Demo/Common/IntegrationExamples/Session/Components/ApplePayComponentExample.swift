@@ -22,9 +22,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// comes from demo app protocol, unused on new structure
-    internal var context: AdyenContext?
-
     /// Whether the app shows its own Apple Pay button instead of the component's button.
     private let usesOwnApplePayButton: Bool
 

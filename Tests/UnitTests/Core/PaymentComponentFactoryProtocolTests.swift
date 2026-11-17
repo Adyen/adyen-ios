@@ -253,6 +253,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: customAmount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: AnalyticsProviderMock()
         )
         let config = factory.defaultConfiguration()

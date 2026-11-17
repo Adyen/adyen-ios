@@ -117,19 +117,14 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        if context.amount?.value == 0 {
-            return true
-        }
-
-        return configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
     
     internal lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(
-            text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
-            style: configuration.style.sectionHeader
+            text: localizedString(.achBankAccountTitle, configuration.localizationParameters)
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -281,10 +276,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if StorePaymentMethodPolicy.shouldShowConsent(
-            configuredVisible: configuration.showStorePaymentMethod,
-            amount: context.amount
-        ) {
+        if configuration.showStorePaymentMethod {
             formViewController.append(storeDetailsItem)
         }
         

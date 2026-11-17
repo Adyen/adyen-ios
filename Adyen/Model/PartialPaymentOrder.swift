@@ -7,38 +7,38 @@
 import Foundation
 
 /// Describes a partial payment order, for partial payments.
-public struct PartialPaymentOrder: Codable, Equatable {
+package struct PartialPaymentOrder: Codable, Equatable {
 
     /// A compact version of `PartialPaymentOrder`.
-    public struct CompactOrder: Encodable, Equatable {
+    package struct CompactOrder: Encodable, Equatable {
 
         /// The psp reference.
-        public let pspReference: String
+        package let pspReference: String
 
         /// The order data.
-        public let orderData: String?
+        package let orderData: String?
     }
 
     /// A compact version of `PartialPaymentOrder`.
-    public let compactOrder: CompactOrder
+    package let compactOrder: CompactOrder
 
     /// The psp reference.
-    public let pspReference: String
+    package let pspReference: String
 
     /// The order data.
-    public let orderData: String?
+    package let orderData: String?
 
     /// A unique reference to the payment.
-    public let reference: String?
+    package let reference: String?
 
     /// The initial amount of the order.
-    public let amount: Amount?
+    package let amount: Amount?
 
     /// The remaining amount to be paid.
-    public let remainingAmount: Amount?
+    package let remainingAmount: Amount?
 
     /// The expiry date.
-    public let expiresAt: Date?
+    package let expiresAt: Date?
 
     /// Initializes a payment order.
     ///
@@ -48,7 +48,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
     /// - Parameter amount: The initial amount of the order.
     /// - Parameter remainingAmount: The remaining amount to be paid.
     /// - Parameter expiresAt: The expiry date.
-    public init(
+    package init(
         pspReference: String,
         orderData: String?,
         reference: String? = nil,
@@ -68,7 +68,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
         )
     }
 
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.pspReference = try container.decode(String.self, forKey: .pspReference)
         self.orderData = try container.decodeIfPresent(String.self, forKey: .orderData)

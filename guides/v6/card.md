@@ -83,6 +83,7 @@ let callbacks = CheckoutCallbacks(
 Modifiers return copies. The additional callbacks block supports `if` and `if`/`else`. If you include the
 same callback type more than once, the last whole value wins; its handlers are not merged with earlier values.
 The callbacks reach both standalone card components and cards presented inside Drop-in.
+All card and address callbacks are `@MainActor @Sendable` and run on the main actor.
 
 ## Address lookup callbacks
 
@@ -116,7 +117,8 @@ let callbacks = CheckoutCallbacks(
 
 `onAddressLookup` is required and returns matching `AddressLookupResult` values. The optional
 `onAddressSelected(_:)` modifier can retrieve a complete `PostalAddress` for a partial result.
-Without it, the selected result's postal address is used as-is.
+Without it, the selected result's postal address is used as-is. Both closures start on the main actor,
+so await your address service rather than doing slow synchronous work in them.
 
 `BillingAddressMode.lookup(hideForCardBrands:)` contains configuration only. When lookup is enabled
 without `AddressCallbacks`, `Checkout.setup` throws `CheckoutError` with the `.invalidConfiguration` code.

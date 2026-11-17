@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import struct Adyen.PaymentComponentData
 import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormButtonItem
 import UIKit

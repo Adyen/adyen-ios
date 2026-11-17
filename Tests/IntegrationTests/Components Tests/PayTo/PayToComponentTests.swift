@@ -367,6 +367,7 @@ class PayToComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
@@ -390,13 +391,8 @@ class PayToComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
-            didSubmitExpectation.fulfill()
-        }
 
         try populateValidFields(sut: sut)
 
@@ -404,7 +400,6 @@ class PayToComponentTests: XCTestCase {
         sut.performSubmit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
@@ -483,25 +478,19 @@ class PayToComponentTests: XCTestCase {
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
-        let didSubmitExpectation = expectation(description: "Delegate's didSubmit must be called")
-
-        delegateMock.onDidSubmit = { data, _ in
-            didSubmitExpectation.fulfill()
-            // Then
-            let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
-            XCTAssertTrue(
-                self.payToDetailsEqual(expectedDetails, receivedDetails),
-                "Submitted PayToDetails should match expected details"
-            )
-        }
-
         // When
         fill(sut)
         sut.firstNameInputItem.value = shopperName.firstName
         sut.lastNameInputItem.value = shopperName.lastName
         sut.performSubmit()
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        let data = try XCTUnwrap(delegateMock.didSubmitReceivedArguments?.data)
+        let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
+        XCTAssertTrue(
+            payToDetailsEqual(expectedDetails, receivedDetails),
+            "Submitted PayToDetails should match expected details"
+        )
     }
 
     private func populateValidFields(sut: PayToComponent) throws {

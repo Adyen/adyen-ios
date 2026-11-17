@@ -44,6 +44,7 @@ package class FormContainerItem<ContentItem: FormItem>: FormItem {
         let container = FormContainerItemView()
         let contentView = content.build(with: builder)
         container.accessibilityIdentifier = identifier
+        container.isHidden = isHidden.wrappedValue
         container.setup(
             contentView: contentView,
             padding: padding

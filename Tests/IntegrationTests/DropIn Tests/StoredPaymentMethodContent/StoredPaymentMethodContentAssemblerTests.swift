@@ -21,12 +21,49 @@ internal struct StoredPaymentMethodContentAssemblerTests {
             viewController: UIViewController()
         )
         let sut = makeSUT()
-        #expect(
-            sut.resolveStoredPaymentMethodContentRouter(
-                for: component,
-                listener: ContentRouterListenerSpy()
-            ) != nil
+        let router = sut.resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: false,
+            listener: ContentRouterListenerSpy()
         )
+        #expect(router?.rootViewController is NavigationLockingHostingController<StoredPaymentMethodContentView>)
+    }
+
+    /// The root of a sheet has nothing to go back to, so it gets the system Cancel button. A pushed screen keeps the back button.
+    @Test(arguments: [true, false])
+    internal func storedComponent_whenResolved_thenShowsCancelButtonOnlyWhenPresentedModally(isPresentedModally: Bool) {
+        let component = StoredComponentMock(
+            paymentMethod: PaymentMethodMock(type: .payPal, name: "PayPal"),
+            viewController: UIViewController()
+        )
+        let router = makeSUT().resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: isPresentedModally,
+            listener: ContentRouterListenerSpy()
+        )
+        #expect((router?.rootViewController.navigationItem.leftBarButtonItem != nil) == isPresentedModally)
+    }
+
+    /// A submitted payment cannot be cancelled, so the Cancel button follows the payment progress of the drop in.
+    @Test
+    internal func storedComponent_whilePaymentInProgress_thenDisablesCancelButton() throws {
+        let component = StoredComponentMock(
+            paymentMethod: PaymentMethodMock(type: .payPal, name: "PayPal"),
+            viewController: UIViewController()
+        )
+        let flowManager = DropInFlowManagingMock()
+        let router = makeSUT(dropInFlowManager: flowManager).resolveStoredPaymentMethodContentRouter(
+            for: component,
+            isPresentedModally: true,
+            listener: ContentRouterListenerSpy()
+        )
+        let cancelButton = try #require(router?.rootViewController.navigationItem.leftBarButtonItem)
+
+        flowManager.paymentInProgressSubject.send(true)
+        #expect(!cancelButton.isEnabled)
+
+        flowManager.paymentInProgressSubject.send(false)
+        #expect(cancelButton.isEnabled)
     }
 
     /// A real stored payment method that needs no input at all, such as stored Cash App Pay, also gets
@@ -46,6 +83,7 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) != nil)
     }
@@ -58,13 +96,14 @@ internal struct StoredPaymentMethodContentAssemblerTests {
         let sut = makeSUT()
         #expect(sut.resolveStoredPaymentMethodContentRouter(
             for: component,
+            isPresentedModally: false,
             listener: ContentRouterListenerSpy()
         ) == nil)
     }
 
-    private func makeSUT() -> StoredPaymentMethodContentAssembler {
+    private func makeSUT(dropInFlowManager: DropInFlowManaging? = nil) -> StoredPaymentMethodContentAssembler {
         StoredPaymentMethodContentAssembler(
-            dropInFlowManager: DropInFlowManagingMock(),
+            dropInFlowManager: dropInFlowManager ?? DropInFlowManagingMock(),
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             theme: .default,
             localizationParameters: nil

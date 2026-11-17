@@ -21,14 +21,12 @@ class AtomeComponentUITests: XCTestCase {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         context = Dummy.context
         style = FormComponentStyle()
-        BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
         context = nil
         style = nil
-        BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
     
@@ -95,19 +93,6 @@ class AtomeComponentUITests: XCTestCase {
         // Then
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_shopper_info")
 
-        // Then
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! AtomeDetails
-            XCTAssertEqual(details.shopperName?.firstName, "Katrina")
-            XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "+11234567")
-            XCTAssertEqual(details.billingAddress, expectedBillingAddress)
-            sut.stopLoading()
-            didSubmitExpectation.fulfill()
-        }
-
         setupRootViewController(sut.viewController)
         let view: UIView = sut.viewController.view
         
@@ -125,8 +110,17 @@ class AtomeComponentUITests: XCTestCase {
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
-        
-        waitForExpectations(timeout: 10, handler: nil)
+
+        // Then
+        let submitted = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        XCTAssertTrue(submitted.component === sut)
+        let details = try XCTUnwrap(submitted.data.paymentMethod as? AtomeDetails)
+        XCTAssertEqual(details.shopperName?.firstName, "Katrina")
+        XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
+        XCTAssertEqual(details.telephoneNumber, "+11234567")
+        XCTAssertEqual(details.billingAddress, expectedBillingAddress)
+        sut.stopLoading()
     }
 
     func testAtome_givenNoShopperInformation_shouldNotPrefill() {

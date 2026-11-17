@@ -8,34 +8,27 @@ import Foundation
 import WebKit
 
 /// Provides the device default browser info.
-public struct BrowserInfo: Encodable {
+package struct BrowserInfo: Encodable {
 
     internal static var cachedUserAgent: String?
 
     /// The device default user-agent.
-    public let userAgent: String
-
-    @MainActor internal var webView: WKWebView?
-
-    private enum CodingKeys: CodingKey {
-        case userAgent
-    }
+    package let userAgent: String
 
     /// Initializes a `BrowserInfo` instance asynchronously by retrieving the device's user agent.
     ///
     /// - Returns: A `BrowserInfo` instance if the user agent was successfully retrieved, or `nil` if the evaluation failed.
-    @MainActor public init?() async {
+    @MainActor package init?() async {
         if let cached = Self.cachedUserAgent {
             self.userAgent = cached
             return
         }
 
-        self.webView = WKWebView()
-        guard let userAgent = try? await webView?.evaluateJavaScript("navigator.userAgent") as? String else {
+        let webView = WKWebView()
+        guard let userAgent = try? await webView.evaluateJavaScript("navigator.userAgent") as? String else {
             return nil
         }
-        self.webView = nil
-        
+
         self.userAgent = userAgent
         BrowserInfo.cachedUserAgent = userAgent
     }

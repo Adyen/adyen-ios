@@ -23,8 +23,6 @@ package final class AffirmComponent: AbstractPersonalInformationComponent {
     
     // MARK: - Items
     
-    private let personalDetailsHeaderItem: FormLabelItem
-    
     internal let deliveryAddressToggleItem: FormToggleItem
 
     // MARK: - Initializers
@@ -39,7 +37,6 @@ package final class AffirmComponent: AbstractPersonalInformationComponent {
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
-        personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
         let fields: [PersonalInformation] = [
@@ -68,7 +65,6 @@ package final class AffirmComponent: AbstractPersonalInformationComponent {
     // MARK: - Private
     
     private func setupItems() {
-        personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         emailItem?.autocapitalizationType = .none
         
         setupDeliveryAddressItem()

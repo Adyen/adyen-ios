@@ -145,20 +145,6 @@ class QiwiWalletComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is QiwiWalletDetails)
-            let data = data.paymentMethod as! QiwiWalletDetails
-            XCTAssertEqual(data.phonePrefix, "+3")
-            XCTAssertEqual(data.phoneNumber, "7455573152")
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.button.showsActivityIndicator, false)
-        }
-
         setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
@@ -170,9 +156,17 @@ class QiwiWalletComponentTests: XCTestCase {
         try self.populate(textItemView: XCTUnwrap(phoneNumberView), with: "7455573152")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
-        
-        waitForExpectations(timeout: 10)
 
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertTrue(arguments.data.paymentMethod is QiwiWalletDetails)
+        let data = try XCTUnwrap(arguments.data.paymentMethod as? QiwiWalletDetails)
+        XCTAssertEqual(data.phonePrefix, "+3")
+        XCTAssertEqual(data.phoneNumber, "7455573152")
+
+        sut.stopLoading()
+        XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+        XCTAssertEqual(sut.button.showsActivityIndicator, false)
     }
 
     func testViewDidLoadShouldSendInitialCall() {

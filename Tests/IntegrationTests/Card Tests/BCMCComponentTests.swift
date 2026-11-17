@@ -72,7 +72,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardBrands, brands)
         
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.supportedCardLogosItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
@@ -103,7 +103,7 @@ class BCMCComponentTests: XCTestCase {
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         
         let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, isSupported: true)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
 
         wait(for: .milliseconds(30))
         
@@ -128,7 +128,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardBrands, brands)
         
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -152,7 +152,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardBrands, brands)
         
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -170,7 +170,7 @@ class BCMCComponentTests: XCTestCase {
         
         setupRootViewController(sut.viewController)
         
-        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         try self.populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.bancontactCard.number))
         
         XCTAssertEqual(cardNumberItemView.item.cardBrandLogos.count, 1)
@@ -189,7 +189,7 @@ class BCMCComponentTests: XCTestCase {
         
         sut.viewController.loadViewIfNeeded()
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
 
         let cardNumberItem = try XCTUnwrap(cardNumberItemView?.item)
@@ -209,33 +209,15 @@ class BCMCComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
         
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
-        delegate.onDidSubmit = { paymentData, component in
-            
-            let data = try! AdyenCoder.encode(paymentData.paymentMethod.encodable) as Data
-            
-            let resultJson = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [String: Any]
-            
-            XCTAssertTrue(component === sut)
-            XCTAssertNotNil(resultJson["encryptedExpiryYear"] as? String)
-            XCTAssertNotNil(resultJson["encryptedCardNumber"] as? String)
-            XCTAssertNotNil(resultJson["type"] as? String)
-            XCTAssertEqual(resultJson["type"] as? String, "bcmc")
-            XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
-            XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
-
-            sut.stopLoading()
-            didSubmitExpectation.fulfill()
-        }
         delegate.onDidFail = { error, _ in
             XCTFail("delegate.didFail() must not be called")
         }
         
         let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, isSupported: true, cvcPolicy: .optional)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
         
         // Enter Card Number
-        let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberView)
         try self.populate(textItemView: XCTUnwrap(cardNumberView), with: XCTUnwrap(Dummy.bancontactCard.number))
         
@@ -250,8 +232,22 @@ class BCMCComponentTests: XCTestCase {
         
         // Tap submit button
         tapSubmitButton(on: sut.viewController.view)
+
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let arguments = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        let data = try AdyenCoder.encode(arguments.data.paymentMethod.encodable) as Data
         
-        wait(for: [didSubmitExpectation], timeout: 10)
+        let resultJson = try XCTUnwrap(JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: Any])
+        
+        XCTAssertTrue(arguments.component === sut)
+        XCTAssertNotNil(resultJson["encryptedExpiryYear"] as? String)
+        XCTAssertNotNil(resultJson["encryptedCardNumber"] as? String)
+        XCTAssertNotNil(resultJson["type"] as? String)
+        XCTAssertEqual(resultJson["type"] as? String, "bcmc")
+        XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
+        XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
+
+        sut.stopLoading()
     }
     
     func test_onBinLookup_withLessThan11Digits_shouldNotBeCalled() throws {
@@ -270,7 +266,7 @@ class BCMCComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "67034")
 
         wait(for: [expectation], timeout: 2)
@@ -294,7 +290,7 @@ class BCMCComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         try populate(textItemView: XCTUnwrap(cardNumberItemView), with: XCTUnwrap(Dummy.bancontactCard.number))
 
         wait(for: [expectationBin], timeout: 10)
@@ -316,7 +312,7 @@ class BCMCComponentTests: XCTestCase {
 
         receivedBins.removeAll()
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         // Typing 7 digits one by one. Without throttling each distinct BIN must be
         // reported (no coalescing of rapid keystrokes), but the BIN is capped at 6
         // digits, so the 7th digit produces no new value and must not fire again.
@@ -410,7 +406,7 @@ class BCMCComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "32145")
 
         wait(for: [expectation], timeout: 2)
@@ -434,7 +430,7 @@ class BCMCComponentTests: XCTestCase {
         }
         
         // Enter invalid Card Number
-        let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberView)
         try self.populate(textItemView: XCTUnwrap(cardNumberView), with: "123")
         
@@ -449,7 +445,7 @@ class BCMCComponentTests: XCTestCase {
         
         wait(for: .milliseconds(300))
         
-        let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.footerLabel")
+        let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.footerLabel")
         XCTAssertNotNil(alertLabel)
         XCTAssertEqual(alertLabel?.text, cardNumberView?.item.validationFailureMessage)
         
@@ -496,7 +492,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {
-        let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem")
 

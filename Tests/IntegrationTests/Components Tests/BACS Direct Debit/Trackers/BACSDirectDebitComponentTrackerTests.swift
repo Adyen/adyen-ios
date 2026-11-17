@@ -29,6 +29,7 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
             apiContext: apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
+            browserInfo: nil,
             analyticsProvider: analyticsProvider
         )
         sut = BACSDirectDebitComponentTracker(
