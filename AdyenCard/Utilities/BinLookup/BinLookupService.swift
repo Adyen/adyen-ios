@@ -48,7 +48,7 @@ internal final class BinLookupService: AnyBinLookupService {
 
         let encryptedBin: String
         do {
-            encryptedBin = try CardEncryptor.encrypt(bin: bin, with: publicKey)
+            encryptedBin = try CheckoutEncryptor.encrypt(field: .bin, value: bin, publicKey: publicKey)
         } catch {
             return completion(.failure(error))
         }
