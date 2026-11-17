@@ -552,7 +552,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     private func makePaymentComponentDataMock() -> PaymentComponentData {
-        let encryptedCard = EncryptedCard(
+        let encryptedCard = CheckoutEncryptedCard(
             number: "4111111111111111",
             securityCode: "737",
             expiryMonth: "03",

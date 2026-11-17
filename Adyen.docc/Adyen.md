@@ -14,10 +14,6 @@ Adyen Components for iOS allows you to accept in-app payments by providing you w
 
 - <doc:Components>
 
-### Advanced Flow
-
-- <doc:AdvancedFlow>
-
 ## Customization
 
 - <doc:Customization>
