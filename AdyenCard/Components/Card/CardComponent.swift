@@ -174,6 +174,8 @@ package class CardComponent: PaymentComponent,
 
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
+    private var currentPan = ""
+
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
             component: paymentMethod.type.rawValue,
@@ -201,6 +203,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(pan: String) {
+        currentPan = pan
         guard pan.count >= Constant.thresholdBINLength else {
             // Replaces a pending /binlookup call so its result can't override the local detection.
             panThrottler.throttle {}
@@ -219,6 +222,8 @@ extension CardComponent: CardViewControllerDelegate {
     private func updateBrand(with pan: String) {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardBrands) { [weak self] binInfo in
             guard let self else { return }
+            // Ignores a response for a number the shopper has since shortened or changed.
+            guard self.currentPan.hasPrefix(pan) else { return }
             self.cardViewController.handleBinLookupResponse(binInfo)
             guard !binInfo.isCreatedLocally else { return }
             let brands = (binInfo.brands ?? []).map {

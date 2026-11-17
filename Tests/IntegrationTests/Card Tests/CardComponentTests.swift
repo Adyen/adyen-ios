@@ -175,6 +175,32 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(fetchCount, 1)
     }
 
+    func test_didChange_whenBinLookupResponseArrivesAfterPanShortened_shouldIgnoreResponse() {
+        let binInfoProviderMock = BinInfoProviderMock()
+        var pendingCompletions: [(BinLookupResponse) -> Void] = []
+        binInfoProviderMock.onFetch = { pendingCompletions.append($0) }
+        var binLookupCallCount = 0
+        let callbacks = CardCallbacks().onBinLookup { _ in binLookupCallCount += 1 }
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration(),
+            binProvider: binInfoProviderMock,
+            callbacks: callbacks
+        )
+
+        sut.didChange(pan: "41111111111")
+        wait(for: .seconds(1))
+        let staleCompletion = pendingCompletions.removeLast()
+        sut.didChange(pan: "4111")
+        pendingCompletions.removeLast()(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: true))
+
+        staleCompletion(BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard)], isCreatedLocally: false))
+
+        XCTAssertEqual(binLookupCallCount, 0)
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.detectedBrands.map(\.brand), [.visa])
+    }
+
     func test_selectedBrand_whenBinLookupReturnsVisaAndStar_shouldBeNil() {
         var configuration = CardConfiguration()
         configuration.supportedCardBrands = [.visa, .masterCard, .star]
