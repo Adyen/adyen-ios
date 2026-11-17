@@ -120,9 +120,10 @@ class IssuerListComponentTests: XCTestCase {
         let errorLabel = try XCTUnwrap(errorLabel())
         XCTAssertFalse(errorLabel.isHidden)
         XCTAssertEqual(errorLabel.text, "Select an option to continue")
+        XCTAssertTrue(try XCTUnwrap(descriptionLabel()).isHidden)
     }
 
-    func test_selectingIssuer_afterSubmitWithoutSelection_shouldHideError() throws {
+    func test_selectingIssuer_afterSubmitWithoutSelection_shouldHideErrorAndShowDescription() throws {
         // Given
         let listViewController = try presentList()
         sut.performSubmit()
@@ -132,6 +133,19 @@ class IssuerListComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(try XCTUnwrap(errorLabel()).isHidden, true)
+        XCTAssertFalse(try XCTUnwrap(descriptionLabel()).isHidden)
+    }
+
+    func test_descriptionLabel_shouldUseThemeTextColor() throws {
+        // Given
+        let theme = CheckoutTheme(colors: CheckoutColors(text: .magenta, textSecondary: .orange))
+        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context, configuration: IssuerListConfiguration(theme: theme))
+
+        // When
+        _ = try presentList()
+
+        // Then
+        XCTAssertEqual(try XCTUnwrap(descriptionLabel()).textColor, .magenta)
     }
 
     func test_submitButtonTap_withSelectedIssuer_shouldSubmitAndShowLoading() throws {
@@ -361,6 +375,10 @@ private extension IssuerListComponentTests {
 
     func errorLabel() -> UILabel? {
         sut.viewController.view.findView(by: "errorLabel")
+    }
+
+    func descriptionLabel() -> UILabel? {
+        sut.viewController.view.findView(by: "descriptionLabel")
     }
 
     func submitButton() -> FormButton? {

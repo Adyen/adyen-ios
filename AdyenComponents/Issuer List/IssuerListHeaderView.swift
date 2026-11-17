@@ -8,19 +8,16 @@ import Adyen
 import AdyenUI
 import UIKit
 
-/// The header of the issuer list, showing a description and a validation error.
+/// The header of the issuer list, showing a description that a validation error replaces when shown.
 internal final class IssuerListHeaderView: UIView {
 
-    private enum Layout {
-        static let descriptionToErrorSpacing: CGFloat = 16
-    }
-
-    /// Whether the validation error is shown.
+    /// Whether the validation error is shown in place of the description.
     internal var showsError: Bool {
         get { !errorLabel.isHidden }
         set {
             guard newValue != showsError else { return }
             errorLabel.isHidden = !newValue
+            descriptionLabel.isHidden = newValue
             if newValue {
                 UIAccessibility.post(notification: .announcement, argument: errorLabel.text)
             }
@@ -31,7 +28,7 @@ internal final class IssuerListHeaderView: UIView {
 
     internal lazy var descriptionLabel: AdyenLabel = makeLabel(
         text: descriptionText,
-        style: theme.elements.labels.body.color(theme.colors.textSecondary),
+        style: theme.elements.labels.body,
         postfix: "descriptionLabel"
     )
 
@@ -49,7 +46,6 @@ internal final class IssuerListHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [descriptionLabel, errorLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.setCustomSpacing(Layout.descriptionToErrorSpacing, after: descriptionLabel)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -66,8 +62,8 @@ internal final class IssuerListHeaderView: UIView {
     /// Initializes the header view.
     ///
     /// - Parameters:
-    ///   - description: The description shown below the title.
-    ///   - errorMessage: The message shown when ``showsError`` is `true`.
+    ///   - description: The description shown while ``showsError`` is `false`.
+    ///   - errorMessage: The message shown in place of the description while ``showsError`` is `true`.
     ///   - theme: The theme to use for styling.
     ///   - identifierScope: The scope used to build the accessibility identifiers.
     internal init(
