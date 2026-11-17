@@ -349,6 +349,13 @@ extension SearchViewController {
     package func reloadResults() {
         viewModel.handleSearchTextDidChange(currentSearchText)
     }
+
+    /// Requests the results for the search text, unless they were already requested for it.
+    internal func updateSearchText(_ searchText: String) {
+        guard searchText != currentSearchText else { return }
+        currentSearchText = searchText
+        viewModel.handleSearchTextDidChange(searchText)
+    }
 }
 
 // MARK: - Footer & Keyboard
@@ -406,8 +413,7 @@ private extension SearchViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        currentSearchText = searchText
-        viewModel.handleSearchTextDidChange(searchText)
+        updateSearchText(searchText)
     }
     
     package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -420,5 +426,12 @@ extension SearchViewController: UISearchBarDelegate {
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+extension SearchViewController: UISearchResultsUpdating {
+
+    package func updateSearchResults(for searchController: UISearchController) {
+        updateSearchText(searchController.searchBar.text ?? "")
     }
 }

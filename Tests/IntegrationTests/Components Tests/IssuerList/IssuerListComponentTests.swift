@@ -234,6 +234,31 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertEqual(selectedRowIndices(in: listViewController), [10])
     }
 
+    func test_search_whenCancelled_shouldShowAllIssuers() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        let listViewController = try presentList()
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.searchBar.text = "Issuer 11"
+        searchViewController.searchBar(searchController.searchBar, textDidChange: "Issuer 11")
+        XCTAssertEqual(listViewController.sections.flatMap(\.items).count, 1)
+
+        // When
+        searchController.searchBar.text = ""
+        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+
+        // Then
+        XCTAssertEqual(listViewController.sections.flatMap(\.items).count, 11)
+
+        // When
+        selectRow(at: 0, in: listViewController)
+
+        // Then
+        XCTAssertEqual(listViewController.sections.flatMap(\.items).count, 11)
+        XCTAssertEqual(selectedRowIndices(in: listViewController), [0])
+    }
+
     func test_selectingIssuer_shouldNotSendSearchEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

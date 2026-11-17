@@ -274,6 +274,33 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(lookups, ["", "term", "term"])
     }
 
+    func test_searchController_whenSearchIsCancelled_shouldRequestAllResults() throws {
+        var lookups: [String] = []
+        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        searchViewController.loadViewIfNeeded()
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.searchBar.text = "term"
+        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+
+        searchController.searchBar.text = ""
+        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+
+        XCTAssertEqual(lookups, ["", "term", ""])
+    }
+
+    func test_searchController_whenTextChanges_shouldRequestResultsOnce() throws {
+        var lookups: [String] = []
+        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        searchViewController.loadViewIfNeeded()
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+
+        searchController.searchBar.text = "term"
+        searchViewController.searchBar(searchController.searchBar, textDidChange: "term")
+        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+
+        XCTAssertEqual(lookups, ["", "term"])
+    }
+
     func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
         let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
         let barAppearance = UINavigationBarAppearance()
@@ -455,6 +482,14 @@ private extension SearchViewControllerTests {
             headerView: headerView,
             footerView: footerView
         )
+    }
+
+    func makeLargeTitleSearchViewController(onLookup: @escaping (String) -> Void) -> SearchViewController {
+        let viewModel = SearchViewController.ViewModel(style: DummyStyle()) { searchTerm, handler in
+            onLookup(searchTerm)
+            handler([ListItem(title: "Result")])
+        }
+        return SearchViewController(viewModel: viewModel, emptyView: emptyView, usesLargeTitleLayout: true)
     }
 
     func emptyViewBottomConstraint(
