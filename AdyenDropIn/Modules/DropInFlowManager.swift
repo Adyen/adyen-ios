@@ -54,6 +54,12 @@ internal class DropInFlowManager: DropInFlowManaging {
     private var didCancelDropIn = false
     @Published private var isPaymentInProgress = false
 
+    private var dropInComponentDelegate: DropInComponentDelegate? {
+        dropInComponent?.delegate
+    }
+
+    internal private(set) var actionComponent: CheckoutActionComponent?
+
     // MARK: - Initializers
 
     internal init(
@@ -67,14 +73,6 @@ internal class DropInFlowManager: DropInFlowManaging {
         self.actionComponentConfiguration = actionComponentConfiguration
         self.paymentActionAssembler = paymentActionAssembler
     }
-
-    // MARK: - Private
-
-    private var dropInComponentDelegate: DropInComponentDelegate? {
-        dropInComponent?.delegate
-    }
-
-    internal private(set) var actionComponent: CheckoutActionComponent?
 
     // MARK: - DropInFlowManaging
 
@@ -97,7 +95,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         guard isAwaitingAction else { return }
         isAwaitingAction = false
 
-        makeActionComponentIfNeeded().handle(action)
+        actionComponent = makeActionComponentIfNeeded()
+        actionComponent?.handle(action)
     }
 
     internal func fail(with error: Error, from component: PaymentComponent) {
@@ -152,7 +151,6 @@ internal class DropInFlowManager: DropInFlowManaging {
         )
         actionComponent.delegate = self
         actionComponent.actionPresentationDelegate = self
-        self.actionComponent = actionComponent
         return actionComponent
     }
 
