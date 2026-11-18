@@ -229,6 +229,27 @@ final class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(analyticsProvider.infos.map(\.type), [.rendered])
     }
 
+    func test_buildComponent_withApplePay_shouldNotSendInitialAnalytics() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            browserInfo: nil,
+            analyticsProvider: analyticsProvider
+        )
+        let applePay = try AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
+        let sut = try makeSUT(
+            paymentMethods: PaymentMethods(regular: [applePay], stored: []),
+            paymentComponentProvider: checkoutProvider(includingApplePay: true)
+        )
+
+        let component = try XCTUnwrap(sut.buildComponent(for: applePay))
+        component.viewController.loadViewIfNeeded()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 0)
+    }
+
     func test_supportedRegularPaymentMethods_withVoucherAndQRCodeMethods_shouldIncludeThem() throws {
         let methods = try AdyenCoder.decode([
             "paymentMethods": [oxxo, ["type": "pix", "name": "PIX"]]
