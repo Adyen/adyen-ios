@@ -15,13 +15,6 @@ package class FormLabelItem: FormItem {
 
     package var subitems: [FormItem] = []
 
-    package init(text: String, style: TextStyle, identifier: String? = nil) {
-        self.identifier = identifier
-        self.style = style
-        self.text = text
-        self.labelStyle = { $0.elements.labels.body }
-    }
-
     package init(
         text: String,
         identifier: String? = nil,
@@ -30,14 +23,9 @@ package class FormLabelItem: FormItem {
         self.identifier = identifier
         self.text = text
         self.labelStyle = labelStyle
-        // TODO: TO remove later
-        self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
     }
 
     package var identifier: String?
-
-    /// The style of the label.
-    package var style: TextStyle
 
     /// The text of the label.
     package var text: String

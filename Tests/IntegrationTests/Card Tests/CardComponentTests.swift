@@ -1149,6 +1149,33 @@ class CardComponentTests: XCTestCase {
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
     }
 
+    func test_cardLogos_emptyBinLookupWithValidNumber_keepsSupportedLogosVisible() throws {
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        let supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"))
+
+        populate(textItemView: cardNumberItemView, with: "36070500001020")
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [], isCreatedLocally: false))
+
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.isValid())
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: false)
+
+        sut.cardViewController.handleBinLookupResponse(
+            BinLookupResponse(brands: [DetectedCardBrand(brand: .diners, isSupported: true)], isCreatedLocally: false)
+        )
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
+
+        sut.cardViewController.handleBinLookupResponse(BinLookupResponse(brands: [], isCreatedLocally: false))
+        wait(until: supportedCardLogosItem, at: \.isHidden, is: false)
+    }
+
     func test_securityCodeField_withDifferentCVCPolicies_shouldUpdateDisplayMode() {
         let brands = [
             DetectedCardBrand(brand: .visa, cvcPolicy: .required),
@@ -2274,6 +2301,47 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(items.holderNameItem.isValid())
     }
 
+    func test_submit_withCardholderNameShown_shouldSendHolderName() throws {
+        // Given
+        let configuration = CardConfiguration().showCardholderName(true)
+        let sut = makeSUT(configuration: configuration)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+        let view: UIView = sut.viewController.view
+
+        // When
+        fillCard(on: view, with: Dummy.visaCard)
+        let holderNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        populate(textItemView: holderNameView, with: "Katrina del Mar")
+        tapSubmitButton(on: view)
+
+        // Then
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let details = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data.paymentMethod as? CardDetails)
+        XCTAssertEqual(details.holderName, "Katrina del Mar")
+    }
+
+    func test_submit_withCardholderNameHidden_shouldNotSendHolderName() throws {
+        // Given
+        let configuration = CardConfiguration().showCardholderName(false)
+        let sut = makeSUT(configuration: configuration)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+        let view: UIView = sut.viewController.view
+        sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
+
+        // When
+        fillCard(on: view, with: Dummy.visaCard)
+        tapSubmitButton(on: view)
+
+        // Then
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+        let details = try XCTUnwrap(delegate.didSubmitReceivedArguments?.data.paymentMethod as? CardDetails)
+        XCTAssertNil(details.holderName)
+    }
+
     func test_expiryDateField_whenValueEntered_shouldParseMonthAndYear() {
         let sut = CardComponent(
             paymentMethod: method,
@@ -2393,7 +2461,7 @@ extension CardComponentTests {
         return makeSUT(configuration: configuration)
     }
 
-    func fillCard(on view: UIView, with card: Card) {
+    func fillCard(on view: UIView, with card: CheckoutCard) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
