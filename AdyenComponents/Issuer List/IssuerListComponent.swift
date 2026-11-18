@@ -198,7 +198,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     }
 
     private func selectIssuer(at index: Int) {
-        searchViewController.view.endEditing(true)
+        searchViewController.endSearch()
         selectedIssuerIndex = index
         setShowsError(false)
         sendIssuerSelectedEvent(issuerListPaymentMethod.issuers[index])

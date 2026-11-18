@@ -273,6 +273,29 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertEqual(selectedRowIndices(in: listViewController), [0])
     }
 
+    func test_selectingIssuer_whileSearching_shouldEndSearchAndKeepFilteredIssuers() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        setupRootViewController(UINavigationController(rootViewController: searchViewController))
+        let listViewController = searchViewController.resultsListViewController
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.isActive = true
+        searchController.searchBar.becomeFirstResponder()
+        wait(until: { searchController.searchBar.isFirstResponder }, timeout: 5)
+        searchController.searchBar.text = "Issuer 11"
+        searchViewController.searchBar(searchController.searchBar, textDidChange: "Issuer 11")
+
+        // When
+        selectRow(at: 0, in: listViewController)
+
+        // Then
+        wait(until: { !searchController.isActive }, timeout: 5)
+        XCTAssertFalse(searchController.searchBar.isFirstResponder)
+        XCTAssertEqual(listViewController.sections.flatMap(\.items).map(\.title), ["Test Issuer 11"])
+        XCTAssertEqual(selectedRowIndices(in: listViewController), [0])
+    }
+
     func test_selectingIssuer_shouldNotSendSearchEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

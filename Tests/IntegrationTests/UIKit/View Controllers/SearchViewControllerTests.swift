@@ -334,6 +334,25 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(firstCell.frame.minY - headerFrame.maxY, 24, accuracy: 0.1)
     }
 
+    func test_endSearch_shouldResignSearchFieldAndDeactivateSearchKeepingResults() throws {
+        var lookups: [String] = []
+        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        setupRootViewController(UINavigationController(rootViewController: searchViewController))
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.isActive = true
+        searchController.searchBar.becomeFirstResponder()
+        wait(until: { searchController.searchBar.isFirstResponder }, timeout: 5)
+        searchController.searchBar.text = "term"
+        searchViewController.searchBar(searchController.searchBar, textDidChange: "term")
+
+        searchViewController.endSearch()
+
+        wait(until: { !searchController.isActive }, timeout: 5)
+        XCTAssertFalse(searchController.searchBar.isFirstResponder)
+        XCTAssertEqual(searchController.searchBar.text, "term")
+        XCTAssertEqual(lookups, ["", "term"])
+    }
+
     func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
         let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
         let barAppearance = UINavigationBarAppearance()

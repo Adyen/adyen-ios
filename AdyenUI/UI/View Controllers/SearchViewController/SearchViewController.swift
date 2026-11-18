@@ -28,6 +28,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     internal lazy var keyboardObserver = KeyboardObserver()
     private var currentSearchText = ""
+    private var isEndingSearch = false
     private var emptyViewBottomConstraint: NSLayoutConstraint?
     private var footerViewBottomConstraint: NSLayoutConstraint?
 
@@ -350,6 +351,17 @@ extension SearchViewController {
         viewModel.handleSearchTextDidChange(currentSearchText)
     }
 
+    /// Dismisses the keyboard and ends the active search, keeping the search text and its results.
+    package func endSearch() {
+        searchBar.resignFirstResponder()
+        guard usesLargeTitleLayout, searchController.isActive else { return }
+        let searchText = searchBar.text
+        isEndingSearch = true
+        searchController.isActive = false
+        isEndingSearch = false
+        searchBar.text = searchText
+    }
+
     /// Requests the results for the search text, unless they were already requested for it.
     internal func updateSearchText(_ searchText: String) {
         guard searchText != currentSearchText else { return }
@@ -432,6 +444,7 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UISearchResultsUpdating {
 
     package func updateSearchResults(for searchController: UISearchController) {
+        guard !isEndingSearch else { return }
         updateSearchText(searchController.searchBar.text ?? "")
     }
 }
