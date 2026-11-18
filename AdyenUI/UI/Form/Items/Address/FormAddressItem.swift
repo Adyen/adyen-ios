@@ -91,8 +91,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
     
     internal lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(
-            text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
-            style: style.title
+            text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters)
         )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
