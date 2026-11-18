@@ -23,7 +23,7 @@ class DocumentComponentTests: XCTestCase {
         }
     }
     
-    func testUI() throws {
+    func test_handle_withDefaultTheme_shouldApplyThemeToDocumentView() throws {
         let theme = CheckoutTheme.default
         let sut = DocumentComponent(context: Dummy.context)
         let actionPresentationDelegate = ActionPresentationDelegateMock()
@@ -57,7 +57,7 @@ class DocumentComponentTests: XCTestCase {
         
     }
     
-    func testMainSecondaryButtons() throws {
+    func test_mainButton_whenTapped_shouldShowTitleAndCallDelegate() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         
         let delegateMock = DocumentActionViewDelegateMock()

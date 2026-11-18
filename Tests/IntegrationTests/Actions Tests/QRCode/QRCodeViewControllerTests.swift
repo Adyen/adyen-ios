@@ -14,7 +14,7 @@ final class QRCodeViewControllerTests: XCTestCase {
     
     // MARK: - Tests
     
-    func test_viewLoad_callsLoadLogoImageOnce() {
+    func test_viewLoad_shouldLoadLogoImageOnce() {
         // Given
         let (sut, viewModel) = makeSUT()
         
@@ -26,7 +26,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.loadLogoImageCallsCount, 1)
     }
     
-    func test_loadLogoImageCompletion_setsLogoImageViewImage() {
+    func test_logoImageView_whenLogoImageLoads_shouldShowImage() {
         // Given
         let (sut, viewModel) = makeSUT()
         let expectedImage = UIImage(systemName: "star")
@@ -39,7 +39,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.logoImageView.image, expectedImage)
     }
     
-    func test_instructionLabel_displaysTextFromViewModel() {
+    func test_instructionLabel_shouldShowViewModelInstructionText() {
         // Given
         let (sut, viewModel) = makeSUT()
         
@@ -51,7 +51,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.instructionLabel.accessibilityIdentifier?.contains("instructionLabel"), true)
     }
     
-    func test_actionButton_hasCorrectTitleAndIdentifierForCopyCodeFlow() {
+    func test_actionButton_withCopyCodeFlow_shouldUseCopyCodeTitleAndIdentifier() {
         // Given
         let (sut, viewModel) = makeSUT(flowType: .copyCode)
         
@@ -66,7 +66,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
     }
     
-    func test_actionButton_hasCorrectTitleAndIdentifierForSaveAsImageFlow() {
+    func test_actionButton_withSaveAsImageFlow_shouldUseSaveAsImageTitleAndIdentifier() {
         // Given
         let (sut, viewModel) = makeSUT(flowType: .saveCodeAsImage)
         
@@ -81,7 +81,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
     }
     
-    func test_actionButtonTapped_triggersPerformActionOnViewModel() {
+    func test_actionButton_whenTapped_shouldPerformViewModelAction() {
         // Given
         let (sut, viewModel) = makeSUT()
         
@@ -93,7 +93,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.performActionCallsCount, 1)
     }
     
-    func test_viewAccessibilityIdentifier_andBackgroundColorConfiguredCorrectly() {
+    func test_view_shouldUseQRCodeIdentifierAndThemeBackgroundColor() {
         // Given
         let (sut, _) = makeSUT()
         
@@ -105,7 +105,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.view.backgroundColor, CheckoutTheme.default.colors.background)
     }
     
-    func test_copyCodeLabel_existsOnlyForCopyCodeFlow() {
+    func test_copyCodeLabel_withFlowType_shouldExistOnlyForCopyCodeFlow() {
         // copyCode flow
         var (sut, _) = makeSUT(flowType: .copyCode)
         sut.loadViewIfNeeded()
@@ -129,7 +129,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
     }
     
-    func test_copyAnimation_givenCopyInProgressFalse_changesButtonTitleToOnCopyTitle() {
+    func test_actionButton_whenCopyStarts_shouldShowOnCopyTitle() {
         // Given
         let (sut, viewModel) = makeSUT()
         sut.loadViewIfNeeded()
@@ -142,7 +142,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.actionButton.title, viewModel.onCopyButtonTitle)
     }
     
-    func test_copyAnimation_givenCopyInProgressTrue_changesButtonTitleToActionTitle() {
+    func test_actionButton_whenCopyEnds_shouldShowActionTitle() {
         // Given
         let (sut, viewModel) = makeSUT()
         sut.loadViewIfNeeded()
@@ -156,7 +156,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.actionButton.title, viewModel.actionButtonTitle)
     }
     
-    func test_preferredContentSize_returnsGreatestFiniteMagnitude() {
+    func test_preferredContentSize_shouldBeGreatestFiniteMagnitude() {
         // Given
         let (sut, _) = makeSUT()
         

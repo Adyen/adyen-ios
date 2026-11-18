@@ -11,7 +11,7 @@ import XCTest
 
 class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
 
-    func testBoletoBancairoVoucher() throws {
+    func test_shareableView_withBoletoBancarioAction_shouldShowVoucherDetails() throws {
         let viewProvider = VoucherShareableViewProvider(
             theme: .default,
             environment: Dummy.apiContext.environment
