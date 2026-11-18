@@ -73,8 +73,8 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     }
 
     package func performSubmit() {
-        searchViewController.endSearch()
         guard let selectedIssuerIndex else {
+            searchViewController.endSearch()
             setShowsError(true)
             return
         }
@@ -87,7 +87,10 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             paymentMethod: issuerListPaymentMethod,
             issuer: issuerListPaymentMethod.issuers[selectedIssuerIndex].identifier
         )
-        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+        searchViewController.endSearch { [weak self] in
+            guard let self else { return }
+            self.submit(data: PaymentComponentData(paymentMethodDetails: details, order: self.order))
+        }
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod

@@ -353,6 +353,30 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(lookups, ["", "term"])
     }
 
+    func test_endSearch_whenSearchIsPresented_shouldCompleteOnceItIsDismissed() throws {
+        let searchViewController = makeLargeTitleSearchViewController { _ in }
+        setupRootViewController(UINavigationController(rootViewController: searchViewController))
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.isActive = true
+        wait(until: { searchController.presentingViewController != nil && !searchController.isBeingPresented }, timeout: 5)
+        var isSearchPresentedOnCompletion: Bool?
+
+        searchViewController.endSearch { isSearchPresentedOnCompletion = searchController.presentingViewController != nil }
+
+        wait(until: { isSearchPresentedOnCompletion != nil }, timeout: 5)
+        XCTAssertEqual(isSearchPresentedOnCompletion, false)
+    }
+
+    func test_endSearch_whenSearchIsNotPresented_shouldCompleteImmediately() {
+        let searchViewController = makeLargeTitleSearchViewController { _ in }
+        searchViewController.loadViewIfNeeded()
+        var isCompleted = false
+
+        searchViewController.endSearch { isCompleted = true }
+
+        XCTAssertTrue(isCompleted)
+    }
+
     func test_navigationBar_whenAppearing_shouldHideHairlineWithoutChangingTheSharedBar() throws {
         let titleFont = UIFont.systemFont(ofSize: 21, weight: .heavy)
         let barAppearance = UINavigationBarAppearance()

@@ -352,14 +352,39 @@ extension SearchViewController {
     }
 
     /// Dismisses the keyboard and ends the active search, keeping the search text and its results.
-    package func endSearch() {
+    ///
+    /// - Parameter completion: Called once the search is no longer presented,
+    ///   for example to present another view controller from the same context.
+    package func endSearch(completion: (() -> Void)? = nil) {
         searchBar.resignFirstResponder()
-        guard usesLargeTitleLayout, searchController.isActive else { return }
-        let searchText = searchBar.text
-        isEndingSearch = true
-        searchController.isActive = false
-        isEndingSearch = false
-        searchBar.text = searchText
+        guard usesLargeTitleLayout else {
+            completion?()
+            return
+        }
+        if searchController.isActive {
+            let searchText = searchBar.text
+            isEndingSearch = true
+            searchController.isActive = false
+            isEndingSearch = false
+            searchBar.text = searchText
+        }
+        completion.map(waitUntilSearchIsDismissed)
+    }
+
+    /// Calls the completion once the search is no longer presented, checking again after each of its transitions.
+    private func waitUntilSearchIsDismissed(_ completion: @escaping () -> Void) {
+        guard searchController.presentingViewController != nil else {
+            return completion()
+        }
+        let checkAgain: () -> Void = { [weak self] in
+            self?.waitUntilSearchIsDismissed(completion)
+        }
+        guard let transitionCoordinator = searchController.transitionCoordinator else {
+            return searchController.dismiss(animated: false, completion: checkAgain)
+        }
+        transitionCoordinator.animate(alongsideTransition: nil) { _ in
+            DispatchQueue.main.async(execute: checkAgain)
+        }
     }
 
     /// Requests the results for the search text, unless they were already requested for it.

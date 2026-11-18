@@ -315,6 +315,40 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertFalse(searchController.searchBar.isFirstResponder)
     }
 
+    func test_performSubmit_whileSearching_shouldSubmitOnceSearchIsDismissed() throws {
+        // Given
+        let (delegateMock, searchController) = try presentListWithActiveSearch()
+        var isSearchPresentedOnSubmit: Bool?
+        delegateMock.onDidSubmit = { _, _ in isSearchPresentedOnSubmit = searchController.presentingViewController != nil }
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(until: { delegateMock.didSubmitCalled }, timeout: 5)
+        XCTAssertEqual(isSearchPresentedOnSubmit, false)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+        XCTAssertFalse(searchController.isActive)
+        XCTAssertFalse(searchController.searchBar.isFirstResponder)
+    }
+
+    func test_performSubmit_rightAfterSelectingWhileSearching_shouldSubmitOnceSearchIsDismissed() throws {
+        // Given
+        let (delegateMock, searchController) = try presentListWithActiveSearch(selectingIssuerFirst: false)
+        var isSearchPresentedOnSubmit: Bool?
+        delegateMock.onDidSubmit = { _, _ in isSearchPresentedOnSubmit = searchController.presentingViewController != nil }
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        selectRow(at: 0, in: searchViewController.resultsListViewController)
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(until: { delegateMock.didSubmitCalled }, timeout: 5)
+        XCTAssertEqual(isSearchPresentedOnSubmit, false)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+
     func test_selectingIssuer_shouldNotSendSearchEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -401,6 +435,28 @@ private extension IssuerListComponentTests {
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
         setupRootViewController(searchViewController)
         return searchViewController.resultsListViewController
+    }
+
+    /// Shows the list with more than ten issuers in a navigation controller, and activates and focuses its search.
+    func presentListWithActiveSearch(
+        selectingIssuerFirst: Bool = true
+    ) throws -> (delegateMock: PaymentComponentDelegateMock, searchController: UISearchController) {
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        setupRootViewController(UINavigationController(rootViewController: searchViewController))
+        if selectingIssuerFirst {
+            selectRow(at: 0, in: searchViewController.resultsListViewController)
+        }
+        let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
+        searchController.isActive = true
+        searchController.searchBar.becomeFirstResponder()
+        wait(
+            until: { searchController.searchBar.isFirstResponder && !searchController.isBeingPresented },
+            timeout: 5
+        )
+        return (delegateMock, searchController)
     }
 
     func selectRow(at index: Int, in listViewController: ListViewController) {
