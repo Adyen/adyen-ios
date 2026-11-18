@@ -188,14 +188,28 @@ struct DropInFlowManagerTests {
     func cancelDropIn_shouldCancelTheActionInProgress() {
         // Given
         let environment = makeSUT()
+        environment.sut.submit(makePaymentComponentData(), from: makePaymentComponent())
+        environment.sut.receive(action: makeAction())
         let actionComponent = CancellableActionComponentMock()
-        environment.sut.actionComponent.currentActionComponent = actionComponent
+        environment.sut.actionComponent?.currentActionComponent = actionComponent
 
         // When
         environment.sut.cancelDropIn()
 
         // Then
         #expect(actionComponent.didCancelCallsCount == 1)
+    }
+
+    @Test
+    func cancelDropIn_beforeAnyAction_shouldNotCreateTheActionComponent() {
+        // Given
+        let environment = makeSUT()
+
+        // When
+        environment.sut.cancelDropIn()
+
+        // Then
+        #expect(environment.sut.actionComponent == nil)
     }
 
     @Test

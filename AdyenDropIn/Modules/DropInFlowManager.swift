@@ -74,15 +74,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponent?.delegate
     }
 
-    internal private(set) lazy var actionComponent: CheckoutActionComponent = {
-        let actionComponent = CheckoutActionComponent(
-            context: context,
-            configuration: actionComponentConfiguration
-        )
-        actionComponent.delegate = self
-        actionComponent.actionPresentationDelegate = self
-        return actionComponent
-    }()
+    internal private(set) var actionComponent: CheckoutActionComponent?
 
     // MARK: - DropInFlowManaging
 
@@ -105,7 +97,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         guard isAwaitingAction else { return }
         isAwaitingAction = false
 
-        actionComponent.handle(action)
+        makeActionComponentIfNeeded().handle(action)
     }
 
     internal func fail(with error: Error, from component: PaymentComponent) {
@@ -122,7 +114,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         didCancelDropIn = true
 
         endSubmission()
-        actionComponent.cancel()
+        actionComponent?.cancel()
         sendExitEvent()
 
         guard let dropInComponent else { return }
@@ -147,6 +139,21 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     private func endSubmission() {
         isAwaitingAction = false
+    }
+
+    private func makeActionComponentIfNeeded() -> CheckoutActionComponent {
+        if let actionComponent {
+            return actionComponent
+        }
+
+        let actionComponent = CheckoutActionComponent(
+            context: context,
+            configuration: actionComponentConfiguration
+        )
+        actionComponent.delegate = self
+        actionComponent.actionPresentationDelegate = self
+        self.actionComponent = actionComponent
+        return actionComponent
     }
 
     private func sendExitEvent() {
