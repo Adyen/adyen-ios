@@ -100,7 +100,7 @@ class CheckoutActionComponentTests: XCTestCase {
         }
     }
 
-    func testRedirectToHttpWebLink() throws {
+    func test_handle_withHttpRedirectAction_shouldPresentSafariViewController() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
@@ -116,7 +116,7 @@ class CheckoutActionComponentTests: XCTestCase {
         try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
     }
 
-    func testAwaitAction() throws {
+    func test_handle_withAwaitAction_shouldPresentAwaitView() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
 
@@ -138,7 +138,7 @@ class CheckoutActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
     
-    func testRedirectableAwaitAction() throws {
+    func test_handle_withRedirectableAwaitAction_shouldOpenURLAndPresentAwaitView() throws {
         let expectedRedirectUrl = try XCTUnwrap(URL(string: "https://adyen.com"))
         let expectedAppLaunch = expectation(description: "`AppLauncher.openCustomSchemeUrl` was called")
         
@@ -178,7 +178,7 @@ class CheckoutActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
 
-    func testWeChatAction() throws {
+    func test_handle_withWeChatPaySDKActionOnSimulator_shouldAssertRealDeviceRequired() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
 
         let expectation = expectation(description: "Assertion Expectation")
@@ -195,7 +195,7 @@ class CheckoutActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
-    func test3DSAction() throws {
+    func test_handle_withThreeDS2Action_shouldUseAuthenticationComponent() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
         let action = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         sut.handle(Action.threeDS2(action))
@@ -203,7 +203,7 @@ class CheckoutActionComponentTests: XCTestCase {
         wait { sut.currentActionComponent is AuthenticationComponent }
     }
 
-    func testVoucherAction() throws {
+    func test_handle_withVoucherAction_shouldPresentVoucherView() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
         
@@ -223,7 +223,7 @@ class CheckoutActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
     
-    func testQRCodeAction() throws {
+    func test_handle_withQRCodeAction_shouldPresentQRCodeViewController() throws {
 
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
@@ -234,7 +234,7 @@ class CheckoutActionComponentTests: XCTestCase {
         try waitUntilTopPresenter(isOfType: QRCodeViewController.self)
     }
     
-    func testDocumentAction() throws {
+    func test_handle_withDocumentAction_shouldPresentDocumentActionView() throws {
         // DocumentAction
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
@@ -246,7 +246,7 @@ class CheckoutActionComponentTests: XCTestCase {
         XCTAssertNotNil(documentViewController.view as? DocumentActionView)
     }
     
-    func testTwintAction() throws {
+    func test_handle_withTwintAction_shouldRequireTwintConfiguration() throws {
         
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
@@ -274,7 +274,7 @@ class CheckoutActionComponentTests: XCTestCase {
         #endif
     }
     
-    func testTwintActionConfiguration() {
+    func test_twintActionConfiguration_withCallbackAppScheme_shouldAssertOnlyForInvalidSchemes() {
         
         let validSchemes = ["scheme"]
         
@@ -318,37 +318,37 @@ class CheckoutActionComponentTests: XCTestCase {
         XCTAssertEqual(currentActionComponent.didCancelCallsCount, 1)
     }
     
-    func testHandleRedirectEvent() throws {
+    func test_handle_withRedirectAction_shouldSendRedirectAnalyticsEvent() throws {
         let redirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
         testEvent(for: Action.redirect(redirectAction))
     }
     
-    func testHandleAwaitActionEvent() {
+    func test_handle_withAwaitAction_shouldSendAwaitAnalyticsEvent() {
         let awaitAction = AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik)
         testEvent(for: Action.await(awaitAction))
     }
     
-    func testHandleSDKActionEvent() throws {
+    func test_handle_withSDKAction_shouldSendSDKAnalyticsEvent() throws {
         let sdkAction = try JSONDecoder().decode(SDKAction.self, from: XCTUnwrap(weChatActionResponse.data(using: .utf8)))
         testEvent(for: Action.sdk(sdkAction))
     }
     
-    func testHandleThreeDSEvent() throws {
+    func test_handle_withThreeDS2Action_shouldSendThreeDS2AnalyticsEvent() throws {
         let threeDSAction = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         testEvent(for: Action.threeDS2(threeDSAction))
     }
     
-    func testHandleVoucherEvent() throws {
+    func test_handle_withVoucherAction_shouldSendVoucherAnalyticsEvent() throws {
         let voucherAction = try JSONDecoder().decode(VoucherAction.self, from: XCTUnwrap(voucherAction.data(using: .utf8)))
         testEvent(for: Action.voucher(voucherAction))
     }
     
-    func testQRCodeActionEvent() throws {
+    func test_handle_withQRCodeAction_shouldSendQRCodeAnalyticsEvent() throws {
         let qrCodeAction = try JSONDecoder().decode(QRCodeAction.self, from: XCTUnwrap(qrAction.data(using: .utf8)))
         testEvent(for: Action.qrCode(qrCodeAction))
     }
     
-    func testDocumentActionEvent() throws {
+    func test_handle_withDocumentAction_shouldSendVoucherAnalyticsEvent() throws {
         let documentAction = try JSONDecoder().decode(DocumentAction.self, from: XCTUnwrap(documentAction.data(using: .utf8)))
         testEvent(for: Action.document(documentAction))
     }
