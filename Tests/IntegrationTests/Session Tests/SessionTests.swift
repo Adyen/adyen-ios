@@ -688,7 +688,7 @@ class SessionTests: XCTestCase {
     
     private func makeTestCardDetails() -> CardDetails {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
-        let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
+        let encryptedCard = CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
         return CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
     }
 }
