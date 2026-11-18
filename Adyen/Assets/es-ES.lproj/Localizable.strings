@@ -19,7 +19,6 @@
 "adyen.sepa.consentLabel" = "Al pulsar el botón anterior, acepta que la cantidad indicada sea deducida de su cuenta bancaria.";
 "adyen.sepa.nameItem.invalid" = "Nombre del titular no válido";
 "adyen.card.storeDetailsButton" = "Recordar para la próxima vez";
-"adyen_checkout_store_payment_method_label" = "Recordar para la próxima vez";
 "adyen.card.nameItem.title" = "Nombre en la tarjeta";
 "adyen.card.nameItem.placeholder" = "Juan Pérez";
 "adyen.card.nameItem.invalid" = "Introduzca el nombre como se muestra en la tarjeta";

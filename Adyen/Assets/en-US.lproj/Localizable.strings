@@ -20,7 +20,7 @@
 "adyen.sepa.consentLabel" = "By pressing the button above, you agree that the specified amount will be debited from your bank account.";
 "adyen.sepa.nameItem.invalid" = "Holder name invalid";
 "adyen.card.storeDetailsButton" = "Remember my card details for future payments";
-"adyen_checkout_store_payment_method_label" = "Remember for next time";
+"adyen.storeDetails" = "Remember for next time";
 "adyen.card.nameItem.title" = "Name on card";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Enter name as shown on card";

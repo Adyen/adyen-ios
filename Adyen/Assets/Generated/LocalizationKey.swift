@@ -53,7 +53,7 @@ public struct LocalizationKey {
     /// Remember my card details for future payments
     public static let cardStoreDetailsButton = LocalizationKey(key: "adyen.card.storeDetailsButton")
     /// Remember for next time
-    public static let storePaymentMethodLabel = LocalizationKey(key: "adyen_checkout_store_payment_method_label")
+    public static let storeDetails = LocalizationKey(key: "adyen.storeDetails")
     /// Name on card
     public static let cardNameItemTitle = LocalizationKey(key: "adyen.card.nameItem.title")
     /// J. Smith

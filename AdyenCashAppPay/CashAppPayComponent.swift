@@ -79,7 +79,7 @@ package final class CashAppPayComponent: PaymentComponent,
 
     internal lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
-        storeDetailsItem.title = localizedString(.storePaymentMethodLabel, configuration.localizationParameters)
+        storeDetailsItem.title = localizedString(.storeDetails, configuration.localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
     
         return storeDetailsItem

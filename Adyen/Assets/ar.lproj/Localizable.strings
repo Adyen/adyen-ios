@@ -19,7 +19,6 @@
 "adyen.sepa.consentLabel" = "بالضغط على الزر أعلاه، فإنك توافق على خصم المبلغ المحدد من حسابك البنكي.";
 "adyen.sepa.nameItem.invalid" = "اسم صاحب الحساب غير صحيح";
 "adyen.card.storeDetailsButton" = "احتفظ بالبيانات للمرة القادمة";
-"adyen_checkout_store_payment_method_label" = "احتفظ بالبيانات للمرة القادمة";
 "adyen.card.nameItem.title" = "الاسم على البطاقة";
 "adyen.card.nameItem.placeholder" = "جميل سعيد";
 "adyen.card.nameItem.invalid" = "أدخل الاسم كما هو موضح على البطاقة";

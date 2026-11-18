@@ -19,7 +19,6 @@
 "adyen.sepa.consentLabel" = "En appuyant sur le bouton ci-dessus, vous acceptez que le montant indiqué soit débité de votre compte bancaire.";
 "adyen.sepa.nameItem.invalid" = "Nom du titulaire incorrect";
 "adyen.card.storeDetailsButton" = "Enregistrer pour la prochaine fois";
-"adyen_checkout_store_payment_method_label" = "Enregistrer pour la prochaine fois";
 "adyen.card.nameItem.title" = "Nom sur la carte";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Entrez le nom tel qu'il apparaît sur la carte";

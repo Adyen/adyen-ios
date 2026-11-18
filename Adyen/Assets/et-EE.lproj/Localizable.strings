@@ -19,7 +19,6 @@
 "adyen.sepa.consentLabel" = "Ülalolevale nupule vajutades nõustute, et teie pangakontolt debiteeritakse määratud summa.";
 "adyen.sepa.nameItem.invalid" = "Omaniku nimi on vale";
 "adyen.card.storeDetailsButton" = "Jäta järgmiseks korraks meelde";
-"adyen_checkout_store_payment_method_label" = "Jäta järgmiseks korraks meelde";
 "adyen.card.nameItem.title" = "Nimi kaardil";
 "adyen.card.nameItem.placeholder" = "J. Tamm";
 "adyen.card.nameItem.invalid" = "Sisestage nimi nii, nagu see on kaardil kirjutatud";

@@ -19,7 +19,6 @@
 "adyen.sepa.consentLabel" = "Нажав кнопку выше, вы соглашаетесь, что указанная сумма будет списана с вашего банковского счета.";
 "adyen.sepa.nameItem.invalid" = "Имя владельца неверно";
 "adyen.card.storeDetailsButton" = "Запомнить на следующий раз";
-"adyen_checkout_store_payment_method_label" = "Запомнить на следующий раз";
 "adyen.card.nameItem.title" = "Имя на карте";
 "adyen.card.nameItem.placeholder" = "И. Петров";
 "adyen.card.nameItem.invalid" = "Введите имя, как оно указано на карте";
