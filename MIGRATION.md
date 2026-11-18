@@ -67,6 +67,19 @@ Other changes:
 - Values are no longer validated. Empty and non-numeric values are encrypted instead of throwing an error, so validate them before you encrypt them.
 - The public key must be a 2048-bit RSA key in the format `Exponent|Modulus`, in uppercase hexadecimal: 5 characters, `|`, then 512 characters, with nothing before or after. Any other key throws `.invalidPublicKey`.
 
+### Logging
+
+- `AdyenLogging` is no longer public. Set the log level with `Checkout.setLogLevel(_:)` instead:
+
+| Before | After |
+|---|---|
+| `AdyenLogging.isEnabled = true` | `Checkout.setLogLevel(.verbose)` |
+| `AdyenLogging.isEnabled = false` | `Checkout.setLogLevel(.off)` |
+
+- Logging is off by default, as before. `.verbose` logs everything the SDK logs, including request URLs with the client key, and request and response headers and bodies, so only use it during development.
+
+For more details, see [Logging](guides/v6/README.md#logging).
+
 ## 6.0.0-alpha.1
 
 See also:

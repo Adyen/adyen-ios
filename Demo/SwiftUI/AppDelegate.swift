@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+import AdyenCheckout
 import UIKit
 
 @main
@@ -14,7 +14,7 @@ internal class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         #if DEBUG
-            AdyenLogging.isEnabled = true
+            Checkout.setLogLevel(.verbose)
         #endif
         return true
     }
