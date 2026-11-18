@@ -12,7 +12,7 @@ import XCTest
 
 class EContextATMShareableVoucherViewProviderTests: XCTestCase {
 
-    func testCustomLocalization() throws {
+    func test_shareableView_withEContextATMActionAndCustomLocalization_shouldShowLocalizedDetails() throws {
         let econtextAction = try AdyenCoder.decode(econtextATMAction) as EContextATMVoucherAction
         let action: VoucherAction = .econtextATM(econtextAction)
 

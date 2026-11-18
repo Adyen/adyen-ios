@@ -40,7 +40,7 @@ class VoucherViewTests: XCTestCase {
 //
 //    }
 //
-    func testApplePayButton() throws {
+    func test_appleWalletButton_withAddToAppleWalletType_shouldReplaceMainButtonAndCallDelegate() throws {
         let appleWalletButtonExpectation = expectation(description: "Apple wallet button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
@@ -68,7 +68,7 @@ class VoucherViewTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testMainSecondaryButtons() throws {
+    func test_mainAndSecondaryButtons_whenTapped_shouldShowTitlesAndCallDelegate() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         let secondaryButtonExpectation = expectation(description: "Secondary button tapped")
         
@@ -90,13 +90,13 @@ class VoucherViewTests: XCTestCase {
         sut.delegate = delegateMock
         
         let mainButton: FormButton? = sut.findView(by: "mainButton")
-        let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
+        let secondaryButton: FormButton? = sut.findView(by: "secondaryButton")
         let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
         
         XCTAssertNil(addToAppleWalletButton)
         
         XCTAssertEqual(mainButton?.title, mockModel.mainButton)
-        XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
+        XCTAssertEqual(secondaryButton?.title, mockModel.secondaryButtonTitle)
         
         mainButton?.sendActions(for: .touchUpInside)
         secondaryButton?.sendActions(for: .touchUpInside)
@@ -104,7 +104,7 @@ class VoucherViewTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testModel() throws {
+    func test_view_withModel_shouldShowAmountAndCurrencyAndLoadLogo() throws {
         let imageLoader = ImageLoaderMock()
         let imageLoadingExpectation = expectation(description: "ImageLoader.load was called")
         
@@ -133,7 +133,7 @@ class VoucherViewTests: XCTestCase {
         wait(for: [imageLoadingExpectation], timeout: 0.1)
     }
     
-    func testCopyCodeAnimation() throws {
+    func test_showCopyCodeConfirmation_shouldShowConfirmationThenRestoreSecondaryButton() throws {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
@@ -145,12 +145,12 @@ class VoucherViewTests: XCTestCase {
         
         sut.showCopyCodeConfirmation(resetAfter: .milliseconds(5))
         
-        let secondaryButton: UIButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
-        XCTAssertEqual(secondaryButton.title(for: .normal), mockModel.codeConfirmationTitle)
-        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.theme.colors.primary)
+        let secondaryButton: FormButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
+        XCTAssertEqual(secondaryButton.title, mockModel.codeConfirmationTitle)
+        XCTAssertEqual(secondaryButton.titleLabel.textColor, mockModel.theme.colors.primary)
         
-        wait { secondaryButton.title(for: .normal) == mockModel.secondaryButtonTitle }
-        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.theme.elements.buttons.tertiary.textColor)
+        wait { secondaryButton.title == mockModel.secondaryButtonTitle }
+        XCTAssertEqual(secondaryButton.titleLabel.textColor, mockModel.theme.elements.buttons.tertiary.textColor)
     }
     
     func getSut(model: VoucherView.Model) throws -> VoucherView {

@@ -56,7 +56,7 @@ extension AwaitAction: Equatable {
 @MainActor
 class AwaitComponentTests: XCTestCase {
 
-    func testLocalizationWithCustomTableName() {
+    func test_handle_withCustomLocalizationTable_shouldShowLocalizedTexts() {
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let sut = AwaitComponent(
             context: Dummy.context,
@@ -82,7 +82,7 @@ class AwaitComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testActionHandling() {
+    func test_handle_withCustomTheme_shouldStartPollingAndApplyTheme() {
         let theme = CheckoutTheme(colors: CheckoutColors(background: .green, text: .red, textSecondary: .blue))
 
         let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)

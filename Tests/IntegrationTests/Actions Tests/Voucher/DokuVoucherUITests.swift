@@ -11,7 +11,7 @@ import XCTest
 
 class DokuVoucherUITests: XCTestCase {
 
-    func testDokuIndomaretVoucherCustomLocalization() throws {
+    func test_shareableView_withDokuIndomaretActionAndCustomLocalization_shouldShowLocalizedDetails() throws {
         let viewControllerProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
         viewControllerProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -51,7 +51,7 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
     }
 
-    func testDokuIndomaretVoucher() throws {
+    func test_shareableView_withDokuIndomaretAction_shouldShowVoucherDetails() throws {
         let viewProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
 
         let dokuAction = try AdyenCoder.decode(dokuIndomaretAction) as DokuVoucherAction
@@ -90,7 +90,7 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
     }
 
-    func testDokuAlfamartVoucher() throws {
+    func test_shareableView_withDokuAlfamartAction_shouldShowVoucherDetails() throws {
         let viewProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
 
         let dokuAction = try AdyenCoder.decode(dokuAlfamartAction) as DokuVoucherAction

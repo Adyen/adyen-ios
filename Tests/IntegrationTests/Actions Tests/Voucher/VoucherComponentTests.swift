@@ -34,7 +34,7 @@ class VoucherComponentTests: XCTestCase {
         sut.actionPresentationDelegate = actionPresentationDelegate
     }
 
-    func testDokuVoucherComponent() throws {
+    func test_handle_withDokuAction_shouldPresentVoucherViewWithModel() throws {
         let action = try AdyenCoder.decode(dokuIndomaretAction) as VoucherAction
 
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
@@ -53,7 +53,7 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testEContextATMVoucherComponent() throws {
+    func test_handle_withEContextATMAction_shouldPresentVoucherViewWithModel() throws {
         let action = try AdyenCoder.decode(econtextATMAction) as VoucherAction
         
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
@@ -72,7 +72,7 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testBoletoVoucherComponent() throws {
+    func test_handle_withBoletoAction_shouldPresentVoucherViewWithModel() throws {
         let action = try AdyenCoder.decode(boletoAction) as VoucherAction
         
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
@@ -91,7 +91,7 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testOXXOVoucherComponent() throws {
+    func test_handle_withOXXOAction_shouldOfferDownloadAndInstructionsOptions() throws {
         let action = try AdyenCoder.decode(oxxoAction) as VoucherAction
         
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
@@ -104,9 +104,9 @@ class VoucherComponentTests: XCTestCase {
             
             checkViewModel(view!.model, forAction: action)
             
-            let optionsButton: UIButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            let optionsButton: FormButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
             XCTAssertNotNil(optionsButton)
-            XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
+            XCTAssertEqual(optionsButton.title, "More options")
             
             optionsButton.sendActions(for: .touchUpInside)
             
@@ -132,7 +132,7 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testMultibancoVoucherComponent() throws {
+    func test_handle_withMultibancoAction_shouldOfferSaveAsImageOption() throws {
         let action = try AdyenCoder.decode(multibancoVoucher) as VoucherAction
         
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
@@ -145,9 +145,9 @@ class VoucherComponentTests: XCTestCase {
             
             checkViewModel(view!.model, forAction: action)
             
-            let optionsButton: UIButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            let optionsButton: FormButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
             XCTAssertNotNil(optionsButton)
-            XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
+            XCTAssertEqual(optionsButton.title, "More options")
             
             optionsButton.sendActions(for: .touchUpInside)
             
@@ -170,7 +170,7 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testEContextStoresVoucherComponent() throws {
+    func test_handle_withEContextStoresAction_shouldPresentVoucherViewWithModel() throws {
         let action = try AdyenCoder.decode(econtextStoresAction) as VoucherAction
         
         let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
