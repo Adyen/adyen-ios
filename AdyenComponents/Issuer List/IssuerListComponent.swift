@@ -73,6 +73,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     }
 
     package func performSubmit() {
+        searchViewController.endSearch()
         guard let selectedIssuerIndex else {
             setShowsError(true)
             return
