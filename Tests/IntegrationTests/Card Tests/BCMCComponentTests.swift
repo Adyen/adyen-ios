@@ -491,7 +491,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
     
-    func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {
+    func fillCard(on view: UIView, with card: CheckoutCard, simulateKeyStrokes: Bool = false) {
         let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem")
