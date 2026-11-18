@@ -11,7 +11,7 @@ import XCTest
 
 class OXXOShareableVoucherViewProviderTests: XCTestCase {
 
-    func testOXXOVoucher() throws {
+    func test_shareableView_withOXXOAction_shouldShowVoucherDetails() throws {
         let viewProvider = VoucherShareableViewProvider(
             theme: .default,
             environment: Dummy.apiContext.environment
