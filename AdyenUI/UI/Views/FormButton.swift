@@ -121,6 +121,14 @@ package final class FormButton: UIControl {
         }
     }
     
+    /// Overrides the text color of the button style while the button is enabled and not loading.
+    /// Set it to `nil` to use the text color of the button style again.
+    package var titleColor: UIColor? {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
     internal lazy var titleLabel: AdyenLabel = {
         let titleLabel = AdyenLabel()
         titleLabel.apply(titleStyle)
@@ -265,7 +273,7 @@ package final class FormButton: UIControl {
         if showsActivityIndicator {
             return buttonStyle.loadingTextColor
         }
-        return isEnabled ? buttonStyle.textColor : buttonStyle.disabledTextColor
+        return isEnabled ? titleColor ?? buttonStyle.textColor : buttonStyle.disabledTextColor
     }
     
     private var stateBackgroundColor: UIColor {
