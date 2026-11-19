@@ -51,6 +51,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
         return CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
+            theme: configuration.theme,
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )

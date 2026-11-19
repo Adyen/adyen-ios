@@ -15,7 +15,6 @@ class AssetsAccessTests: XCTestCase {
     }
 
     func testActionResourcesAccess() {
-        XCTAssertNotNil(UIImage(named: "mbway", in: Bundle.actionsInternalResources, compatibleWith: nil))
-        XCTAssertNotNil(UIImage(named: "blik", in: Bundle.actionsInternalResources, compatibleWith: nil))
+        XCTAssertNotNil(UIImage(named: "cross-circle", in: Bundle.actionsInternalResources, compatibleWith: nil))
     }
 }

@@ -40,7 +40,7 @@ class VoucherViewTests: XCTestCase {
 //
 //    }
 //
-    func testApplePayButton() throws {
+    func test_appleWalletButton_withAddToAppleWalletType_shouldReplaceMainButtonAndCallDelegate() throws {
         let appleWalletButtonExpectation = expectation(description: "Apple wallet button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
@@ -52,7 +52,7 @@ class VoucherViewTests: XCTestCase {
             model: getMockModel(
                 action: action,
                 mainButtonType: .addToAppleWallet,
-                style: getMockStyle()
+                theme: getMockTheme()
             )
         )
         sut.delegate = delegateMock
@@ -68,7 +68,7 @@ class VoucherViewTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testMainSecondaryButtons() throws {
+    func test_mainAndSecondaryButtons_whenTapped_shouldShowTitlesAndCallDelegate() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         let secondaryButtonExpectation = expectation(description: "Secondary button tapped")
         
@@ -83,20 +83,20 @@ class VoucherViewTests: XCTestCase {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
-            style: getMockStyle()
+            theme: getMockTheme()
         )
         
         let sut = try getSut(model: mockModel)
         sut.delegate = delegateMock
         
         let mainButton: FormButton? = sut.findView(by: "mainButton")
-        let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
+        let secondaryButton: FormButton? = sut.findView(by: "secondaryButton")
         let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
         
         XCTAssertNil(addToAppleWalletButton)
         
         XCTAssertEqual(mainButton?.title, mockModel.mainButton)
-        XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
+        XCTAssertEqual(secondaryButton?.title, mockModel.secondaryButtonTitle)
         
         mainButton?.sendActions(for: .touchUpInside)
         secondaryButton?.sendActions(for: .touchUpInside)
@@ -104,14 +104,14 @@ class VoucherViewTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testModel() throws {
+    func test_view_withModel_shouldShowAmountAndCurrencyAndLoadLogo() throws {
         let imageLoader = ImageLoaderMock()
         let imageLoadingExpectation = expectation(description: "ImageLoader.load was called")
         
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
-            style: getMockStyle(),
+            theme: getMockTheme(),
             imageLoader: imageLoader
         )
         
@@ -133,11 +133,11 @@ class VoucherViewTests: XCTestCase {
         wait(for: [imageLoadingExpectation], timeout: 0.1)
     }
     
-    func testCopyCodeAnimation() throws {
+    func test_showCopyCodeConfirmation_shouldShowConfirmationThenRestoreSecondaryButton() throws {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
-            style: getMockStyle(),
+            theme: getMockTheme(),
             imageLoader: ImageLoaderMock()
         )
         
@@ -145,12 +145,12 @@ class VoucherViewTests: XCTestCase {
         
         sut.showCopyCodeConfirmation(resetAfter: .milliseconds(5))
         
-        let secondaryButton: UIButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
-        XCTAssertEqual(secondaryButton.title(for: .normal), mockModel.codeConfirmationTitle)
-        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.style.codeConfirmationColor)
+        let secondaryButton: FormButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
+        XCTAssertEqual(secondaryButton.title, mockModel.codeConfirmationTitle)
+        XCTAssertEqual(secondaryButton.titleLabel.textColor, mockModel.theme.colors.primary)
         
-        wait { secondaryButton.title(for: .normal) == mockModel.secondaryButtonTitle }
-        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.style.secondaryButton.title.color)
+        wait { secondaryButton.title == mockModel.secondaryButtonTitle }
+        XCTAssertEqual(secondaryButton.titleLabel.textColor, mockModel.theme.elements.buttons.tertiary.textColor)
     }
     
     func getSut(model: VoucherView.Model) throws -> VoucherView {
@@ -167,7 +167,7 @@ class VoucherViewTests: XCTestCase {
     func getMockModel(
         action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
-        style: VoucherView.Model.Style,
+        theme: CheckoutTheme,
         imageLoader: ImageLoading = ImageLoaderMock()
     ) -> VoucherView.Model {
         VoucherView.Model(
@@ -180,78 +180,19 @@ class VoucherViewTests: XCTestCase {
             secondaryButtonTitle: "Secondary Button",
             codeConfirmationTitle: "Code Copied!",
             mainButtonType: mainButtonType,
-            style: style,
+            theme: theme,
             imageLoader: imageLoader
         )
     }
     
-    func getMockStyle() -> VoucherView.Model.Style {
-        let editButton = ButtonStyle(
-            title: TextStyle(
-                font: .preferredFont(forTextStyle: .callout),
-                color: .blue,
-                textAlignment: .justified
-            ),
-            cornerRadius: 4,
-            background: .black
-        )
-        
-        let doneButton = ButtonStyle(
-            title: TextStyle(
-                font: .preferredFont(forTextStyle: .caption1),
-                color: .red,
-                textAlignment: .right
-            ),
-            cornerRadius: 6,
-            background: .red
-        )
-        
-        let mainButton = ButtonStyle(
-            title: TextStyle(
-                font: .preferredFont(forTextStyle: .caption2),
-                color: .cyan,
-                textAlignment: .left
-            ),
-            cornerRadius: 8,
-            background: .yellow
-        )
-        
-        let secondaryButton = ButtonStyle(
-            title: TextStyle(
-                font: .preferredFont(forTextStyle: .title3),
-                color: .brown,
-                textAlignment: .justified
-            ),
-            cornerRadius: 10,
-            background: .darkText
-        )
-        
-        let amountLabel = TextStyle(
-            font: .preferredFont(forTextStyle: .body),
-            color: .brown,
-            textAlignment: .center,
-            cornerRounding: .fixed(20),
-            backgroundColor: .red
-        )
-        
-        let currencyLabel = TextStyle(
-            font: .preferredFont(forTextStyle: .title3),
-            color: .blue,
-            textAlignment: .left,
-            cornerRounding: .fixed(10),
-            backgroundColor: .brown
-        )
-        
-        return VoucherView.Model.Style(
-            editButton: editButton,
-            doneButton: doneButton,
-            mainButton: mainButton,
-            secondaryButton: secondaryButton,
-            codeConfirmationColor: .red,
-            amountLabel: amountLabel,
-            currencyLabel: currencyLabel,
-            logoCornerRounding: .fixed(12),
-            backgroundColor: .magenta
+    func getMockTheme() -> CheckoutTheme {
+        CheckoutTheme(
+            colors: CheckoutColors(
+                background: .magenta,
+                primary: .red,
+                highlight: .brown,
+                text: .blue
+            )
         )
     }
 
