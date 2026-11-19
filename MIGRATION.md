@@ -30,6 +30,18 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
@@ -39,6 +51,52 @@
 - The card store payment method toggle now reads "Remember my card details for future payments" in English. Its localization key was renamed from `adyen.card.storeDetailsButton` to `adyen_checkout_card_store_details_label`, and `CheckoutLocalizationKey.cardStorePaymentMethod` was renamed to `CheckoutLocalizationKey.cardStoreDetailsLabel`. If you override this string in your own strings table or through a `CheckoutLocalizationProvider`, rename your overrides to keep the custom text.
 - ACH Direct Debit and Cash App Pay no longer use the card store details key for their store payment method toggle. They use the new `adyen_checkout_store_details_label` key. If you override this string in your own strings table, add the new key to keep the custom text for these components.
 - `CheckoutLocalizationKey.cardStoreDetailsLabel` now only changes the card toggle.
+
+### Encryption
+
+`CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:
+
+| Before | After |
+|---|---|
+| `CardEncryptor.encrypt(card: card, with: publicKey)` | `CheckoutEncryptor.encrypt(card: card, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(number: number, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .cardNumber, value: number, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(securityCode: securityCode, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .securityCode, value: securityCode, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationMonth: month, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryMonth, value: month, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationYear: year, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryYear, value: year, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(password: password, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .kcpPassword, value: password, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(accountNumber: accountNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankAccountNumber, value: accountNumber, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(routingNumber: routingNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankRoutingNumber, value: routingNumber, publicKey: publicKey)` |
+| `CardEncryptor.encryptToken(from: card, with: publicKey)` | Removed. Encrypt each field separately. |
+| `CardEncryptor.encrypt(bin: bin, with: publicKey)` | Removed. To call `/cardDetails`, encrypt the card number with `.cardNumber`. |
+
+The card models are renamed. Their properties are unchanged:
+
+| Before | After |
+|---|---|
+| `Card` | `CheckoutCard` |
+| `EncryptedCard` | `CheckoutEncryptedCard` |
+
+The `encryptedCard` parameter of the `CardDetails`, `GiftCardDetails` and `MealVoucherDetails` initializers now takes a `CheckoutEncryptedCard`.
+
+Other changes:
+
+- `Card.holder` and the `holder` parameter of the initializer are removed. The holder name is never encrypted, so send it in plain text, for example as `holderName` of `CardDetails`.
+- Every failure throws `CheckoutEncryptor.Error`. Check its `code`: `.invalidCard` when all fields of the card are `nil`, `.invalidPublicKey` when the public key is invalid, and `.encryptionFailed` for any other failure. The original error, if any, is in `underlyingError`. `CardEncryptor.Error` and `BankDetailsEncryptor.Error` are removed.
+- Values are no longer validated. Empty and non-numeric values are encrypted instead of throwing an error, so validate them before you encrypt them.
+- The public key must be a 2048-bit RSA key in the format `Exponent|Modulus`, in uppercase hexadecimal: 5 characters, `|`, then 512 characters, with nothing before or after. Any other key throws `.invalidPublicKey`.
+
+### Logging
+
+- `AdyenLogging` is no longer public. Set the log level with `Checkout.setLogLevel(_:)` instead:
+
+| Before | After |
+|---|---|
+| `AdyenLogging.isEnabled = true` | `Checkout.setLogLevel(.verbose)` |
+| `AdyenLogging.isEnabled = false` | `Checkout.setLogLevel(.off)` |
+
+- Logging is off by default, as before. `.verbose` logs everything the SDK logs, including request URLs with the client key, and request and response headers and bodies, so only use it during development.
+
+For more details, see [Logging](guides/v6/README.md#logging).
 
 ## 6.0.0-alpha.1
 

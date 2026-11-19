@@ -30,8 +30,6 @@ internal class CardViewController: FormViewController {
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
-    // US debit brands stay supported for the bin lookup, but their logos are not shown.
-    private static let hiddenLogoBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private let addressCallbacks: AddressCallbacks?
 
@@ -120,7 +118,7 @@ internal class CardViewController: FormViewController {
         self.addressCallbacks = addressCallbacks
 
         self.cardLogos = supportedCardBrands
-            .filter { !Self.hiddenLogoBrands.contains($0) }
+            .filter { !$0.isLogoHidden }
             .map { .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0) }
 
         super.init(
@@ -148,17 +146,20 @@ internal class CardViewController: FormViewController {
 
     internal weak var cardDelegate: CardViewControllerDelegate?
 
-    internal var card: Card {
+    internal var card: CheckoutCard {
         let expiryMonth = items.expiryDateItem.expiryMonth
         let expiryYear = items.expiryDateItem.expiryYear
         
-        return Card(
+        return CheckoutCard(
             number: cardNumberItem.value,
             securityCode: configuration.showSecurityCode ? items.securityCodeItem.nonEmptyValue : nil,
             expiryMonth: expiryMonth,
-            expiryYear: expiryYear,
-            holder: configuration.showCardholderName ? items.holderNameItem.nonEmptyValue : nil
+            expiryYear: expiryYear
         )
+    }
+
+    internal var holderName: String? {
+        configuration.showCardholderName ? items.holderNameItem.nonEmptyValue : nil
     }
     
     internal var selectedBrand: String? {

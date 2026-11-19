@@ -190,7 +190,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
         let trailingInfo: DisplayInformation.TrailingInfoType? = switch paymentMethod {
         case let cardPaymentMethod as CardPaymentMethod where !cardPaymentMethod.brands.isEmpty:
-            .logos(named: cardPaymentMethod.brands.map(\.rawValue), trailingText: nil)
+            .logos(named: cardPaymentMethod.brands.filter { !$0.isLogoHidden }.map(\.rawValue), trailingText: nil)
         default:
             displayInformation.trailingInfo
         }

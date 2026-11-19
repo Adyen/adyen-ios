@@ -178,7 +178,6 @@ struct AmountAwarePaymentStringsPolicyTests {
 
     @Test(arguments: [
         ZeroAmountScenario(amountLocaleIdentifier: nil, bundleLocale: nil, expectedTitle: "Save details"),
-        // TODO: Robert: I expect the below test to fail once we have localizations in place.
         ZeroAmountScenario(amountLocaleIdentifier: nil, bundleLocale: "is-IS", expectedTitle: "Save details"),
         ZeroAmountScenario(amountLocaleIdentifier: "fr-FR", bundleLocale: nil, expectedTitle: "Save details")
     ])

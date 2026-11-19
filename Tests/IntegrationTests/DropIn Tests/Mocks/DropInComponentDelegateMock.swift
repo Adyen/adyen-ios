@@ -138,22 +138,4 @@ class DropInComponentDelegateMock: DropInComponentDelegate {
         didFailWithFromClosure?(error, dropInComponent)
     }
 
-    // MARK: - didCancel
-
-    var didCancelComponentFromCallsCount = 0
-    var didCancelComponentFromCalled: Bool {
-        didCancelComponentFromCallsCount > 0
-    }
-
-    var didCancelComponentFromReceivedArguments: (component: PaymentComponent, dropInComponent: AnyDropInComponent)?
-    var didCancelComponentFromReceivedInvocations: [(component: PaymentComponent, dropInComponent: AnyDropInComponent)] = []
-    var didCancelComponentFromClosure: ((PaymentComponent, AnyDropInComponent) -> Void)?
-
-    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        didCancelComponentFromCallsCount += 1
-        didCancelComponentFromReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didCancelComponentFromReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didCancelComponentFromClosure?(component, dropInComponent)
-    }
-
 }

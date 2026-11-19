@@ -74,6 +74,13 @@ final class CheckoutCoreDropInTests: XCTestCase {
         XCTAssertTrue(dropIn.configuration.localizationProvider as AnyObject === provider)
     }
 
+    func test_actionComponentConfiguration_shouldResolveCheckoutTheme() {
+        configuration = configuration.theme(CheckoutTheme(colors: CheckoutColors(primary: .yellow)))
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertEqual(sut.actionComponentConfiguration.theme.colors.primary, .yellow)
+    }
+
     func test_createDropIn_withSessionRemovalDisabled_shouldKeepManagementUnavailable() throws {
         let session = makeSessionMock()
         session.showRemovePaymentMethodButton = false

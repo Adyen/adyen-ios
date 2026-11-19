@@ -4,10 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import SwiftUI
 
-internal extension View {
+package extension View {
 
     /// Applies an `AdyenLabelStyle`, including its fixed line height, to the view.
     ///
