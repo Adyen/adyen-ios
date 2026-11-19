@@ -10,7 +10,7 @@ import Foundation
 import PassKit
 
 /// Configuration for the Apple Pay payment component.
-public struct ApplePayConfiguration: CheckoutComponentConfiguration {
+public struct ApplePayConfiguration: PaymentComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.applePay)
 
