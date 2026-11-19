@@ -11,14 +11,13 @@ import XCTest
 class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneExtensionPickerItemView() {
-        let presenter = UIViewController()
         let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
         let item = FormPhoneExtensionPickerItem(
             preselectedExtension: selectableValues[0],
             selectableExtensions: selectableValues,
             validationFailureMessage: nil,
             style: .init(),
-            presenter: .init(presenter)
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         let view = item.build(with: FormItemViewBuilder())
         
@@ -27,7 +26,6 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testPhoneExtensionMultiple() {
-        let presenter = UIViewController()
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         let selectableValues = PhoneExtensionsRepository.get(with: query)
         let item = FormPhoneExtensionPickerItem(
@@ -35,7 +33,7 @@ class FormItemViewBuilderTests: XCTestCase {
             selectableExtensions: selectableValues,
             validationFailureMessage: nil,
             style: .init(),
-            presenter: .init(presenter)
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         let view = item.build(with: FormItemViewBuilder())
         
@@ -66,13 +64,12 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testFormPhoneNumberItemView() {
-        let presenter = UIViewController()
         let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
         let item = FormPhoneNumberItem(
             phoneNumber: nil,
             selectableValues: selectableValues,
             style: .init(),
-            presenter: .init(presenter)
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         let view = item.build(with: FormItemViewBuilder())
         
@@ -83,7 +80,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let item = FormAddressItem(
             initialCountry: "US",
             configuration: .init(),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         let view = item.build(with: FormItemViewBuilder())
@@ -96,7 +93,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let item = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         let view = item.build(with: FormItemViewBuilder())
@@ -109,7 +106,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let item = FormAddressItem(
             initialCountry: "GB",
             configuration: .init(),
-            presenter: nil,
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         let view = item.build(with: FormItemViewBuilder())

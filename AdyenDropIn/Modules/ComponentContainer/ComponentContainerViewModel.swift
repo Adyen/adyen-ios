@@ -17,7 +17,7 @@ internal protocol ComponentContainerViewModelProtocol {
     var paymentInProgressPublisher: AnyPublisher<Bool, Never> { get }
     /// Whether the container is the root of the drop in, in which case it lets the shopper close the drop in.
     var isDropInRoot: Bool { get }
-    func cancel()
+    func viewDidDisappear(isLeavingScreen: Bool)
     /// Closes the drop in, notifying the merchant that the shopper left it before submitting a payment.
     func cancelDropIn()
 }
@@ -64,7 +64,12 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         dropInFlowManager.paymentInProgressPublisher
     }
 
-    internal func cancel() {
+    internal func viewDidDisappear(isLeavingScreen: Bool) {
+        guard isLeavingScreen else { return }
+        cancel()
+    }
+
+    private func cancel() {
         dropInFlowManager.cancel(component: component)
         
         stopLoading()

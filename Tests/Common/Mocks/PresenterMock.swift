@@ -24,7 +24,21 @@ class PresenterMock: ViewControllerPresenter {
         present(viewController, animated)
     }
     
-    func dismissViewController(animated: Bool) {
+    func dismissViewController(_ viewController: UIViewController, animated: Bool) {
         dismiss(animated)
+    }
+}
+
+/// Presents on a source view controller so presented screens become part of the real view hierarchy in tests.
+final class SecondaryScreenPresenterMock: ViewControllerPresenter {
+    
+    weak var source: UIViewController?
+    
+    func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        source?.adyen.topPresenter.present(viewController, animated: animated)
+    }
+    
+    func dismissViewController(_ viewController: UIViewController, animated: Bool) {
+        viewController.dismiss(animated: animated)
     }
 }

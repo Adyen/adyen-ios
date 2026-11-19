@@ -114,6 +114,39 @@ struct ComponentContainerViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 0)
     }
 
+    /// Leaving the payment screen permanently cancels its component and asks the router to dismiss the container.
+    @Test
+    func viewDidDisappear_whenLeavingScreen_shouldCancelComponent() {
+        // Given
+        let (sut, _, _, dropInFlowManagerMock, routerMock) = makeSUT()
+
+        // When
+        // Simulate the container disappearing because the shopper goes back or dismisses its sheet.
+        sut.viewDidDisappear(isLeavingScreen: true)
+
+        // Then
+        // Cancel the component and request dismissal once, rather than leaving an active payment behind.
+        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 1)
+        #expect(routerMock.dismissCompletionCallsCount == 1)
+    }
+
+    /// Covering the payment screen with a secondary screen must not cancel the payment or dismiss its container.
+    @Test
+    func viewDidDisappear_whenScreenIsCovered_shouldNotCancelComponent() {
+        // Given
+        let (sut, _, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
+
+        // When
+        // Simulate a picker or action screen covering the container without the shopper leaving the payment flow.
+        sut.viewDidDisappear(isLeavingScreen: false)
+
+        // Then
+        // Preserve the component's loading state and keep the container available for the shopper's return.
+        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 0)
+        #expect(paymentComponentMock.stopLoadingCallsCount == 0)
+        #expect(routerMock.dismissCompletionCallsCount == 0)
+    }
+
     // MARK: - Mocks
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {

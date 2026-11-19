@@ -94,10 +94,9 @@ class FormAddressPickerItemTests: XCTestCase {
         wait(for: [presentationExpectation], timeout: 1)
         
         let securedViewController = try XCTUnwrap(presentedViewController as? SecuredViewController<UIViewController>)
-        let navigationController = try XCTUnwrap(securedViewController.childViewController as? UINavigationController)
-        let addressInputFormViewController = try XCTUnwrap(navigationController.viewControllers.first as? AddressInputFormViewController)
+        let addressInputFormViewController = try XCTUnwrap(securedViewController.childViewController as? AddressInputFormViewController)
         
-        addressInputFormViewController.dismissAddressLookup()
+        presenter.dismissViewController(securedViewController, animated: true)
         
         // Dismiss should not affect the value
         XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
@@ -139,8 +138,7 @@ class FormAddressPickerItemTests: XCTestCase {
         wait(for: [presentationExpectation], timeout: 1)
         
         let securedViewController = try XCTUnwrap(presentedViewController as? SecuredViewController<UIViewController>)
-        let navigationController = try XCTUnwrap(securedViewController.childViewController as? UINavigationController)
-        let addressInputFormViewController = try XCTUnwrap(navigationController.viewControllers.first as? AddressInputFormViewController)
+        let addressInputFormViewController = try XCTUnwrap(securedViewController.childViewController as? AddressInputFormViewController)
         
         addressInputFormViewController.addressItem.value = PostalAddressMocks.newYorkPostalAddress
         addressInputFormViewController.submitTapped()

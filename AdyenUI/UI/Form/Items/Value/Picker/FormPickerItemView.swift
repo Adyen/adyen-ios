@@ -14,7 +14,7 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
         item.selectionHandler = { [weak self] in
             
             let topPresenter = self?.item.presenter
-            
+            weak var pickerScreen: UIViewController?            
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
                 configuration: item.configuration,
@@ -23,8 +23,10 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
                 selectedOption: item.value
             ) { [weak topPresenter] selectedItem in
                 item.value = selectedItem
-                topPresenter?.dismissViewController(animated: true)
+                guard let pickerScreen else { return }
+                topPresenter?.dismissViewController(pickerScreen, animated: true)
             }
+            pickerScreen = pickerViewController
             
             item.presenter?.presentViewController(pickerViewController, animated: true)
         }

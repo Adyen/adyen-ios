@@ -19,7 +19,7 @@ extension AddressLookupSearchViewController {
         
         private weak var lookupProvider: AddressLookupProvider?
         
-        private let presentationHandler: (UIViewController) -> Void
+        private let alertPresentationHandler: (UIAlertController) -> Void
         private let showFormHandler: (PostalAddress?) -> Void
         private let switchToManualEntryHandler: () -> Void
         private let cancellationHandler: () -> Void
@@ -31,7 +31,7 @@ extension AddressLookupSearchViewController {
         ///   - theme: The theme to use for styling.
         ///   - localizationParameters: The localization parameters
         ///   - lookupProvider: The ``AddressLookupProvider`` to be used to lookup the addresses
-        ///   - presentationHandler: A closure that allows presenting a ``UIViewController``
+        ///   - alertPresentationHandler: Presents an alert, like the error shown when a lookup fails
         ///   - showFormHandler: A closure that shows the address form with a provided (optional) ``PostalAddress``
         ///   - switchToManualEntryHandler: A closure that switches to manual entry
         ///   - cancellationHandler: A closure that is triggered when the user taps cancel
@@ -40,7 +40,7 @@ extension AddressLookupSearchViewController {
             theme: CheckoutTheme,
             localizationParameters: LocalizationParameters?,
             lookupProvider: AddressLookupProvider,
-            presentationHandler: @escaping (UIViewController) -> Void,
+            alertPresentationHandler: @escaping (UIAlertController) -> Void,
             showFormHandler: @escaping (PostalAddress?) -> Void,
             switchToManualEntryHandler: @escaping () -> Void,
             cancellationHandler: @escaping () -> Void
@@ -51,7 +51,7 @@ extension AddressLookupSearchViewController {
             
             self.lookupProvider = lookupProvider
             
-            self.presentationHandler = presentationHandler
+            self.alertPresentationHandler = alertPresentationHandler
             self.showFormHandler = showFormHandler
             self.switchToManualEntryHandler = switchToManualEntryHandler
             self.cancellationHandler = cancellationHandler
@@ -111,7 +111,7 @@ extension AddressLookupSearchViewController {
                     style: .default
                 )
             )
-            presentationHandler(alert)
+            alertPresentationHandler(alert)
         }
     }
 }

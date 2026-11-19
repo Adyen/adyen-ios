@@ -14,7 +14,10 @@ private enum FormPickerLayout {
     static let listItemHorizontalInset: CGFloat = 14
 }
 
-package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
+/// Lets the shopper pick one option from a searchable list, like an installment plan, a country or a phone prefix.
+///
+/// Content only: whoever presents it adds the navigation bar and the close or back button.
+package final class FormPickerSearchViewController<Option: FormPickable>: SearchViewController {
     
     package convenience init(
         style: Style = .init(),
@@ -72,7 +75,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             ? nil
             : FormPickerHeaderView(configuration: configuration, theme: theme)
 
-        let searchViewController = SearchViewController(
+        super.init(
             viewModel: viewModel,
             emptyView: EmptyView(),
             headerView: headerView,
@@ -81,29 +84,11 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         )
 
         if headerView == nil {
-            searchViewController.title = configuration.title
+            title = configuration.title
         }
         
-        searchViewController.separatesResultsIntoSections = true
-
-        super.init(rootViewController: searchViewController)
-        searchViewController.resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
-        
-        searchViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(dismissTapped)
-        )
-    }
-    
-    @available(*, unavailable)
-    package required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc
-    private func dismissTapped() {
-        self.dismiss(animated: true)
+        separatesResultsIntoSections = true
+        resultsListViewController.sectionSpacing = FormPickerLayout.listItemSpacing
     }
 }
 
