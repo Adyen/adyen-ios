@@ -80,7 +80,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .emptyMerchantIdentifier)
+            assertInvalidConfiguration(error, wrapping: .emptyMerchantIdentifier)
         }
     }
 
@@ -95,7 +95,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCountryCode)
+            assertInvalidConfiguration(error, wrapping: .invalidCountryCode)
         }
     }
 
@@ -110,7 +110,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCurrencyCode)
+            assertInvalidConfiguration(error, wrapping: .invalidCurrencyCode)
         }
     }
 
@@ -125,7 +125,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .emptySummaryItems)
+            assertInvalidConfiguration(error, wrapping: .emptySummaryItems)
         }
     }
 
@@ -140,7 +140,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .negativeGrandTotal)
+            assertInvalidConfiguration(error, wrapping: .negativeGrandTotal)
         }
     }
 
@@ -158,7 +158,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidSummaryItem)
+            assertInvalidConfiguration(error, wrapping: .invalidSummaryItem)
         }
     }
 
@@ -1090,6 +1090,19 @@ class ApplePayComponentTest: XCTestCase {
     /// Starts `finalize(success:)`, which returns only once the sheet is dismissed.
     private func startFinalize(success: Bool) -> Task<Void, Never> {
         Task { await self.sut.finalize(success: success) }
+    }
+
+    /// Checks that `error` is a `CheckoutError` with the `.invalidConfiguration` code that wraps `expectedError`.
+    private func assertInvalidConfiguration(
+        _ error: Error,
+        wrapping expectedError: ApplePayComponent.Error,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let checkoutError = error as? CheckoutError
+        XCTAssertEqual(checkoutError?.code, .invalidConfiguration, file: file, line: line)
+        XCTAssertEqual(checkoutError?.underlyingError as? ApplePayComponent.Error, expectedError, file: file, line: line)
+        XCTAssertEqual(checkoutError?.message, expectedError.localizedDescription, file: file, line: line)
     }
 
     private func makeConfiguration() throws -> ApplePayConfiguration {

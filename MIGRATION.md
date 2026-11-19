@@ -498,14 +498,18 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   When `showsSubmitButton(false)` is set on `CheckoutConfiguration`, the screen is empty.
 - To use your own Apple Pay button, call `submit()` on the component when the shopper taps it. This opens the Apple Pay sheet.
 - The component can be reused after the shopper cancels the sheet or a payment fails.
-- An invalid payment request no longer makes creating the component fail. The failure callback receives
-  `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
-- `ApplePayComponent.Error.submitNotSupported` is removed.
+- An invalid payment request no longer makes creating the component fail. When the sheet can't be opened, `onFailure`
+  receives a `CheckoutError` with the `.invalidConfiguration` code.
+- `ApplePayComponent.Error` is no longer public. Apple Pay errors are reported as `CheckoutError`: `.invalidConfiguration`
+  for an invalid configuration or payment request, and `.paymentMethodFailure` when the device or wallet can't make the
+  payment. `message` describes the specific problem.
+- `ApplePayConfiguration(paymentRequest:)` throws `CheckoutError` with the `.invalidConfiguration` code when the payment
+  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
 - `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
-  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
-  `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
+  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with a `CheckoutError` with the
+  `.invalidConfiguration` code. The shopper can't continue paying with the previous items.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 
