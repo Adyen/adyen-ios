@@ -36,6 +36,6 @@ extension CheckoutCore: DropInComponentDelegate {
     }
 
     package func didOpenExternalApplication(component: any ActionComponent, in dropInComponent: any AnyDropInComponent) {
-        // TODO: expose a Checkout callback for external app handoff if needed.
+        // TODO: Eren: expose a Checkout callback for external app handoff if needed.
     }
 }

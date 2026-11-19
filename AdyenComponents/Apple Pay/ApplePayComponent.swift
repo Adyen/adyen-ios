@@ -80,7 +80,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         self.applePayPaymentMethod = paymentMethod
         super.init()
 
-        // TODO: Move the setup analytics request out of the component
+        // TODO: Eren: Move the setup analytics request out of the component
         // because _isDropIn is not used yet.
         // Inside Drop-in, this duplicates Drop-in's own setup request.
         sendInitialAnalytics()

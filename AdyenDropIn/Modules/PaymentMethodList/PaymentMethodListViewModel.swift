@@ -113,7 +113,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .first { $0.type == .applePay }
     }
 
-    // TODO: Building the Apple Pay component here sends its setup analytics request when the list loads,
+    // TODO: Eren: Building the Apple Pay component here sends its setup analytics request when the list loads,
     // duplicating Drop-in's own setup request. Remove once setup analytics move out of components.
     private lazy var applePayComponent: PaymentComponent? = {
         guard let applePayPaymentMethod,
@@ -132,7 +132,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func didLoad() {
-        // TODO: - Handle analytics on list load.
+        // TODO: Naufal - Handle analytics on list load.
         let sections = getSections()
         state = .loaded(sections: sections)
     }
