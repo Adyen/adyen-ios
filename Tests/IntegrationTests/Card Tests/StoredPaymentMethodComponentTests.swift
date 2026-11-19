@@ -51,7 +51,6 @@ internal struct StoredPaymentMethodComponentTests {
 
     // MARK: - Payment method types
 
-    // TODO: Robert: Different Stored Payments should have different button titles, but it isn't clear what exactly.
     @Test(arguments: DirectStoredPaymentMethod.allCases)
     internal func storedPaymentMethod_whenRenderingButtonScreen_thenShowsAmountAwarePayButtonTitle(
         storedMethod: DirectStoredPaymentMethod

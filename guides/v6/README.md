@@ -225,6 +225,18 @@ ContentView()
 
 It is safe to pass all incoming URLs; any URL not belonging to an active checkout redirect is ignored.
 
+## Logging
+
+Nothing is logged by default. To enable logging, set a log level, for example, in your `AppDelegate`:
+
+```swift
+Checkout.setLogLevel(.verbose)
+```
+
+`.verbose` logs everything the SDK logs, including networking. `.off`, the default, disables logging. The level applies to the whole app and can be set at any time, also before `Checkout.setup(...)`. It does not affect analytics.
+
+`.verbose` can include sensitive data: it logs request URLs with the client key, and request and response headers and bodies. Only use it during development.
+
 ## Next steps
 
 - [Card component overview](card.md)
