@@ -30,6 +30,18 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
