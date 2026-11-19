@@ -11,8 +11,8 @@ import XCTest
 
 class DokuVoucherUITests: XCTestCase {
 
-    func testDokuIndomaretVoucherCustomLocalization() throws {
-        let viewControllerProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
+    func test_shareableView_withDokuIndomaretActionAndCustomLocalization_shouldShowLocalizedDetails() throws {
+        let viewControllerProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
         viewControllerProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let dokuAction = try AdyenCoder.decode(dokuIndomaretAction) as DokuVoucherAction
@@ -51,8 +51,8 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
     }
 
-    func testDokuIndomaretVoucher() throws {
-        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
+    func test_shareableView_withDokuIndomaretAction_shouldShowVoucherDetails() throws {
+        let viewProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
 
         let dokuAction = try AdyenCoder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
@@ -90,8 +90,8 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
     }
 
-    func testDokuAlfamartVoucher() throws {
-        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
+    func test_shareableView_withDokuAlfamartAction_shouldShowVoucherDetails() throws {
+        let viewProvider = VoucherShareableViewProvider(theme: .default, environment: Dummy.apiContext.environment)
 
         let dokuAction = try AdyenCoder.decode(dokuAlfamartAction) as DokuVoucherAction
         let action: VoucherAction = .dokuAlfamart(dokuAction)
