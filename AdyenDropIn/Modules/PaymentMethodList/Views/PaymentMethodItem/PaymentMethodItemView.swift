@@ -43,6 +43,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var titleLabel: AdyenLabel = {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         return label
     }()
 
@@ -68,6 +69,7 @@ internal final class PaymentMethodItemView: UIView {
             style: logosStyle
         )
         logosView.translatesAutoresizingMaskIntoConstraints = false
+        logosView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return logosView
     }()
 
