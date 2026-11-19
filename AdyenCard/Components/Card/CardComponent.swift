@@ -211,7 +211,7 @@ extension CardComponent: CardViewControllerDelegate {
     private func updateBrand(with pan: String) {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardBrands) { [weak self] binInfo in
             guard let self else { return }
-            // Ignores a response for a number the shopper has since shortened or changed.
+            // A /binlookup response can arrive after the number has changed, so skip it if it's for an older number.
             guard self.currentPan.hasPrefix(pan) else { return }
             self.cardViewController.handleBinLookupResponse(binInfo)
             guard !binInfo.isCreatedLocally else { return }
