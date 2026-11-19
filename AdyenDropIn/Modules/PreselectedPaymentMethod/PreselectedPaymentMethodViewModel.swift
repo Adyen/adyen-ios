@@ -23,7 +23,6 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
     internal weak var router: PreselectedPaymentMethodRouting?
 
-    // TODO: Robert: DropInComponent needs to send an event on the component being loaded.
     /// Callback for when the component is loaded on display.
     internal var onDidLoad: (() -> Void)?
 

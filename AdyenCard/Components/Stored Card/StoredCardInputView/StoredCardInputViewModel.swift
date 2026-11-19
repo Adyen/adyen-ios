@@ -130,9 +130,10 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         securityCode: String,
         cardPublicKey: String
     ) throws -> CardDetails {
-        let encryptedSecurityCode = try CardEncryptor.encrypt(
-            securityCode: securityCode,
-            with: cardPublicKey
+        let encryptedSecurityCode = try CheckoutEncryptor.encrypt(
+            field: .securityCode,
+            value: securityCode,
+            publicKey: cardPublicKey
         )
         return CardDetails(
             paymentMethod: storedCardPaymentMethod,

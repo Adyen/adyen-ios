@@ -180,7 +180,7 @@ struct ComponentContainerViewModelTests {
         paymentMethod: AnyCardPaymentMethod,
         amountValue: Int = 1000
     ) -> PaymentComponentData {
-        let encryptedCard = EncryptedCard(
+        let encryptedCard = CheckoutEncryptedCard(
             number: "4111111111111111",
             securityCode: "737",
             expiryMonth: "03",
