@@ -102,6 +102,25 @@ class CardBrandProviderTests: XCTestCase {
         XCTAssertEqual(apiClientMock.counter, 0)
     }
 
+    func test_provide_whenBinLookupResponseArrivesAfterNumberChanged_shouldIgnoreResponse() {
+        apiClientMock.mockedResults = [.success(BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard)]))]
+        let supportedTypes: [CardBrand] = [.masterCard, .visa]
+        let requestSent = expectation(description: "/binlookup request is sent")
+        apiClientMock.onExecute = { [weak self] _ in
+            self?.sut.provide(for: "4111", supportedTypes: supportedTypes) { response in
+                XCTAssertEqual(response.brands?.map(\.brand), [.visa])
+            }
+            requestSent.fulfill()
+        }
+
+        sut.provide(for: "41111111111", supportedTypes: supportedTypes) { _ in
+            XCTFail("Should ignore the late /binlookup response")
+        }
+
+        wait(for: [requestSent], timeout: 1)
+        wait(for: .milliseconds(300))
+    }
+
     func test_fallbackBinInfoProvider_whenDetectingBrandLocally_shouldReturnUnreliableBrands() {
         let completion = expectation(description: "Fallback provider completes")
         FallbackBinInfoProvider().provide(for: "4111", supportedTypes: [.visa]) { response in
