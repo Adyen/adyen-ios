@@ -23,7 +23,6 @@ package class CardComponent: PaymentComponent,
 
     internal enum Constant {
         internal static let defaultCountryCode = "US"
-        internal static let secondsThrottlingDelay = 0.5
         internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
@@ -172,8 +171,6 @@ package class CardComponent: PaymentComponent,
         return formViewController
     }()
 
-    private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-
     private var currentPan = ""
 
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
@@ -204,15 +201,7 @@ extension CardComponent: CardViewControllerDelegate {
 
     internal func didChange(pan: String) {
         currentPan = pan
-        guard pan.count >= Constant.thresholdBINLength else {
-            // Replaces a pending /binlookup call so its result can't override the local detection.
-            panThrottler.throttle {}
-            updateBrand(with: pan)
-            return
-        }
-        panThrottler.throttle { [weak self] in
-            self?.updateBrand(with: pan)
-        }
+        updateBrand(with: pan)
     }
 
     internal func didChange(bin: String) {

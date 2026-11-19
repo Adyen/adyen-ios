@@ -14,6 +14,10 @@ internal protocol AnyBinInfoProvider: AnyObject {
 
 /// Provide cardBrand detection based on BinLookup API.
 internal final class BinInfoProvider: AnyBinInfoProvider {
+
+    private enum Constants {
+        static let binLookupThrottlingDelay: TimeInterval = 0.5
+    }
     
     private let minBinLength: Int
 
@@ -26,19 +30,23 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     private let fallbackCardBrandProvider: AnyBinInfoProvider
     
     private let binLookupType: BinLookupRequestType
+
+    private let binLookupThrottler: Throttler
     
     internal init(
         apiClient: AsyncAPIClientProtocol,
         adyenContext: AdyenContext,
         fallbackCardBrandProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
         minBinLength: Int,
-        binLookupType: BinLookupRequestType
+        binLookupType: BinLookupRequestType,
+        binLookupThrottler: Throttler = Throttler(minimumDelay: Constants.binLookupThrottlingDelay)
     ) {
         self.apiClient = apiClient
         self.adyenContext = adyenContext
         self.fallbackCardBrandProvider = fallbackCardBrandProvider
         self.minBinLength = minBinLength
         self.binLookupType = binLookupType
+        self.binLookupThrottler = binLookupThrottler
     }
     
     /// Request card types based on entered BIN.
@@ -57,9 +65,21 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
 
         let bin = String(bin.prefix(minBinLength))
         guard bin.count == minBinLength else {
+            binLookupThrottler.cancel()
             return fallback()
         }
 
+        binLookupThrottler.throttle { [weak self] in
+            self?.requestBinLookup(for: bin, supportedTypes: supportedTypes, completion: completion, fallback: fallback)
+        }
+    }
+
+    private func requestBinLookup(
+        for bin: String,
+        supportedTypes: [CardBrand],
+        completion: @escaping (BinLookupResponse) -> Void,
+        fallback: @escaping () -> Void
+    ) {
         let useService: (AnyBinLookupService) -> Void = { service in
             service.requestCardBrand(for: bin, supportedCardBrands: supportedTypes) { result in
                 switch result {

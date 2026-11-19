@@ -136,45 +136,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(fetchCount, 3)
     }
 
-    func test_didChange_whenPanChangesRapidlyAboveBinLookupThreshold_shouldRequestBrandOnce() {
-        let binInfoProviderMock = BinInfoProviderMock()
-        var fetchCount = 0
-        binInfoProviderMock.onFetch = { _ in fetchCount += 1 }
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration(),
-            binProvider: binInfoProviderMock
-        )
-
-        sut.didChange(pan: "41111111111")
-        sut.didChange(pan: "411111111111")
-        sut.didChange(pan: "4111111111111")
-
-        XCTAssertEqual(fetchCount, 0)
-        wait(for: .seconds(1))
-        XCTAssertEqual(fetchCount, 1)
-    }
-
-    func test_didChange_whenPanDeletedBelowBinLookupThreshold_shouldCancelPendingBinLookup() {
-        let binInfoProviderMock = BinInfoProviderMock()
-        var fetchCount = 0
-        binInfoProviderMock.onFetch = { _ in fetchCount += 1 }
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardConfiguration(),
-            binProvider: binInfoProviderMock
-        )
-
-        sut.didChange(pan: "41111111111")
-        sut.didChange(pan: "4111")
-
-        XCTAssertEqual(fetchCount, 1)
-        wait(for: .seconds(1))
-        XCTAssertEqual(fetchCount, 1)
-    }
-
     func test_didChange_whenBinLookupResponseArrivesAfterPanShortened_shouldIgnoreResponse() {
         let binInfoProviderMock = BinInfoProviderMock()
         var pendingCompletions: [(BinLookupResponse) -> Void] = []
@@ -190,7 +151,6 @@ class CardComponentTests: XCTestCase {
         )
 
         sut.didChange(pan: "41111111111")
-        wait(for: .seconds(1))
         let staleCompletion = pendingCompletions.removeLast()
         sut.didChange(pan: "4111")
         pendingCompletions.removeLast()(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)], isCreatedLocally: true))
