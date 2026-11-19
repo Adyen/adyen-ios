@@ -240,7 +240,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_nameItem_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_store_details_label"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }

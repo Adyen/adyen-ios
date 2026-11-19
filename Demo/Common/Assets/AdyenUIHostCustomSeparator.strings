@@ -14,8 +14,8 @@
 "adyen_sepa_nameItem_placeholder" = "Test-J. Smith";
 "adyen_sepa_consentLabel" = "Test-By pressing the button above, you agree that the specified amount will be debited from your bank account_";
 "adyen_sepa_nameItem_invalid" = "Test-Holder name invalid";
-"adyen_card_storeDetailsButton" = "Test-Remember my card details for future payments";
-"adyen_storeDetails" = "Test-Remember for next time";
+"adyen_checkout_card_store_details_label" = "Test-Remember my card details for future payments";
+"adyen_checkout_store_details_label" = "Test-Remember for next time";
 "adyen_card_nameItem_title" = "Test-Name on card";
 "adyen_card_nameItem_placeholder" = "Test-J. Smith";
 "adyen_card_nameItem_invalid" = "Test-Invalid cardholder name";
