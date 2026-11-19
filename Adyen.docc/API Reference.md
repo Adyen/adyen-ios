@@ -233,7 +233,7 @@ The entry points for integrating the SDK.
 
 ## Utilities
 
-- ``AdyenLogging``
+- ``CheckoutLogLevel``
 - ``LogoURLProvider``
 - ``AmountFormatter``
 - ``NumericFormatter``
