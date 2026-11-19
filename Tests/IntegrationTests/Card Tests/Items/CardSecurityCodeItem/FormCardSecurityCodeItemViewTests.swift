@@ -348,16 +348,14 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         }
     }
 
-    func test_strings_withEnglishLocale_shouldAskForValidSecurityCodeForEmptyAndPartialCodes() {
+    func test_strings_withEnglishLocale_shouldAskForSecurityCodeWhenEmptyAndValidSecurityCodeWhenPartial() {
         let sut = CardSecurityCodeStrings.self
         let parameters = LocalizationParameters(enforcedLocale: "en-US")
-        let threeDigits = "Enter a valid security code. 3 digits on back of card"
-        let fourDigits = "Enter a valid security code. 4 digits on front of card"
         let cases: [(CardValidationError, CardBrand?, String)] = [
-            (.securityCodeEmpty, .visa, threeDigits),
-            (.securityCodePartial, .visa, threeDigits),
-            (.securityCodeEmpty, .americanExpress, fourDigits),
-            (.securityCodePartial, .americanExpress, fourDigits)
+            (.securityCodeEmpty, .visa, "Enter the security code. 3 digits on back of card"),
+            (.securityCodePartial, .visa, "Enter a valid security code. 3 digits on back of card"),
+            (.securityCodeEmpty, .americanExpress, "Enter the security code. 4 digits on front of card"),
+            (.securityCodePartial, .americanExpress, "Enter a valid security code. 4 digits on front of card")
         ]
         for (error, brand, expected) in cases {
             XCTAssertEqual(sut.validationMessage(for: error, brand: brand, localizationParameters: parameters), expected)
