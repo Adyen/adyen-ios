@@ -11,7 +11,7 @@ import Foundation
 
 /// A checkout that creates payment components and handles payment actions.
 ///
-/// Use `Checkout.setup` to create a checkout or an `ActionOnlyCheckout`.
+/// Use `Checkout.setup` to create a checkout or an `ActionOnlyCheckout`, and `Checkout.setLogLevel(_:)` to set the SDK log level.
 @MainActor
 public final class Checkout {
 
@@ -124,6 +124,22 @@ public final class Checkout {
             RedirectComponent.applicationDidOpen(from: url)
         }
     #endif
+
+    /// Sets the minimum level of the SDK logs for the whole app. It can be called at any time, including before `setup`.
+    ///
+    /// The default is ``CheckoutLogLevel/off``, so nothing is logged unless you set a level.
+    /// ``CheckoutLogLevel/verbose`` logs request URLs with the client key, and request and response headers and bodies.
+    /// Only use it during development.
+    ///
+    /// - Parameter level: The minimum level of the SDK logs.
+    public nonisolated static func setLogLevel(_ level: CheckoutLogLevel) {
+        switch level {
+        case .verbose:
+            AdyenLogging.isEnabled = true
+        case .off:
+            AdyenLogging.isEnabled = false
+        }
+    }
 }
 
 internal extension Checkout {
