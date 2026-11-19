@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "A. Andersson";
 "adyen.sepa.consentLabel" = "Genom att trycka på knappen ovan godkänner du att det angivna beloppet kommer att dras från ditt bankkonto.";
 "adyen.sepa.nameItem.invalid" = "Ogiltigt namn på innehavare";
-"adyen.card.storeDetailsButton" = "Spara kortuppgifter";
+"adyen_checkout_card_store_details_label" = "Spara kortuppgifter";
 "adyen.card.nameItem.title" = "Namn på kort";
 "adyen.card.nameItem.placeholder" = "A. Andersson";
 "adyen.card.nameItem.invalid" = "Ange namnet som det står på kortet";

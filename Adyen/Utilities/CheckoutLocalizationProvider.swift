@@ -81,7 +81,7 @@ extension CheckoutLocalizationKey {
     )
     public static let cardHolderName = CheckoutLocalizationKey(localizationKey: .cardNameItemTitle)
     public static let cardHolderNameInvalid = CheckoutLocalizationKey(localizationKey: .cardNameItemInvalid)
-    public static let cardStorePaymentMethod = CheckoutLocalizationKey(localizationKey: .cardStoreDetailsButton)
+    public static let cardStoreDetailsLabel = CheckoutLocalizationKey(localizationKey: .cardStoreDetailsLabel)
     public static let cardDualBrandSelectorTitle = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandTitle)
     public static let cardDualBrandSelectorDescription = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandDescription)
     public static let cardSocialSecurityNumber = CheckoutLocalizationKey(name: "cardSocialSecurityNumber")

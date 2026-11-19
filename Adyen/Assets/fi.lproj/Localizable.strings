@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Painamalla yllä olevaa painiketta, hyväksyt, että määritetty määrä veloitetaan pankkitililtäsi.";
 "adyen.sepa.nameItem.invalid" = "Haltijan nimi väärä";
-"adyen.card.storeDetailsButton" = "Muista seuraavalla kerralla";
+"adyen_checkout_card_store_details_label" = "Muista seuraavalla kerralla";
 "adyen.card.nameItem.title" = "Nimi kortilla";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Syötä nimi sellaisena kuin se on kortissa";

@@ -14,7 +14,7 @@
 "adyen.sepa.nameItem.placeholder" = "TestBundle-J. Smith";
 "adyen.sepa.consentLabel" = "TestBundle-By pressing the button above, you agree that the specified amount will be debited from your bank account.";
 "adyen.sepa.nameItem.invalid" = "TestBundle-Holder name invalid";
-"adyen.card.storeDetailsButton" = "TestBundle-Remember for next time";
+"adyen_checkout_card_store_details_label" = "TestBundle-Remember for next time";
 "adyen.card.nameItem.title" = "TestBundle-Name on card";
 "adyen.card.nameItem.placeholder" = "TestBundle-J. Smith";
 "adyen.card.nameItem.invalid" = "TestBundle-Invalid cardholder name";

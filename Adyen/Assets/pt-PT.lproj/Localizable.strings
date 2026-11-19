@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Ao pressionar o botão acima, concorda que o valor especificado será debitado da sua conta bancária.";
 "adyen.sepa.nameItem.invalid" = "Nome do titular inválido";
-"adyen.card.storeDetailsButton" = "Lembre-se para a próxima vez";
+"adyen_checkout_card_store_details_label" = "Lembre-se para a próxima vez";
 "adyen.card.nameItem.title" = "Nome no cartão";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Introduzir o nome como mostrado no cartão";

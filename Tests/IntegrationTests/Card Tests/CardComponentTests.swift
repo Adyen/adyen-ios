@@ -211,7 +211,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(.cardNameItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsLabel, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }
@@ -2516,7 +2516,7 @@ extension CardComponentTests {
 
     func test_cardComponent_withProviderOverride_shouldRenderCustomStorePaymentMethodTitle() {
         var configuration = CardConfiguration()
-        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStorePaymentMethod: "Remember this card"])
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStoreDetailsLabel: "Remember this card"])
 
         let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
 
