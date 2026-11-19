@@ -36,8 +36,8 @@
 
 ### Store payment method strings
 
-- The card store payment method toggle now reads "Remember my card details for future payments" in English. It still uses the `adyen_checkout_card_store_details_label` key and `CheckoutLocalizationKey.cardStoreDetailsLabel`.
-- ACH Direct Debit and Cash App Pay no longer use `adyen_checkout_card_store_details_label` for their store payment method toggle. They use the new `adyen_checkout_store_details_label` key. If you override this string in your own strings table, add the new key to keep the custom text for these components.
+- The card store payment method toggle now reads "Remember my card details for future payments" in English. Its localization key was renamed from `adyen.card.storeDetailsButton` to `adyen_checkout_card_store_details_label`, and `CheckoutLocalizationKey.cardStorePaymentMethod` was renamed to `CheckoutLocalizationKey.cardStoreDetailsLabel`. If you override this string in your own strings table or through a `CheckoutLocalizationProvider`, rename your overrides to keep the custom text.
+- ACH Direct Debit and Cash App Pay no longer use the card store details key for their store payment method toggle. They use the new `adyen_checkout_store_details_label` key. If you override this string in your own strings table, add the new key to keep the custom text for these components.
 - `CheckoutLocalizationKey.cardStoreDetailsLabel` now only changes the card toggle.
 
 ## 6.0.0-alpha.1
