@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Nospiežot augstāk redzamo pogu, jūs piekrītat, ka norādītā summa tiks noņemta no jūsu bankas konta.";
 "adyen.sepa.nameItem.invalid" = "Īpašnieka vārds nav derīgs";
-"adyen_checkout_card_store_details_label" = "Atcerieties nākamajai reizei";
+"adyen.card.storeDetailsButton" = "Atcerieties nākamajai reizei";
 "adyen.card.nameItem.title" = "Vārds uz kartes";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Ievadiet vārdu kā tas ir redzams uz kartes";

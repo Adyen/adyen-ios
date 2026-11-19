@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Ved at trykke på knappen ovenfor accepterer du, at det angivne beløb trækkes på din bankkonto.";
 "adyen.sepa.nameItem.invalid" = "Ugyldigt kontohavernavn";
-"adyen_checkout_card_store_details_label" = "Husk til næste gang";
+"adyen.card.storeDetailsButton" = "Husk til næste gang";
 "adyen.card.nameItem.title" = "Navn på kort";
 "adyen.card.nameItem.placeholder" = "J. Hansen";
 "adyen.card.nameItem.invalid" = "Indtast navn som vist på kortet";

@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Novak";
 "adyen.sepa.consentLabel" = "S pritiskom zgornjega gumba se strinjate, da bo navedeni znesek odtrgan z vašega bančnega računa.";
 "adyen.sepa.nameItem.invalid" = "Neveljavno ime imetnika";
-"adyen_checkout_card_store_details_label" = "Zapomni si za prihodnjič";
+"adyen.card.storeDetailsButton" = "Zapomni si za prihodnjič";
 "adyen.card.nameItem.title" = "Ime na kartici";
 "adyen.card.nameItem.placeholder" = "J. Novak";
 "adyen.card.nameItem.invalid" = "Vnesite ime, kot je prikazano na kartici";

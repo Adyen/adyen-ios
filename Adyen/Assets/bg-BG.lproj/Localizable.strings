@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "Дж. Смит";
 "adyen.sepa.consentLabel" = "С натискането на бутона по-горе се съгласявате посочената сума да бъде дебитирана от банковата Ви сметка.";
 "adyen.sepa.nameItem.invalid" = "Името на притежателя е невалидно";
-"adyen_checkout_card_store_details_label" = "Запомнете за следващия път";
+"adyen.card.storeDetailsButton" = "Запомнете за следващия път";
 "adyen.card.nameItem.title" = "Име на картата";
 "adyen.card.nameItem.placeholder" = "Дж. Смит";
 "adyen.card.nameItem.invalid" = "Въведете името, както е показано на картата";

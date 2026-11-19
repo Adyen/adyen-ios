@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Janssen";
 "adyen.sepa.consentLabel" = "Door op de knop hierboven te drukken, gaat u ermee akkoord dat het opgegeven bedrag van uw bankrekening wordt afgeschreven.";
 "adyen.sepa.nameItem.invalid" = "Naam houder ongeldig";
-"adyen_checkout_card_store_details_label" = "Onthouden voor de volgende keer";
+"adyen.card.storeDetailsButton" = "Onthouden voor de volgende keer";
 "adyen.card.nameItem.title" = "Naam op kaart";
 "adyen.card.nameItem.placeholder" = "J. Janssen";
 "adyen.card.nameItem.invalid" = "Voer naam in zoals weergegeven op kaart";

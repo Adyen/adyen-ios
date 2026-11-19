@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Með því að ýta á hnappinn hér fyrir ofan samþykkir þú að tilgreind upphæð verði skuldfærð af bankareikningnum þínum.";
 "adyen.sepa.nameItem.invalid" = "Ógilt nafn reikningshafa";
-"adyen_checkout_card_store_details_label" = "Muna þetta til að nota næst";
+"adyen.card.storeDetailsButton" = "Muna þetta til að nota næst";
 "adyen.card.nameItem.title" = "Nafn á korti";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Sláðu inn nafn eins og það kemur fram á kortinu";

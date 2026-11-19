@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Tous";
 "adyen.sepa.consentLabel" = "En prémer el botó anterior, accepteu que l'import especificat es carregui al vostre compte bancari.";
 "adyen.sepa.nameItem.invalid" = "El nom del titular no és vàlid";
-"adyen_checkout_card_store_details_label" = "Recordar per a la propera vegada";
+"adyen.card.storeDetailsButton" = "Recordar per a la propera vegada";
 "adyen.card.nameItem.title" = "Nom a la targeta";
 "adyen.card.nameItem.placeholder" = "J. Tous";
 "adyen.card.nameItem.invalid" = "Introduïu el nom tal com es mostra a la targeta";

@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Kowalski";
 "adyen.sepa.consentLabel" = "Naciskając powyższy przycisk, wyrażasz zgodę na pobranie określonej kwoty z Twojego rachunku bankowego.";
 "adyen.sepa.nameItem.invalid" = "Nieprawidłowe imię i nazwisko posiadacza";
-"adyen_checkout_card_store_details_label" = "Zapamiętaj na przyszłość";
+"adyen.card.storeDetailsButton" = "Zapamiętaj na przyszłość";
 "adyen.card.nameItem.title" = "Imię i nazwisko na karcie";
 "adyen.card.nameItem.placeholder" = "J. Kowalski";
 "adyen.card.nameItem.invalid" = "Wpisz imię i nazwisko w takim formacie, jak na karcie";

@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "Jan Novák";
 "adyen.sepa.consentLabel" = "Stisknutím tlačítka výše souhlasíte s tím, že vám bude daná částka odečtena z účtu.";
 "adyen.sepa.nameItem.invalid" = "Neplatné jméno držitele";
-"adyen_checkout_card_store_details_label" = "Zapamatovat si pro příště";
+"adyen.card.storeDetailsButton" = "Zapamatovat si pro příště";
 "adyen.card.nameItem.title" = "Jméno na kartě";
 "adyen.card.nameItem.placeholder" = "Jan Novák";
 "adyen.card.nameItem.invalid" = "Zadejte jméno, jak je uvedeno na kartě";

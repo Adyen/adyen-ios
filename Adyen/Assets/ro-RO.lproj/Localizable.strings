@@ -18,7 +18,7 @@
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Apăsând butonul de mai sus, sunteți de acord cu faptul că suma specificată va fi debitată din contul dvs. bancar.";
 "adyen.sepa.nameItem.invalid" = "Numele posesorului este incorect";
-"adyen_checkout_card_store_details_label" = "Reține pentru data viitoare";
+"adyen.card.storeDetailsButton" = "Reține pentru data viitoare";
 "adyen.card.nameItem.title" = "Numele de pe card";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Completați numele după cum figurează pe card";
