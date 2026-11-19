@@ -21,6 +21,9 @@ package final class ApplePayButtonViewController: UIViewController {
     /// Called when the shopper taps the Apple Pay button.
     package var onSubmit: (() -> Void)?
 
+    /// Called when the screen's view loads.
+    package var onViewDidLoad: (() -> Void)?
+
     private let appearance: ApplePayButtonAppearance
     private let showsSubmitButton: Bool
 
@@ -58,6 +61,7 @@ package final class ApplePayButtonViewController: UIViewController {
 
     override package func viewDidLoad() {
         super.viewDidLoad()
+        onViewDidLoad?()
         if showsSubmitButton {
             addPaymentButton()
         }
