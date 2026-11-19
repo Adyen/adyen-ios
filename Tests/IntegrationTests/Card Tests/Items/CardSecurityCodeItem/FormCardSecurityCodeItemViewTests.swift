@@ -477,12 +477,46 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
     }
 
+    func test_cardHintView_whenDeletingAfterValidCode_shouldNotStretch() {
+        // Given
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        let window = layOutInWindow(sut)
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+        sut.textField.text = "737"
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // When
+        sut.textField.text = "7"
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+        XCTAssertFalse(sut.textField.hasAmbiguousLayout)
+        XCTAssertEqual(sut.cardHintView.frame.width, sut.cardHintView.intrinsicContentSize.width, accuracy: 0.5)
+    }
+
     private struct StringsProvider: CheckoutLocalizationProvider {
         let values: [CheckoutLocalizationKey: String]
 
         func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
             values[key]
         }
+    }
+
+    private func layOutInWindow(_ view: UIView) -> UIWindow {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 375, height: 812))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        window.addSubview(view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            view.topAnchor.constraint(equalTo: window.topAnchor)
+        ])
+        window.isHidden = false
+        window.layoutIfNeeded()
+        return window
     }
 
     private func makeItemSUT() -> FormCardSecurityCodeItem {

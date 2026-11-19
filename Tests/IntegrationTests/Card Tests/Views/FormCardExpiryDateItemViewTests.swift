@@ -95,6 +95,27 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
         XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
+
+    func test_hintAccessoryView_whenDeletingAfterValidDate_shouldNotStretch() throws {
+        // Given
+        let sut = makeSUT(item: FormCardExpiryDateItem())
+        let window = layOutInWindow(sut)
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+        sut.textField.text = try futureExpiryDate()
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // When
+        sut.textField.text = String(sut.textField.text?.dropLast(2) ?? "")
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // Then
+        let hintView = try XCTUnwrap(sut.hintAccessoryView)
+        XCTAssertEqual(sut.accessory, .customView(hintView))
+        XCTAssertFalse(sut.textField.hasAmbiguousLayout)
+        XCTAssertEqual(hintView.frame.width, hintView.intrinsicContentSize.width, accuracy: 0.5)
+    }
 }
 
 extension FormCardExpiryDateItemViewTests {
@@ -111,5 +132,19 @@ extension FormCardExpiryDateItemViewTests {
         formatter.dateFormat = "MMyy"
         let date = try XCTUnwrap(Calendar.current.date(byAdding: .year, value: 2, to: Date()))
         return formatter.string(from: date)
+    }
+
+    private func layOutInWindow(_ view: UIView) -> UIWindow {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 375, height: 812))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        window.addSubview(view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            view.topAnchor.constraint(equalTo: window.topAnchor)
+        ])
+        window.isHidden = false
+        window.layoutIfNeeded()
+        return window
     }
 }

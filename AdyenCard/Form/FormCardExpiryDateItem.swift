@@ -96,6 +96,7 @@ extension FormItemViewBuilder {
 
     private func makeExpiryDateHintView(for item: FormCardExpiryDateItem) -> UIImageView {
         let view = UIImageView(image: UIImage(named: "ic_card_expiry_date", in: .cardInternalResources, compatibleWith: nil))
+        view.setContentHuggingPriority(.required, for: .horizontal)
         view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: item, postfix: "expiryDateHintIcon")
         return view
