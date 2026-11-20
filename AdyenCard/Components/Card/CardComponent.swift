@@ -22,7 +22,6 @@ package class CardComponent: PaymentComponent,
     LoadingComponent {
 
     internal enum Constant {
-        internal static let defaultCountryCode = "US"
         internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
