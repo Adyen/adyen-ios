@@ -27,6 +27,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     internal init(configuration: CardConfiguration) {
         self.billingAddressMode = configuration.billingAddressMode.analyticsDescription
         self.billingAddressAllowedCountries = configuration.billingAddressMode.supportedCountryCodes?
+            .sorted()
             .joined(separator: Constants.stringSeparator)
 
         self.billingAddressHideForCardBrands = configuration.billingAddressMode.hideForCardBrands
