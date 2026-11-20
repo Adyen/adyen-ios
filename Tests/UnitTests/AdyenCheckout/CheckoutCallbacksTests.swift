@@ -28,16 +28,25 @@ final class CheckoutCallbacksTests: XCTestCase {
         XCTAssertEqual(received?.sessionResult, "session-result")
     }
 
-    func test_sessionCompletion_withoutSessionIdentifiers_shouldAssertWithoutCallingCompletion() {
-        let asserted = expectation(description: "Missing session identifiers")
-        asserted.expectedFulfillmentCount = 2
+    func test_sessionCompletion_withoutSessionId_shouldAssertWithoutCallingCompletion() {
+        let asserted = expectation(description: "Missing session identifier")
         AdyenAssertion.listener = { _ in asserted.fulfill() }
         let callbacks = CheckoutCallbacks.test(onComplete: { _ in XCTFail("Unexpected completion") })
 
         callbacks.handleCompletion(resultCode: .authorised, sessionId: nil, sessionResult: "result")
-        callbacks.handleCompletion(resultCode: .authorised, sessionId: "id", sessionResult: nil)
 
         wait(for: [asserted], timeout: 1)
+    }
+
+    func test_sessionCompletion_withoutSessionResult_shouldForwardNilSessionResult() {
+        var received: CheckoutResult?
+        let callbacks = CheckoutCallbacks(onComplete: { received = $0 }, onFailure: { _ in XCTFail("Unexpected failure") })
+
+        callbacks.handleCompletion(resultCode: .authorised, sessionId: "session-id", sessionResult: nil)
+
+        XCTAssertEqual(received?.resultCode, .authorised)
+        XCTAssertEqual(received?.sessionId, "session-id")
+        XCTAssertNil(received?.sessionResult)
     }
 
     func test_beforeSubmitModifier_shouldLeaveTheOriginalUnchanged() async {
