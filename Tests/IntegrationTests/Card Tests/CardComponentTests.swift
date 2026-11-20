@@ -200,7 +200,7 @@ class CardComponentTests: XCTestCase {
         let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryDateHint, sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, sut.configuration.localizationParameters))
@@ -229,7 +229,7 @@ class CardComponentTests: XCTestCase {
 
         let items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_checkout_card_expiry_date_hint"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_label"), sut.configuration.localizationParameters))
@@ -257,7 +257,7 @@ class CardComponentTests: XCTestCase {
         )
         let items = sut.cardViewController.items
 
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryDateHint, configuration.localizationParameters))
         XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
     }

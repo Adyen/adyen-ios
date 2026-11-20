@@ -64,7 +64,7 @@ extension CheckoutLocalizationKey {
     public static let cardNumberInvalid = CheckoutLocalizationKey(localizationKey: .cardNumberItemInvalid)
     public static let cardNumberInvalidUnsupportedBrand = CheckoutLocalizationKey(localizationKey: .cardNumberItemUnsupportedBrand)
     public static let cardExpiryDate = CheckoutLocalizationKey(localizationKey: .cardExpiryItemTitle)
-    public static let cardExpiryDateHint = CheckoutLocalizationKey(localizationKey: .cardExpiryItemPlaceholder)
+    public static let cardExpiryDateHint = CheckoutLocalizationKey(localizationKey: .cardExpiryDateHint)
     public static let cardExpiryDateInvalid = CheckoutLocalizationKey(localizationKey: .cardExpiryItemInvalid)
     public static let cardExpiryDateInvalidTooOld = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooOld")
     public static let cardExpiryDateInvalidTooFarInTheFuture = CheckoutLocalizationKey(name: "cardExpiryDateInvalidTooFarInTheFuture")

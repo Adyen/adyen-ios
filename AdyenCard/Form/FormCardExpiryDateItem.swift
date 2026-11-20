@@ -56,7 +56,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     ) {
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
-        placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
+        placeholder = localizedString(.cardExpiryDateHint, localizationParameters)
         formatter = CardExpiryDateFormatter()
         validator = expiryDateValidator
         validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)

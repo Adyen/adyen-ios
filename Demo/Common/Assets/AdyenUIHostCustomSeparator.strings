@@ -22,7 +22,7 @@
 "adyen_card_numberItem_title" = "Test-Card number";
 "adyen_card_numberItem_placeholder" = "Test-1234 5678 9012 3456";
 "adyen_card_numberItem_invalid" = "Test-Enter a valid card number";
-"adyen_card_expiryItem_placeholder" = "Test-Front of card in MM/YY format";
+"adyen_checkout_card_expiry_date_hint" = "Test-Front of card in MM/YY format";
 "adyen_card_expiryItem_invalid" = "Test-Enter a valid expiration date. Front of card in MM/YY format";
 "adyen_card_cvcItem_title" = "Test-CVC / CVV";
 "adyen_card_cvcItem_placeholder" = "Test-123";
