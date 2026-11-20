@@ -23,6 +23,7 @@ package class CardComponent: PaymentComponent,
 
     internal enum Constant {
         internal static let defaultCountryCode = "US"
+        internal static let secondsThrottlingDelay = 0.5
         internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
@@ -220,18 +221,10 @@ extension CardComponent: CardViewControllerDelegate {
 
 private extension CardComponent {
 
-    private var initialCountryCode: String {
-
-        if
-            let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            configuration.billingAddressMode.supports(countryCode: preferredCountry) {
-            return preferredCountry
-        }
-
-        return
-            configuration.billingAddressMode.supportedCountryCodes?.first ??
-            Locale.current.region?.identifier ??
-            CardComponent.Constant.defaultCountryCode
+    private var initialCountryCode: String? {
+        RegionRepository.initialCountryCode(
+            supportedCountryCodes: configuration.billingAddressMode.supportedCountryCodes
+        )
     }
 }
 
@@ -293,18 +286,13 @@ extension CardComponent {
 
 extension BillingAddressMode {
 
-    internal var supportedCountryCodes: [String]? {
+    internal var supportedCountryCodes: Set<String>? {
         switch self {
         case let .full(supportedCountryCodes, _):
             return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes
         case .none, .postalCode, .lookup:
             return nil
         }
-    }
-
-    internal func supports(countryCode: String) -> Bool {
-        guard let supportedCountryCodes else { return true } // nil == all countries supported
-        return supportedCountryCodes.contains(countryCode)
     }
 
     internal var hideForCardBrands: Set<CardBrand> {

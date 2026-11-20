@@ -13,8 +13,6 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.twint)
     
-    package var showsSubmitButton: Bool = false
-    
     package var theme: CheckoutTheme = .default
     
     package var localizationParameters: LocalizationParameters?

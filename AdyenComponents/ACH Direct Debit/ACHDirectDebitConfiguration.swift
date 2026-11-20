@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Configuration for ACH Direct Debit.
-public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
+public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, PaymentComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 
@@ -74,8 +74,9 @@ extension ACHDirectDebitConfiguration {
         return config
     }
 
-    /// Sets the list of ISO country codes supported for the billing address.
-    /// - Parameter billingAddressCountryCodes: An array of ISO country codes.
+    /// Sets the countries supported for the billing address.
+    /// - Parameter billingAddressCountryCodes: An array of uppercase ISO 3166-1 alpha-2 country codes,
+    ///   such as `US` or `PR`. When set to empty, all countries are supported.
     /// - Returns: A modified configuration with the updated country codes.
     public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
         var config = self
