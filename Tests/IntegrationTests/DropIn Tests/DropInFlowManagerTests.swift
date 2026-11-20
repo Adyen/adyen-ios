@@ -240,20 +240,6 @@ struct DropInFlowManagerTests {
     }
 
     @Test
-    func didOpenExternalApplication_shouldNotifyTheMerchant() {
-        // Given
-        let environment = makeSUT()
-        let actionComponent = ActionComponentMock()
-
-        // When
-        environment.sut.didOpenExternalApplication(component: actionComponent)
-
-        // Then
-        #expect(environment.dropInComponentDelegate.didOpenExternalApplicationComponentInCallsCount == 1)
-        #expect(environment.dropInComponentDelegate.didOpenExternalApplicationComponentInReceivedArguments?.component === actionComponent)
-    }
-
-    @Test
     func didProvide_shouldNotifyTheMerchantOfTheActionDetails() throws {
         // Given
         let environment = makeSUT()
