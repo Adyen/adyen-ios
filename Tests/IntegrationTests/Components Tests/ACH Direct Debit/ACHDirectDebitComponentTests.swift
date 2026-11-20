@@ -42,7 +42,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
         var config = ACHDirectDebitConfiguration()
-            .billingAddressCountryCodes(["US", "UK"])
+            .billingAddressCountryCodes(["US", "GB"])
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
@@ -85,7 +85,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
-        var configuration = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "UK"])
+        var configuration = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         configuration.theme = TestTheme.distinctive()
 
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
@@ -123,7 +123,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let config = ACHDirectDebitConfiguration()
             .shopperInformation(shopperInformation)
-            .billingAddressCountryCodes(["US", "UK"])
+            .billingAddressCountryCodes(["US", "GB"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
@@ -143,7 +143,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "UK"])
+        let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
@@ -159,7 +159,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "UK"])
+        let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
