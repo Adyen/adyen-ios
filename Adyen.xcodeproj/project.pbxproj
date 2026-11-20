@@ -114,7 +114,6 @@
 		F9237D3428CA1E7C004F9929 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F9237D3328CA1E7C004F9929 /* Adyen3DS2 */; };
 		F92980AC27CE2B33000CA5CA /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
 		F92980AD27CE2B33000CA5CA /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F92980B327CE2B6B000CA5CA /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; platformFilter = ios; };
 		F92980B827CE2B6F000CA5CA /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		F92980BC27CE409D000CA5CA /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
 		F92980BD27CE409D000CA5CA /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -490,13 +489,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = F92980A527CE2B33000CA5CA;
 			remoteInfo = AdyenSession;
-		};
-		F92980B527CE2B6B000CA5CA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9175F8B2594986900D653BE;
-			remoteInfo = AdyenActions;
 		};
 		F92980BA27CE2B6F000CA5CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1236,7 +1228,6 @@
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				F92980B827CE2B6F000CA5CA /* Adyen.framework in Frameworks */,
-				F92980B327CE2B6B000CA5CA /* AdyenActions.framework in Frameworks */,
 			);
 		};
 		F94D65D62B0364AF0095D61E /* Frameworks */ = {
@@ -1883,7 +1874,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F92980B627CE2B6B000CA5CA /* PBXTargetDependency */,
 				F92980BB27CE2B6F000CA5CA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -2811,12 +2801,6 @@
 			isa = PBXTargetDependency;
 			target = F92980A527CE2B33000CA5CA /* AdyenSession */;
 			targetProxy = F92980AA27CE2B33000CA5CA /* PBXContainerItemProxy */;
-		};
-		F92980B627CE2B6B000CA5CA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = F9175F8B2594986900D653BE /* AdyenActions */;
-			targetProxy = F92980B527CE2B6B000CA5CA /* PBXContainerItemProxy */;
 		};
 		F92980BB27CE2B6F000CA5CA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
