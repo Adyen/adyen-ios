@@ -168,7 +168,7 @@ Modules have clear dependency chains:
 - `AdyenUI` depends on `Adyen`
 - `AdyenCard` depends on `Adyen`, `AdyenEncryption`, `AdyenUI`
 - `AdyenDropIn` depends on `Adyen`, `AdyenCard`, `AdyenComponents`, `AdyenActions`
-- `AdyenSession` depends on `Adyen`, `AdyenActions`
+- `AdyenSession` depends on `Adyen`
 
 When modifying code, be mindful of these dependencies to avoid circular references.
 
