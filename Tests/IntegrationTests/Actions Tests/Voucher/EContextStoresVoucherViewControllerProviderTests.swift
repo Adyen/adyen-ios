@@ -10,6 +10,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {

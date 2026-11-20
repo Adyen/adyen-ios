@@ -7,7 +7,7 @@
 import Foundation
 
 /// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Codable, CaseIterable {
+public enum VoucherPaymentMethod: String, Codable, CaseIterable, Sendable {
 
     /// Doku Indomaret.
     case dokuIndomaret = "doku_indomaret"
@@ -41,7 +41,7 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
 }
 
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable {
+public enum VoucherAction: Decodable, Sendable {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -139,7 +139,7 @@ package protocol InstructionAwareVoucherAction {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable, AnyVoucherAction {
+public final class GenericVoucherAction: Decodable, AnyVoucherAction, Sendable {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -162,7 +162,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     @_spi(AdyenInternal)
     public let passCreationToken: String?
 
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Amount.self, forKey: .initialAmount)

@@ -23,12 +23,13 @@ package struct IssuerListConfiguration: CheckoutComponentConfiguration {
     package var style: ListComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: CheckoutTheme = .default
+    package var theme: CheckoutTheme
 
     package var localizationParameters: LocalizationParameters?
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
+    @MainActor
     package init(
         style: ListComponentStyle = .init(),
         theme: CheckoutTheme = .default,

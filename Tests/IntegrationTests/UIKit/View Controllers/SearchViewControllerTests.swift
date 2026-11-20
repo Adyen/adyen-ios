@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class SearchViewControllerTests: XCTestCase {
     
     class DummyEmptyView: UIView, SearchResultsEmptyView {

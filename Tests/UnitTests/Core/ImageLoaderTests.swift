@@ -7,6 +7,7 @@
 @testable import Adyen
 import XCTest
 
+@MainActor
 class ImageLoaderTests: XCTestCase {
     
     private let dummyImageUrl: URL = .init(string: "https://adyen.com")!

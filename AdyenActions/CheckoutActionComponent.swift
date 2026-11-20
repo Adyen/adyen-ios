@@ -13,7 +13,10 @@ import UIKit
  An action handler component to perform any supported action out of the box.
  */
 @MainActor
-package final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
+package final class CheckoutActionComponent: @MainActor ActionComponent,
+    @MainActor ActionHandlingComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware {
 
     /// :nodoc:
     /// The context object for this component.
@@ -49,6 +52,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         ///   - style: The UI style configurations.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
+        @MainActor
         package init(
             style: ActionComponentStyle = .init(),
             authentication: AuthenticationConfiguration = .init(),
@@ -62,6 +66,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
             )
         }
 
+        @MainActor
         package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),

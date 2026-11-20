@@ -14,7 +14,9 @@ import Foundation
 #if canImport(TwintSDK)
     /// A component that handles Twint SDK action's.
     @MainActor
-    package final class TwintSDKActionComponent: ActionComponent {
+    package final class TwintSDKActionComponent: @MainActor ActionComponent,
+        @MainActor Component,
+        @MainActor AdyenContextAware {
 
         /// The context object for this component.
         package let context: AdyenContext
@@ -88,7 +90,7 @@ import Foundation
         }
 
         private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
-            let completionHandler: (Error?) -> Void = { [weak self] error in
+            let completionHandler: @MainActor @Sendable (Error?) -> Void = { [weak self] error in
                 guard let self else { return }
                 if let error {
                     self.handleShowError(
@@ -208,7 +210,7 @@ import Foundation
         }
     }
 
-    extension TwintSDKActionComponent: ActionComponentDelegate {
+    extension TwintSDKActionComponent: @MainActor ActionComponentDelegate {
 
         package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
             cleanup()

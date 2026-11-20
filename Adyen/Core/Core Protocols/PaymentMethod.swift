@@ -7,7 +7,7 @@
 import Foundation
 
 /// A payment method that is available to use.
-public protocol PaymentMethod: Codable {
+public protocol PaymentMethod: Codable, Sendable {
     
     /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
     var type: PaymentMethodType { get }

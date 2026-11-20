@@ -23,11 +23,11 @@ import XCTest
     }
 
     extension TwintActionConfiguration {
-        static var dummy: Self {
+        @MainActor static var dummy: Self {
             .init(callbackAppScheme: "ui-host")
         }
-        
-        static func dummy(maxIssuerNumber: Int) -> Self {
+
+        @MainActor static func dummy(maxIssuerNumber: Int) -> Self {
             .init(callbackAppScheme: "ui-host")
                 .maxIssuerNumber(maxIssuerNumber)
         }
@@ -48,7 +48,7 @@ import XCTest
     
         struct PollingError: Error {}
     
-        static func actionComponent(
+        @MainActor static func actionComponent(
             with twintSpy: TwintSpy,
             configuration: TwintActionConfiguration = .dummy,
             context: AdyenContext = Dummy.context,
@@ -92,7 +92,7 @@ import XCTest
         // MARK: ActionPresentationDelegateMock
     
         /// ActionPresentationDelegateMock that fails when `doPresent` is called
-        static func failingActionPresentationDelegateMock() -> ActionPresentationDelegateMock {
+        @MainActor static func failingActionPresentationDelegateMock() -> ActionPresentationDelegateMock {
             let actionPresentationDelegateMock = ActionPresentationDelegateMock()
             actionPresentationDelegateMock.doPresent = { _ in
                 XCTFail("Nothing should have been displayed")
@@ -101,7 +101,7 @@ import XCTest
         }
     
         /// ActionComponentDelegateMock that fails when `onDidFail` is called
-        static func successFlowActionComponentDelegateMock(
+        @MainActor static func successFlowActionComponentDelegateMock(
             onProvide: @escaping (ActionComponentData) -> Void
         ) -> ActionComponentDelegateMock {
         
@@ -117,7 +117,7 @@ import XCTest
         }
     
         /// ActionComponentDelegateMock that fails when `onDidProvide` is called
-        static func failureFlowActionComponentDelegateMock(
+        @MainActor static func failureFlowActionComponentDelegateMock(
             onDidFail: @escaping (Error) -> Void
         ) -> ActionComponentDelegateMock {
         

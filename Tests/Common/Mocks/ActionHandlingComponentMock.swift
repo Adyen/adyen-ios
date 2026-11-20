@@ -8,7 +8,8 @@ import Adyen
 import AdyenActions
 import Foundation
 
-internal final class ActionHandlingComponentMock: ActionHandlingComponent {
+@MainActor
+internal final class ActionHandlingComponentMock: @MainActor ActionHandlingComponent {
 
     internal var context: AdyenContext {
         Dummy.context

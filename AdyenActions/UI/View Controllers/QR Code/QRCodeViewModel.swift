@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
+@MainActor
 internal protocol QRCodeViewModelProtocol {
     var flowType: QRCodeFlowType { get }
     var instructionText: String { get }
@@ -19,12 +20,12 @@ internal protocol QRCodeViewModelProtocol {
     var copyInProgress: AdyenObservable<Bool> { get }
     var observedProgress: Progress? { get }
     
-    func loadLogoImage(completion: @escaping (UIImage?) -> Void)
+    func loadLogoImage(completion: @escaping @MainActor @Sendable (UIImage?) -> Void)
     func performAction(qrCodeImage: UIImage?, from: UIView)
 }
 
 @MainActor
-internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
+internal class QRCodeViewModel: @MainActor QRCodeViewModelProtocol, @MainActor Localizable {
     
     private enum Constants {
         static let copyAnimationDuration: TimeInterval = 2
@@ -85,7 +86,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         action.qrCodeData
     }
     
-    internal func loadLogoImage(completion: @escaping (UIImage?) -> Void) {
+    internal func loadLogoImage(completion: @escaping @MainActor @Sendable (UIImage?) -> Void) {
         imageLoader.load(url: logoUrl, completion: completion)
     }
     
@@ -106,7 +107,10 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         copyInProgress.wrappedValue = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) { [weak self] in
-            self?.copyInProgress.wrappedValue = false
+            // TODO: Robert: Swift6: why are we using assumm ISOlated here. isn't this risky?
+            MainActor.assumeIsolated {
+                self?.copyInProgress.wrappedValue = false
+            }
         }
     }
     

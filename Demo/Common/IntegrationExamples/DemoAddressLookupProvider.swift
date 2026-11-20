@@ -9,6 +9,7 @@ import AdyenUI
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
+@MainActor
 internal class DemoAddressLookupProvider {
 
     private struct AddressCompletionError: LocalizedError {

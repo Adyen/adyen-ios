@@ -8,21 +8,28 @@
 @testable import AdyenCard
 import Foundation
 
-final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
+@MainActor
+final class AnyThreeDS2ActionHandlerMock: @MainActor AnyThreeDS2ActionHandler {
     var actionPresentationDelegate: (any Adyen.ActionPresentationDelegate)?
     
     var threeDSRequestorAppURL: URL?
 
     var mockedFingerprintResult: Result<ThreeDSActionHandlerResult, Error>?
 
-    func handle(_ action: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(
+        _ action: ThreeDS2FingerprintAction,
+        completionHandler: @escaping @MainActor @Sendable (Result<ThreeDSActionHandlerResult, Error>) -> Void
+    ) {
         guard let result = mockedFingerprintResult else { assertionFailure(); return }
         completionHandler(result)
     }
 
     var mockedChallengeResult: Result<ThreeDSActionHandlerResult, Error>?
 
-    func handle(_ action: ThreeDS2ChallengeAction, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(
+        _ action: ThreeDS2ChallengeAction,
+        completionHandler: @escaping @MainActor @Sendable (Result<ThreeDSActionHandlerResult, Error>) -> Void
+    ) {
         guard let result = mockedChallengeResult else { assertionFailure(); return }
         completionHandler(result)
     }

@@ -17,7 +17,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// Whether the component shows the Apple Pay button.
     package var showsSubmitButton: Bool = true
 
-    package var theme: CheckoutTheme = .default
+    package var theme: CheckoutTheme
 
     package var localizationParameters: LocalizationParameters?
 
@@ -45,6 +45,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// - Throws: `ApplePayComponent.Error.emptySummaryItems` if the summaryItems array is empty.
     /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
+    @MainActor
     public init(
         paymentRequest: PKPaymentRequest
     ) throws {
@@ -61,6 +62,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         try Self.validate(summaryItems: paymentRequest.paymentSummaryItems)
 
         self.paymentRequest = paymentRequest
+        self.theme = .init()
     }
 
     internal static func validate(summaryItems: [PKPaymentSummaryItem]) throws {

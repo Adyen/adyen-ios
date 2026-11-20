@@ -47,7 +47,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     /// This informs the status of the payment after submitting the security code.
-    internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
+    internal var cardDetailsCompletionHandler: (@MainActor (Result<CardDetails, Error>) -> Void)?
 
     internal init(
         theme: CheckoutTheme,

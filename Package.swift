@@ -111,7 +111,7 @@ let package = Package(
             path: "AdyenEncryption",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -120,7 +120,7 @@ let package = Package(
             path: "AdyenSwiftUI",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -135,7 +135,7 @@ let package = Package(
                 "Info.plist"
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -161,7 +161,7 @@ let package = Package(
                 "Info.plist"
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -174,7 +174,7 @@ let package = Package(
             path: "AdyenComponents",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -186,7 +186,7 @@ let package = Package(
             path: "AdyenSession",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -201,7 +201,7 @@ let package = Package(
             path: "AdyenDropIn",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -212,7 +212,7 @@ let package = Package(
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent",
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -226,7 +226,7 @@ let package = Package(
             path: "AdyenCashAppPay",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -239,7 +239,7 @@ let package = Package(
             path: "AdyenTwint",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -280,7 +280,7 @@ let package = Package(
             path: "AdyenDelegatedAuthentication",
             exclude: ["Info.plist"],
             swiftSettings: [
-                .swiftLanguageMode(.v5)
+                .swiftLanguageMode(.v6)
             ]
         )
     ]

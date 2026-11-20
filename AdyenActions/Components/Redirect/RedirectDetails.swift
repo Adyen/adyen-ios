@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the redirect component.
-public struct RedirectDetails: AdditionalDetails, Decodable {
+public struct RedirectDetails: AdditionalDetails, Decodable, Sendable {
     
     public enum Error: LocalizedError {
         

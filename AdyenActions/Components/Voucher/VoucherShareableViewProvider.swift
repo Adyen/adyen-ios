@@ -10,6 +10,7 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol AnyVoucherShareableViewProvider: Localizable {
 
     var style: VoucherComponentStyle { get }
@@ -17,7 +18,9 @@ internal protocol AnyVoucherShareableViewProvider: Localizable {
     func provideView(with action: VoucherAction, logo: UIImage?) -> UIView
 }
 
-internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
+@MainActor
+internal final class VoucherShareableViewProvider: @MainActor AnyVoucherShareableViewProvider,
+    @MainActor Localizable {
 
     internal let style: VoucherComponentStyle
 
@@ -63,7 +66,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
     }
     
     private func createGenericView(
-        with action: GenericVoucherAction,
+        with action: AnyVoucherAction,
         fields: [ShareableVoucherView.VoucherField]
     ) -> ShareableVoucherView {
         ShareableVoucherView(

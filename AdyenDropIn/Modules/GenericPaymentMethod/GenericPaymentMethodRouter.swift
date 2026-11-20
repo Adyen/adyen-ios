@@ -22,7 +22,7 @@ internal protocol GenericPaymentMethodRouting: Router {
 }
 
 @MainActor
-internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
+internal class GenericPaymentMethodRouter: @MainActor GenericPaymentMethodRouting {
 
     // MARK: - Properties
 

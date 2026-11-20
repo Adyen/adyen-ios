@@ -40,7 +40,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PaymentComponent {
+    class MockComponent: @MainActor PaymentComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
@@ -85,7 +85,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         }
     }
     
-    struct MockFactory: PaymentComponentFactory {
+    struct MockFactory: @MainActor PaymentComponentFactory {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
@@ -116,7 +116,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let value: String
     }
 
-    struct MockCallbacksFactory: PaymentComponentFactory {
+    struct MockCallbacksFactory: @MainActor PaymentComponentFactory {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent

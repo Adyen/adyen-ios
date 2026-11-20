@@ -128,7 +128,7 @@ struct StoredCardInputViewModelTests {
         let sut = makeSUT(publicKey: Dummy.publicKey)
 
         let result: Result<CardDetails, Error> = try await withCheckedThrowingContinuation { continuation in
-            sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
+            sut.cardDetailsCompletionHandler = { @MainActor in continuation.resume(returning: $0) }
             Task {
                 // When
                 await sut.submitPayment(securityCode: "737")
@@ -146,7 +146,7 @@ struct StoredCardInputViewModelTests {
 
         // When
         let result: Result<CardDetails, Error> = await withCheckedContinuation { continuation in
-            sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
+            sut.cardDetailsCompletionHandler = { @MainActor in continuation.resume(returning: $0) }
             Task {
                 await sut.submitPayment(securityCode: "737")
             }

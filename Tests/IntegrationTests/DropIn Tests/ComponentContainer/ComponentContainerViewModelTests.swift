@@ -116,7 +116,8 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Mocks
 
-    private class ComponentContainerRoutingMock: ComponentContainerRouting {
+    @MainActor
+    private class ComponentContainerRoutingMock: @MainActor ComponentContainerRouting {
         var childRouter: Router?
         var rootViewController: UIViewController = .init()
 
@@ -129,9 +130,9 @@ struct ComponentContainerViewModelTests {
         }
 
         var dismissCompletionCallsCount = 0
-        var dismissCompletionReceivedCompletion: (() -> Void)?
+        var dismissCompletionReceivedCompletion: (@MainActor @Sendable () -> Void)?
 
-        func dismiss(completion: (() -> Void)?) {
+        func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
             dismissCompletionCallsCount += 1
             dismissCompletionReceivedCompletion = completion
             completion?()
@@ -140,6 +141,7 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Helpers
 
+    // swiftlint:disable:next large_tuple
     private func makeSUT() -> (
         sut: ComponentContainerViewModel,
         paymentMethodMock: CardPaymentMethodMock,

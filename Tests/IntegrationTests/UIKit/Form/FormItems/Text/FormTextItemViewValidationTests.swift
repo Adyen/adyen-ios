@@ -10,6 +10,7 @@ import XCTest
 
 /// Tests for form validation display behavior.
 /// See FORM_VALIDATION_SPECS.md for use case definitions (UC1-UC4, UC11-UC13).
+@MainActor
 class FormTextItemViewValidationTests: XCTestCase {
 
     var item: FormTextInputItem!

@@ -8,10 +8,15 @@ import Adyen3DS2
 @testable import AdyenActions
 import Foundation
 
-final class AnyADYServiceMock: AnyADYService {
-    var onService: ((ADYServiceParameters, ADYAppearanceConfiguration, (AnyADYService) -> Void) -> Void)?
+@MainActor
+final class AnyADYServiceMock: @MainActor AnyADYService {
+    var onService: ((ADYServiceParameters, ADYAppearanceConfiguration, @MainActor @Sendable (AnyADYService) -> Void) -> Void)?
 
-    func service(with parameters: ADYServiceParameters, appearanceConfiguration: ADYAppearanceConfiguration, completionHandler: @escaping (AnyADYService) -> Void) {
+    func service(
+        with parameters: ADYServiceParameters,
+        appearanceConfiguration: ADYAppearanceConfiguration,
+        completionHandler: @escaping @MainActor @Sendable (AnyADYService) -> Void
+    ) {
         if let onService {
             return onService(parameters, appearanceConfiguration, completionHandler)
         } else {
@@ -58,7 +63,8 @@ internal struct AnyChallengeResultMock: AnyChallengeResult {
     var transactionStatus: String
 }
 
-final class AnyADYTransactionMock: AnyADYTransaction {
+@MainActor
+final class AnyADYTransactionMock: @MainActor AnyADYTransaction {
 
     let authenticationParameters: AnyAuthenticationRequestParameters
 
@@ -66,9 +72,12 @@ final class AnyADYTransactionMock: AnyADYTransaction {
         self.authenticationParameters = parameters
     }
 
-    var onPerformChallenge: ((ADYChallengeParameters, (AnyChallengeResult?, Error?) -> Void) -> Void)?
+    var onPerformChallenge: ((ADYChallengeParameters, @MainActor @Sendable (AnyChallengeResult?, Error?) -> Void) -> Void)?
 
-    func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
+    func performChallenge(
+        with parameters: ADYChallengeParameters,
+        completionHandler: @escaping @MainActor @Sendable (AnyChallengeResult?, Error?) -> Void
+    ) {
         onPerformChallenge?(parameters, completionHandler)
     }
 

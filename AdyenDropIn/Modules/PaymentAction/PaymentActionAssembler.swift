@@ -17,12 +17,12 @@ internal protocol PaymentActionAssemblerProtocol {
     func resolvePaymentActionRouter(
         for actionViewController: UIViewController,
         listener: PaymentActionRouterListener,
-        onCancel: @escaping () -> Void
+        onCancel: @escaping @MainActor @Sendable () -> Void
     ) -> Router
 }
 
 @MainActor
-internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
+internal struct PaymentActionAssembler: @MainActor PaymentActionAssemblerProtocol {
 
     // MARK: - Properties
 
@@ -39,7 +39,7 @@ internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
     internal func resolvePaymentActionRouter(
         for actionViewController: UIViewController,
         listener: PaymentActionRouterListener,
-        onCancel: @escaping () -> Void
+        onCancel: @escaping @MainActor @Sendable () -> Void
     ) -> Router {
         let viewModel = PaymentActionViewModel(theme: theme, onCancel: onCancel)
         let router = PaymentActionRouter(

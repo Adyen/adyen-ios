@@ -10,6 +10,7 @@ import Adyen3DS2
 @testable import AdyenCard
 import XCTest
 
+@MainActor
 final class ThreeDS2ServiceLegacyTests: XCTestCase {
     func testServiceFingerprintingSuccessfully() {
         let serviceMock = AnyADYServiceMock()

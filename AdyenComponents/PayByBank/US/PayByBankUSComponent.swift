@@ -11,7 +11,11 @@ import UIKit
 
 /// A component that handles a Pay by Bank US payment.
 @MainActor
-package final class PayByBankUSComponent: PaymentComponent {
+package final class PayByBankUSComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -84,9 +88,9 @@ package final class PayByBankUSComponent: PaymentComponent {
     }
 }
 
-extension PayByBankUSComponent: TrackableComponent {}
+extension PayByBankUSComponent: @MainActor TrackableComponent {}
 
-extension PayByBankUSComponent: LoadingComponent {
+extension PayByBankUSComponent: @MainActor LoadingComponent {
     package func stopLoading() {
         confirmationViewController.submitButton.showsActivityIndicator = false
     }

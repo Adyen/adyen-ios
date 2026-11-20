@@ -73,6 +73,7 @@ class CardComponentUITests: XCTestCase {
 
 // MARK: - Convenience
 
+@MainActor
 private extension CardConfiguration {
     
     static var minimal: Self {

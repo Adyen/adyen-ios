@@ -13,7 +13,7 @@ public struct DropInConfiguration: CheckoutConfigurable {
     /// Skipping the payment method list for one regular payment method is the v6 default behavior.
     internal let allowsSkippingPaymentList = true
 
-    package var theme: CheckoutTheme = .default
+    package var theme: CheckoutTheme
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
     // TODO: Remove this legacy adapter when Drop-in consumers use CheckoutLocalizationProvider directly.
@@ -29,7 +29,10 @@ public struct DropInConfiguration: CheckoutConfigurable {
     package var startWithLastStoredPaymentMethod: Bool = true
 
     /// Creates a Drop-in configuration with default behavior.
-    public init() {}
+    @MainActor
+    public init() {
+        self.theme = .init()
+    }
 
     /// Sets whether stored payment methods are hidden from the payment method list.
     ///

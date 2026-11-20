@@ -211,7 +211,7 @@ private struct UnsupportedPaymentMethod: PaymentMethod {
 }
 
 @MainActor
-private final class AvailabilitySpyFactory: PaymentComponentFactory {
+private final class AvailabilitySpyFactory: @MainActor PaymentComponentFactory {
     typealias Configuration = BasicComponentConfiguration
     typealias Method = BLIKPaymentMethod
     typealias Component = BLIKComponent

@@ -22,9 +22,9 @@ internal class CashAppPayButtonItem: FormItem {
     @AdyenObservable(false) public var showsActivityIndicator: Bool
     
     /// A closure that will be invoked when a button is selected.
-    internal let selectionHandler: () -> Void
+    internal let selectionHandler: @MainActor () -> Void
     
-    internal init(selectionHandler: @escaping (() -> Void)) {
+    internal init(selectionHandler: @escaping @MainActor () -> Void) {
         self.selectionHandler = selectionHandler
     }
     

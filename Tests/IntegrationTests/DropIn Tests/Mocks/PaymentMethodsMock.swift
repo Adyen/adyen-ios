@@ -9,7 +9,7 @@ import Foundation
 
 enum PaymentMethodsMock {
 
-    static let paymentMethodsDictionary: [String: Any] =
+    static var paymentMethodsDictionary: [String: Any] {
         [
             "storedPaymentMethods": [
                 storedCreditCardDictionary,
@@ -80,5 +80,6 @@ enum PaymentMethodsMock {
                 payto
             ]
         ]
+    }
 
 }

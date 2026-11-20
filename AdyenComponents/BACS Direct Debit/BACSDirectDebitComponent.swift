@@ -10,7 +10,11 @@ import UIKit
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-package final class BACSDirectDebitComponent: PaymentComponent {
+package final class BACSDirectDebitComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware {
 
     // MARK: - PaymentComponent
 
@@ -77,7 +81,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
 // MARK: - LoadingComponent
 
 /// :nodoc:
-extension BACSDirectDebitComponent: LoadingComponent {
+extension BACSDirectDebitComponent: @MainActor LoadingComponent {
 
     /// Stops any processing animation that the component is running.
     package func stopLoading() {

@@ -8,11 +8,13 @@
 import AdyenNetworking
 import UIKit
 
-extension RedirectComponent: AnyRedirectComponent {}
+extension RedirectComponent: @MainActor AnyRedirectComponent {}
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
 @MainActor
-package final class RedirectComponent: ActionComponent {
+package final class RedirectComponent: @MainActor ActionComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware {
 
     /// Describes the types of errors that can be returned by the component.
     package enum Error: LocalizedError {
@@ -217,7 +219,7 @@ package final class RedirectComponent: ActionComponent {
     
 }
 
-extension RedirectComponent: BrowserComponentDelegate {
+extension RedirectComponent: @MainActor BrowserComponentDelegate {
 
     internal func didCancel() {
         if browserComponent != nil {
@@ -232,7 +234,7 @@ extension RedirectComponent: BrowserComponentDelegate {
     
 }
 
-extension RedirectComponent: ActionComponentDelegate {
+extension RedirectComponent: @MainActor ActionComponentDelegate {
     
     package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)

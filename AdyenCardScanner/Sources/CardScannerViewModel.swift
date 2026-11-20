@@ -8,6 +8,7 @@ import CoreImage
 import Foundation
 import QuartzCore
 
+@MainActor
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
     func requestCaptureAuthorization()
@@ -24,6 +25,7 @@ internal protocol CardScannerViewModelProtocol {
     var cameraAlertCancelButtonTitle: String { get }
 }
 
+@MainActor
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
@@ -33,7 +35,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     private var captureSessionManager: CaptureSessionManaging
     private let appOpener: AppOpener
     private let localizationBundle: Bundle
-    private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
+    private let completion: @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
     private var roiInPreviewFrame: CGRect = .zero
@@ -45,7 +47,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         captureSessionManager: CaptureSessionManaging,
         appOpener: AppOpener,
         localizationBundle: Bundle,
-        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
+        completion: @escaping @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
@@ -105,10 +107,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         captureSessionManager.configureSession()
     }
 
-    private func fetchCardData(
+    private nonisolated func fetchCardData(
         from image: CIImage,
         roiInPreviewFrame: CGRect,
-        previewFrame: CGRect
+        previewFrame: CGRect,
+        cardImageParser: CardImageParsing,
+        completion: @escaping @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         let croppedImage = cropRegionOfInterest(
             from: image,
@@ -116,16 +120,18 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
             previewFrame: previewFrame
         )
 
-        cardImageParser.parse(image: croppedImage) { [weak self] creditCard in
+        cardImageParser.parse(image: croppedImage) { creditCard in
             let cardDetails = (
                 number: creditCard.number,
                 expirationDate: creditCard.expirationDate
             )
-            self?.completion(.success(cardDetails))
+            Task { @MainActor in
+                completion(.success(cardDetails))
+            }
         }
     }
 
-    private func cropRegionOfInterest(
+    private nonisolated func cropRegionOfInterest(
         from image: CIImage,
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
@@ -174,16 +180,30 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
 extension CardScannerViewModel: CaptureSessionDelegate {
 
-    internal func didCapture(image: CIImage?) {
+    internal nonisolated func didCapture(image: CIImage?) {
         guard let image else { return }
 
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        // `didCapture` is delivered on the video output queue.
+        // Hop to the main actor to read the layout state, then keep the
+        // image processing on a background queue as before.
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            fetchCardData(
-                from: image,
-                roiInPreviewFrame: roiInPreviewFrame,
-                previewFrame: previewFrame
-            )
+
+            let previewFrame = self.previewFrame
+            let roiInPreviewFrame = self.roiInPreviewFrame
+            let cardImageParser = self.cardImageParser
+            let completion = self.completion
+
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self else { return }
+                fetchCardData(
+                    from: image,
+                    roiInPreviewFrame: roiInPreviewFrame,
+                    previewFrame: previewFrame,
+                    cardImageParser: cardImageParser,
+                    completion: completion
+                )
+            }
         }
     }
 }

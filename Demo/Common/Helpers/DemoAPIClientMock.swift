@@ -13,7 +13,7 @@ internal final class DemoAPIClientMock: APIClientProtocol {
 
     internal func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         let nextResult = mockedResults.removeFirst()
-        DispatchQueue.main.async {
+        let workItem = DispatchWorkItem(block: {
             switch nextResult {
             case let .success(response):
                 guard let response = response as? R.ResponseType else {
@@ -26,6 +26,7 @@ internal final class DemoAPIClientMock: APIClientProtocol {
             case let .failure(error):
                 completionHandler(.failure(error))
             }
-        }
+        })
+        DispatchQueue.main.async(execute: workItem)
     }
 }

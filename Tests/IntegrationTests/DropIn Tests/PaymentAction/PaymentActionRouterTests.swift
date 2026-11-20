@@ -56,11 +56,12 @@ struct PaymentActionRouterTests {
     // MARK: - Mocks
 
     /// The generated mock does not capture the completion, which is what the drop in dismissal relies on.
-    private final class PaymentActionRouterListenerSpy: PaymentActionRouterListener {
+    @MainActor
+    private final class PaymentActionRouterListenerSpy: @MainActor PaymentActionRouterListener {
         var didDismissPaymentActionCompletionCallsCount = 0
-        var didDismissPaymentActionCompletionReceivedCompletion: (() -> Void)?
+        var didDismissPaymentActionCompletionReceivedCompletion: (@MainActor @Sendable () -> Void)?
 
-        func didDismissPaymentAction(completion: (() -> Void)?) {
+        func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?) {
             didDismissPaymentActionCompletionCallsCount += 1
             didDismissPaymentActionCompletionReceivedCompletion = completion
         }

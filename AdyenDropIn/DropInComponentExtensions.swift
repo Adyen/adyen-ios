@@ -11,7 +11,7 @@ import AdyenComponents
 import AdyenNetworking
 import UIKit
 
-extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
+extension DropInComponent: @MainActor ReadyToSubmitPaymentComponentDelegate {
 
     package func showConfirmation(for component: PaymentComponent, with order: PartialPaymentOrder?) {
 //        let newRootViewController = resolvePreselectedPaymentMethodView(
@@ -27,7 +27,7 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     }
 }
 
-extension DropInComponent: TrackableComponent {
+extension DropInComponent: @MainActor TrackableComponent {
     package var analyticsFlavor: AnalyticsFlavor {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)

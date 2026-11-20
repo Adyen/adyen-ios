@@ -11,6 +11,7 @@ import PassKit
 import UIKit
 import XCTest
 
+@MainActor
 class VoucherViewTests: XCTestCase {
     
     let action: VoucherAction = .boletoBancairoSantander(

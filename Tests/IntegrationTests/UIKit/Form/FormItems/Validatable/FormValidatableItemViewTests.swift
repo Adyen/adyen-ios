@@ -17,6 +17,7 @@ private class FormValidatableValueItemMock: FormValidatableValueItem<String> {
 
 private class FormValidatableValueItemViewMock: FormValidatableValueItemView<String, FormValidatableValueItemMock> {}
 
+@MainActor
 class FormValidatableItemViewTests: XCTestCase {
     
     private let item = FormValidatableValueItemMock()

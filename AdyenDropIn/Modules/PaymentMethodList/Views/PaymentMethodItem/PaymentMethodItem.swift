@@ -22,7 +22,7 @@ internal struct PaymentMethodItem: Identifiable {
     private let logoURLProvider: LogoURLProvider
     internal let accessibilityLabel: String?
     internal let theme: CheckoutTheme
-    internal let selectionHandler: (() -> Void)?
+    internal let selectionHandler: (@MainActor () -> Void)?
 
     // MARK: - Initializers
 
@@ -35,7 +35,7 @@ internal struct PaymentMethodItem: Identifiable {
         logoURLProvider: LogoURLProvider,
         accessibilityLabel: String? = nil,
         theme: CheckoutTheme,
-        selectionHandler: (() -> Void)? = nil
+        selectionHandler: (@MainActor () -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle

@@ -8,6 +8,7 @@ import Adyen
 import AdyenUI
 import UIKit
 
+@MainActor
 internal protocol AnyActionNavigationBar: AnyObject {
     
     var onCancelHandler: (() -> Void)? { get set }
@@ -37,7 +38,7 @@ internal protocol AnyActionNavigationBarStyle {
     var backgroundColor: UIColor { get }
 }
 
-internal class ActionNavigationBar: UIView, AnyActionNavigationBar {
+internal class ActionNavigationBar: UIView, @MainActor AnyActionNavigationBar {
     
     internal let model: AnyActionNavigationBarModel
     

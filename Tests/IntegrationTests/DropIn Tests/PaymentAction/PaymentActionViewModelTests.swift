@@ -39,7 +39,7 @@ struct PaymentActionViewModelTests {
     // MARK: - Helpers
 
     private func makeSUT(
-        onCancel: @escaping () -> Void = {}
+        onCancel: @escaping @MainActor @Sendable () -> Void = {}
     ) -> (
         sut: PaymentActionViewModel,
         routerMock: PaymentActionRoutingMock

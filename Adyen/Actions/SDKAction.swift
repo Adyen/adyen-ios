@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to an SDK.
-public enum SDKAction: Decodable {
+public enum SDKAction: Decodable, Sendable {
     
     /// Indicates a WeChat Pay SDK action.
     case weChatPay(WeChatPaySDKAction)

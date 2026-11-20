@@ -10,7 +10,8 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
-final class PollingHandlerMock: AnyPollingHandler {
+@MainActor
+final class PollingHandlerMock: @MainActor AnyPollingHandler {
     
     var context: AdyenContext {
         Dummy.context
@@ -107,10 +108,12 @@ class AwaitComponentTests: XCTestCase {
         let waitExpectation = expectation(description: "Wait for the actionPresentationDelegate to be called.")
         actionPresentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? ActionViewController)
-            let viewController = viewController as! ActionViewController
+            guard let viewController = viewController as? ActionViewController,
+                  let view = viewController.view as? AwaitView else {
+                XCTFail("Expected an ActionViewController presenting an AwaitView")
+                return
+            }
             viewController.loadViewIfNeeded()
-
-            let view = viewController.view as! AwaitView
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
             XCTAssertEqual(view.messageLabel.textAlignment, .center)

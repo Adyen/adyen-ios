@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @MainActor
-internal class GenericPaymentMethodViewModel: ObservableObject {
+internal class GenericPaymentMethodViewModel: @MainActor ObservableObject {
 
     internal enum State {
         case idle
@@ -104,7 +104,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
 // MARK: - PaymentComponentDelegate
 
-extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
+extension GenericPaymentMethodViewModel: @MainActor PaymentComponentDelegate {
 
     internal func didSubmit(
         _ data: PaymentComponentData,

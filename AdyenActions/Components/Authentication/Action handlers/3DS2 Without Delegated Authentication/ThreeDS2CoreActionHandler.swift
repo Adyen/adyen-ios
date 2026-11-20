@@ -18,13 +18,13 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
     func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
         event: Analytics.Event,
-        completionHandler: @escaping (Result<String, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<String, Error>) -> Void
     )
     
     func handle(
         _ challengeAction: ThreeDS2ChallengeAction,
         event: Analytics.Event,
-        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSResult, Error>) -> Void
     )
 }
 
@@ -32,7 +32,9 @@ internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 @MainActor
-internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
+internal class ThreeDS2CoreActionHandler: @MainActor AnyThreeDS2CoreActionHandler,
+    @MainActor Component,
+    @MainActor AdyenContextAware {
     private enum Constants {
         static let transStatusWhenError = "U"
         static let fingerprintEvent = "threeDS2Fingerprint"
@@ -75,7 +77,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
         event: Analytics.Event,
-        completionHandler: @escaping (Result<String, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<String, Error>) -> Void
     ) {
         Analytics.sendEvent(event)
         sendLogEvent(.fingerprintSent, for: Constants.fingerprintEvent)
@@ -117,7 +119,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         
     private func didReceiveErrorOnFingerprint(
         error: ThreeDSServiceFingerprintError,
-        completionHandler: @escaping (Result<String, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<String, Error>) -> Void
     ) {
         let errorPayload: String = {
             switch error {
@@ -141,7 +143,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
     private func didFinishFingerprintSuccessfully(
         authenticationRequestParameters: AnyAuthenticationRequestParameters,
-        completionHandler: @escaping (Result<String, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<String, Error>) -> Void
     ) {
         do {
             let encodedFingerprint = try AdyenCoder.encodeBase64(AuthenticationComponent.Fingerprint(
@@ -166,7 +168,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal func handle(
         _ challengeAction: ThreeDS2ChallengeAction,
         event: Analytics.Event,
-        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSResult, Error>) -> Void
     ) {
         Analytics.sendEvent(event)
         
@@ -214,7 +216,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private func didReceiveErrorOnChallenge(
         error: ThreeDSServiceChallengeError,
         challengeAction: ThreeDS2ChallengeAction,
-        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSResult, Error>) -> Void
     ) {
         let opaqueRepresentationOfError: String
         switch error {
@@ -259,7 +261,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private func didFinishChallengeSuccessfully(
         with challengeResult: AnyChallengeResult,
         authorizationToken: String?,
-        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSResult, Error>) -> Void
     ) {
         do {
             let threeDSResult = try ThreeDSResult(
@@ -276,7 +278,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     private func didFail<R>(
         with error: Error,
-        completionHandler: @escaping (Result<R, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<R, Error>) -> Void
     ) {
         service.resetTransaction()
         completionHandler(.failure(error))
@@ -301,7 +303,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     }
 }
 
-extension ThreeDS2CoreActionHandler: ActionPresentationDelegate {
+extension ThreeDS2CoreActionHandler: @MainActor ActionPresentationDelegate {
     internal func present(actionViewController: UIViewController, actionData: ActionData) {
         AdyenAssertion.assert(message: "actionPresentationDelegate should not be nil", condition: actionPresentationDelegate == nil)
         actionPresentationDelegate?.present(actionViewController: actionViewController, actionData: actionData)

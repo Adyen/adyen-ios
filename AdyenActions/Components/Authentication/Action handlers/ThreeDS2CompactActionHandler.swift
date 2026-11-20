@@ -11,7 +11,10 @@ import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 @MainActor
-internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+internal final class ThreeDS2CompactActionHandler: @MainActor AnyThreeDS2ActionHandler,
+    @MainActor ComponentWrapper,
+    @MainActor Component,
+    @MainActor AdyenContextAware {
     
     // MARK: - Private
 
@@ -79,7 +82,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     internal func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     ) {
         let event = Analytics.Event(
             component: "\(threeDS2EventName).fingerprint",
@@ -108,7 +111,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     internal func handle(
         _ challengeAction: ThreeDS2ChallengeAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     ) {
         let event = Analytics.Event(
             component: "\(threeDS2EventName).challenge",

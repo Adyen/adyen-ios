@@ -9,10 +9,15 @@ import XCTest
 
 extension XCTestCase {
     /// invokes endEditing on the view and waits until none of the subviews is first responder anymore
+    @MainActor
     func endEditing(for view: UIView) {
         guard let responder = view.firstResponder else { return }
         responder.endEditing(true)
-        wait(until: view, at: \.firstResponder, is: nil)
+        let thresholdDate = Date().addingTimeInterval(60)
+        while thresholdDate.timeIntervalSinceNow > 0, view.firstResponder != nil {
+            wait(for: .milliseconds(100))
+        }
+        XCTAssertNil(view.firstResponder, "Expected no first responder after endEditing")
     }
 }
 

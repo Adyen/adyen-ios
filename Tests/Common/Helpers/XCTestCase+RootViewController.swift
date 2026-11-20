@@ -8,6 +8,7 @@
 import Foundation
 import XCTest
 
+@MainActor
 extension XCTestCase {
     
     /// Sets the rootViewController on the key window, waits a moment for it to appear and increases the animation speed for faster tests
@@ -64,6 +65,7 @@ extension DispatchTimeInterval {
     }
 }
 
+@MainActor
 extension XCTestCase {
 
     enum TestAnimationSpeed: Float {

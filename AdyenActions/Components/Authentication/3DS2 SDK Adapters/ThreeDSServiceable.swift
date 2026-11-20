@@ -13,11 +13,11 @@ import Foundation
 internal protocol ThreeDSServiceable {
     func performFingerprint(
         parameters: FingerprintServiceParameters,
-        completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
+        completionHandler: @escaping @MainActor (Result<AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
     )
     func performChallenge(
         with parameters: ChallengeParameters,
-        completionHandler: @escaping (Result<AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
+        completionHandler: @escaping @MainActor (Result<AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
     )
     func resetTransaction()
 }

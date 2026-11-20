@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
+@MainActor
 class LocalizationTests: XCTestCase {
 
     override func setUp() {
@@ -359,12 +360,12 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(provider.lastLocale?.identifier, "fr-FR")
     }
 
-    func test_localizedString_withProviderMissingUnsupportedLocaleAndKnownKey_shouldWarnAndFallback() {
+    func test_localizedString_withProviderMissingUnsupportedLocaleAndKnownKey_shouldWarnAndFallback() async {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
         let expected = localizedString(.cardNumberItemTitle, LocalizationParameters(enforcedLocale: "en-US"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), expected)
         }
 
@@ -374,12 +375,12 @@ class LocalizationTests: XCTestCase {
         )
     }
 
-    func test_localizedString_withProviderMissingUnsupportedLocaleAndUnknownKey_shouldWarnAndFallback() {
+    func test_localizedString_withProviderMissingUnsupportedLocaleAndUnknownKey_shouldWarnAndFallback() async {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
         let expected = localizedString(.cardStoredTitle, LocalizationParameters(enforcedLocale: "en-US"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.cardStoredTitle, parameters), expected)
         }
 
@@ -389,23 +390,23 @@ class LocalizationTests: XCTestCase {
         )
     }
 
-    func test_localizedString_withProviderMissingSupportedLocale_shouldFallbackWithoutWarning() {
+    func test_localizedString_withProviderMissingSupportedLocale_shouldFallbackWithoutWarning() async {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "it-IT").withProvider(provider)
         let expected = localizedString(.cardNumberItemTitle, LocalizationParameters(enforcedLocale: "it-IT"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), expected)
         }
 
         XCTAssertTrue(warnings.isEmpty)
     }
 
-    func test_localizedString_withRepeatedProviderMiss_shouldWarnOnlyOnce() {
+    func test_localizedString_withRepeatedProviderMiss_shouldWarnOnlyOnce() async {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             _ = localizedString(.cardNumberItemTitle, parameters)
             _ = localizedString(.cardNumberItemTitle, parameters)
         }
@@ -416,11 +417,11 @@ class LocalizationTests: XCTestCase {
         )
     }
 
-    func test_localizedString_withUnsupportedLocaleAndPartialMerchantBundleCoverage_shouldWarnAndFallback() {
+    func test_localizedString_withUnsupportedLocaleAndPartialMerchantBundleCoverage_shouldWarnAndFallback() async {
         let parameters = LocalizationParameters(enforcedLocale: "hi", bundle: Bundle(for: LocalizationTests.self))
         let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "en-US"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.submitButton, parameters), expected)
         }
 
@@ -430,22 +431,22 @@ class LocalizationTests: XCTestCase {
         )
     }
 
-    func test_localizedString_withSupportedLocaleAndPartialMerchantBundleCoverage_shouldFallbackWithoutWarning() {
+    func test_localizedString_withSupportedLocaleAndPartialMerchantBundleCoverage_shouldFallbackWithoutWarning() async {
         let parameters = LocalizationParameters(enforcedLocale: "is-IS", bundle: Bundle(for: LocalizationTests.self))
         let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "is-IS"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.submitButton, parameters), expected)
         }
 
         XCTAssertTrue(warnings.isEmpty)
     }
 
-    func test_localizedString_withUnsupportedLocaleAndNoMerchantBundleIntent_shouldFallbackWithoutWarning() {
+    func test_localizedString_withUnsupportedLocaleAndNoMerchantBundleIntent_shouldFallbackWithoutWarning() async {
         let parameters = LocalizationParameters(enforcedLocale: "zu")
         let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "en-US"))
 
-        let warnings = recordWarnings {
+        let warnings = await recordWarnings {
             XCTAssertEqual(localizedString(.submitButton, parameters), expected)
         }
 
@@ -456,10 +457,16 @@ class LocalizationTests: XCTestCase {
 
 // MARK: - Test helpers
 
-private func recordWarnings(_ perform: () -> Void) -> [LocalizationWarning] {
-    var warnings = [LocalizationWarning]()
-    LocalizationWarningLog.onEmit = { warnings.append($0) }
+@MainActor
+private func recordWarnings(_ perform: () -> Void) async -> [LocalizationWarning] {
+    let (stream, continuation) = AsyncStream<LocalizationWarning>.makeStream()
+    LocalizationWarningLog.onEmit = { continuation.yield($0) }
     perform()
+    continuation.finish()
+    var warnings = [LocalizationWarning]()
+    for await warning in stream {
+        warnings.append(warning)
+    }
     return warnings
 }
 

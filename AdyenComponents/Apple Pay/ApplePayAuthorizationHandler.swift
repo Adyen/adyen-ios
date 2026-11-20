@@ -17,7 +17,7 @@ internal protocol ApplePayAuthorizationControlling: AnyObject {
     func dismiss() async
 }
 
-extension PKPaymentAuthorizationController: ApplePayAuthorizationControlling {}
+extension PKPaymentAuthorizationController: @MainActor ApplePayAuthorizationControlling {}
 
 /// Handles one Apple Pay sheet, from presenting it until it's dismissed. A new handler is created for every sheet.
 @MainActor
@@ -120,7 +120,7 @@ internal final class ApplePayAuthorizationHandler: NSObject {
 
 // MARK: - PKPaymentAuthorizationControllerDelegate
 
-extension ApplePayAuthorizationHandler: PKPaymentAuthorizationControllerDelegate {
+extension ApplePayAuthorizationHandler: @MainActor PKPaymentAuthorizationControllerDelegate {
 
     internal func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
         finish()

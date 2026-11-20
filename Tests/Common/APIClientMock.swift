@@ -19,8 +19,8 @@ internal final class APIClientMock: APIClientProtocol, AsyncAPIClientProtocol {
     internal func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         counter += 1
         let nextResult = self.mockedResults.removeFirst()
+        onExecute?(request)
         DispatchQueue.main.async {
-            self.onExecute?(request)
             switch nextResult {
             case let .success(response):
                 guard let response = response as? R.ResponseType else {

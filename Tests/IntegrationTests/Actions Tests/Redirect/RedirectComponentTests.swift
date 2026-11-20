@@ -14,15 +14,13 @@ import XCTest
 class RedirectComponentTests: XCTestCase {
     
     override func setUp(completion: @escaping (Error?) -> Void) {
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false) {
-            super.setUp(completion: completion)
-        }
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
+        super.setUp(completion: completion)
     }
     
     override func tearDown(completion: @escaping (Error?) -> Void) {
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false) {
-            super.tearDown(completion: completion)
-        }
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
+        super.tearDown(completion: completion)
     }
 
     func testUIConfiguration() throws {

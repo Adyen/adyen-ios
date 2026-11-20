@@ -11,6 +11,7 @@ import Testing
 import UIKit
 
 /// Tests for `BillingAddressMode` configuration options.
+// swiftlint:disable type_body_length
 @MainActor
 struct CardComponentBillingAddressModeTests {
 
@@ -612,13 +613,18 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_withoutAddressCallbacks_keepsManualEntryAvailable() async throws {
         let previousListener = AdyenAssertion.listener
-        var assertions: [String] = []
-        AdyenAssertion.listener = { assertions.append($0) }
+        let (assertionStream, assertionContinuation) = AsyncStream<String>.makeStream()
+        AdyenAssertion.listener = { assertionContinuation.yield($0) }
         defer { AdyenAssertion.listener = previousListener }
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
         let proxy = makeSUT(billingAddressMode: .lookup())
         proxy.component.cardViewController.loadViewIfNeeded()
         AdyenAssertion.listener = previousListener
+        assertionContinuation.finish()
+        var assertions: [String] = []
+        for await assertion in assertionStream {
+            assertions.append(assertion)
+        }
         #expect(assertions.count == 1)
         #expect(assertions.first?.contains("AddressCallbacks") == true)
 
@@ -715,6 +721,7 @@ private enum ViewIdentifier {
     static let payButton = "AdyenCard.CardComponent.payButtonItem.button"
 }
 
+// swiftlint:enable type_body_length
 // MARK: - CardComponentProxy
 
 @MainActor
@@ -962,14 +969,16 @@ private struct CardComponentProxy {
         delegate.onDidFail = { _, _ in Issue.record("Should not fail") }
 
         let component = self.component
-        return try await withCheckedThrowingContinuation { continuation in
+        var submittedData: PaymentComponentData?
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             var didResume = false
 
             delegate.onDidSubmit = { data, _ in
                 guard !didResume else { return }
                 didResume = true
                 component.stopLoading()
-                continuation.resume(returning: data)
+                submittedData = data
+                continuation.resume()
             }
 
             tapSubmitButton()
@@ -980,6 +989,8 @@ private struct CardComponentProxy {
                 continuation.resume(throwing: TestError(message: "Submit timed out"))
             }
         }
+        guard let submittedData else { throw TestError(message: "Submit produced no data") }
+        return submittedData
     }
 
     // MARK: - Waiting

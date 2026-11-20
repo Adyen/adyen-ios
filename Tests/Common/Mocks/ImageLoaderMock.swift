@@ -7,7 +7,8 @@
 @testable import Adyen
 import UIKit
 
-class ImageLoaderMock: ImageLoading {
+@MainActor
+final class ImageLoaderMock: ImageLoading {
 
     var imageProvider: (URL) -> UIImage? = { url in
         url.absoluteString.generateImage()
@@ -24,8 +25,8 @@ class ImageLoaderMock: ImageLoading {
     func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> any AdyenCancellable {
         loadCallsCount += 1
         completions.append(completion)
-        // Tests call the loader on the main thread; keeps the mock's completion synchronous.
-        MainActor.assumeIsolated { completion(self.imageProvider(url)) }
+        // The mock itself is @MainActor so the completion can be delivered synchronously.
+        completion(imageProvider(url))
         return cancellable
     }
 }

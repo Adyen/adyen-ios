@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents payment result codes from Adyen's servers.
-public enum CheckoutResultCode: RawRepresentable, Decodable, Equatable {
+public enum CheckoutResultCode: RawRepresentable, Decodable, Equatable, Sendable {
     case authenticationFinished
     case authenticationNotRequired
     case authorised

@@ -13,7 +13,7 @@ import UIKit
 // sourcery:AutoMockable
 @MainActor
 internal protocol DropInDismissing: AnyObject {
-    func dismissDropIn(completion: (() -> Void)?)
+    func dismissDropIn(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 /// The root router of the drop in, on which the flow manager presents actions and which it dismisses.
@@ -38,7 +38,7 @@ internal protocol DropInFlowManaging: AnyObject {
 }
 
 @MainActor
-internal class DropInFlowManager: DropInFlowManaging {
+internal class DropInFlowManager: @MainActor DropInFlowManaging {
 
     // MARK: - Properties
 
@@ -158,7 +158,7 @@ internal class DropInFlowManager: DropInFlowManaging {
 
 // MARK: - ActionComponentDelegate
 
-extension DropInFlowManager: ActionComponentDelegate {
+extension DropInFlowManager: @MainActor ActionComponentDelegate {
 
     internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
@@ -200,7 +200,7 @@ extension DropInFlowManager: ActionComponentDelegate {
 
 // MARK: - ActionPresentationDelegate
 
-extension DropInFlowManager: ActionPresentationDelegate {
+extension DropInFlowManager: @MainActor ActionPresentationDelegate {
 
     internal func present(actionViewController: UIViewController, actionData: ActionData) {
         guard let dropInFlowRouter else { return }

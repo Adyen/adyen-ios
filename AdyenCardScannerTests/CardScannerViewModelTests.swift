@@ -8,6 +8,7 @@
 import AVFoundation
 import XCTest
 
+@MainActor
 final class CardScannerViewModelTests: XCTestCase {
 
     enum Constants {

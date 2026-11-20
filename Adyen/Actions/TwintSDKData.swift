@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes the data required by the Twint SDK to complete the payment.
-public struct TwintSDKData: Decodable {
+public struct TwintSDKData: Decodable, Sendable {
 
     /// SDK token.
     public let token: String

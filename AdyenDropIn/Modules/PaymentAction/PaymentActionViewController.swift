@@ -112,7 +112,7 @@ internal class PaymentActionViewController: UIViewController {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-extension PaymentActionViewController: UIAdaptivePresentationControllerDelegate {
+extension PaymentActionViewController: @MainActor UIAdaptivePresentationControllerDelegate {
 
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         viewModel.cancel()

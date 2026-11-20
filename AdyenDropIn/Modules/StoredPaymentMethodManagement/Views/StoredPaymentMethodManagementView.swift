@@ -131,8 +131,8 @@ private extension StoredPaymentMethodManagementView {
         fileprivate let removalActionTitle: String
         fileprivate let cancelTitle: String
         fileprivate let theme: CheckoutTheme
-        fileprivate let onRemove: () -> Void
-        fileprivate let onCancel: () -> Void
+        fileprivate let onRemove: @MainActor () -> Void
+        fileprivate let onCancel: @MainActor () -> Void
 
         var body: some View {
             VStack(spacing: Constants.buttonSpacing) {

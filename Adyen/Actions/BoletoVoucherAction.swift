@@ -14,7 +14,7 @@ package protocol Downloadable {
 }
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
+public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable, Sendable {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod

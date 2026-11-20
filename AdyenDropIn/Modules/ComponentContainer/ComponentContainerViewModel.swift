@@ -23,7 +23,7 @@ internal protocol ComponentContainerViewModelProtocol {
 }
 
 @MainActor
-internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol {
+internal class ComponentContainerViewModel: @MainActor ComponentContainerViewModelProtocol {
 
     // MARK: - Properties
 
@@ -91,7 +91,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
 // MARK: - PaymentComponentDelegate
 
-extension ComponentContainerViewModel: PaymentComponentDelegate {
+extension ComponentContainerViewModel: @MainActor PaymentComponentDelegate {
 
     internal func didSubmit(
         _ data: PaymentComponentData,
@@ -114,7 +114,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
 
 // MARK: - ReadyToSubmitPaymentComponentDelegate
 
-extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
+extension ComponentContainerViewModel: @MainActor ReadyToSubmitPaymentComponentDelegate {
 
     internal func showConfirmation(
         for component: PaymentComponent,

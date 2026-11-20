@@ -34,9 +34,28 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Actions
+
+- The voucher action classes are now `final` and no longer inherit from `GenericVoucherAction`; each of
+  `DokuVoucherAction`, `MultibancoVoucherAction`, `OXXOVoucherAction`, `EContextStoresVoucherAction` and
+  `EContextATMVoucherAction` declares its members directly, and `GenericVoucherAction` itself is also `final`. Code that
+  casts a voucher action to `GenericVoucherAction` (`is`/`as?`) or subclasses any of these types no longer compiles — use
+  the `AnyVoucherAction` protocol members instead.
+
 ### Concurrency
 
+- `PaymentMethod` now refines `Sendable`. If your integration declares a custom `PaymentMethod` conformance, it must now
+  satisfy `Sendable` — this is automatic for value types whose members are all `Sendable`; other conformers may need an
+  explicit `Sendable` conformance or `Sendable` members.
+- `Action`, `VoucherAction`, `SDKAction` and all action payload types conform to `Sendable`, as do `PaymentMethods`,
+  `CheckoutResultCode`, `PartialPaymentOrder`, `Issuer`, `PhoneExtension`, `CardFundingSource`, `ShopperInteraction`,
+  `InstallmentOptions` and `InstallmentConfiguration`. These are additive conformances; you only benefit from them when
+  passing these values across actors with strict concurrency checking enabled.
 - `CardBrand` conforms to `Sendable`, so you can pass card brands across actors and concurrent tasks with strict concurrency checking enabled.
+- `CardScanner.createCardScanner(...)` and `CardScanner.isAvailable` are now `@MainActor`. Call them on the main actor;
+  calling them from a nonisolated context requires `await` or a main-actor hop. The `completion` closure of
+  `createCardScanner(...)` is `@MainActor @Sendable` and runs on the main actor. `CardScannerError` and
+  `CardScannerError.Kind` conform to `Sendable`.
 
 ## 6.0.0-alpha.1
 
@@ -74,6 +93,9 @@ Drop-in now always skips the payment method list when exactly one presentable re
 
 `CheckoutConfiguration.showsSubmitButton(_:)` applies only to components created with `createPaymentComponent`. Drop-in
 ignores it and always shows the submit buttons of the components it presents.
+
+`DropInConfiguration()` is now `@MainActor`. Call it on the main actor; building it from a nonisolated context requires
+`await` or a main-actor hop.
 
 ### Drop-in creation
 
@@ -263,6 +285,13 @@ Both `CheckoutCallbacks` and `ActionOnlyCheckoutCallbacks` expose the optional `
 
 Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
 
+#### Action configurations
+
+- `AuthenticationConfiguration(theme:)` is now `@MainActor`. Call it on the main actor; building it from a nonisolated
+  context requires `await` or a main-actor hop.
+- `TwintActionConfiguration(callbackAppScheme:)` is now `@MainActor`. Call it on the main actor; building it from a
+  nonisolated context requires `await` or a main-actor hop.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
@@ -446,6 +475,8 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
   invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
   `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
+- `ApplePayConfiguration(paymentRequest:)` is now `@MainActor`. Call it on the main actor; building it from a nonisolated
+  context requires `await` or a main-actor hop.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 

@@ -9,6 +9,7 @@ import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormTextItemViewTests: XCTestCase {
     
     var item: FormTextInputItem!

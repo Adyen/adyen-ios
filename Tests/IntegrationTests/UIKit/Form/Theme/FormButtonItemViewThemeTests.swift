@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 internal final class FormButtonItemViewThemeTests: XCTestCase {
 
     internal func test_formButtonItemView_withCustomTheme_shouldApplyThemeColors() throws {

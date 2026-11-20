@@ -169,7 +169,7 @@ internal final class DAApprovalViewController: UIViewController {
     }
 }
 
-extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
+extension DAApprovalViewController: @MainActor DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         useBiometricsHandler()
     }

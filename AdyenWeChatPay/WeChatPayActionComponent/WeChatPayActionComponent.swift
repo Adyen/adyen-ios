@@ -14,7 +14,13 @@ import Foundation
 
     /// Action component to handle WeChat Pay SDK action.
     @MainActor
-    package final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+    package final class WeChatPaySDKActionComponent: NSObject,
+        @MainActor AnyWeChatPaySDKActionComponent,
+        @MainActor ActionComponent,
+        @MainActor Component,
+        @MainActor AdyenContextAware,
+        @MainActor DeviceDependent,
+        @MainActor APIContextInitializable {
 
         private static let universalLink = "https://www.adyen.com/"
 
@@ -75,7 +81,7 @@ import Foundation
 
     }
 
-    extension WeChatPaySDKActionComponent: WXApiDelegate {
+    extension WeChatPaySDKActionComponent: @MainActor WXApiDelegate {
 
         package func onResp(_ resp: BaseResp) {
             guard let currentlyHandledAction else {
@@ -107,7 +113,13 @@ import Foundation
 
     /// Action component to handle WeChat Pay SDK action.
     @MainActor
-    package final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+    package final class WeChatPaySDKActionComponent: NSObject,
+        @MainActor AnyWeChatPaySDKActionComponent,
+        @MainActor ActionComponent,
+        @MainActor Component,
+        @MainActor AdyenContextAware,
+        @MainActor DeviceDependent,
+        @MainActor APIContextInitializable {
 
         package let context: AdyenContext
 

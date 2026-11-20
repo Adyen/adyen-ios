@@ -8,6 +8,7 @@ import AVFoundation
 import Combine
 import UIKit
 
+@MainActor
 internal protocol CardScannerPresenting: AnyObject {
     func dismiss()
     func presentCameraAccessDeniedAlert()

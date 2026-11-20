@@ -13,7 +13,7 @@ import UIKit
 // sourcery:AutoMockable
 @MainActor
 internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
-    func didDismissPreselectedPaymentMethod(completion: (() -> Void)?)
+    func didDismissPreselectedPaymentMethod(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 // sourcery:AutoMockable
@@ -21,11 +21,11 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 internal protocol PreselectedPaymentMethodRouting: Router {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
-    func dismiss(completion: (() -> Void)?)
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 @MainActor
-internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
+internal class PreselectedPaymentMethodRouter: @MainActor PreselectedPaymentMethodRouting {
     private enum Constants {
         static let chevronBackwardImage = "chevron.backward"
     }
@@ -83,7 +83,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
         }
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
+    internal func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         rootViewController.dismiss(animated: true) { [weak self] in
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
@@ -155,11 +155,11 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
 
 // MARK: - PaymentMethodListRouterListener
 
-extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
+extension PreselectedPaymentMethodRouter: @MainActor PaymentMethodListRouterListener {
     
     /// Closing the payment method list closes the drop in it was opened from,
     /// as the shopper asked to leave the flow rather than to go back.
-    internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
+    internal func didDismissPaymentMethodList(completion: (@MainActor @Sendable () -> Void)?) {
         rootViewController.presentingViewController?.dismiss(animated: true) { [weak self] in
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
@@ -169,15 +169,15 @@ extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
 
 // MARK: - ComponentContainerRouterListener
 
-extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
+extension PreselectedPaymentMethodRouter: @MainActor ComponentContainerRouterListener {
     
-    internal func didDismissComponentContainer(completion: (() -> Void)?) {
+    internal func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
         completion?()
     }
 }
 
-extension PreselectedPaymentMethodRouter: StoredPaymentMethodContentRouterListener {
+extension PreselectedPaymentMethodRouter: @MainActor StoredPaymentMethodContentRouterListener {
 
     internal func dismissStoredPaymentMethodContent() {
         rootViewController.dismiss(animated: true)

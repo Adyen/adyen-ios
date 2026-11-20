@@ -22,7 +22,7 @@ internal protocol StoredPaymentMethodManagementRouting: AnyObject {
 }
 
 @MainActor
-internal final class StoredPaymentMethodManagementRouter: Router, StoredPaymentMethodManagementRouting {
+internal final class StoredPaymentMethodManagementRouter: @MainActor Router, @MainActor StoredPaymentMethodManagementRouting {
 
     // MARK: - Properties
 

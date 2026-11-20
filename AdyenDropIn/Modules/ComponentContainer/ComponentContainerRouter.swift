@@ -12,18 +12,18 @@ import UIKit
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerRouterListener: AnyObject {
-    func didDismissComponentContainer(completion: (() -> Void)?)
+    func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerRouting: Router {
     func present(paymentComponent: PaymentComponent)
-    func dismiss(completion: (() -> Void)?)
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 @MainActor
-internal class ComponentContainerRouter: ComponentContainerRouting {
+internal class ComponentContainerRouter: @MainActor ComponentContainerRouting {
 
     // MARK: - Properties
 
@@ -54,7 +54,7 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
+    internal func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         rootViewController.dismiss(animated: true) { [weak self] in
             self?.listener?.didDismissComponentContainer(completion: completion)
         }

@@ -9,6 +9,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class DropInConfigurationTests: XCTestCase {
 
     func test_init_shouldUseDefaultValues() {

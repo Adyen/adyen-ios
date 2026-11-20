@@ -10,7 +10,12 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-package final class TwintComponent: PaymentComponent, LoadingComponent {
+package final class TwintComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
 
     package lazy var viewController: UIViewController = paymentButtonViewController
 
@@ -89,4 +94,4 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
 
 }
 
-extension TwintComponent: TrackableComponent {}
+extension TwintComponent: @MainActor TrackableComponent {}

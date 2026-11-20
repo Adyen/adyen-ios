@@ -13,6 +13,7 @@ internal protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
 
+@MainActor
 internal protocol AnyPollingHandlerProvider {
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
@@ -21,7 +22,7 @@ internal protocol AnyPollingHandlerProvider {
 }
 
 @MainActor
-internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
+internal struct PollingHandlerProvider: @MainActor AnyPollingHandlerProvider {
 
     private let context: AdyenContext
 

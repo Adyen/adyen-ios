@@ -13,8 +13,12 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 @MainActor
-package final class BoletoComponent: PaymentComponent,
-    LoadingComponent,
+package final class BoletoComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent,
     AdyenObserver {
 
     /// The context object for this component.
@@ -180,16 +184,16 @@ package final class BoletoComponent: PaymentComponent,
 }
 
 @_spi(AdyenInternal)
-extension BoletoComponent: TrackableComponent {}
+extension BoletoComponent: @MainActor TrackableComponent {}
 
-extension BoletoComponent: ViewControllerDelegate {
+extension BoletoComponent: @MainActor ViewControllerDelegate {
     
     package func viewWillAppear(viewController: UIViewController) {
         prefillFields(for: formComponent)
     }
 }
 
-extension BoletoComponent: PaymentComponentDelegate {
+extension BoletoComponent: @MainActor PaymentComponentDelegate {
     
     package func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         submit(data: data, component: self)

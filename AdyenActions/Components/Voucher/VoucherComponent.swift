@@ -17,7 +17,12 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 
 /// A component that handles voucher action.
 @MainActor
-package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
+package final class VoucherComponent: @MainActor AnyVoucherActionHandler,
+    @MainActor ShareableComponent,
+    @MainActor ActionComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware,
+    @MainActor Cancellable {
 
     /// The context object for this component.
     package let context: AdyenContext

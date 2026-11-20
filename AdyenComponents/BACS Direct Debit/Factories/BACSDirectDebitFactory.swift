@@ -11,7 +11,7 @@ import UIKit
 /// Assembly layer responsible for creating `BACSDirectDebitComponent` instances,
 /// wiring up the view model and view controller dependencies.
 @MainActor
-package struct BACSDirectDebitFactory: PaymentComponentFactory {
+package struct BACSDirectDebitFactory: @MainActor PaymentComponentFactory {
     package typealias Configuration = BasicComponentConfiguration
     package typealias Method = BACSDirectDebitPaymentMethod
     package typealias Component = BACSDirectDebitComponent

@@ -13,7 +13,12 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 @MainActor
-package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent {
+package final class SEPADirectDebitComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -147,6 +152,6 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
 
 }
 
-extension SEPADirectDebitComponent: TrackableComponent {}
+extension SEPADirectDebitComponent: @MainActor TrackableComponent {}
 
-extension SEPADirectDebitComponent: ViewControllerDelegate {}
+extension SEPADirectDebitComponent: @MainActor ViewControllerDelegate {}

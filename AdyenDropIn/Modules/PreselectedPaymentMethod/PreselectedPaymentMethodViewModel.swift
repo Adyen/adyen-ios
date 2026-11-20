@@ -10,7 +10,7 @@ import AdyenUI
 import Foundation
 
 @MainActor
-internal final class PreselectedPaymentMethodViewModel: ObservableObject {
+internal final class PreselectedPaymentMethodViewModel: @MainActor ObservableObject {
 
     // MARK: - Properties
 
@@ -23,9 +23,8 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
     internal weak var router: PreselectedPaymentMethodRouting?
 
-    // TODO: Robert: DropInComponent needs to send an event on the component being loaded.
     /// Callback for when the component is loaded on display.
-    internal var onDidLoad: (() -> Void)?
+    internal var onDidLoad: (@MainActor () -> Void)?
 
     @Published internal private(set) var isLoading = false
 
@@ -126,7 +125,7 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
 
 // MARK: - PaymentComponentDelegate
 
-extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
+extension PreselectedPaymentMethodViewModel: @MainActor PaymentComponentDelegate {
     
     internal func didSubmit(
         _ data: PaymentComponentData,

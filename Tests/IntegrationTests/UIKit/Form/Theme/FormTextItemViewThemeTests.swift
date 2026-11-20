@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextItemView_withDefaultTheme_shouldUseDefaultColors() {

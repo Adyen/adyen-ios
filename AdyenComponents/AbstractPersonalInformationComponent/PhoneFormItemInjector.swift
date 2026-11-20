@@ -10,7 +10,7 @@ import AdyenUI
 import Foundation
 
 @MainActor
-internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
+internal final class PhoneFormItemInjector: @MainActor FormItemInjector, @MainActor Localizable {
 
     internal var localizationParameters: LocalizationParameters?
 

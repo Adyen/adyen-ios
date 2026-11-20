@@ -13,7 +13,9 @@ internal protocol AnyRedirectComponent: ActionComponent {
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 @MainActor
-package final class AuthenticationComponent: ActionComponent {
+package final class AuthenticationComponent: @MainActor ActionComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -149,7 +151,7 @@ package final class AuthenticationComponent: ActionComponent {
 }
 
 /// This is for the RedirectComponent inside the AuthenticationComponent
-extension AuthenticationComponent: ActionComponentDelegate {
+extension AuthenticationComponent: @MainActor ActionComponentDelegate {
 
     package func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)

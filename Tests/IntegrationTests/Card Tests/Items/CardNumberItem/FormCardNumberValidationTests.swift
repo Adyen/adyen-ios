@@ -11,6 +11,7 @@ import XCTest
 
 /// Tests for card number validation display behavior.
 /// See FORM_VALIDATION_SPECS.md for use case definitions (UC5-UC9, UC13).
+@MainActor
 class FormCardNumberValidationTests: XCTestCase {
 
     static let testURL = URL(string: "https://example.com")!

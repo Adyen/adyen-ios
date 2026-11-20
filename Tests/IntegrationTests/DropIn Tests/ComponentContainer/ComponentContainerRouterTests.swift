@@ -72,11 +72,12 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Mocks
 
-    private class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
+    @MainActor
+    private class ComponentContainerRouterListenerMock: @MainActor ComponentContainerRouterListener {
         var didDismissComponentContainerCompletionCallsCount = 0
-        var didDismissComponentContainerCompletionReceivedCompletion: (() -> Void)?
+        var didDismissComponentContainerCompletionReceivedCompletion: (@MainActor @Sendable () -> Void)?
 
-        func didDismissComponentContainer(completion: (() -> Void)?) {
+        func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
             didDismissComponentContainerCompletionCallsCount += 1
             didDismissComponentContainerCompletionReceivedCompletion = completion
             completion?()

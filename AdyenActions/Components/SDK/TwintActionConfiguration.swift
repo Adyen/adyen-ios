@@ -15,7 +15,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool = false
     
-    package var theme: CheckoutTheme = .default
+    package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
 
@@ -30,7 +30,9 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     /// - Parameters:
     ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment.
     ///     Only provide the scheme, without a host/path/... (e.g. "my-app", not a full URL like "my-app://...").
+    @MainActor
     public init(callbackAppScheme: String) {
+        self.theme = .init()
         if !Self.isCallbackSchemeValid(callbackAppScheme) {
             AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
         }

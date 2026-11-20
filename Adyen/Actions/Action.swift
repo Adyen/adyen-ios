@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes a follow-up action that should be taken to complete a payment.
-public enum Action: Decodable {
+public enum Action: Decodable, Sendable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)

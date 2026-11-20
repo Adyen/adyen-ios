@@ -7,9 +7,10 @@
 import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
-package typealias URLHandler = (URL) throws -> Void
+package typealias URLHandler = @MainActor (URL) throws -> Void
 
 /// Listens for the return of the shopper after a redirect.
+@MainActor
 package enum RedirectListener {
 
     // MARK: - Registering for URLs

@@ -15,19 +15,17 @@ class OnlineBankingComponentUITests: XCTestCase {
 
     private var paymentMethod: OnlineBankingPaymentMethod!
     private var context: AdyenContext!
-    private var style: FormComponentStyle!
+    private var style = FormComponentStyle()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = try! AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
+        paymentMethod = try AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
         context = AdyenContext(apiContext: Dummy.apiContext, amount: Dummy.amount, publicKey: Dummy.publicKey, browserInfo: nil, analyticsProvider: AnalyticsProviderMock())
-        style = FormComponentStyle()
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
         context = nil
-        style = nil
         try super.tearDownWithError()
     }
 

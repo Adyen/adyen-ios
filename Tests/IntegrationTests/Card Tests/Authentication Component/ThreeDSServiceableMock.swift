@@ -7,7 +7,8 @@
 @testable import AdyenActions
 import Foundation
 
-final class ThreeDSServiceableMock: ThreeDSService {
+@MainActor
+final class ThreeDSServiceableMock: @MainActor ThreeDSConfigurable, @MainActor ThreeDSServiceable {
     var configuration: ThreeDSFeatureChecker?
     
     var onResetTransaction: (() -> Void)?
@@ -19,11 +20,11 @@ final class ThreeDSServiceableMock: ThreeDSService {
     }
     
     typealias FingerprintResult = Result<any AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>
-    var onPerformFingerprint: ((FingerprintServiceParameters, (FingerprintResult) -> Void) -> Void)?
+    var onPerformFingerprint: ((FingerprintServiceParameters, @MainActor @Sendable (FingerprintResult) -> Void) -> Void)?
     
     func performFingerprint(
         parameters: FingerprintServiceParameters,
-        completionHandler: @escaping (FingerprintResult) -> Void
+        completionHandler: @escaping @MainActor @Sendable (FingerprintResult) -> Void
     ) {
         guard let onPerformFingerprint else {
             fatalError("Need to provide a mock data if you are using this mock.")
@@ -32,11 +33,11 @@ final class ThreeDSServiceableMock: ThreeDSService {
     }
 
     typealias ChallengeResult = Result<any AnyChallengeResult, ThreeDSServiceChallengeError>
-    var onPerformChallenge: ((ChallengeParameters, (ChallengeResult) -> Void) -> Void)?
+    var onPerformChallenge: ((ChallengeParameters, @MainActor @Sendable (ChallengeResult) -> Void) -> Void)?
     
     func performChallenge(
         with parameters: ChallengeParameters,
-        completionHandler: @escaping (ChallengeResult) -> Void
+        completionHandler: @escaping @MainActor @Sendable (ChallengeResult) -> Void
     ) {
         guard let onPerformChallenge else {
             fatalError("Need to provide a mock data if you are using this mock.")

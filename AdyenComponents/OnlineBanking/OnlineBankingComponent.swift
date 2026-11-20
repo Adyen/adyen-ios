@@ -12,8 +12,12 @@ import UIKit
 
 /// A component that provides a form for Online Banking payment.
 @MainActor
-package final class OnlineBankingComponent: PaymentComponent,
-    LoadingComponent {
+package final class OnlineBankingComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
 
     private enum ViewIdentifier {
         static let termsAndConditionsLabelItem = "OnlineBankingTermsAndConditionLabel"

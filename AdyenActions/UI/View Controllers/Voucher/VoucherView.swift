@@ -9,6 +9,7 @@ import Adyen
 import PassKit
 import UIKit
 
+@MainActor
 internal protocol VoucherViewDelegate: AnyObject {
     
     func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void)
@@ -20,7 +21,7 @@ internal protocol VoucherViewDelegate: AnyObject {
     func mainButtonTap(sourceView: UIView, action: VoucherAction)
 }
 
-internal final class VoucherView: UIView, Localizable {
+internal final class VoucherView: UIView, @MainActor Localizable {
     
     internal let model: Model
     
@@ -230,8 +231,10 @@ internal final class VoucherView: UIView, Localizable {
             completion: { _ in
                 DispatchQueue.main.asyncAfter(
                     deadline: .now() + resetDelay
-                ) {
-                    self.returnSecondaryButtonToNormalState()
+                ) { [weak self] in
+                    MainActor.assumeIsolated {
+                        self?.returnSecondaryButtonToNormalState()
+                    }
                 }
             }
         )

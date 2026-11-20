@@ -88,8 +88,16 @@ struct AdyenContextTests {
 
     struct AnalyticsTestData: CustomTestStringConvertible {
         let attemptID: String?
-        let analyticsAPIContext: APIContext?
-        let analyticsConfiguration: AnalyticsConfiguration
+        let includeAnalyticsAPIContext: Bool
+        let isAnalyticsEnabled: Bool
+
+        var analyticsAPIContext: APIContext? {
+            includeAnalyticsAPIContext ? Dummy.apiContext : nil
+        }
+
+        var analyticsConfiguration: AnalyticsConfiguration {
+            AnalyticsConfiguration(isEnabled: isAnalyticsEnabled)
+        }
 
         var testDescription: String {
             "attemptID: \(attemptID), Context: \(analyticsAPIContext), Config: \(analyticsConfiguration)"
@@ -97,13 +105,13 @@ struct AdyenContextTests {
 
         static var allPermutations: [AnalyticsTestData] {
             let possibleAttemptIds: [String?] = [AnalyticsProviderMock.testCheckoutAttemptId, nil]
-            let possibleContexts: [APIContext?] = [Dummy.apiContext, nil]
-            let possibleAnalyticsConfigurations: [AnalyticsConfiguration] = [AnalyticsConfiguration(isEnabled: true), AnalyticsConfiguration(isEnabled: false)]
+            let possibleContexts: [Bool] = [true, false]
+            let possibleAnalyticsConfigurations: [Bool] = [true, false]
 
             return possibleAttemptIds.flatMap { id in
                 possibleContexts.flatMap { context in
                     possibleAnalyticsConfigurations.map { config in
-                        AnalyticsTestData(attemptID: id, analyticsAPIContext: context, analyticsConfiguration: config)
+                        AnalyticsTestData(attemptID: id, includeAnalyticsAPIContext: context, isAnalyticsEnabled: config)
                     }
                 }
             }

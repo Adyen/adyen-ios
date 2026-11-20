@@ -8,7 +8,9 @@
 @testable import AdyenActions
 import UIKit
 
-internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider {
+@MainActor
+internal final class VoucherShareableViewProviderMock: @MainActor AnyVoucherShareableViewProvider,
+    @MainActor Localizable {
 
     internal var style = VoucherComponentStyle()
 

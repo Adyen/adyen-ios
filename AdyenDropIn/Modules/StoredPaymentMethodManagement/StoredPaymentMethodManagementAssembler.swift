@@ -20,7 +20,7 @@ internal protocol StoredPaymentMethodManagementAssemblerProtocol {
 }
 
 @MainActor
-internal struct StoredPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol {
+internal struct StoredPaymentMethodManagementAssembler: @MainActor StoredPaymentMethodManagementAssemblerProtocol {
 
     // MARK: - Properties
 

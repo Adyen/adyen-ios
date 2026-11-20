@@ -34,7 +34,7 @@ internal final class DummyCardScannerController: CardScannerControlling {
 
     internal struct DummyCardScannerProvider: CardScannerProviding {
         internal func createCardScanner(
-            completion: @escaping (Result<CardScannerCardDetails, any Error>) -> Void
+            completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, any Error>) -> Void
         ) -> UIViewController? {
             UIViewController()
         }

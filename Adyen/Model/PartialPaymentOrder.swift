@@ -7,10 +7,10 @@
 import Foundation
 
 /// Describes a partial payment order, for partial payments.
-public struct PartialPaymentOrder: Codable, Equatable {
+public struct PartialPaymentOrder: Codable, Equatable, Sendable {
 
     /// A compact version of `PartialPaymentOrder`.
-    public struct CompactOrder: Encodable, Equatable {
+    public struct CompactOrder: Encodable, Equatable, Sendable {
 
         /// The psp reference.
         public let pspReference: String

@@ -225,7 +225,7 @@ internal final class DAErrorViewController: UIViewController {
     }
 }
 
-extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
+extension DAErrorViewController: @MainActor DelegatedAuthenticationErrorViewDelegate {
     internal func troubleshootingButtonTapped() {
         guard let resetCredentialAlert else {
             return

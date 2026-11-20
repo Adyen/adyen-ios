@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormToggleItemViewThemeTests: XCTestCase {
 
     func test_formToggleItemView_shouldApplyDefaultStyling() throws {

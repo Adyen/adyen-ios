@@ -21,7 +21,11 @@ internal enum QRCodeComponentError: LocalizedError {
 
 /// A component  for QRCode action.
 @MainActor
-package final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
+package final class QRCodeActionComponent: @MainActor ActionComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware,
+    @MainActor Cancellable,
+    @MainActor ShareableComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -253,7 +257,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
 }
 
-extension QRCodeActionComponent: ActionComponentDelegate {
+extension QRCodeActionComponent: @MainActor ActionComponentDelegate {
 
     package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()

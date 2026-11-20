@@ -108,7 +108,7 @@ internal final class DARegistrationViewController: UIViewController {
     }
 }
 
-extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
+extension DARegistrationViewController: @MainActor DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         registrationView.firstButton.showsActivityIndicator = true
         enableCheckoutHandler()

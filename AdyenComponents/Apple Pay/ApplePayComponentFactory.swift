@@ -12,7 +12,7 @@ import Adyen
 /// fields (merchant identifier, payment request). Integrators must supply a configuration
 /// via the `CheckoutConfiguration` DSL.
 @MainActor
-package struct ApplePayComponentFactory: PaymentComponentFactory {
+package struct ApplePayComponentFactory: @MainActor PaymentComponentFactory {
     package typealias Configuration = ApplePayConfiguration
     package typealias Method = ApplePayPaymentMethod
     package typealias Component = ApplePayComponent

@@ -18,7 +18,7 @@ internal typealias CardScannerCardDetails = (number: String?, expirationDate: Da
 
 @MainActor
 internal protocol CardScannerProviding {
-    func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController?
+    func createCardScanner(completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController?
 }
 
 @MainActor
@@ -38,6 +38,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
+    @MainActor
     internal class CardScannerProviderDispatchOnce: CardScannerProviding {
         private let scannerProvider: CardScannerProviding
 
@@ -47,7 +48,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         private var isDispatched = false
 
-        internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, any Error>) -> Void) -> UIViewController? {
+        internal func createCardScanner(completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, any Error>) -> Void) -> UIViewController? {
 
             isDispatched = false
 
@@ -60,7 +61,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     }
 
     internal struct CardScannerProviderWrapper: CardScannerProviding {
-        internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
+        internal func createCardScanner(completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
             return AdyenCardScanner.CardScanner.createCardScanner(

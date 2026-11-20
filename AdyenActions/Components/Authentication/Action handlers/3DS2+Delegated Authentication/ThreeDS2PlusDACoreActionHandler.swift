@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-internal typealias VoidHandler = () -> Void
+internal typealias VoidHandler = @MainActor () -> Void
 
 // swiftlint:disable file_length
 
@@ -98,7 +98,7 @@ internal typealias VoidHandler = () -> Void
         override internal func handle(
             _ fingerprintAction: ThreeDS2FingerprintAction,
             event: Analytics.Event,
-            completionHandler: @escaping (Result<String, Error>) -> Void
+            completionHandler: @escaping @MainActor (Result<String, Error>) -> Void
         ) {
             super.handle(fingerprintAction, event: event) { [weak self] result in
                 switch result {
@@ -192,7 +192,7 @@ internal typealias VoidHandler = () -> Void
             cardBrand: CardBrand?,
             cardNumber: String?,
             amount: Amount?,
-            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
+            completion: @escaping @MainActor (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
                 guard let self else { return }
@@ -226,7 +226,7 @@ internal typealias VoidHandler = () -> Void
             cardBrand: CardBrand?,
             cardNumber: String?,
             amount: Amount?,
-            completion: @escaping (
+            completion: @escaping @MainActor (
                 Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
             ) -> Void
         ) {
@@ -262,7 +262,7 @@ internal typealias VoidHandler = () -> Void
         private func userApprovedTransaction(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
+            completion: @escaping @MainActor (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             authenticate(
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
@@ -302,7 +302,7 @@ internal typealias VoidHandler = () -> Void
         private func userChoseToRemoveCredentials(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
+            completion: @escaping @MainActor (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             authenticate(
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
@@ -324,19 +324,21 @@ internal typealias VoidHandler = () -> Void
         private func authenticate(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            authenticatedHandler: @escaping (String) -> Void,
-            failedAuthenticationHandler: @escaping (Error) -> Void
+            authenticatedHandler: @escaping @MainActor (String) -> Void,
+            failedAuthenticationHandler: @escaping @MainActor (Error) -> Void
         ) {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
 
                 service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                    switch result {
-                    case let .success(sdkOutput):
-                        authenticatedHandler(sdkOutput)
-                    case let .failure(error):
-                        failedAuthenticationHandler(error)
+                    Task { @MainActor in
+                        switch result {
+                        case let .success(sdkOutput):
+                            authenticatedHandler(sdkOutput)
+                        case let .failure(error):
+                            failedAuthenticationHandler(error)
+                        }
                     }
                 }
 
@@ -345,21 +347,23 @@ internal typealias VoidHandler = () -> Void
         
         private func isDeviceRegistered(
             delegatedAuthenticationInput: String,
-            handler: @escaping (Bool) -> Void
+            handler: @escaping @MainActor (Bool) -> Void
         ) {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 let service: AuthenticationServiceProtocol = service(cardNumber: nil)
 
                 service.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                    switch result {
-                    case .failure:
-                        // If there is an error then we assume that the device is not registered and we try registration.
-                        // Improvement: we could alternatively check the individual errors from AuthenticationSDK
-                        // and based on which decide if we would like to call out if it is registered or not.
-                        handler(false)
-                    case let .success(isRegistered):
-                        handler(isRegistered)
+                    Task { @MainActor in
+                        switch result {
+                        case .failure:
+                            // If there is an error then we assume that the device is not registered and we try registration.
+                            // Improvement: we could alternatively check the individual errors from AuthenticationSDK
+                            // and based on which decide if we would like to call out if it is registered or not.
+                            handler(false)
+                        case let .success(isRegistered):
+                            handler(isRegistered)
+                        }
                     }
                 }
             }
@@ -370,18 +374,20 @@ internal typealias VoidHandler = () -> Void
         internal func register(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            completion: @escaping (Result<String, Error>) -> Void
+            completion: @escaping @MainActor (Result<String, Error>) -> Void
         ) {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
 
                 service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
-                    switch result {
-                    case let .success(sdkOutput):
-                        completion(.success(sdkOutput))
-                    case let .failure(error):
-                        completion(.failure(error))
+                    Task { @MainActor in
+                        switch result {
+                        case let .success(sdkOutput):
+                            completion(.success(sdkOutput))
+                        case let .failure(error):
+                            completion(.failure(error))
+                        }
                     }
                 }
 
@@ -415,7 +421,7 @@ internal typealias VoidHandler = () -> Void
         override internal func handle(
             _ challengeAction: ThreeDS2ChallengeAction,
             event: Analytics.Event,
-            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void
+            completionHandler: @escaping @MainActor (Result<ThreeDSResult, Error>) -> Void
         ) {
             super.handle(challengeAction, event: event) { [weak self] result in
                 switch result {
@@ -469,7 +475,7 @@ internal typealias VoidHandler = () -> Void
             delegatedAuthenticationInput: String,
             cardNumber: String?,
             cardBrand: CardBrand?,
-            completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void
+            completionHandler: @escaping @MainActor (Result<String, RegistrationFlowError>) -> Void
         ) {
             presenter.showRegistrationScreen(
                 component: self,
@@ -492,7 +498,7 @@ internal typealias VoidHandler = () -> Void
         private func userChoseToRegister(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void
+            completionHandler: @escaping @MainActor (Result<String, RegistrationFlowError>) -> Void
         ) {
             register(
                 delegatedAuthenticationInput: delegatedAuthenticationInput,

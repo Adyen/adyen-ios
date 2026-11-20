@@ -68,6 +68,7 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
 
 // MARK: - Tests for FormSelectableValueItemView
 
+@MainActor
 class FormSelectableItemViewTests: XCTestCase {
 
     private var item: FormSelectableValueItemMock!
@@ -114,6 +115,7 @@ class FormSelectableItemViewTests: XCTestCase {
 
 // MARK: - Tests for FormPickerItemView (real production class)
 
+@MainActor
 class FormPickerItemViewStyleTests: XCTestCase {
 
     private var item: TestFormPickerItem!

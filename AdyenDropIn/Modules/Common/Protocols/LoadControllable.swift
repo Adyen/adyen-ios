@@ -6,6 +6,7 @@
 
 import Foundation
 
+@MainActor
 internal protocol LoadControllable {
     func stopLoading()
 }

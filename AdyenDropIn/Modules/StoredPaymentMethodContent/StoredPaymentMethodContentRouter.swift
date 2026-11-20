@@ -13,7 +13,7 @@ internal protocol StoredPaymentMethodContentRouterListener: AnyObject {
 }
 
 @MainActor
-internal final class StoredPaymentMethodContentRouter: Router, StoredPaymentMethodContentRouting {
+internal final class StoredPaymentMethodContentRouter: @MainActor Router, @MainActor StoredPaymentMethodContentRouting {
 
     internal let rootViewController: UIViewController
     internal var childRouter: Router? {

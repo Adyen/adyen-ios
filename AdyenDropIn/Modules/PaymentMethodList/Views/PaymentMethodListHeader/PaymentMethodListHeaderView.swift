@@ -9,7 +9,7 @@ import UIKit
 
 internal final class PaymentMethodListHeaderView: UIView {
 
-    private enum Layout {
+    @MainActor private enum Layout {
         static let subtitleBottomMargin: CGFloat = 24
         static let labelMargins = NSDirectionalEdgeInsets(
             top: 0,

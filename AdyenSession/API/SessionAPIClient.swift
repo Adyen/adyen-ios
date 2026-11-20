@@ -11,21 +11,20 @@ import Foundation
 /// API Client to handle ``Session`` related requests.
 /// All session related responses containing `sessionData` require updating the session data of the main `session` property,
 /// which is passed as a weak reference to this class.
-@MainActor
 internal final class SessionAPIClient: AsyncAPIClientProtocol {
     
     private let apiClient: AsyncAPIClientProtocol
     
     /// Closure that is called after a session related API call, to update the session data with the new value.
-    private var onSessionDataUpdate: ((SessionDataAware) -> Void)?
+    private let onSessionDataUpdate: (@MainActor (SessionDataAware) -> Void)?
     
     /// Closure that is called after a session related API call, to update the session result with the new values.
-    private var onSessionResultUpdate: ((SessionResultAware) -> Void)?
+    private let onSessionResultUpdate: (@MainActor (SessionResultAware) -> Void)?
     
     internal init(
         apiClient: AsyncAPIClientProtocol,
-        onSessionDataUpdate: ((SessionDataAware) -> Void)? = nil,
-        onSessionResultUpdate: ((SessionResultAware) -> Void)? = nil
+        onSessionDataUpdate: (@MainActor (SessionDataAware) -> Void)? = nil,
+        onSessionResultUpdate: (@MainActor (SessionResultAware) -> Void)? = nil
     ) {
         self.apiClient = apiClient
         self.onSessionDataUpdate = onSessionDataUpdate
@@ -34,20 +33,21 @@ internal final class SessionAPIClient: AsyncAPIClientProtocol {
     
     internal func perform<R: Request>(_ request: R) async throws -> HTTPResponse<R.ResponseType> {
         let response = try await apiClient.perform(request)
-        updateSession(with: response.responseBody)
+        let body = response.responseBody
+        let onData = onSessionDataUpdate
+        let onResult = onSessionResultUpdate
+        await MainActor.run {
+            if let aware = body as? SessionDataAware {
+                onData?(aware)
+            }
+            if let aware = body as? SessionResultAware {
+                onResult?(aware)
+            }
+        }
         return response
     }
     
     internal func perform<R: Request>(_ request: R) async throws -> HTTPResponse<R.ResponseType> where R.ResponseType == DownloadResponse {
         try await apiClient.perform(request)
-    }
-    
-    private func updateSession(with response: Any) {
-        if let response = response as? SessionDataAware {
-            onSessionDataUpdate?(response)
-        }
-        if let response = response as? SessionResultAware {
-            onSessionResultUpdate?(response)
-        }
     }
 }

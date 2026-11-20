@@ -10,6 +10,7 @@ import Foundation
 import LocalAuthentication
 import UIKit
 
+@MainActor
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(
         component: Component,
@@ -43,7 +44,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
 @MainActor
-internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresenterProtocol {
+internal final class ThreeDS2PlusDAScreenPresenter: @MainActor ThreeDS2PlusDAScreenPresenterProtocol {
     private let style: DelegatedAuthenticationComponentStyle
     private let localizedParameters: LocalizationParameters?
     private let context: AdyenContext

@@ -22,8 +22,10 @@ import UIKit
  */
 @MainActor
 package final class DropInComponent: NSObject,
-    AnyDropInComponent,
-    ActionHandlingComponent {
+    @MainActor AnyDropInComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware,
+    @MainActor ActionHandlingComponent {
 
     // MARK: - Properties
 

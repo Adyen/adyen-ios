@@ -7,23 +7,68 @@
 import Foundation
 
 /// Describes an action in which a Doku voucher is presented to the shopper.
-public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVoucherAction {
-    
+public final class DokuVoucherAction: Decodable, AnyVoucherAction, InstructionAwareVoucherAction, Sendable {
+
+    /// The `paymentMethodType` for which the voucher is presented.
+    public let paymentMethodType: VoucherPaymentMethod
+
+    /// The initial  amount.
+    public let initialAmount: Amount
+
+    /// The totalAmount  amount.
+    public let totalAmount: Amount
+
+    /// The payment reference.
+    public let reference: String
+
+    /// Expiry Date.
+    public let expiresAt: Date
+
+    /// Merchant Name.
+    public let merchantName: String
+
+    @_spi(AdyenInternal)
+    public let passCreationToken: String?
+
     /// Shopper Name.
     public let shopperName: String
 
     /// The shopper email.
     public let shopperEmail: String
-    
+
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        initialAmount = try container.decode(Amount.self, forKey: .initialAmount)
+        totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
+        reference = try container.decode(String.self, forKey: .reference)
+        merchantName = try container.decode(String.self, forKey: .merchantName)
+        passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
         shopperName = try container.decode(String.self, forKey: .shopperName)
         shopperEmail = try container.decode(String.self, forKey: .shopperEmail)
         instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
-        try super.init(from: decoder)
+
+        let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [
+            .withYear,
+            .withMonth,
+            .withDay,
+            .withTime,
+            .withDashSeparatorInDate,
+            .withColonSeparatorInTime
+        ]
+
+        if let date = dateFormatter.date(from: expiresAtString) {
+            expiresAt = date
+        } else {
+            let codingPath = [CodingKeys.expiresAt]
+            let context = DecodingError.Context(codingPath: codingPath, debugDescription: "expiresAt is in the wrong format")
+            throw DecodingError.dataCorrupted(context)
+        }
     }
 
     internal init(
@@ -35,25 +80,32 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
         expiresAt: Date,
         merchantName: String,
         shopperName: String,
-        instructionsUrl: URL
+        instructionsUrl: URL,
+        passCreationToken: String? = nil
     ) {
+        self.paymentMethodType = paymentMethodType
+        self.initialAmount = initialAmount
+        self.totalAmount = totalAmount
+        self.reference = reference
+        self.expiresAt = expiresAt
+        self.merchantName = merchantName
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
         self.instructionsURL = instructionsUrl
-        super.init(
-            paymentMethodType: paymentMethodType,
-            initialAmount: initialAmount,
-            totalAmount: totalAmount,
-            reference: reference,
-            expiresAt: expiresAt,
-            merchantName: merchantName
-        )
+        self.passCreationToken = passCreationToken
     }
 
     private enum CodingKeys: String, CodingKey {
-        case shopperEmail,
+        case paymentMethodType,
+             initialAmount,
+             totalAmount,
+             reference,
+             shopperEmail,
+             merchantName,
              shopperName,
-             instructionsUrl
+             instructionsUrl,
+             expiresAt,
+             passCreationToken
 
     }
 }

@@ -6,9 +6,9 @@
 
 import Foundation
 
-public struct CardScannerError: LocalizedError {
+public struct CardScannerError: LocalizedError, Sendable {
 
-    public enum Kind {
+    public enum Kind: Sendable {
         case cameraSetup
         case photoProcessing
         case authorizationDenied

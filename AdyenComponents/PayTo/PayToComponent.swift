@@ -11,7 +11,13 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
+package final class PayToComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent,
+    AdyenObserver {
 
     /// The context object for this component.
     package var context: AdyenContext
@@ -236,11 +242,11 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
 }
 
 @_spi(AdyenInternal)
-extension PayToComponent: ViewControllerDelegate {}
+extension PayToComponent: @MainActor ViewControllerDelegate {}
 
-extension PayToComponent: TrackableComponent {}
+extension PayToComponent: @MainActor TrackableComponent {}
 
-extension PayToComponent: ViewControllerPresenter {
+extension PayToComponent: @MainActor ViewControllerPresenter {
 
     package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)

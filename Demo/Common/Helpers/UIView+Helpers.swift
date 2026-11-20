@@ -131,6 +131,7 @@ extension UIView {
     }
 }
 
+@MainActor
 private protocol AnyAnchorSet {
     var topAnchor: NSLayoutYAxisAnchor { get }
     var leadingAnchor: NSLayoutXAxisAnchor { get }

@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormCardSecurityCodeItemViewTests: XCTestCase {
 
     var sut: FormCardSecurityCodeItemView!
@@ -330,6 +331,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
 
     func test_strings_givenCardBrands_shouldSelectMatchingHintsAndErrors() {
         let sut = CardSecurityCodeStrings.self
+        // swiftlint:disable:next large_tuple
         let cases: [(CardBrand?, LocalizationKey, LocalizationKey, LocalizationKey)] = [
             (nil, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),
             (.visa, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),

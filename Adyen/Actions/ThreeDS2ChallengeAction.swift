@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which a 3D Secure challenge is presented to the user.
-public struct ThreeDS2ChallengeAction: Decodable {
+public struct ThreeDS2ChallengeAction: Decodable, Sendable {
 
     /// The 3D Secure challenge token.
     public let challengeToken: String

@@ -14,7 +14,7 @@ internal final class PaymentMethodItemView: UIView {
     /// highlight bleeds around it. Section headers use the same inset to line up with the item titles.
     internal static let contentHorizontalInset: CGFloat = 6
 
-    private enum Layout {
+    @MainActor private enum Layout {
         static let itemHeight: CGFloat = 52.0
         static let contentMargins = NSDirectionalEdgeInsets(
             top: 12,

@@ -13,8 +13,12 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
-package final class ACHDirectDebitComponent: PaymentComponent,
-    LoadingComponent {
+package final class ACHDirectDebitComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -292,9 +296,9 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }()
 }
 
-extension ACHDirectDebitComponent: TrackableComponent {}
+extension ACHDirectDebitComponent: @MainActor TrackableComponent {}
 
-extension ACHDirectDebitComponent: ViewControllerDelegate {
+extension ACHDirectDebitComponent: @MainActor ViewControllerDelegate {
 
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
@@ -302,7 +306,7 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     }
 }
 
-extension ACHDirectDebitComponent: ViewControllerPresenter {
+extension ACHDirectDebitComponent: @MainActor ViewControllerPresenter {
     
     package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)

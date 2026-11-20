@@ -230,7 +230,7 @@ internal final class ComponentsViewController: UIViewController {
 
 // MARK: - Presenter
 
-extension ComponentsViewController: PresenterExampleProtocol {
+extension ComponentsViewController: @MainActor PresenterExampleProtocol {
     
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)

@@ -11,7 +11,8 @@ import Foundation
 /// This is a wrapper class for the Objective C 3ds2 sdk.
 /// This translates simple non specific sdk bound types such as
 /// `FingerprintServiceParameters` & `ChallengeParameters` to sdk specific types and performs actions.
-internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
+@MainActor
+internal final class ThreeDSServiceLegacy: @MainActor ThreeDSServiceable {
     private var service: AnyADYService
     private var transaction: AnyADYTransaction?
     
@@ -23,20 +24,21 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
     
     internal func performFingerprint(
         parameters: FingerprintServiceParameters,
-        completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
+        completionHandler: @escaping @MainActor (Result<AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
     ) {
         let serviceParameters = ADYServiceParameters(
             directoryServerIdentifier: parameters.directoryServerIdentifier,
             directoryServerPublicKey: parameters.directoryServerPublicKey,
             directoryServerRootCertificates: parameters.directoryServerRootCertificates
         )
+        let messageVersion = parameters.threeDSMessageVersion
         service.service(
             with: serviceParameters,
             appearanceConfiguration: ADYAppearanceConfigurationBuilder(theme: parameters.theme).build()
         ) { [weak self] service in
             guard let self else { return }
             do {
-                let transaction = try service.transaction(withMessageVersion: parameters.threeDSMessageVersion)
+                let transaction = try service.transaction(withMessageVersion: messageVersion)
                 self.transaction = transaction
                 completionHandler(.success(transaction.authenticationParameters))
                 
@@ -52,7 +54,7 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
     
     internal func performChallenge(
         with parameters: ChallengeParameters,
-        completionHandler: @escaping (Result<AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
+        completionHandler: @escaping @MainActor (Result<AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
     ) {
         let challengeParameters = ADYChallengeParameters(
             serverTransactionIdentifier: parameters.challengeToken.serverTransactionIdentifier,
@@ -63,7 +65,10 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
         )
         
         guard let transaction else {
-            return completionHandler(.failure(.transactionNotInitialized))
+            Task { @MainActor in
+                completionHandler(.failure(.transactionNotInitialized))
+            }
+            return
         }
         
         transaction.performChallenge(

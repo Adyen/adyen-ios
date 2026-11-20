@@ -15,6 +15,7 @@ public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 /// Use `createCardScanner(localizationBundle:completion:)` to present the scanner and `isAvailable` to check device support.
 /// Ensure `NSCameraUsageDescription` is set in your `Info.plist`.
 ///
+@MainActor
 public enum CardScanner {
 
     // MARK: - Properties
@@ -33,7 +34,7 @@ public enum CardScanner {
     /// - Returns: A `UIViewController` that presents the card scanner, or `nil` if scanning is not available.
     public static func createCardScanner(
         localizationBundle: Bundle,
-        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
+        completion: @escaping @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         assertCameraUsageDescription()
         return cardScannerAssembler.resolveCardScannerViewController(

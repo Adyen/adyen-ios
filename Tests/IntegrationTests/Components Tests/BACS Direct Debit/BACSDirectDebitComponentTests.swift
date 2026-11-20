@@ -21,29 +21,23 @@ class BACSDirectDebitComponentTests: XCTestCase {
         name: "BACS Direct Debit"
     )
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() {
+        super.setUp()
         paymentComponentDelegate = PaymentComponentDelegateMock()
         context = Dummy.context
-
-        sut = BACSDirectDebitFactory().create(
-            with: paymentMethod,
-            context: context,
-            configuration: .init(),
-            callbacks: nil
-        )
-
-        sut.delegate = paymentComponentDelegate
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
         paymentComponentDelegate = nil
         context = nil
         sut = nil
-        try super.tearDownWithError()
+        super.tearDown()
     }
 
     func test_amountConsentToggle_shouldIncludeContextAmount() {
+        // Given
+        sut = makeSUT()
+
         // Then
         let title = sut.bacsViewModel.amountConsentToggleItem.title
         XCTAssertTrue(title?.contains(Dummy.amount.formatted) == true)
@@ -51,6 +45,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     func test_performSubmit_whenFormIsValid_shouldCallDelegateDidSubmitWithDetails() throws {
         // Given
+        sut = makeSUT()
         populateValidFormData()
 
         // When
@@ -68,6 +63,9 @@ class BACSDirectDebitComponentTests: XCTestCase {
     }
 
     func test_performSubmit_whenFormIsInvalid_shouldNotCallDelegateDidSubmit() {
+        // Given
+        sut = makeSUT()
+
         // When
         sut.performSubmit()
 
@@ -78,6 +76,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     func test_stopLoading_shouldSetViewModelStateToIdle() {
         // Given
+        sut = makeSUT()
         populateValidFormData()
         sut.performSubmit()
         XCTAssertEqual(sut.bacsViewModel.state, .submitting)
@@ -90,6 +89,18 @@ class BACSDirectDebitComponentTests: XCTestCase {
     }
 
     // MARK: - Private
+
+    private func makeSUT() -> BACSDirectDebitComponent {
+        let configuration = BasicComponentConfiguration()
+        let sut = BACSDirectDebitFactory().create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration,
+            callbacks: nil
+        )
+        sut.delegate = paymentComponentDelegate
+        return sut
+    }
 
     private func populateValidFormData() {
         let viewModel = sut.bacsViewModel

@@ -8,7 +8,9 @@
 
 struct MockOpenExternalAppDetector: OpenExternalAppDetecting {
     var didOpenExternalApp: Bool
-    func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
-        completion(didOpenExternalApp)
+    func checkIfExternalAppDidOpen(_ completion: @escaping @MainActor @Sendable (Bool) -> Void) {
+        Task { @MainActor in
+            completion(didOpenExternalApp)
+        }
     }
 }

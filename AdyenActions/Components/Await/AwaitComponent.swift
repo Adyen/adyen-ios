@@ -10,7 +10,10 @@ import Foundation
 
 /// A component that handles Await action's.
 @MainActor
-package final class AwaitComponent: ActionComponent, Cancellable {
+package final class AwaitComponent: @MainActor ActionComponent,
+    @MainActor Component,
+    @MainActor AdyenContextAware,
+    @MainActor Cancellable {
 
     /// The context object for this component.
     package let context: AdyenContext

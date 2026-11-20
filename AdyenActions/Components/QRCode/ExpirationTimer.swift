@@ -7,6 +7,7 @@
 import Foundation
 
 /// A class for handling expiration timers
+@MainActor
 internal final class ExpirationTimer {
     
     private let expirationTimeout: TimeInterval
@@ -15,9 +16,9 @@ internal final class ExpirationTimer {
     
     private var timer: Timer?
     
-    private let onTick: (TimeInterval) -> Void
+    private let onTick: @MainActor (TimeInterval) -> Void
     
-    private let onExpiration: () -> Void
+    private let onExpiration: @MainActor () -> Void
     
     /// Initializes `ExpirationTimer` object
     /// - Parameters:
@@ -27,8 +28,8 @@ internal final class ExpirationTimer {
     ///   - onExpiration: The closure called on timer expiration.
     internal init(
         expirationTimeout: TimeInterval,
-        onTick: @escaping (TimeInterval) -> Void,
-        onExpiration: @escaping () -> Void
+        onTick: @escaping @MainActor (TimeInterval) -> Void,
+        onExpiration: @escaping @MainActor () -> Void
     ) {
         self.expirationTimeout = expirationTimeout
         self.timeLeft = expirationTimeout
@@ -37,9 +38,12 @@ internal final class ExpirationTimer {
     }
     
     internal func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-            guard timer.isValid else { return }
-            self?.onTimerTick()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            // The timer is scheduled on the current run loop, so hop to the main actor.
+            Task { @MainActor [weak self] in
+                guard let self, self.timer?.isValid == true else { return }
+                self.onTimerTick()
+            }
         }
         
         // Notify immediately

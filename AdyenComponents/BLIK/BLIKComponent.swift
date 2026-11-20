@@ -13,7 +13,12 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-package final class BLIKComponent: PaymentComponent, LoadingComponent {
+package final class BLIKComponent: @MainActor PaymentComponent,
+    @MainActor Component,
+    @MainActor PartialPaymentOrderAware,
+    @MainActor PaymentMethodAware,
+    @MainActor AdyenContextAware,
+    @MainActor LoadingComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -137,6 +142,6 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     }
 }
 
-extension BLIKComponent: TrackableComponent {}
+extension BLIKComponent: @MainActor TrackableComponent {}
 
-extension BLIKComponent: ViewControllerDelegate {}
+extension BLIKComponent: @MainActor ViewControllerDelegate {}

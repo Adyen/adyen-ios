@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BACSItemsFactoryTests: XCTestCase {
 
     var sut: BACSItemsFactory!

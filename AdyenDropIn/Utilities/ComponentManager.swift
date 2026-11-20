@@ -18,7 +18,7 @@ internal protocol ComponentManaging {
 }
 
 @MainActor
-internal final class ComponentManager: ComponentManaging {
+internal final class ComponentManager: @MainActor ComponentManaging {
 
     // MARK: - Properties
 

@@ -7,7 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenUI
 
-class PaymentComponentMock: PaymentComponent {
+@MainActor
+class PaymentComponentMock: @MainActor PaymentComponent {
 
     var context: AdyenContext = Dummy.context
 
@@ -58,7 +59,7 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, @MainActor LoadingComponent {
 
     // MARK: - Properties
 
@@ -95,7 +96,7 @@ class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
     }
 }
 
-class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
+class StoredComponentMock: PaymentComponentMock, @MainActor StoredPaymentComponent {
 
     var order: PartialPaymentOrder?
 

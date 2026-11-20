@@ -21,7 +21,7 @@ internal protocol ComponentContainerAssemblerProtocol {
 }
 
 @MainActor
-internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
+internal struct ComponentContainerAssembler: @MainActor ComponentContainerAssemblerProtocol {
 
     // MARK: - Properties
 

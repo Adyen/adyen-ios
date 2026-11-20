@@ -429,7 +429,7 @@ struct DropInFlowManagerTests {
     // MARK: - Mocks
 
     @MainActor
-    private final class ActionComponentMock: ActionComponent, LoadingComponent {
+    private final class ActionComponentMock: @MainActor ActionComponent, @MainActor LoadingComponent {
         let context = Dummy.context
         weak var delegate: ActionComponentDelegate?
 

@@ -8,16 +8,17 @@ import Adyen
 import AdyenUI
 import Foundation
 
+@MainActor
 internal protocol AnyThreeDS2ActionHandler {
 
     func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
 
     func handle(
         _ challengeAction: ThreeDS2ChallengeAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
 
     var threeDSRequestorAppURL: URL? { get set }

@@ -7,7 +7,7 @@
 import Foundation
 
 /// Indicates QR code payment methods.
-public enum QRCodePaymentMethod: String, Codable, CaseIterable {
+public enum QRCodePaymentMethod: String, Codable, CaseIterable, Sendable {
 
     /// PIX
     case pix
@@ -26,7 +26,7 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
 }
 
 /// Describes any QR code action.
-public struct QRCodeAction: PaymentDataAware, Decodable {
+public struct QRCodeAction: PaymentDataAware, Decodable, Sendable {
     
     /// The `paymentMethodType` for which the QR code is presented.
     public let paymentMethodType: QRCodePaymentMethod

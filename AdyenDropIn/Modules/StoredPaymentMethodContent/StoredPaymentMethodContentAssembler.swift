@@ -24,7 +24,7 @@ internal protocol StoredPaymentMethodContentAssembling {
 }
 
 @MainActor
-internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling {
+internal struct StoredPaymentMethodContentAssembler: @MainActor StoredPaymentMethodContentAssembling {
 
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
@@ -57,7 +57,7 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
             localizationParameters: localizationParameters,
             dropInFlowManager: dropInFlowManager
         )
-        let onCancel: (() -> Void)? = isPresentedModally ? { viewModel.cancel() } : nil
+        let onCancel: (@MainActor @Sendable () -> Void)? = isPresentedModally ? { @MainActor @Sendable in viewModel.cancel() } : nil
         let viewController = NavigationLockingHostingController(
             rootView: StoredPaymentMethodContentView(viewModel: viewModel),
             isNavigationLocked: dropInFlowManager.paymentInProgressPublisher,

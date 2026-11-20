@@ -15,7 +15,7 @@ internal protocol PaymentMethodListAssemblerProtocol {
 }
 
 @MainActor
-internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
+internal struct PaymentMethodListAssembler: @MainActor PaymentMethodListAssemblerProtocol {
 
     // MARK: - Properties
 

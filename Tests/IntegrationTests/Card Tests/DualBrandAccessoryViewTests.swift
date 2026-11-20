@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class DualBrandAccessoryViewTests: XCTestCase {
     private var sut: DualBrandAccessoryView!
     private var imageLoader: ImageLoaderMock!

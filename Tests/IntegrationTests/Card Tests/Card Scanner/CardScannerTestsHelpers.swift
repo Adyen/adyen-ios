@@ -8,11 +8,12 @@
     @testable import AdyenCard
     @testable import AdyenCardScanner
 
-    internal class CardScannerProviderSpy: CardScannerProviding {
-        private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)?
+    @MainActor
+    internal class CardScannerProviderSpy: @MainActor CardScannerProviding {
+        private var completion: (@MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void)?
 
         func createCardScanner(
-            completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void
+            completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void
         ) -> UIViewController? {
             self.completion = completion
             return UIViewController()

@@ -8,6 +8,7 @@ import UIKit
 
 package protocol ImageLoading: Sendable {
     @discardableResult
+    @MainActor
     func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> AdyenCancellable
 }
 
@@ -20,6 +21,7 @@ package final class ImageLoader: ImageLoading {
     }
     
     @discardableResult
+    @MainActor
     public func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> AdyenCancellable {
         var urlSessionTask: URLSessionTask?
         let task = AdyenTask { urlSessionTask?.cancel() }

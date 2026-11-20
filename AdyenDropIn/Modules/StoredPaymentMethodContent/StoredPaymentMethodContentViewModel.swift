@@ -64,7 +64,7 @@ internal final class StoredPaymentMethodContentViewModel {
     }
 }
 
-extension StoredPaymentMethodContentViewModel: PaymentComponentDelegate {
+extension StoredPaymentMethodContentViewModel: @MainActor PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         dropInFlowManager.submit(data, from: component)

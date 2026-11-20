@@ -12,20 +12,14 @@ import XCTest
 @MainActor
 final class CheckoutOnActionTests: XCTestCase {
 
-    private var configuration: CheckoutConfiguration!
-
-    override func setUp() {
-        super.setUp()
-        configuration = CheckoutConfiguration(
-            apiContext: Dummy.apiContext,
-            analyticsApiContext: nil,
-            analyticsConfiguration: .init()
-        )
-    }
+    private var configuration = CheckoutConfiguration(
+        apiContext: Dummy.apiContext,
+        analyticsApiContext: nil,
+        analyticsConfiguration: .init()
+    )
 
     override func tearDown() {
         AdyenAssertion.listener = nil
-        configuration = nil
         super.tearDown()
     }
 

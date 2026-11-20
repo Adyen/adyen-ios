@@ -11,7 +11,7 @@ import AdyenUI
 import UIKit
 
 @MainActor
-internal final class NameFormItemInjector: FormItemInjector, Localizable {
+internal final class NameFormItemInjector: @MainActor FormItemInjector, @MainActor Localizable {
 
     internal let contentType: UITextContentType
 

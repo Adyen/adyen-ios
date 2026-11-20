@@ -8,6 +8,7 @@
 @testable import AdyenActions
 import XCTest
 
+@MainActor
 class OpenExternalAppDetectorTests: XCTestCase {
     
     func test_didOpen_shouldRespectApplicationState() {
@@ -73,16 +74,10 @@ extension OpenExternalAppDetectorTests {
         applicationState: UIApplication.State,
         didOpen expectedDidOpenOutput: Bool
     ) {
-        struct MockApplicationStateProvider: ApplicationStateProviding {
-            var applicationState: UIApplication.State
-        }
-        
-        let provider = MockApplicationStateProvider(applicationState: applicationState)
-        
         let didOpenExpectation = expectation(description: "checkIfExternalAppDidOpen is called")
         
         let openAppDetector = OpenExternalAppDetector(
-            applicationStateProvider: provider,
+            applicationStateProvider: { applicationState },
             detectionDelay: .nanoseconds(0)
         )
         

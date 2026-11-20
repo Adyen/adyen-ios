@@ -9,6 +9,7 @@
 @testable import AdyenNetworking
 import XCTest
 
+@MainActor
 class AppleWalletPassProviderTests: XCTestCase {
 
     var context: AdyenContext!

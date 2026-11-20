@@ -12,11 +12,12 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
     func submit(
         fingerprint: String,
         paymentData: String?,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
 }
 
-internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
+@MainActor
+internal final class ThreeDS2FingerprintSubmitter: @MainActor AnyThreeDS2FingerprintSubmitter {
     
     private enum Constants {
         static let fingerprintEvent = "threeDS2Fingerprint"
@@ -34,7 +35,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     internal func submit(
         fingerprint: String,
         paymentData: String?,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void
     ) {
 
         let request = Submit3DS2FingerprintRequest(

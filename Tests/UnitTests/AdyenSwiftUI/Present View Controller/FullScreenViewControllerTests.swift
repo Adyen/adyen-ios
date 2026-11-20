@@ -8,6 +8,7 @@
 import SwiftUI
 import XCTest
 
+@MainActor
 final class FullScreenViewControllerTests: XCTestCase {
     
     func testViewControllerIsPresented() {

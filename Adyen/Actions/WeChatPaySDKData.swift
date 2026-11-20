@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes the data required by the WeChat SDK to complete the payment.
-public struct WeChatPaySDKData: Decodable {
+public struct WeChatPaySDKData: Decodable, Sendable {
     
     /// SDK app identifier.
     public let appIdentifier: String
