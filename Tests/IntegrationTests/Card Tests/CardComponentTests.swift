@@ -200,7 +200,7 @@ class CardComponentTests: XCTestCase {
         let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryDateHint, sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, sut.configuration.localizationParameters))
@@ -211,7 +211,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(.cardNameItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsLabel, sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }
@@ -229,7 +229,7 @@ class CardComponentTests: XCTestCase {
 
         let items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_checkout_card_expiry_date_hint"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_security_code_label"), sut.configuration.localizationParameters))
@@ -240,7 +240,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_nameItem_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_checkout_card_store_details_label"), sut.configuration.localizationParameters))
 
         XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }
@@ -257,7 +257,7 @@ class CardComponentTests: XCTestCase {
         )
         let items = sut.cardViewController.items
 
-        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryDateHint, configuration.localizationParameters))
         XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardSecurityCodeLabel, configuration.localizationParameters))
         XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
     }
@@ -544,6 +544,26 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
+    func test_securityCodeAccessory_givenValidThreeDigitCode_whenAmexNumberEntered_shouldShowHint() throws {
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: CardConfiguration())
+        setupRootViewController(sut.viewController)
+        let securityCodeItemView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(
+            with: "AdyenCard.CardComponent.securityCodeItem"
+        )
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(
+            with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+        )
+
+        try populate(textItemView: XCTUnwrap(securityCodeItemView), with: "123")
+        XCTAssertEqual(securityCodeItemView?.accessory, .valid, "Precondition: checkmark should be shown for a valid code")
+
+        try populate(textItemView: XCTUnwrap(cardNumberItemView), with: "371449")
+
+        let securityCodeView = try XCTUnwrap(securityCodeItemView)
+        XCTAssertFalse(securityCodeView.isValid)
+        XCTAssertEqual(securityCodeView.accessory, .customView(securityCodeView.cardHintView))
+    }
+
     func test_securityCodeFormatter_whenCardBrandChanges_shouldUpdateMaxLength() throws {
         
         let sut = CardComponent(
@@ -2537,11 +2557,43 @@ extension CardComponentTests {
 
     func test_cardComponent_withProviderOverride_shouldRenderCustomStorePaymentMethodTitle() {
         var configuration = CardConfiguration()
-        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStorePaymentMethod: "Remember this card"])
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStoreDetailsLabel: "Remember this card"])
 
         let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
 
         XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
+    }
+
+    func test_validationMessages_withEnglishLocale_shouldAskForValidCardNumberAndExpiryDate() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        let items = sut.cardViewController.items
+        XCTAssertEqual(items.numberContainerItem.numberItem.validationFailureMessage, "Enter a valid card number")
+        XCTAssertEqual(
+            items.expiryDateItem.validationFailureMessage,
+            "Enter a valid expiration date. Front of card in MM/YY format"
+        )
+    }
+
+    func test_expiryDateItem_withEnglishLocale_shouldShowFrontOfCardHint() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.expiryDateItem.placeholder, "Front of card in MM/YY format")
+    }
+
+    func test_storeDetailsItem_withEnglishLocale_shouldShowCardSpecificTitle() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember my card details for future payments")
     }
 
     func test_cardComponent_withProviderReturningNil_shouldFallbackToSDKLocalization() {

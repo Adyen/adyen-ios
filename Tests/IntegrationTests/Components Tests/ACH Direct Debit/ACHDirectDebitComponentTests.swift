@@ -65,6 +65,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.bankRoutingNumberItem.validationFailureMessage, localizedString(.achAccountLocationFieldInvalid, sut.configuration.localizationParameters))
         
         XCTAssertEqual(sut.billingAddressItem.title, localizedString(.addressFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.storeDetailsItem.title, localizedString(.storeDetailsLabel, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.payButton.title, AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: sut.context.amount,
@@ -72,6 +73,16 @@ class ACHDirectDebitComponentTests: XCTestCase {
         ))
     }
     
+    func test_storeDetailsItem_withEnglishLocale_shouldShowGenericTitle() {
+        let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
+        var config = ACHDirectDebitConfiguration()
+        config.localizationParameters = LocalizationParameters(enforcedLocale: "en-US")
+
+        let sut = ACHDirectDebitComponent(paymentMethod: method, context: context, configuration: config)
+
+        XCTAssertEqual(sut.storeDetailsItem.title, "Remember for next time")
+    }
+
     func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
