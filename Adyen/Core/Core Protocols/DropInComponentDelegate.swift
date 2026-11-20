@@ -51,14 +51,6 @@ package protocol DropInComponentDelegate: AnyObject {
     ///   - dropInComponent: The DropIn component.
     func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
-    /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
-    /// e.g WeChat Pay Application.
-    /// In which case you can for example stop any loading animations.
-    ///
-    /// - parameter component: The action component that handled the action.
-    /// - parameter dropInComponent: The DropIn component.
-    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent)
-    
     /// Invoked when the drop in component failed with an error.
     ///
     /// - Parameters:
@@ -66,10 +58,4 @@ package protocol DropInComponentDelegate: AnyObject {
     ///   - component: The drop in component that failed.
     func didFail(with error: Error, from dropInComponent: AnyDropInComponent)
     
-}
-
-/// Provides default empty implementations for some of the `DropInComponentDelegate` functions.
-package extension DropInComponentDelegate {
-    
-    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
 }
