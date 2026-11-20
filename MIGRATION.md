@@ -30,6 +30,18 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
@@ -66,6 +78,19 @@ Other changes:
 - Every failure throws `CheckoutEncryptor.Error`. Check its `code`: `.invalidCard` when all fields of the card are `nil`, `.invalidPublicKey` when the public key is invalid, and `.encryptionFailed` for any other failure. The original error, if any, is in `underlyingError`. `CardEncryptor.Error` and `BankDetailsEncryptor.Error` are removed.
 - Values are no longer validated. Empty and non-numeric values are encrypted instead of throwing an error, so validate them before you encrypt them.
 - The public key must be a 2048-bit RSA key in the format `Exponent|Modulus`, in uppercase hexadecimal: 5 characters, `|`, then 512 characters, with nothing before or after. Any other key throws `.invalidPublicKey`.
+
+### Logging
+
+- `AdyenLogging` is no longer public. Set the log level with `Checkout.setLogLevel(_:)` instead:
+
+| Before | After |
+|---|---|
+| `AdyenLogging.isEnabled = true` | `Checkout.setLogLevel(.verbose)` |
+| `AdyenLogging.isEnabled = false` | `Checkout.setLogLevel(.off)` |
+
+- Logging is off by default, as before. `.verbose` logs everything the SDK logs, including request URLs with the client key, and request and response headers and bodies, so only use it during development.
+
+For more details, see [Logging](guides/v6/README.md#logging).
 
 ## 6.0.0-alpha.1
 
@@ -467,14 +492,18 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   When `showsSubmitButton(false)` is set on `CheckoutConfiguration`, the screen is empty.
 - To use your own Apple Pay button, call `submit()` on the component when the shopper taps it. This opens the Apple Pay sheet.
 - The component can be reused after the shopper cancels the sheet or a payment fails.
-- An invalid payment request no longer makes creating the component fail. The failure callback receives
-  `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
-- `ApplePayComponent.Error.submitNotSupported` is removed.
+- An invalid payment request no longer makes creating the component fail. When the sheet can't be opened, `onFailure`
+  receives a `CheckoutError` with the `.invalidConfiguration` code.
+- `ApplePayComponent.Error` is no longer public. Apple Pay errors are reported as `CheckoutError`: `.invalidConfiguration`
+  for an invalid configuration or payment request, and `.paymentMethodFailure` when the device or wallet can't make the
+  payment. `message` describes the specific problem.
+- `ApplePayConfiguration(paymentRequest:)` throws `CheckoutError` with the `.invalidConfiguration` code when the payment
+  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
 - `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
-  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
-  `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
+  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with a `CheckoutError` with the
+  `.invalidConfiguration` code. The shopper can't continue paying with the previous items.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 

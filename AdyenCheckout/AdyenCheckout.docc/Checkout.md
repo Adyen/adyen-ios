@@ -27,3 +27,7 @@ Use ``Checkout`` to set up and retain a checkout instance. Pass `CheckoutCallbac
 ### Components
 
 - ``CheckoutPaymentComponent``
+
+### Logging
+
+- ``setLogLevel(_:)``

@@ -66,19 +66,10 @@ package protocol DropInComponentDelegate: AnyObject {
     ///   - component: The drop in component that failed.
     func didFail(with error: Error, from dropInComponent: AnyDropInComponent)
     
-    /// Invoked when user closes a payment component.
-    ///
-    /// - Parameters:
-    ///   - component: The component that the user closed.
-    ///   - dropInComponent: The drop in component that owns the `component`.
-    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent)
-    
 }
 
 /// Provides default empty implementations for some of the `DropInComponentDelegate` functions.
 package extension DropInComponentDelegate {
     
-    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {}
-
     func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
 }

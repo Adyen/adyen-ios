@@ -113,8 +113,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .first { $0.type == .applePay }
     }
 
-    // TODO: Building the Apple Pay component here sends its setup analytics request when the list loads,
-    // duplicating Drop-in's own setup request. Remove once setup analytics move out of components.
     private lazy var applePayComponent: PaymentComponent? = {
         guard let applePayPaymentMethod,
               let component = componentManager.buildComponent(for: applePayPaymentMethod) else {
@@ -190,7 +188,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
         let trailingInfo: DisplayInformation.TrailingInfoType? = switch paymentMethod {
         case let cardPaymentMethod as CardPaymentMethod where !cardPaymentMethod.brands.isEmpty:
-            .logos(named: cardPaymentMethod.brands.map(\.rawValue), trailingText: nil)
+            .logos(named: cardPaymentMethod.brands.filter { !$0.isLogoHidden }.map(\.rawValue), trailingText: nil)
         default:
             displayInformation.trailingInfo
         }

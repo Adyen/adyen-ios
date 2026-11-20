@@ -7,10 +7,22 @@
 import AdyenNetworking
 import func Darwin.fputs
 
+/// The level of the SDK logs, ordered from most to least verbose. Set it with `Checkout.setLogLevel(_:)`.
+public enum CheckoutLogLevel: Sendable {
+    /// Logs everything the SDK logs, including networking.
+    ///
+    /// Only use this level during development. The logs include request URLs with the client key,
+    /// and request and response headers and bodies.
+    case verbose
+
+    /// Logs nothing. This is the default.
+    case off
+}
+
 /// Provides control over SDK logging.
-public enum AdyenLogging {
+package enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool = false {
+    package static var isEnabled: Bool = false {
         didSet {
             AdyenNetworking.Logging.isEnabled = isEnabled
         }
