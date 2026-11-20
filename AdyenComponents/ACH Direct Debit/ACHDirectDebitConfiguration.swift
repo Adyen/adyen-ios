@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Configuration for ACH Direct Debit.
-public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
+public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, PaymentComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 

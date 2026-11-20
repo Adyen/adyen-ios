@@ -89,7 +89,7 @@ final class SessionComponentConfigurationApplyingTests: XCTestCase {
         XCTAssertFalse(result.showsSubmitButton)
     }
 
-    private func applyGeneric<Configuration: CheckoutComponentConfiguration>(
+    private func applyGeneric<Configuration: PaymentComponentConfiguration>(
         _ session: SessionComponentConfiguration,
         to configuration: Configuration
     ) -> Configuration {
