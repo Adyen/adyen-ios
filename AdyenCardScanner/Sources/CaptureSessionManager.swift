@@ -147,6 +147,13 @@ internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
         }
         connection.preferredVideoStabilizationMode = .auto
 
+        // Deliver upright (portrait) frames, so that the region of interest taken from the portrait preview matches the analyzed image.
+        if #available(iOS 17.0, *) {
+            if connection.isVideoRotationAngleSupported(90) { connection.videoRotationAngle = 90 }
+        } else if connection.isVideoOrientationSupported {
+            connection.videoOrientation = .portrait
+        }
+
         captureSession.commitConfiguration()
     }
 

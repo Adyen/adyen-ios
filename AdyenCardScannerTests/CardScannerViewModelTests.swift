@@ -272,9 +272,9 @@ final class CardScannerViewModelTests: XCTestCase {
 
     func testDidCaptureWithImageShouldCropImageToRegionOfInterest() throws {
         // Given
-        let expectedCroppedImageSize = CGSize(width: 883.0, height: 1042.0)
+        let expectedCroppedImageSize = CGSize(width: 576.0, height: 640.0)
 
-        let previewLayerFrame = UIScreen.main.bounds
+        let previewLayerFrame = CGRect(x: 0, y: 0, width: 320, height: 640)
 
         let roiInPreviewLayer = CGRect(
             x: 20,
@@ -461,5 +461,66 @@ final class CardScannerViewModelTests: XCTestCase {
             expectedCameraAlertSettingButtonTitle,
             cameraAlertCancelButtonTitle
         )
+    }
+
+    func testCropRegionOfInterestGivenImageMatchingPreviewAspectShouldScaleAndFlipROI() {
+        // Given
+        makeSUT()
+        let image = CIImage(color: .black).cropped(to: CGRect(x: 0, y: 0, width: 200, height: 400))
+
+        // When
+        let croppedImage = sut.cropRegionOfInterest(
+            from: image,
+            roiInPreviewFrame: CGRect(x: 10, y: 50, width: 80, height: 50),
+            previewFrame: CGRect(x: 0, y: 0, width: 100, height: 200)
+        )
+
+        // Then
+        XCTAssertEqual(croppedImage.extent, CGRect(x: 20, y: 200, width: 160, height: 100))
+    }
+
+    func testCropRegionOfInterestGivenAspectFillOverflowShouldCenterROI() {
+        // Given
+        makeSUT()
+        let image = CIImage(color: .black).cropped(to: CGRect(x: 0, y: 0, width: 400, height: 400))
+
+        // When
+        let croppedImage = sut.cropRegionOfInterest(
+            from: image,
+            roiInPreviewFrame: CGRect(x: 0, y: 0, width: 100, height: 50),
+            previewFrame: CGRect(x: 0, y: 0, width: 100, height: 200)
+        )
+
+        // Then
+        XCTAssertEqual(croppedImage.extent, CGRect(x: 100, y: 300, width: 200, height: 100))
+    }
+
+    func testCropRegionOfInterestGivenEmptyROIShouldReturnFullImage() {
+        // Given
+        makeSUT()
+        let image = CIImage(color: .black).cropped(to: CGRect(x: 0, y: 0, width: 200, height: 400))
+
+        // When
+        let croppedImage = sut.cropRegionOfInterest(
+            from: image,
+            roiInPreviewFrame: .zero,
+            previewFrame: CGRect(x: 0, y: 0, width: 100, height: 200)
+        )
+
+        // Then
+        XCTAssertEqual(croppedImage.extent, image.extent)
+    }
+
+    private func makeSUT() {
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        appOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            appOpener: appOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
     }
 }
