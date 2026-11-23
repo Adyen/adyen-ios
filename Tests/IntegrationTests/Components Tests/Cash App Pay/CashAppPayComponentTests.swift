@@ -131,7 +131,7 @@ import XCTest
             XCTAssertEqual(sut.storeDetailsItem.title, "Remember for next time")
         }
 
-        func testSwitchVisible() throws {
+        func test_storeDetailsItem_withStoreFieldEnabled_shouldBeVisible() throws {
             
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
@@ -143,7 +143,7 @@ import XCTest
             XCTAssertNotNil(storeDetailsToggleView)
         }
         
-        func testSwitchHidden() throws {
+        func test_storeDetailsItem_withStoreFieldDisabled_shouldBeHidden() throws {
             
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: false)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
@@ -155,7 +155,7 @@ import XCTest
             XCTAssertNil(storeDetailsToggleView)
         }
         
-        func testRequiresUserInteractionIsTrueWhenStoreFieldIsShown() throws {
+        func test_requiresUserInteraction_withStoreFieldEnabled_shouldBeTrue() throws {
             let config = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
                 showsStorePaymentMethodField: true
@@ -165,7 +165,7 @@ import XCTest
             XCTAssertTrue(sut.requiresUserInteraction)
         }
 
-        func testRequiresUserInteractionIsFalseWhenStoreFieldIsHidden() throws {
+        func test_requiresUserInteraction_withStoreFieldDisabled_shouldBeFalse() throws {
             let config = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
                 showsStorePaymentMethodField: false
@@ -175,7 +175,7 @@ import XCTest
             XCTAssertFalse(sut.requiresUserInteraction)
         }
 
-        func testStopLoading() throws {
+        func test_stopLoading_shouldHideButtonActivityIndicator() throws {
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
@@ -187,7 +187,7 @@ import XCTest
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
         }
         
-        func testViewDidLoadShouldSendInitialCall() throws {
+        func test_viewDidLoad_shouldSendInitialAndRenderedEvents() throws {
             
             // Given
             let analyticsProviderMock = AnalyticsProviderMock()
@@ -211,7 +211,7 @@ import XCTest
             XCTAssertEqual(infoType, .rendered)
         }
         
-        func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {
+        func test_paymentMethodType_shouldBeCashAppPay() throws {
             // Given
             let expectedPaymentMethodType: PaymentMethodType = .cashAppPay
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
@@ -224,7 +224,7 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
-        func test_zeroAmount_whenStorePaymentMethodFieldEnabled_thenShowsFieldAndSubmitsShopperChoice() throws {
+        func test_storeDetailsItem_withZeroAmount_shouldShowAndSubmitShopperChoice() throws {
             let configuration = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
                 showsStorePaymentMethodField: true
@@ -256,7 +256,7 @@ import XCTest
             XCTAssertEqual(submittedData.storePaymentMethod, false)
         }
 
-        func test_hiddenStorePaymentMethodField_whenStorePaymentMethodEnabled_thenSubmitsTrue() throws {
+        func test_submit_withStoreFieldHiddenAndStorePaymentMethodEnabled_shouldSubmitTrue() throws {
             // Given
             let configuration = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
@@ -279,7 +279,7 @@ import XCTest
             XCTAssertEqual(submittedData.storePaymentMethod, true)
         }
 
-        func testOneTimeSubmitDetails() throws {
+        func test_submitApprovedRequest_withOneTimeGrant_shouldSubmitOneTimeDetails() throws {
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
@@ -309,7 +309,7 @@ import XCTest
             waitForExpectations(timeout: 10, handler: nil)
         }
         
-        func testOneTimeAndOnFileSubmitDetails() throws {
+        func test_submitApprovedRequest_withOneTimeAndOnFileGrants_shouldSubmitBothGrants() throws {
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
@@ -339,7 +339,7 @@ import XCTest
             waitForExpectations(timeout: 10, handler: nil)
         }
 
-        func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+        func test_performSubmit_shouldCallDelegateDidSubmit() throws {
             // Given
             let configuration = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
@@ -367,7 +367,7 @@ import XCTest
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
         }
         
-        func testSubmitFailure() throws {
+        func test_submitApprovedRequest_withoutGrants_shouldFailWithErrorEvent() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
@@ -398,7 +398,7 @@ import XCTest
             wait(for: [failureExpectation], timeout: 5)
         }
         
-        func testIntegrationError() throws {
+        func test_stateDidChange_withIntegrationError_shouldFailWithErrorEvent() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
@@ -428,7 +428,7 @@ import XCTest
             wait(for: [errorExpectation], timeout: 5)
         }
         
-        func testApiError() throws {
+        func test_stateDidChange_withAPIError_shouldFailWithErrorEvent() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
@@ -458,7 +458,7 @@ import XCTest
             wait(for: [errorExpectation], timeout: 5)
         }
         
-        func testUnexpectedError() throws {
+        func test_stateDidChange_withUnexpectedError_shouldFailWithErrorEvent() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
@@ -488,7 +488,7 @@ import XCTest
             wait(for: [errorExpectation], timeout: 5)
         }
         
-        func testNetworkError() throws {
+        func test_stateDidChange_withNetworkError_shouldFailWithErrorEvent() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(

@@ -11,7 +11,7 @@ import XCTest
 
 class FormCardExpiryDateItemViewTests: XCTestCase {
     ///
-    func testAccessibilityLabelWithEmptyTitle() {
+    func test_accessibilityLabel_withoutTitle_shouldOnlyDescribeFormat() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
         sut.item.title = nil
@@ -21,7 +21,7 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, localizedString(.cardExpiryItemAccessibilityLabel, nil))
     }
 
-    func testAccessibilityLabelWithTitle() {
+    func test_accessibilityLabel_withTitle_shouldCombineTitleAndFormat() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
 
@@ -33,7 +33,7 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
 
-    func testAccessibilityLabelWhenTitleChanges() {
+    func test_accessibilityLabel_whenTitleChanges_shouldUseNewTitle() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
         sut.item.title = "Expiry date"
@@ -82,7 +82,7 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         XCTAssertEqual(sut.accessory, try .customView(XCTUnwrap(sut.hintAccessoryView)))
     }
 
-    func testAccessibilityLabelSetWithoutItemUpdates() {
+    func test_accessibilityLabel_withTitleSetBeforeViewCreation_shouldCombineTitleAndFormat() {
         // Given
         let item = FormCardExpiryDateItem()
         item.title = "Expiry date"

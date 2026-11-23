@@ -38,7 +38,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         )
     }
 
-    func testLocalizationWithCustomTableName() {
+    func test_formItems_withCustomTableName_shouldUseLocalizedStrings() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
         var config = ACHDirectDebitConfiguration()
@@ -83,7 +83,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.storeDetailsItem.title, "Remember for next time")
     }
 
-    func testUIConfiguration() throws {
+    func test_formItems_withCustomTheme_shouldApplyThemeStyling() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         configuration.theme = TestTheme.distinctive()
@@ -118,7 +118,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         )
     }
 
-    func testPrefillInfo() throws {
+    func test_billingAddressItem_withShopperInformation_shouldPrefillAddress() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let config = ACHDirectDebitConfiguration()
@@ -141,7 +141,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
     
-    func testBigTitle() {
+    func test_title_shouldUseUppercasedPaymentMethodName() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         let sut = ACHDirectDebitComponent(
@@ -157,7 +157,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
     
-    func testStopLoading() {
+    func test_stopLoading_shouldHidePayButtonActivityIndicator() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitConfiguration().billingAddressCountryCodes(["US", "GB"])
         let sut = ACHDirectDebitComponent(
@@ -175,7 +175,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
     }
 
-    func testEmptyFieldsValidation() {
+    func test_submit_withEmptyFields_shouldShowValidationErrors() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
@@ -197,7 +197,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(routingNumberItemView?.footerLabel.text, "Invalid ABA routing number")
     }
     
-    func test_zeroAmount_whenStorePaymentMethodEnabled_thenShowsFieldAndSubmitsShopperChoice() throws {
+    func test_storeDetailsItem_withZeroAmount_shouldShowAndSubmitShopperChoice() throws {
         let zeroAmountContext = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Amount(value: 0, currencyCode: "USD"),
@@ -232,7 +232,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(data.storePaymentMethod, false)
     }
 
-    func testSubmission() throws {
+    func test_submit_withValidInput_shouldProvideACHDirectDebitDetails() throws {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
@@ -269,7 +269,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertNotNil(data.billingAddress)
     }
 
-    func testViewDidLoadShouldSendInitialCall() {
+    func test_viewDidLoad_shouldSendInitialAndRenderedEvents() {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -297,7 +297,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+    func test_performSubmit_shouldCallDelegateDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let configuration = ACHDirectDebitConfiguration().showBillingAddress(false)
