@@ -67,10 +67,8 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("appLauncher.openUniversalAppUrl() must not to be called")
         }
         
-        let delegateExpectation = expectation(description: "Expect delegate.didOpenExternalApplication() to be called")
-        delegate.onDidOpenExternalApplication = {
-            XCTAssertTrue($0 === sut)
-            delegateExpectation.fulfill()
+        delegate.onDidFail = { _, _ in
+            XCTFail("delegate.didFail() must not to be called")
         }
         
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "bla://")), paymentData: "test_data")
@@ -96,10 +94,6 @@ class RedirectComponentTests: XCTestCase {
         
         appLauncher.onOpenUniversalAppUrl = { url, completion in
             XCTFail("appLauncher.openUniversalAppUrl() must not to be called")
-        }
-        
-        delegate.onDidOpenExternalApplication = { _ in
-            XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
         
         let testPaymentMethodName = "testRedirectPaymentMethod"
@@ -140,10 +134,8 @@ class RedirectComponentTests: XCTestCase {
             appLauncherExpectation.fulfill()
         }
         
-        let delegateExpectation = expectation(description: "Expect delegate.didOpenExternalApplication() to be called")
-        delegate.onDidOpenExternalApplication = {
-            XCTAssertTrue($0 === sut)
-            delegateExpectation.fulfill()
+        delegate.onDidFail = { _, _ in
+            XCTFail("delegate.didFail() must not to be called")
         }
         
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "https://maps.apple.com")), paymentData: "test_data")
@@ -181,10 +173,6 @@ class RedirectComponentTests: XCTestCase {
             appLauncherExpectation.fulfill()
         }
         
-        delegate.onDidOpenExternalApplication = { _ in
-            XCTFail("delegate.didOpenExternalApplication() must not to be called")
-        }
-        
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "https://maps.apple.com")), paymentData: "test_data")
         sut.handle(action)
         
@@ -205,10 +193,6 @@ class RedirectComponentTests: XCTestCase {
 
         appLauncher.onOpenUniversalAppUrl = { url, completion in
             completion?(false)
-        }
-
-        delegate.onDidOpenExternalApplication = { _ in
-            XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
 
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com?returnUrlQueryString=anything")), paymentData: "test_data")
