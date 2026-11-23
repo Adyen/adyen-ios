@@ -111,8 +111,8 @@ struct PaymentMethodListViewModelTests {
         sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
-        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitCallsCount == 1)
+        #expect(dropInFlowManagerMock.submitReceivedArguments?.component === paymentComponentMock)
     }
 
     @Test
@@ -126,7 +126,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
+        #expect(dropInFlowManagerMock.failCallsCount == 1)
     }
 
     @Test
@@ -153,7 +153,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
+        #expect(dropInFlowManagerMock.failCallsCount == 0)
     }
 
     @Test
@@ -287,7 +287,7 @@ struct PaymentMethodListViewModelTests {
         // Then
         #expect(sut.state == .idle)
         #expect(sut.applePayViewController === viewController)
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
+        #expect(dropInFlowManagerMock.failCallsCount == 0)
     }
 
     // MARK: - Select Payment Method Tests
@@ -485,11 +485,41 @@ struct PaymentMethodListViewModelTests {
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
     }
 
+    // MARK: - Card Brand Logos Tests
+
+    @Test
+    func didLoad_givenUSDebitCardBrands_shouldExcludeUSDebitLogos() throws {
+        // Given
+        let cardPaymentMethod = CardPaymentMethod(
+            type: .scheme,
+            name: "Cards",
+            fundingSource: .credit,
+            brands: [.accel, .visa, .pulse, .masterCard, .star, .nyce]
+        )
+        let (sut, _, _) = makeSUT(regularPaymentMethods: [cardPaymentMethod])
+
+        // When
+        sut.didLoad()
+
+        // Then
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected loaded state")
+            return
+        }
+        let cardItem = try #require(sections.flatMap(\.items).first { $0.title == "Cards" })
+        let trailingInfoData = try #require(cardItem.trailingInfoData)
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let expectedLogoUrls = [CardBrand.visa, .masterCard].map { logoURLProvider.logoURL(withName: $0.rawValue) }
+        #expect(trailingInfoData.logoUrls == expectedLogoUrls)
+        #expect(trailingInfoData.text == nil)
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(
         includeApplePay: Bool = true,
         storedPaymentMethods: [any StoredPaymentMethod]? = nil,
+        regularPaymentMethods: [any PaymentMethod]? = nil,
         supportsStoredPaymentMethodManagement: Bool = false,
         amount: Amount? = .init(value: 100, currencyCode: "EUR"),
         configuration: DropInConfiguration = .init()
@@ -509,6 +539,9 @@ struct PaymentMethodListViewModelTests {
         var methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
         if let storedPaymentMethods {
             methods.stored = storedPaymentMethods
+        }
+        if let regularPaymentMethods {
+            methods.regular = regularPaymentMethods
         }
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,

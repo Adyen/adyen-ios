@@ -26,12 +26,10 @@ internal class CardViewController: FormViewController {
     private var billingAddressSectionItem: FormItem?
     private var installmentsSectionItem: FormItem?
     private let amount: Amount?
-    private let initialCountryCode: String
+    private let initialCountryCode: String?
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
-    // US debit brands stay supported for the bin lookup, but their logos are not shown.
-    private static let hiddenLogoBrands: [CardBrand] = [.accel, .pulse, .star, .nyce]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private let addressCallbacks: AddressCallbacks?
     private let secondaryScreenPresenter: WeakReferenceViewControllerPresenter
@@ -92,7 +90,7 @@ internal class CardViewController: FormViewController {
     ///   - amount: The payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardBrands: The list of supported cards.
-    ///   - initialCountryCode: The initially used country code for the billing address
+    ///   - initialCountryCode: The initially used country code for the billing address, or `nil` when no country can be selected.
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     ///   - theme: The theme to use for styling.
@@ -105,7 +103,7 @@ internal class CardViewController: FormViewController {
         amount: Amount?,
         logoProvider: LogoURLProvider,
         supportedCardBrands: [CardBrand],
-        initialCountryCode: String,
+        initialCountryCode: String?,
         scope: String,
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
@@ -125,7 +123,7 @@ internal class CardViewController: FormViewController {
         self.secondaryScreenPresenter = .init(secondaryScreenPresenter)
 
         self.cardLogos = supportedCardBrands
-            .filter { !Self.hiddenLogoBrands.contains($0) }
+            .filter { !$0.isLogoHidden }
             .map { .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0) }
 
         super.init(

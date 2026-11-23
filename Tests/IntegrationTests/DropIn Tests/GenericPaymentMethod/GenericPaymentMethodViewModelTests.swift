@@ -78,8 +78,8 @@ struct GenericPaymentMethodViewModelTests {
         sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
-        let receivedArguments = dropInFlowManagerMock.submitFromReceivedArguments
+        #expect(dropInFlowManagerMock.submitCallsCount == 1)
+        let receivedArguments = dropInFlowManagerMock.submitReceivedArguments
         #expect((receivedArguments?.data.paymentMethod as? GenericPaymentDetails)?.type == paymentComponentMock.paymentMethod.type)
         #expect(receivedArguments?.component === paymentComponentMock)
         // The module stays presented while the payment is in flight.
@@ -99,8 +99,8 @@ struct GenericPaymentMethodViewModelTests {
         sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
-        #expect(dropInFlowManagerMock.failWithFromReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.failCallsCount == 1)
+        #expect(dropInFlowManagerMock.failReceivedArguments?.component === paymentComponentMock)
         #expect(sut.state == .idle)
     }
 

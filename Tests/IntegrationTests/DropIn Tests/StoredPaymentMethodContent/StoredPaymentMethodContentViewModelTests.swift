@@ -65,17 +65,26 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
         context.sut.didSubmit(data, from: context.component)
 
-        #expect(context.flowManager.submitFromCalled)
+        #expect(context.flowManager.submitCalled)
     }
 
-    /// Cancelling from the content asks the module that presented it to take it away.
     @Test
-    internal func cancel_thenCancelsTheComponentAndAsksToDismiss() {
+    internal func cancel_shouldDiscardThePendingSubmission() {
         let context = makeSUTStoredCardWithCVC()
 
         context.sut.cancel()
 
-        #expect(context.flowManager.cancelComponentCallsCount == 1)
+        #expect(context.flowManager.discardPendingSubmissionCalled)
+    }
+
+    /// Cancelling from the content asks the module that presented it to take it away.
+    @Test
+    internal func cancel_thenDiscardsThePendingSubmissionAndAsksToDismiss() {
+        let context = makeSUTStoredCardWithCVC()
+
+        context.sut.cancel()
+
+        #expect(context.flowManager.discardPendingSubmissionCallsCount == 1)
         #expect(context.router.dismissCallsCount == 1)
     }
 

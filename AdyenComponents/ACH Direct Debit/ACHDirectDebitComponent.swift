@@ -50,8 +50,13 @@ package final class ACHDirectDebitComponent: SecondaryScreenPresentingComponent,
         default: ModalSecondaryScreenPresenter { [weak self] in self?.viewController }
     )
 
-    private var defaultCountryCode: String {
-        configuration.billingAddressCountryCodes.first ?? "US"
+    private var defaultCountryCode: String? {
+        RegionRepository.initialCountryCode(supportedCountryCodes: supportedCountryCodes)
+    }
+
+    private var supportedCountryCodes: Set<String>? {
+        let codes = Set(configuration.billingAddressCountryCodes)
+        return codes.isEmpty ? nil : codes
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod
@@ -221,7 +226,7 @@ package final class ACHDirectDebitComponent: SecondaryScreenPresentingComponent,
         
         if
             let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
-            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+            supportedCountryCodes?.contains(prefillCountryCode) ?? true {
             initialCountry = prefillCountryCode
         }
         
@@ -230,7 +235,7 @@ package final class ACHDirectDebitComponent: SecondaryScreenPresentingComponent,
         return FormAddressPickerItem(
             for: .billing,
             initialCountry: initialCountry,
-            supportedCountryCodes: configuration.billingAddressCountryCodes,
+            supportedCountryCodes: supportedCountryCodes,
             prefillAddress: prefillAddress,
             theme: configuration.theme,
             style: configuration.style,

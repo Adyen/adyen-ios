@@ -29,6 +29,26 @@ struct PaymentMethodItemViewTests {
         #expect(logosView.style.trailingText.font == theme.elements.labels.subheadline.font)
     }
 
+    @Test
+    func layout_givenLongTitle_shouldWrapTitleAndKeepLogosWidth() throws {
+        // Given
+        let shortTitleSUT = makeSUT(item: makeItem(title: "Cards"))
+        let longTitleSUT = makeSUT(item: makeItem(title: "Credit and debit cards with a very long payment method name"))
+
+        // When
+        let shortTitleSize = layout(shortTitleSUT)
+        let longTitleSize = layout(longTitleSUT)
+
+        // Then
+        let longTitleLabel = try #require(longTitleSUT.firstSubview(of: AdyenLabel.self))
+        #expect(longTitleLabel.numberOfLines == 0)
+        #expect(longTitleSize.height > shortTitleSize.height)
+
+        let shortTitleLogos = try #require(shortTitleSUT.firstSubview(of: SupportedPaymentMethodLogosView.self))
+        let longTitleLogos = try #require(longTitleSUT.firstSubview(of: SupportedPaymentMethodLogosView.self))
+        #expect(longTitleLogos.frame.width == shortTitleLogos.frame.width)
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(item: PaymentMethodItem) -> PaymentMethodItemView {
@@ -41,9 +61,27 @@ struct PaymentMethodItemViewTests {
         return sut!
     }
 
-    private func makeItem(theme: CheckoutTheme) -> PaymentMethodItem {
+    private func layout(_ sut: PaymentMethodItemView) -> CGSize {
+        let size = sut.systemLayoutSizeFitting(
+            CGSize(width: Constants.itemWidth, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        sut.frame = CGRect(origin: .zero, size: size)
+        sut.layoutIfNeeded()
+        return size
+    }
+
+    private enum Constants {
+        static let itemWidth: CGFloat = 343
+    }
+
+    private func makeItem(
+        title: String = "Card",
+        theme: CheckoutTheme = CheckoutTheme()
+    ) -> PaymentMethodItem {
         PaymentMethodItem(
-            title: "Card",
+            title: title,
             trailingInfo: .logos(named: ["visa", "mc", "amex", "maestro"], trailingText: nil),
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             theme: theme

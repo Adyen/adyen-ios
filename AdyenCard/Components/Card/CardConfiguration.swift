@@ -8,7 +8,7 @@ import Adyen
 import AdyenUI
 
 /// Card component configuration.
-public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
+public struct CardConfiguration: PaymentComponentConfiguration, AnyPersonalInformationConfiguration {
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     

@@ -33,6 +33,61 @@ struct ComponentContainerViewControllerTests {
         #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == false)
     }
 
+    @Test("Pushing an action on top hides the container without leaving it, so the view model must not be notified.")
+    func viewDidDisappear_whenCoveredByAPushedViewController_shouldNotForwardToViewModel() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+        let navigationController = UINavigationController(rootViewController: sut)
+        let window = show(navigationController)
+        await waitUntil { sut.view.window != nil }
+        let pushedViewController = UIViewController()
+
+        // When
+        navigationController.pushViewController(pushedViewController, animated: true)
+
+        // Then
+        await waitUntil { pushedViewController.viewIfLoaded?.window != nil && sut.view.window == nil }
+        #expect(viewModelMock.viewDidDisappearCallsCount == 0)
+        withExtendedLifetime(window) {}
+    }
+
+    @Test
+    func viewDidDisappear_whenPoppedFromTheNavigationStack_shouldReportLeavingScreen() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+        let navigationController = UINavigationController()
+        navigationController.setViewControllers([UIViewController(), sut], animated: false)
+        let window = show(navigationController)
+        await waitUntil { sut.view.window != nil }
+
+        // When
+        navigationController.popViewController(animated: false)
+
+        // Then
+        await waitUntil { viewModelMock.viewDidDisappearCallsCount > 0 }
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == true)
+        withExtendedLifetime(window) {}
+    }
+
+    @Test("Dismissing the sheet the container is shown in, for example by swiping it down, reports leaving the screen.")
+    func viewDidDisappear_whenItsNavigationControllerIsDismissed_shouldReportLeavingScreen() async throws {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+        let navigationController = UINavigationController(rootViewController: sut)
+        let window = show(UIViewController())
+        let presenter = try #require(window.rootViewController)
+        presenter.present(navigationController, animated: false)
+        await waitUntil { sut.view.window != nil }
+
+        // When
+        presenter.dismiss(animated: false)
+
+        // Then
+        await waitUntil { viewModelMock.viewDidDisappearCallsCount > 0 }
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == true)
+        withExtendedLifetime(window) {}
+    }
+
     @Test
     func componentView_shouldMatchViewModelComponentViewController() async {
         // Given
@@ -277,6 +332,22 @@ struct ComponentContainerViewControllerTests {
         let sut = ComponentContainerViewController(viewModel: viewModelMock)
 
         return (sut, viewModelMock, componentViewControllerMock)
+    }
+
+    private func show(_ viewController: UIViewController) -> UIWindow {
+        let windowScene = UIApplication.shared.connectedScenes.first { $0 is UIWindowScene } as? UIWindowScene
+        let window = windowScene.map { UIWindow(windowScene: $0) } ?? UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = viewController
+        window.isHidden = false
+        return window
+    }
+
+    private func waitUntil(timeout: TimeInterval = 3, _ condition: () -> Bool) async {
+        let deadline = Date().addingTimeInterval(timeout)
+        while !condition(), Date() < deadline {
+            try? await Task.sleep(nanoseconds: 10000000)
+        }
+        #expect(condition())
     }
 
     private func makeNavigationController(pushing sut: ComponentContainerViewController) -> UINavigationController {

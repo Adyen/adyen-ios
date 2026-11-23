@@ -13,8 +13,6 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.threeDS2)
     
-    package var showsSubmitButton: Bool // TODO: get rid of this
-    
     package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
@@ -56,7 +54,6 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     /// Initializes a new instance of AuthenticationConfiguration
     public init(theme: CheckoutTheme = .default) {
         self.theme = theme
-        self.showsSubmitButton = false
     }
 }
 
@@ -71,7 +68,6 @@ extension AuthenticationConfiguration {
         return copy
     }
 
-    // TODO: Robert: ThreeDSComponent: This can be removed from the public interface and can be introduced later.
     /// Sets the configuration for Delegated Authentication.
     /// - Parameter delegatedAuthentication: The delegated authentication configuration.
     /// - Returns: A modified copy of the configuration.

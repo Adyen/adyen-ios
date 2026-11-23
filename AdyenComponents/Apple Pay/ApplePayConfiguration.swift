@@ -10,7 +10,7 @@ import Foundation
 import PassKit
 
 /// Configuration for the Apple Pay payment component.
-public struct ApplePayConfiguration: CheckoutComponentConfiguration {
+public struct ApplePayConfiguration: PaymentComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.applePay)
 
@@ -39,15 +39,22 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     ///   - paymentRequest: The payment request object needed for Apple Pay. Must contain all the required fields
     ///   such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
     /// - Warning: The instance of `paymentRequest` may be mutated.
-    /// - Throws: `ApplePayComponent.Error.emptyMerchantIdentifier` if the merchant identifier is empty.
-    /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the country code is not valid.
-    /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the currency code is not valid.
-    /// - Throws: `ApplePayComponent.Error.emptySummaryItems` if the summaryItems array is empty.
-    /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
-    /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
+    /// - Throws: ``CheckoutError`` with the ``CheckoutError/Code/invalidConfiguration`` code if the payment request is invalid:
+    ///   `merchantIdentifier` is empty, the country or currency code is invalid, `paymentSummaryItems` is empty,
+    ///   the grand total is negative, or a summary item has an invalid amount.
     public init(
         paymentRequest: PKPaymentRequest
     ) throws {
+        do {
+            try Self.validate(paymentRequest: paymentRequest)
+        } catch {
+            throw CheckoutError(code: .invalidConfiguration, message: error.localizedDescription, underlyingError: error)
+        }
+
+        self.paymentRequest = paymentRequest
+    }
+
+    private static func validate(paymentRequest: PKPaymentRequest) throws {
         guard !paymentRequest.merchantIdentifier.isEmpty else {
             throw ApplePayComponent.Error.emptyMerchantIdentifier
         }
@@ -57,10 +64,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         guard CurrencyCodeValidator().isValid(paymentRequest.currencyCode) else {
             throw ApplePayComponent.Error.invalidCurrencyCode
         }
-        
-        try Self.validate(summaryItems: paymentRequest.paymentSummaryItems)
-
-        self.paymentRequest = paymentRequest
+        try validate(summaryItems: paymentRequest.paymentSummaryItems)
     }
 
     internal static func validate(summaryItems: [PKPaymentSummaryItem]) throws {
