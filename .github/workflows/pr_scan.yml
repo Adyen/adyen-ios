@@ -51,13 +51,16 @@ jobs:
     - name: 👷 Clean Build
       run: |
         xcodebuild -version
-        xcodebuild clean build -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcbeautify --quieter --is-ci && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
 
     - name: 🧪 Unit + Integration Tests
       run: |
+        set -o pipefail
+        set +e
+
         xcodebuild test \
           -project "${{env.project}}" \
           -scheme "${scheme}" \
@@ -70,22 +73,32 @@ jobs:
           -parallel-testing-enabled YES \
           -parallel-testing-worker-count 3 \
           ${params} \
-          -destination "${{env.destination}}" 2>&1 | tee xcodebuild-test.log | xcbeautify --is-ci && exit ${PIPESTATUS[0]}
+          -destination "${{env.destination}}" \
+          2>&1 | tee xcodebuild-tests.log | xcbeautify --quieter --is-ci
+
+        statuses=("${PIPESTATUS[@]}")
+        set -e
+
+        printf 'Exit codes: xcodebuild=%s tee=%s xcbeautify=%s\n' \
+          "${statuses[0]}" "${statuses[1]}" "${statuses[2]}"
+
+        exit "${statuses[0]}"
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         testPlan: 'CI'
         resultPath: 'Test-CI-Result.xcresult'
 
-    - name: 📤 Upload test diagnostics
-      if: always()
-      uses: actions/upload-artifact@v4
+    - name: Upload test diagnostics
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v7
       with:
-        name: test-diagnostics
+        name: test-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
         path: |
-          xcodebuild-test.log
+          xcodebuild-tests.log
           Test-CI-Result.xcresult
-        compression-level: 0
+          ~/Library/Logs/DiagnosticReports/
+        if-no-files-found: warn
         retention-days: 7
 
     - name: 🌇 Snapshot Tests iPhone
@@ -101,7 +114,7 @@ jobs:
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
           ${params} \
-          -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "${{env.destination}}" | xcbeautify --quieter --is-ci && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'SnapshotTests'
@@ -121,7 +134,7 @@ jobs:
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
           ${params} \
-          -destination "${{env.destination_iPad}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "${{env.destination_iPad}}" | xcbeautify --quieter --is-ci && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'SnapshotTests'
