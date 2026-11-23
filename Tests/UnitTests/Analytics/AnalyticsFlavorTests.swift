@@ -37,8 +37,4 @@ class AnalyticsFlavorTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedFlavorValue, sut.value)
     }
-
-    func testIntentionalFailureShouldFailCIJob() {
-        XCTFail("Intentional failure to verify CI job fails - revert after verification")
-    }
 }
