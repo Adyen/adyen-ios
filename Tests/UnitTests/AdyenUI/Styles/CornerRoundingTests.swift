@@ -15,13 +15,10 @@ struct CornerRoundingTests {
 
     @Test func sameValuesAreEqual() {
         #expect(CornerRounding.fixed(4) == .fixed(4))
-        #expect(CornerRounding.percent(0.5) == .percent(0.5))
     }
 
     @Test func differentValuesAreNotEqual() {
         #expect(CornerRounding.fixed(4) != .fixed(8))
-        #expect(CornerRounding.percent(0.25) != .percent(0.5))
         #expect(CornerRounding.fixed(0) != .none)
-        #expect(CornerRounding.fixed(0.5) != .percent(0.5))
     }
 }

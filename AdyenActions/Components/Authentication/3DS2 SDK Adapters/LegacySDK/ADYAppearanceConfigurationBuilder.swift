@@ -138,10 +138,6 @@ private extension CornerRounding {
             return 0
         case let .fixed(value):
             return value
-        case let .percent(value):
-            // Using a multiplier to approximate a reasonable corner radius.
-            // TODO: Robert: What is a percent CornerRounding? How does it translate to something that is static.
-            return value * 100
         }
     }
 }

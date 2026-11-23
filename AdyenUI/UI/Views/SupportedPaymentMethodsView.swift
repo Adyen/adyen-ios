@@ -91,8 +91,6 @@ package class SupportedPaymentMethodLogosView: UIView {
                 logoView.cornerRadius = radius
             case .none:
                 logoView.cornerRadius = 0
-            case let .percent(percent):
-                logoView.cornerRadius = min(imageSize.width, imageSize.height) * percent
             }
             logoView.load(url: url)
             return logoView

@@ -65,9 +65,6 @@ extension XCTestCase {
             break
         case let .fixed(radius):
             XCTAssertEqual(layer.cornerRadius, radius, file: file, line: line)
-        case let .percent(percent):
-            let radius = min(layer.frame.width, layer.frame.height) * percent
-            XCTAssertEqual(layer.cornerRadius, radius)
         }
     }
     
