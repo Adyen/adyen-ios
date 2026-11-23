@@ -102,24 +102,6 @@ class DropInComponentDelegateMock: DropInComponentDelegate {
         didFailActionWithFromInClosure?(error, component, dropInComponent)
     }
 
-    // MARK: - didOpenExternalApplication
-
-    var didOpenExternalApplicationComponentInCallsCount = 0
-    var didOpenExternalApplicationComponentInCalled: Bool {
-        didOpenExternalApplicationComponentInCallsCount > 0
-    }
-
-    var didOpenExternalApplicationComponentInReceivedArguments: (component: ActionComponent, dropInComponent: AnyDropInComponent)?
-    var didOpenExternalApplicationComponentInReceivedInvocations: [(component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-    var didOpenExternalApplicationComponentInClosure: ((ActionComponent, AnyDropInComponent) -> Void)?
-
-    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didOpenExternalApplicationComponentInCallsCount += 1
-        didOpenExternalApplicationComponentInReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didOpenExternalApplicationComponentInReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didOpenExternalApplicationComponentInClosure?(component, dropInComponent)
-    }
-
     // MARK: - didFail
 
     var didFailWithFromCallsCount = 0

@@ -257,6 +257,8 @@ shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `Before
 Pass callbacks to `Checkout.setup(..., callbacks:)` rather than chaining them on the returned checkout.
 `CheckoutCallbacks(onComplete:onFailure:)` requires both result handlers for session checkout. Session setup now returns
 `Checkout`; `SessionCheckout` has been removed, and `SessionCheckoutResult` is renamed to `CheckoutResult`.
+`CheckoutResult.sessionResult` is now optional (`String?`) because the `/sessions/{sessionId}/payments` and
+`/sessions/{sessionId}/paymentDetails` responses can omit it. Unwrap it before passing it to the `/sessions/{sessionId}` endpoint.
 Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavior. Modifiers return a copy, so retain the returned value.
 
 Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
