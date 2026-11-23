@@ -67,6 +67,8 @@ jobs:
           -test-iterations 3 \
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
+          -parallel-testing-enabled YES \
+          -parallel-testing-worker-count 3 \
           ${params} \
           -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
