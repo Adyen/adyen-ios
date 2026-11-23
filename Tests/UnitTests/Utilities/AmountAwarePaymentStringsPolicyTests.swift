@@ -66,45 +66,17 @@ struct AmountAwarePaymentStringsPolicyTests {
 
     // MARK: - Locale-specific number formatting
 
-    /// The rendered pay button title for the same €1,234.56 amount across every supported locale,
-    /// Only the amount's own locale drives the number rendering
+    /// The rendered pay button title for the same €1,234.56 amount across every supported locale.
+    /// Only the amount's own locale drives the number rendering. The expected number comes from the
+    /// system formatter, because its output for a locale changes between iOS versions.
     @Test(arguments: [
-        ("ar", "Pay \u{200F}1,234.56\u{00A0}€"), // Pay 1,234.56 € (leading RTL mark)
-        ("bg-BG", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("ca-ES", "Pay 1.234,56\u{00A0}€"), // Pay 1.234,56 €
-        ("cs-CZ", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("da-DK", "Pay 1.234,56\u{00A0}€"), // Pay 1.234,56 €
-        ("de-DE", "Pay 1.234,56\u{00A0}€"), // Pay 1.234,56 €
-        ("el-GR", "Pay 1.234,56\u{00A0}€"), // Pay 1.234,56 €
-        ("en-US", "Pay €1,234.56"), // Pay €1,234.56
-        ("es-ES", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("et-EE", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("fi", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("fr-FR", "Pay 1\u{202F}234,56\u{00A0}€"), // Pay 1 234,56 € (narrow no-break group separator)
-        ("hr-HR", "Pay 1.234,56\u{00A0}€"), // Pay 1.234,56 €
-        ("hu-HU", "Pay 1234,56\u{00A0}EUR"), // Pay 1234,56 EUR
-        ("is-IS", "Pay 1.234,56\u{00A0}EUR"), // Pay 1.234,56 EUR
-        ("it-IT", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("ja-JP", "Pay €1,234.56"), // Pay €1,234.56
-        ("ko", "Pay €1,234.56"), // Pay €1,234.56
-        ("lt-LT", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("lv-LV", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("nb-NO", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("nl-NL", "Pay €\u{00A0}1.234,56"), // Pay € 1.234,56
-        ("pl-PL", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("pt-BR", "Pay €\u{00A0}1.234,56"), // Pay € 1.234,56
-        ("pt-PT", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("ro-RO", "Pay 1.234,56\u{00A0}EUR"), // Pay 1.234,56 EUR
-        ("ru-RU", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("sk-SK", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("sl-SI", "Pay 1234,56\u{00A0}€"), // Pay 1234,56 €
-        ("sv-SE", "Pay 1\u{00A0}234,56\u{00A0}€"), // Pay 1 234,56 €
-        ("zh-CN", "Pay €1,234.56"), // Pay €1,234.56
-        ("zh-TW", "Pay €1,234.56") // Pay €1,234.56
+        "ar", "bg-BG", "ca-ES", "cs-CZ", "da-DK", "de-DE", "el-GR", "en-US",
+        "es-ES", "et-EE", "fi", "fr-FR", "hr-HR", "hu-HU", "is-IS", "it-IT",
+        "ja-JP", "ko", "lt-LT", "lv-LV", "nb-NO", "nl-NL", "pl-PL", "pt-BR",
+        "pt-PT", "ro-RO", "ru-RU", "sk-SK", "sl-SI", "sv-SE", "zh-CN", "zh-TW"
     ])
     func payButtonTitle_forEachAmountLocaleWithConstantBundle_then_formatsNumberForThatLocale(
-        amountLocaleIdentifier: String,
-        expectedTitle: String
+        amountLocaleIdentifier: String
     ) {
         // Given
         let sut = makeSUT()
@@ -115,7 +87,7 @@ struct AmountAwarePaymentStringsPolicyTests {
         let title = sut.payButtonTitle(with: amount, localizationParameters: bundle)
 
         // Then
-        #expect(title == expectedTitle)
+        #expect(title == "Pay \(amount.formatted)")
     }
 
     // MARK: - Missing amount
