@@ -136,6 +136,39 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(descriptionLabel()).isHidden)
     }
 
+    func test_performSubmit_withoutSelection_whenErrorIsAlreadyShown_shouldScrollToTop() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 30), context: context)
+        let tableView: UITableView = try presentList().tableView
+        sut.performSubmit()
+        wait(until: { self.isScrolledToTop(tableView) }, timeout: 5)
+        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentSize.height / 2), animated: false)
+        XCTAssertFalse(isScrolledToTop(tableView))
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(until: { self.isScrolledToTop(tableView) }, timeout: 5)
+        XCTAssertFalse(try XCTUnwrap(errorLabel()).isHidden)
+    }
+
+    func test_performSubmit_withoutSelection_whileSearching_shouldShowErrorAndScrollToTopOnceSearchIsDismissed() throws {
+        // Given
+        let (delegateMock, searchController) = try presentListWithActiveSearch(selectingIssuerFirst: false)
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let tableView: UITableView = searchViewController.resultsListViewController.tableView
+        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentSize.height / 2), animated: false)
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(until: { searchController.presentingViewController == nil && self.isScrolledToTop(tableView) }, timeout: 5)
+        XCTAssertFalse(try XCTUnwrap(errorLabel()).isHidden)
+        XCTAssertFalse(delegateMock.didSubmitCalled)
+    }
+
     func test_descriptionLabel_shouldUseThemeTextColor() throws {
         // Given
         let theme = CheckoutTheme(colors: CheckoutColors(text: .magenta, textSecondary: .orange))
@@ -481,6 +514,10 @@ private extension IssuerListComponentTests {
 
     func submitButton() -> FormButton? {
         sut.viewController.view.findView(by: "submitButton")
+    }
+
+    func isScrolledToTop(_ tableView: UITableView) -> Bool {
+        abs(tableView.contentOffset.y + tableView.adjustedContentInset.top) < 1
     }
 
     func selectedRowIndices(in listViewController: ListViewController) -> [Int] {

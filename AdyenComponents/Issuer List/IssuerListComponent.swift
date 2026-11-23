@@ -74,8 +74,9 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 
     package func performSubmit() {
         guard let selectedIssuerIndex else {
-            searchViewController.endSearch()
-            setShowsError(true)
+            searchViewController.endSearch { [weak self] in
+                self?.setShowsError(true)
+            }
             return
         }
 
@@ -209,9 +210,9 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
         searchViewController.reloadResults()
     }
     
-    /// Shows or hides the validation error, scrolling the header into view when the error appears.
+    /// Shows or hides the validation error, scrolling the header into view whenever the error is shown.
     private func setShowsError(_ showsError: Bool) {
-        guard headerView.showsError != showsError else { return }
+        guard showsError || headerView.showsError else { return }
         headerView.showsError = showsError
         searchViewController.updateHeaderLayout(revealingHeader: showsError)
     }
