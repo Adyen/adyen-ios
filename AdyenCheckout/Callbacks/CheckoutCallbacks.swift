@@ -104,8 +104,8 @@ public struct CheckoutCallbacks: CheckoutResultCallbacks, Sendable {
     }
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
-        guard let sessionId, let sessionResult else {
-            AdyenAssertion.assertionFailure(message: "Session completion called without sessionId or sessionResult.")
+        guard let sessionId else {
+            AdyenAssertion.assertionFailure(message: "Session completion called without sessionId.")
             return
         }
         onComplete(CheckoutResult(resultCode: resultCode, sessionId: sessionId, sessionResult: sessionResult))
