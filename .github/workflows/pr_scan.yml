@@ -72,12 +72,12 @@ jobs:
           -test-repetition-relaunch-enabled YES \
           ${params} \
           -destination "${{env.destination}}" \
-          2>&1 | tee xcodebuild-tests.log | xcpretty --utf --color
+          2>&1 | tee xcodebuild-tests.log | xcbeautify --quieter --is-ci
 
         statuses=("${PIPESTATUS[@]}")
         set -e
 
-        printf 'Exit codes: xcodebuild=%s tee=%s xcpretty=%s\n' \
+        printf 'Exit codes: xcodebuild=%s tee=%s xcbeautify=%s\n' \
           "${statuses[0]}" "${statuses[1]}" "${statuses[2]}"
 
         exit "${statuses[0]}"
