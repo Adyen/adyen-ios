@@ -115,14 +115,6 @@ jobs:
         testPlan: 'SnapshotTests'
         resultPath: 'Test-Snapshots-Result-iPad.xcresult'
 
-    - name: 🍛 Prepare coverage reports
-      run: |
-        # TODO: Temporarily commented - re-enable with snapshot tests
-        # bash Scripts/xccov-to-sonarqube-generic.sh Test-Snapshots-Result.xcresult/ > sonarqube-coverage-snapshots.xml
-        # sed "s#$PWD/##g" sonarqube-coverage-snapshots.xml > sonarqube_updated_snapshots.xml
-        bash Scripts/xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-ci.xml
-        sed "s#$PWD/##g" sonarqube-coverage-ci.xml > sonarqube_updated_ci.xml
-
     - name: 🧼 SwiftLint
       run: |
         brew install swiftlint
@@ -133,7 +125,12 @@ jobs:
     - name: 📡 Run Sonar
       if: ${{ env.sonarToken != 0 && github.event_name != 'merge_group' }}
       run: |
+        # TODO: Temporarily commented - re-enable with snapshot tests
+        # bash Scripts/xccov-to-sonarqube-generic.sh Test-Snapshots-Result.xcresult/ > sonarqube-coverage-snapshots.xml
+        # sed "s#$PWD/##g" sonarqube-coverage-snapshots.xml > sonarqube_updated_snapshots.xml
+        bash Scripts/xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-ci.xml
+        sed "s#$PWD/##g" sonarqube-coverage-ci.xml > sonarqube_updated_ci.xml
         git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_ci.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
