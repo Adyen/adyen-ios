@@ -70,12 +70,23 @@ jobs:
           -parallel-testing-enabled YES \
           -parallel-testing-worker-count 3 \
           ${params} \
-          -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "${{env.destination}}" 2>&1 | tee xcodebuild-test.log | xcbeautify --is-ci && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         testPlan: 'CI'
         resultPath: 'Test-CI-Result.xcresult'
+
+    - name: 📤 Upload test diagnostics
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-diagnostics
+        path: |
+          xcodebuild-test.log
+          Test-CI-Result.xcresult
+        compression-level: 0
+        retention-days: 7
 
     - name: 🌇 Snapshot Tests iPhone
       if: false  # Temporarily disabled until we stabilize the UI
