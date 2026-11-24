@@ -48,14 +48,6 @@ jobs:
         brew update
         brew install sonar-scanner
 
-    - name: 👷 Clean Build
-      run: |
-        xcodebuild -version
-        xcodebuild clean build -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcbeautify --quieter --is-ci && exit ${PIPESTATUS[0]}
-      env:
-        params: '${{env.params}}'
-        scheme: 'AdyenUIHost'
-
     - name: 🧪 Unit + Integration Tests
       run: |
         set -o pipefail
@@ -70,8 +62,6 @@ jobs:
           -test-iterations 3 \
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
-          -parallel-testing-enabled YES \
-          -parallel-testing-worker-count 3 \
           ${params} \
           -destination "${{env.destination}}" \
           2>&1 | tee xcodebuild-tests.log | xcbeautify --quieter --is-ci
