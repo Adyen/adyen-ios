@@ -2592,7 +2592,7 @@ extension CardComponentTests {
         XCTAssertEqual(items.numberContainerItem.numberItem.validationFailureMessage, "Enter a valid card number")
         XCTAssertEqual(
             items.expiryDateItem.validationFailureMessage,
-            "Enter a valid expiration date. Front of card in MM/YY format"
+            "Enter a valid expiry date. Front of card in MM/YY format"
         )
     }
 

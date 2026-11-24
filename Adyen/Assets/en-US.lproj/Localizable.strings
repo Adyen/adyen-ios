@@ -30,7 +30,7 @@
 "adyen.card.expiryItem.title" = "Expiry date";
 "adyen.card.expiryItem.title.optional" = "Expiry date (optional)";
 "adyen_checkout_card_expiry_date_hint" = "Front of card in MM/YY format";
-"adyen.card.expiryItem.invalid" = "Enter a valid expiration date. Front of card in MM/YY format";
+"adyen.card.expiryItem.invalid" = "Enter a valid expiry date. Front of card in MM/YY format";
 "adyen.card.expiryItem.accessibilityLabel" = "Month, 2 digits, Year, 2 digits";
 "adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
