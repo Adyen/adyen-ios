@@ -79,6 +79,16 @@
 
 - `AdyenFonts.default` is now immutable (`static let`) and can no longer be reassigned or mutated in place. To customize fonts, create an `AdyenFonts(...)` value and apply it through `CheckoutTheme` and `CheckoutConfiguration.theme(_:)`.
 
+### Store payment method strings
+
+- The card store payment method toggle now reads "Remember my card details for future payments" in English. Its localization key was renamed from `adyen.card.storeDetailsButton` to `adyen_checkout_card_store_details_label`, and `CheckoutLocalizationKey.cardStorePaymentMethod` was renamed to `CheckoutLocalizationKey.cardStoreDetailsLabel`. If you override this string in your own strings table or through a `CheckoutLocalizationProvider`, rename your overrides to keep the custom text.
+- ACH Direct Debit and Cash App Pay no longer use the card store details key for their store payment method toggle. They use the new `adyen_checkout_store_details_label` key. If you override this string in your own strings table, add the new key to keep the custom text for these components.
+- `CheckoutLocalizationKey.cardStoreDetailsLabel` now only changes the card toggle.
+
+### Card expiry date hint
+
+- The card expiry date field now shows a hint below the field that reads "Front of card in MM/YY format" in English. Its localization key was renamed from `adyen.card.expiryItem.placeholder` to `adyen_checkout_card_expiry_date_hint`. If you override this string in your own strings table, rename your override to keep the custom text. Overrides through `CheckoutLocalizationKey.cardExpiryDateHint` keep working.
+
 ### Encryption
 
 `CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:

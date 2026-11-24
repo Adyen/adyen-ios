@@ -220,7 +220,7 @@ extension CardViewController {
 
         internal lazy var storeDetailsItem: FormToggleItem = {
             let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
-            storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
+            storeDetailsItem.title = localizedString(.cardStoreDetailsLabel, localizationParameters)
             storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
             
             return storeDetailsItem

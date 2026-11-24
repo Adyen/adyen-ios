@@ -186,6 +186,99 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(expectedFormattedValue, item.formattedValue)
         XCTAssertEqual(expectedFormattedValue, sut.textField.text)
     }
+
+    // MARK: - Hint Accessory
+
+    func test_hintAccessory_givenEmptyValue_shouldShowHint() {
+        // Given
+        let hintView = makeHintAccessorySUT()
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(hintView))
+    }
+
+    func test_hintAccessory_whenValueBecomesValidWhileEditing_shouldShowCheckmark() {
+        // Given
+        let hintView = makeHintAccessorySUT()
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+
+        // When
+        type("12")
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(hintView))
+
+        // When
+        type("123")
+
+        // Then
+        XCTAssertEqual(sut.accessory, .valid)
+    }
+
+    func test_hintAccessory_whenValidValueBecomesInvalid_shouldShowHintAgain() {
+        // Given
+        let hintView = makeHintAccessorySUT()
+        type("123")
+        XCTAssertEqual(sut.accessory, .valid, "Precondition: checkmark should be shown for a valid value")
+
+        // When
+        type("12")
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(hintView))
+    }
+
+    func test_hintAccessory_givenValidValue_whenEditingBeginsAndEnds_shouldKeepCheckmark() {
+        // Given
+        makeHintAccessorySUT()
+        type("123")
+
+        // When
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .valid)
+
+        // When
+        sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .valid)
+    }
+
+    func test_hintAccessory_givenInvalidValue_whenFocusLost_shouldShowWarningAndHintOnRefocus() {
+        // Given
+        let hintView = makeHintAccessorySUT()
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+        type("12")
+
+        // When
+        sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .invalid)
+
+        // When
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(hintView))
+    }
+
+    @discardableResult
+    private func makeHintAccessorySUT() -> UIView {
+        validator.handleIsValid = { $0.count == 3 }
+        item.formatter = nil
+        sut = FormTextItemView(item: item)
+        let hintView = UIView()
+        sut.hintAccessoryView = hintView
+        return hintView
+    }
+
+    private func type(_ text: String) {
+        sut.textField.text = text
+        sut.textField.sendActions(for: .editingChanged)
+    }
 }
 
 extension UIColor {

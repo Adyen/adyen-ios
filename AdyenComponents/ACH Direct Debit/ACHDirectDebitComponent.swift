@@ -212,7 +212,7 @@ package final class ACHDirectDebitComponent: @MainActor PaymentComponent,
     
     internal lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
-        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
+        storeDetailsItem.title = localizedString(.storeDetailsLabel, configuration.localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
         
         return storeDetailsItem

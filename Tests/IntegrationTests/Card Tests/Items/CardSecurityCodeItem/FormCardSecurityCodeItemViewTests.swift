@@ -350,6 +350,20 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         }
     }
 
+    func test_strings_withEnglishLocale_shouldAskForSecurityCodeWhenEmptyAndValidSecurityCodeWhenPartial() {
+        let sut = CardSecurityCodeStrings.self
+        let parameters = LocalizationParameters(enforcedLocale: "en-US")
+        let cases: [(CardValidationError, CardBrand?, String)] = [
+            (.securityCodeEmpty, .visa, "Enter the security code. 3 digits on back of card"),
+            (.securityCodePartial, .visa, "Enter a valid security code. 3 digits on back of card"),
+            (.securityCodeEmpty, .americanExpress, "Enter the security code. 4 digits on front of card"),
+            (.securityCodePartial, .americanExpress, "Enter a valid security code. 4 digits on front of card")
+        ]
+        for (error, brand, expected) in cases {
+            XCTAssertEqual(sut.validationMessage(for: error, brand: brand, localizationParameters: parameters), expected)
+        }
+    }
+
     func test_strings_givenNoCvcError_shouldReturnNil() {
         let sut = CardSecurityCodeStrings.self
         XCTAssertNil(sut.validationMessage(for: nil, brand: .visa, localizationParameters: nil))
@@ -419,12 +433,92 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         )
     }
 
+    func test_accessory_givenEmptyCode_shouldShowCvvHint() {
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
+    func test_accessory_whenValidCodeEnteredWhileEditing_shouldShowCheckmark() {
+        // Given
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+
+        // When
+        sut.textField.text = "123"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertEqual(sut.accessory, .valid)
+    }
+
+    func test_accessory_givenValidThreeDigitCode_whenAmexSelected_shouldShowCvvHint() {
+        // Given
+        let item = makeItemSUT()
+        let sut = FormCardSecurityCodeItemView(item: item)
+        sut.textField.text = "123"
+        sut.textField.sendActions(for: .editingChanged)
+        XCTAssertEqual(sut.accessory, .valid, "Precondition: checkmark should be shown for a valid code")
+
+        // When
+        item.selectedCard = .americanExpress
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
+    func test_accessory_givenOptionalModeAndEmptyCode_shouldShowCvvHint() {
+        // Given
+        let item = makeItemSUT()
+        let sut = FormCardSecurityCodeItemView(item: item)
+
+        // When
+        item.displayMode = .optional
+
+        // Then
+        XCTAssertTrue(item.isValid())
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+    }
+
+    func test_cardHintView_whenDeletingAfterValidCode_shouldNotStretch() {
+        // Given
+        let sut = FormCardSecurityCodeItemView(item: makeItemSUT())
+        let window = layOutInWindow(sut)
+        sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+        sut.textField.text = "737"
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // When
+        sut.textField.text = "7"
+        sut.textField.sendActions(for: .editingChanged)
+        window.layoutIfNeeded()
+
+        // Then
+        XCTAssertEqual(sut.accessory, .customView(sut.cardHintView))
+        XCTAssertFalse(sut.textField.hasAmbiguousLayout)
+        XCTAssertEqual(sut.cardHintView.frame.width, sut.cardHintView.intrinsicContentSize.width, accuracy: 0.5)
+    }
+
     private struct StringsProvider: CheckoutLocalizationProvider {
         let values: [CheckoutLocalizationKey: String]
 
         func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
             values[key]
         }
+    }
+
+    private func layOutInWindow(_ view: UIView) -> UIWindow {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 375, height: 812))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        window.addSubview(view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            view.topAnchor.constraint(equalTo: window.topAnchor)
+        ])
+        window.isHidden = false
+        window.layoutIfNeeded()
+        return window
     }
 
     private func makeItemSUT() -> FormCardSecurityCodeItem {

@@ -191,7 +191,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 ///
 /// Keys grouped by where they show up in the card UI:
 /// - field titles (always visible): `.cardNumber`, `.cardExpiryDate`, `.cardSecurityCode`, `.cardHolderName`
-/// - the "save card" toggle: `.cardStorePaymentMethod`
+/// - the "save card" toggle: `.cardStoreDetailsLabel`
 /// - validation errors (visible when you submit bad input): `.cardNumberInvalid`, `.cardExpiryDateInvalid`
 ///
 /// To eyeball locale routing, change the simulator language under Settings → General → Language & Region.
@@ -220,7 +220,7 @@ private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
             "fr": "Nom sur la carte"
         ],
         // Save-card toggle
-        .cardStorePaymentMethod: [
+        .cardStoreDetailsLabel: [
             "en": "Remember this card",
             "nl": "Onthoud deze kaart",
             "fr": "Mémoriser cette carte"
@@ -258,7 +258,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardExpiryDate: "Custom Expiry",
             .cardSecurityCode: "Custom CVC",
             .cardHolderName: "Name on card",
-            .cardStorePaymentMethod: "Remember this card",
+            .cardStoreDetailsLabel: "Remember this card",
             .cardNumberInvalid: "Card number looks wrong",
             .cardExpiryDateInvalid: "Expiry date is invalid"
         ],
@@ -267,7 +267,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardExpiryDate: "Vervaldatum (Aangepast)",
             .cardSecurityCode: "CVC (Aangepast)",
             .cardHolderName: "Naam op kaart",
-            .cardStorePaymentMethod: "Onthoud deze kaart",
+            .cardStoreDetailsLabel: "Onthoud deze kaart",
             .cardNumberInvalid: "Kaartnummer klopt niet",
             .cardExpiryDateInvalid: "Vervaldatum is ongeldig"
         ],
@@ -276,7 +276,7 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
             .cardExpiryDate: "Expiration (perso)",
             .cardSecurityCode: "CVC (perso)",
             .cardHolderName: "Nom sur la carte",
-            .cardStorePaymentMethod: "Mémoriser cette carte",
+            .cardStoreDetailsLabel: "Mémoriser cette carte",
             .cardNumberInvalid: "Numéro de carte incorrect",
             .cardExpiryDateInvalid: "Date d'expiration invalide"
         ]
