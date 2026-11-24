@@ -31,8 +31,8 @@ import UIKit
 ///     }
 /// ) {
 ///     CardCallbacks()
-///         .onBinChange { bin in
-///             print(bin)
+///         .onBinChange { binValue in
+///             print(binValue)
 ///         }
 /// }
 /// .onBeforeSubmit { data in
