@@ -118,6 +118,24 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(binInfoProviderMock.receivedSupportedTypes, brands)
     }
 
+    func test_didChange_whenPanShorterThanBinLookupThreshold_shouldRequestBrandImmediately() {
+        let binInfoProviderMock = BinInfoProviderMock()
+        var fetchCount = 0
+        binInfoProviderMock.onFetch = { _ in fetchCount += 1 }
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration(),
+            binProvider: binInfoProviderMock
+        )
+
+        sut.didChange(pan: "4")
+        sut.didChange(pan: "41")
+        sut.didChange(pan: "411")
+
+        XCTAssertEqual(fetchCount, 3)
+    }
+
     func test_selectedBrand_whenBinLookupReturnsVisaAndStar_shouldBeNil() {
         var configuration = CardConfiguration()
         configuration.supportedCardBrands = [.visa, .masterCard, .star]
