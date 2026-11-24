@@ -161,6 +161,8 @@ extension FormCardSecurityCodeItemView {
         }
         
         private func animateHint() {
+            hintImage.layer.removeAllAnimations()
+            hintImage.alpha = 1
             UIView.animate(
                 withDuration: blinkDuration,
                 delay: 0,
