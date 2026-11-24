@@ -12,7 +12,7 @@ package typealias AssertionListener = @Sendable (String) -> Void
 
 package enum AdyenAssertion {
 
-    /// TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instead of using locks?
     private static let listenerStorage = OSAllocatedUnfairLock<AssertionListener?>(initialState: nil)
 
     internal static var listener: AssertionListener? {

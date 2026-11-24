@@ -106,11 +106,9 @@ internal class QRCodeViewModel: @MainActor QRCodeViewModelProtocol, @MainActor L
     private func enableCopyInProgress(for timeInterval: TimeInterval) {
         copyInProgress.wrappedValue = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) { [weak self] in
-            // TODO: Robert: Swift6: why are we using assumm ISOlated here. isn't this risky?
-            MainActor.assumeIsolated {
-                self?.copyInProgress.wrappedValue = false
-            }
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(timeInterval))
+            self?.copyInProgress.wrappedValue = false
         }
     }
     

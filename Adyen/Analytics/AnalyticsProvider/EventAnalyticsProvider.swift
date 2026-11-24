@@ -36,16 +36,29 @@ import Foundation
         Task { startNextTimer() }
     }
     
-    isolated deinit {
-        batchTimer?.invalidate()
-        // fire-and-forget remaining events without capturing self
-        if let request = requestWithAllEvents() {
-            let apiClient = apiClient
-            Task {
-                _ = try? await apiClient.performAsync(request)
+    #if compiler(>=6.2)
+        isolated deinit {
+            batchTimer?.invalidate()
+            // fire-and-forget remaining events without capturing self
+            if let request = requestWithAllEvents() {
+                let apiClient = apiClient
+                Task {
+                    _ = try? await apiClient.performAsync(request)
+                }
             }
         }
-    }
+    #else
+        deinit {
+            batchTimer?.invalidate()
+            // fire-and-forget remaining events without capturing self
+            if let request = requestWithAllEvents() {
+                let apiClient = apiClient
+                Task {
+                    _ = try? await apiClient.performAsync(request)
+                }
+            }
+        }
+    #endif
     
     internal func add(info: AnalyticsEventInfo) {
         eventDataSource.add(info: info)

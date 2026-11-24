@@ -20,7 +20,7 @@ internal struct LocalizationWarning: Hashable {
 
 internal enum LocalizationWarningLog {
 
-    /// TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instead of using locks?
     private struct State {
         internal var onEmit: (@Sendable (LocalizationWarning) -> Void)?
         internal var emittedWarnings = Set<LocalizationWarning>()

@@ -9,7 +9,7 @@ import os
 
 /// Provides access to injected dependencies.
 package struct AdyenDependencyValues {
-    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instea of usign locks?
+    // TODO: Robert: Swift6: This may be of a concern. Have a closer look at this. Why cant this be on the main actor instead of using locks?
     private static let currentStorage = OSAllocatedUnfairLock(initialState: AdyenDependencyValues())
 
     /// The currently injected values

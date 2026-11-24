@@ -300,23 +300,21 @@ internal final class DelegatedAuthenticationView: UIView {
     }
     
     internal func animateImageTransitionToSystemImage(named: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            // TODO: Robert: Swift6: isn't this risky to assume that it is mainactor isolated
-            MainActor.assumeIsolated {
-                guard let self else { return }
-                
-                if let replacementImage = UIImage(
-                    systemName: named,
-                    withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
-                ) {
-                    UIView.transition(
-                        with: self.logoImage,
-                        duration: 0.5,
-                        options: .transitionCrossDissolve,
-                        animations: { self.logoImage.image = replacementImage },
-                        completion: nil
-                    )
-                }
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(1))
+            guard let self else { return }
+
+            if let replacementImage = UIImage(
+                systemName: named,
+                withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
+            ) {
+                UIView.transition(
+                    with: self.logoImage,
+                    duration: 0.5,
+                    options: .transitionCrossDissolve,
+                    animations: { self.logoImage.image = replacementImage },
+                    completion: nil
+                )
             }
         }
     }
