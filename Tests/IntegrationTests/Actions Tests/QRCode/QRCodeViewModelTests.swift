@@ -200,11 +200,11 @@ class QRCodeViewModelTests: XCTestCase {
         paymentMethodType: QRCodePaymentMethod = .pix,
         qrCodeData: String = "123",
         paymentData: String = "payment-data",
-        imageLoader: ImageLoaderMock = ImageLoaderMock(),
+        imageLoader: ImageLoaderMock? = nil,
         onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void = { _, _ in },
         onCopyCode: @escaping (_ code: String) -> Void = { _ in }
     ) -> (sut: QRCodeViewModel, imageLoader: ImageLoaderMock) {
-        
+        let imageLoader = imageLoader ?? ImageLoaderMock()
         let action = QRCodeAction(
             paymentMethodType: paymentMethodType,
             qrCodeData: qrCodeData,

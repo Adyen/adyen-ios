@@ -50,7 +50,7 @@ import XCTest
     
         @MainActor static func actionComponent(
             with twintSpy: TwintSpy,
-            configuration: TwintActionConfiguration = .dummy,
+            configuration: TwintActionConfiguration? = nil,
             context: AdyenContext = Dummy.context,
             actionPresentationDelegate: ActionPresentationDelegate?,
             delegate: ActionComponentDelegate?,
@@ -67,7 +67,7 @@ import XCTest
         
             let component = TwintSDKActionComponent(
                 context: context,
-                configuration: configuration,
+                configuration: configuration ?? .dummy,
                 twint: twintSpy,
                 pollingComponentBuilder: pollingBuilder
             )

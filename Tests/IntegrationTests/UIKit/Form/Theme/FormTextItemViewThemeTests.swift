@@ -121,11 +121,11 @@ final class FormTextItemViewThemeTests: XCTestCase {
     // MARK: - SUT Factory
 
     private func makeSUT(
-        item: FormTextInputItem = FormTextInputItem(),
+        item: FormTextInputItem? = nil,
         colors: CheckoutColors = .default
     ) -> FormTextInputItemView {
         let theme = CheckoutTheme(colors: colors)
-        return FormTextInputItemView(item: item, theme: theme)
+        return FormTextInputItemView(item: item ?? FormTextInputItem(), theme: theme)
     }
 
     // MARK: - Helpers

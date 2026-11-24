@@ -22,6 +22,9 @@ internal protocol CheckoutAttemptIdProviding {
 /// If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed.
 @MainActor
 internal struct CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
+    // swiftlint:disable:this unneeded_synthesized_initializer
+    internal nonisolated init() {}
+
     internal func fetchCheckoutAttemptId(
         with apiClient: AsyncAPIClientProtocol?
     ) async -> String? {

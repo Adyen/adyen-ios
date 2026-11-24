@@ -105,11 +105,11 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
     }
 
     private func makeSUT(
-        configuration: CardConfiguration = .init(),
+        configuration: CardConfiguration? = nil,
         globalProvider: (any CheckoutLocalizationProvider)? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) throws -> CardComponent {
-        var cardConfiguration = configuration
+        var cardConfiguration = configuration ?? .init()
         cardConfiguration.localizationParameters = localizationParameters
 
         var checkoutConfiguration = makeCheckoutConfiguration(

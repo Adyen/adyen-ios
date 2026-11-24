@@ -444,14 +444,14 @@ final class CardComponentEventTests: XCTestCase {
     // MARK: - Helper methods
 
     private func makeSUT(
-        with configuration: CardConfiguration = .init(),
+        with configuration: CardConfiguration? = nil,
         analyticsProviderMock: AnalyticsProviderMock
     ) -> CardComponent {
         let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let cardComponent = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: configuration
+            configuration: configuration ?? .init()
         )
         cardComponent.viewController.loadViewIfNeeded()
 

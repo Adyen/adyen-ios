@@ -36,7 +36,7 @@ private class FormSelectableValueItemViewMock: FormSelectableValueItemView<Strin
 private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
 
     convenience init(
-        style: FormTextItemStyle = .init(),
+        style: FormTextItemStyle? = nil,
         title: String = "Title",
         placeholder: String = placeholderText,
         preselectedValue: FormPickerElement? = nil,
@@ -46,7 +46,7 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
             placeholder: placeholder,
-            style: style,
+            style: style ?? .init(),
             presenter: nil,
             configuration: .init(title: title)
         )

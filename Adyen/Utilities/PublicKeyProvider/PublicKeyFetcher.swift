@@ -21,7 +21,7 @@ package protocol APIClientKeyRequestProtocol {
 
 @MainActor
 package final class PublicKeyFetcher: PublicKeyFetching {
-    package init() {}
+    package nonisolated init() {}
 
     package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void) {
         let request = ClientKeyRequest(clientKey: clientKey)

@@ -33,6 +33,9 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     import AdyenCardScanner
 
     private struct CardScannerAvailabilityWrapper: CardScannerAvailability {
+        // swiftlint:disable:this unneeded_synthesized_initializer
+        fileprivate nonisolated init() {}
+
         var isScannerAvailable: Bool {
             AdyenCardScanner.CardScanner.isAvailable
         }
@@ -61,6 +64,9 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     }
 
     internal struct CardScannerProviderWrapper: CardScannerProviding {
+        // swiftlint:disable:this unneeded_synthesized_initializer
+        internal nonisolated init() {}
+
         internal func createCardScanner(completion: @escaping @MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
@@ -104,14 +110,12 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
-            cardScannerProvider: CardScannerProviding = CardScannerProviderDispatchOnce(
-                scannerProvider: CardScannerProviderWrapper()
-            ),
+            cardScannerProvider: CardScannerProviding? = nil,
             analyticsHandler: @escaping CardScannerAnalyticsHandler
         ) {
             self.presenter = presenter
             self.availabilityProvider = availabilityProvider
-            self.cardScannerProvider = cardScannerProvider
+            self.cardScannerProvider = cardScannerProvider ?? CardScannerProviderDispatchOnce(scannerProvider: CardScannerProviderWrapper())
             self.analyticsHandler = analyticsHandler
 
             if isScannerAvailable {
