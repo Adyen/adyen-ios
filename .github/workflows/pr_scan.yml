@@ -21,11 +21,19 @@ permissions:
 
 jobs:
 
-  build:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: unit
+            testPlan: UnitTests
+            resultPath: Test-Unit-Result.xcresult
+          - suite: integration
+            testPlan: IntegrationTests
+            resultPath: Test-Integration-Result.xcresult
     env:
-      sonarToken: ${{ secrets.SONAR_TOKEN }}
       destination: "platform=iOS Simulator,name=iPhone Air,OS=26.2"
-      destination_iPad: "platform=iOS Simulator,name=iPad Air,OS=26.2"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-26-xlarge
@@ -43,12 +51,7 @@ jobs:
       with:
         xcode-version: '26.2'
 
-    - name: 🛠️ Install Tools
-      run: |
-        brew update
-        brew install sonar-scanner
-
-    - name: 🧪 Unit + Integration Tests
+    - name: 🧪 ${{ matrix.suite }} Tests
       run: |
         set -o pipefail
         set +e
@@ -56,15 +59,15 @@ jobs:
         xcodebuild test \
           -project "${{env.project}}" \
           -scheme "${scheme}" \
-          -testPlan "${testPlan}" \
+          -testPlan "${{matrix.testPlan}}" \
           -enableCodeCoverage YES \
-          -resultBundlePath "${resultPath}" \
+          -resultBundlePath "${{matrix.resultPath}}" \
           -test-iterations 3 \
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
           ${params} \
           -destination "${{env.destination}}" \
-          2>&1 | tee xcodebuild-tests.log | xcbeautify --quieter --is-ci
+          2>&1 | tee "xcodebuild-${{matrix.suite}}-tests.log" | xcbeautify --quieter --is-ci
 
         statuses=("${PIPESTATUS[@]}")
         set -e
@@ -76,23 +79,86 @@ jobs:
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
-        testPlan: 'CI'
-        resultPath: 'Test-CI-Result.xcresult'
 
     - name: Upload test diagnostics
       if: ${{ always() }}
       uses: actions/upload-artifact@v7
       with:
-        name: test-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+        name: test-diagnostics-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
         path: |
-          xcodebuild-tests.log
-          Test-CI-Result.xcresult
+          xcodebuild-${{matrix.suite}}-tests.log
+          ${{matrix.resultPath}}
           ~/Library/Logs/DiagnosticReports/
         if-no-files-found: warn
         retention-days: 7
 
+  quality:
+    needs: test
+    env:
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
+      project: "Adyen.xcodeproj"
+    runs-on: macos-26-xlarge
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '26.2'
+
+    - name: 🛠️ Install Tools
+      run: |
+        brew update
+        brew install sonar-scanner
+
+    - name: Download test diagnostics
+      uses: actions/download-artifact@v7
+      with:
+        pattern: test-diagnostics-*-${{ github.run_id }}-${{ github.run_attempt }}
+        merge-multiple: true
+
+    - name: 🧼 SwiftLint
+      run: |
+        brew install swiftlint
+        fastlane run swiftlint output_file:"reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+
+    # Skipped in the merge queue: analysing the temporary gh-readonly-queue/** ref
+    # would register a throwaway branch in Sonar for every queued pull request.
+    - name: 📡 Run Sonar
+      if: ${{ env.sonarToken != 0 && github.event_name != 'merge_group' }}
+      run: |
+        # TODO: Temporarily commented - re-enable with snapshot tests
+        # bash Scripts/xccov-to-sonarqube-generic.sh Test-Snapshots-Result.xcresult/ > sonarqube-coverage-snapshots.xml
+        # sed "s#$PWD/##g" sonarqube-coverage-snapshots.xml > sonarqube_updated_snapshots.xml
+        bash Scripts/xccov-to-sonarqube-generic.sh Test-Unit-Result.xcresult/ > sonarqube-coverage-unit.xml
+        sed "s#$PWD/##g" sonarqube-coverage-unit.xml > sonarqube_updated_unit.xml
+        bash Scripts/xccov-to-sonarqube-generic.sh Test-Integration-Result.xcresult/ > sonarqube-coverage-integration.xml
+        sed "s#$PWD/##g" sonarqube-coverage-integration.xml > sonarqube_updated_integration.xml
+        git fetch --unshallow --no-tags
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_unit.xml,sonarqube_updated_integration.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  snapshots:
+    if: false  # Temporarily disabled until we stabilize the UI
+    env:
+      destination: "platform=iOS Simulator,name=iPhone Air,OS=26.2"
+      destination_iPad: "platform=iOS Simulator,name=iPad Air,OS=26.2"
+      project: "Adyen.xcodeproj"
+      params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
+    runs-on: macos-26-xlarge
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '26.2'
+
     - name: 🌇 Snapshot Tests iPhone
-      if: false  # Temporarily disabled until we stabilize the UI
+      if: false
       run: |
         xcodebuild test \
           -project "${{env.project}}" \
@@ -112,7 +178,7 @@ jobs:
         resultPath: 'Test-Snapshots-Result.xcresult'
 
     - name: 🌇 Snapshot Tests iPad
-      if: false  # Temporarily disabled until we stabilize the UI
+      if: false
       run: |
         xcodebuild test \
           -project "${{env.project}}" \
@@ -130,23 +196,3 @@ jobs:
         scheme: 'SnapshotTests'
         testPlan: 'SnapshotTests'
         resultPath: 'Test-Snapshots-Result-iPad.xcresult'
-
-    - name: 🧼 SwiftLint
-      run: |
-        brew install swiftlint
-        fastlane run swiftlint output_file:"reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
-
-    # Skipped in the merge queue: analysing the temporary gh-readonly-queue/** ref
-    # would register a throwaway branch in Sonar for every queued pull request.
-    - name: 📡 Run Sonar
-      if: ${{ env.sonarToken != 0 && github.event_name != 'merge_group' }}
-      run: |
-        # TODO: Temporarily commented - re-enable with snapshot tests
-        # bash Scripts/xccov-to-sonarqube-generic.sh Test-Snapshots-Result.xcresult/ > sonarqube-coverage-snapshots.xml
-        # sed "s#$PWD/##g" sonarqube-coverage-snapshots.xml > sonarqube_updated_snapshots.xml
-        bash Scripts/xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-ci.xml
-        sed "s#$PWD/##g" sonarqube-coverage-ci.xml > sonarqube_updated_ci.xml
-        git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_ci.xml
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
