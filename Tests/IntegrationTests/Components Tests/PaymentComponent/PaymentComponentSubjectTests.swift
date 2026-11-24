@@ -18,8 +18,8 @@ class PaymentComponentSubjectTests: XCTestCase {
     var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "MBWay")
     var sut: PaymentComponentSubject!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         analyticsProviderMock = AnalyticsProviderMock(checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId)
         context = Dummy.context(analyticsProvider: analyticsProviderMock)
@@ -32,12 +32,12 @@ class PaymentComponentSubjectTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         paymentComponentDelegate = nil
         sut = nil
         analyticsProviderMock = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func test_submit_with_no_attemptId_sets_constant_in_sdkData() throws {

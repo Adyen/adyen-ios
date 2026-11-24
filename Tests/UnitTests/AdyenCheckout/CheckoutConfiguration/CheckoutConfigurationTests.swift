@@ -172,6 +172,25 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertNotNil(sut.configurations[.payment(.achDirectDebit)] as? ACHDirectDebitConfiguration)
     }
 
+    func test_init_withInvalidApplePayConfiguration_shouldRethrowConfigurationErrorUnchanged() throws {
+        let request = Dummy.createTestApplePayPaymentRequest()
+        request.merchantIdentifier = ""
+
+        XCTAssertThrowsError(
+            try CheckoutConfiguration(
+                environment: .test,
+                clientKey: Dummy.apiContext.clientKey
+            ) {
+                try ApplePayConfiguration(paymentRequest: request)
+            }
+        ) { error in
+            let checkoutError = error as? CheckoutError
+            XCTAssertEqual(checkoutError?.code, .invalidConfiguration)
+            XCTAssertEqual(checkoutError?.underlyingError as? ApplePayComponent.Error, .emptyMerchantIdentifier)
+            XCTAssertEqual(checkoutError?.message, ApplePayComponent.Error.emptyMerchantIdentifier.localizedDescription)
+        }
+    }
+
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {

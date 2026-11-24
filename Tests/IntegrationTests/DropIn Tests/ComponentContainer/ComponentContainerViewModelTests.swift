@@ -40,8 +40,8 @@ struct ComponentContainerViewModelTests {
         sut.didSubmit(paymentData, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
-        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitCallsCount == 1)
+        #expect(dropInFlowManagerMock.submitReceivedArguments?.component === paymentComponentMock)
         // The module stays presented while the payment is in flight.
         #expect(routerMock.dismissCompletionCallsCount == 0)
     }
@@ -56,11 +56,11 @@ struct ComponentContainerViewModelTests {
         sut.didFail(with: errorMock, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
+        #expect(dropInFlowManagerMock.failCallsCount == 1)
     }
 
     @Test
-    func didFail_givenCancellation_shouldCallDropInFlowManagerCancel() {
+    func didFail_givenCancellation_shouldDiscardThePendingSubmission() {
         // Given
         let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
 
@@ -69,8 +69,8 @@ struct ComponentContainerViewModelTests {
         sut.didFail(with: cancelledError, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
-        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 1)
+        #expect(dropInFlowManagerMock.failCallsCount == 0)
+        #expect(dropInFlowManagerMock.discardPendingSubmissionCallsCount == 1)
     }
 
     @Test
@@ -110,7 +110,7 @@ struct ComponentContainerViewModelTests {
         // Then
         #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
         #expect(dropInFlowManagerMock.dismissDropInCallsCount == 1)
-        #expect(dropInFlowManagerMock.cancelComponentCallsCount == 0)
+        #expect(dropInFlowManagerMock.discardPendingSubmissionCallsCount == 0)
         #expect(routerMock.dismissCompletionCallsCount == 0)
     }
 
@@ -182,7 +182,7 @@ struct ComponentContainerViewModelTests {
         paymentMethod: AnyCardPaymentMethod,
         amountValue: Int = 1000
     ) -> PaymentComponentData {
-        let encryptedCard = EncryptedCard(
+        let encryptedCard = CheckoutEncryptedCard(
             number: "4111111111111111",
             securityCode: "737",
             expiryMonth: "03",

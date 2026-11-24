@@ -22,7 +22,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         }
     }
     
-    func testCustomAccessoryViewWhenValueIsEmpty() {
+    func test_accessory_whenEditingEndsWithEmptyValue_shouldShowCustomView() {
         let sut = setupSut()
         sut.isEditing = true
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
@@ -32,7 +32,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         }
     }
     
-    func testValidationAccessoryIsInvalidWhenValueIsInvalid() {
+    func test_accessory_whenEditingEndsWithInvalidValue_shouldShowInvalid() {
         let validator = ValidatorMock()
         
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
@@ -51,7 +51,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(sut.accessory, .invalid)
     }
     
-    func testCustomAccessoryViewWhenValueIsValid() {
+    func test_accessory_whenEditingEndsWithValidValue_shouldShowCustomView() {
         let validator = ValidatorMock()
         
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
@@ -72,7 +72,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         }
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
+    func test_textField_withNonAllowedCharacters_shouldSanitizeAndFormatInput() {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
         let cardNumberValidator = CardNumberValidator(
@@ -102,7 +102,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(expectedTextFieldText, sut.textField.text)
     }
 
-    func testTextFieldSanitizationGivenCorrectCardNumberShouldSanitizeAndFormatInput() {
+    func test_textField_withValidCardNumber_shouldFormatInput() {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
         let cardNumberValidator = CardNumberValidator(
@@ -128,7 +128,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(expectedItemFormattedValue, sut.textField.text)
     }
     
-    func test_pasteCardNumberWithExactlyPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
+    func test_didReachMaximumLength_whenPastingNumberWithExactPanLength_shouldNotifyOnce() {
         
         let panLength = 5
         
@@ -153,7 +153,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         wait(for: [setup.expectation], timeout: 0.1)
     }
     
-    func test_enterCardNumberLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
+    func test_didReachMaximumLength_whenTypingPastPanLength_shouldNotifyOnce() {
         
         let panLength = 5
         
@@ -180,7 +180,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         wait(for: [setup.expectation], timeout: 0.1)
     }
     
-    func test_deletingCaractersStartingFromLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
+    func test_didReachMaximumLength_whenDeletingFromLongerThanPanLength_shouldNotifyOnce() {
         
         let panLength = 5
         
@@ -208,7 +208,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         wait(for: [setup.expectation], timeout: 0.1)
     }
     
-    func test_pasteCardNumberLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Never() {
+    func test_didReachMaximumLength_whenPastingNumberLongerThanPanLength_shouldNotNotify() {
         
         let panLength = 5
         

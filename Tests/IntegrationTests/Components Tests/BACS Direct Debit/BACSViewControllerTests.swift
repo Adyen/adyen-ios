@@ -17,19 +17,19 @@ class BACSViewControllerTests: XCTestCase {
     var itemsFactory: BACSItemsFactoryProtocolMock!
     var viewModel: BACSViewModel!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         tracker = BACSDirectDebitComponentTrackerProtocolMock()
         itemsFactory = makeItemsFactoryMock()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         tracker = nil
         itemsFactory = nil
         viewModel = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func test_title_shouldBeSetOnCreation() throws {

@@ -14,7 +14,7 @@ final class FormButtonTests: XCTestCase {
 
     private let style = ButtonStyle(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
 
-    func testInitialState() throws {
+    func test_button_shouldStartIdleAndEnabled() throws {
         let (sut, progressView) = try makeSUT()
 
         XCTAssertFalse(sut.showsActivityIndicator, "Activity indicator should not be showing initially")
@@ -26,7 +26,7 @@ final class FormButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled initially")
     }
 
-    func testButtonTapLoadingState() throws {
+    func test_showsActivityIndicator_whenTrue_shouldShowProgressAndDisableButton() throws {
         let (sut, progressView) = try makeSUT()
 
         // When: Simulate tap by directly setting showsActivityIndicator to true
@@ -41,7 +41,7 @@ final class FormButtonTests: XCTestCase {
         XCTAssertFalse(sut.isEnabled, "Button should be disabled during loading")
     }
 
-    func testActivityIndicatorDisappearsAndTitleComesBack() throws {
+    func test_showsActivityIndicator_whenReset_shouldHideProgressAndEnableButton() throws {
         let (sut, progressView) = try makeSUT()
 
         // When we put the button in a loading state
@@ -58,7 +58,7 @@ final class FormButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
     }
 
-    func testLoadingStateUsesLoadingColors() {
+    func test_showsActivityIndicator_whenToggled_shouldApplyThenRestoreLoadingColors() {
         let buttonStyle = AdyenButtonStyle.primary(for: .default)
         let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
 
@@ -71,7 +71,7 @@ final class FormButtonTests: XCTestCase {
         XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.backgroundColor, "Background color should be restored after loading")
     }
 
-    func testDisabledStateUsesDisabledColors() {
+    func test_isEnabled_whenToggled_shouldApplyThenRestoreDisabledColors() {
         let buttonStyle = AdyenButtonStyle.primary(for: .default)
         let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
 
@@ -84,7 +84,28 @@ final class FormButtonTests: XCTestCase {
         XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.backgroundColor, "Background color should be restored when enabled")
     }
 
-    func testProgressViewReplacesLeadingImageWhileLoading() throws {
+    func test_titleColor_whenSetAndReset_shouldOverrideThenRestoreStyleTextColor() {
+        let buttonStyle = AdyenButtonStyle.tertiary(for: .default)
+        let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
+
+        sut.titleColor = .systemPink
+        XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
+
+        sut.titleColor = nil
+        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.textColor)
+    }
+
+    func test_titleColor_whenDisabled_shouldUseDisabledTextColor() {
+        let buttonStyle = AdyenButtonStyle.tertiary(for: .default)
+        let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
+        sut.titleColor = .systemPink
+
+        sut.isEnabled = false
+
+        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.disabledTextColor)
+    }
+
+    func test_leadingImage_whileLoading_shouldBeReplacedByProgressView() throws {
         let (sut, progressView) = try makeSUT()
         sut.leadingImage = UIImage(systemName: "star")
         XCTAssertFalse(sut.leadingImageView.isHidden, "Leading image should be visible initially")
@@ -99,7 +120,7 @@ final class FormButtonTests: XCTestCase {
     }
 
     /// Verifies that SwiftUI configuration is transferred to the UIKit button.
-    func test_configuration_when_renderingRepresentable_then_updatesFormButton() throws {
+    func test_representable_whenRendered_shouldConfigureFormButton() throws {
         let (_, _, sut) = try makeRepresentableSUT(
             title: "Continue",
             isEnabled: false,
@@ -113,7 +134,7 @@ final class FormButtonTests: XCTestCase {
     }
 
     /// Verifies that changing SwiftUI input updates the existing UIKit button.
-    func test_newConfiguration_whenUpdatingRepresentable_thenRefreshesFormButton() throws {
+    func test_representable_whenUpdated_shouldRefreshExistingFormButton() throws {
         let (_, hostingController, sut) = try makeRepresentableSUT()
 
         hostingController.rootView = makeRepresentable(
@@ -133,7 +154,7 @@ final class FormButtonTests: XCTestCase {
     }
 
     /// Verifies that tapping the UIKit button forwards the action to SwiftUI.
-    func test_formButton_whenTapped_thenForwardsRepresentableAction() throws {
+    func test_formButton_whenTapped_shouldForwardRepresentableAction() throws {
         var isActionCalled = false
         let (_, _, sut) = try makeRepresentableSUT(action: { isActionCalled = true })
 

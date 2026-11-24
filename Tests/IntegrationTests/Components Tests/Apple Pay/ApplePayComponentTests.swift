@@ -36,7 +36,7 @@ class ApplePayComponentTest: XCTestCase {
         return vc
     }
 
-    override func setUp() {
+    override func setUp() async throws {
         do {
             let configuration = try ApplePayConfiguration(
                 paymentRequest: Dummy.createTestApplePayPaymentRequest()
@@ -49,7 +49,7 @@ class ApplePayComponentTest: XCTestCase {
         mockDelegate = PaymentComponentDelegateMock()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         // The sheet only ends when PassKit reports that it finished.
         sut?.delegate = nil
         sut?.authorizationHandler?.paymentAuthorizationControllerDidFinish(passKitController)
@@ -81,7 +81,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .emptyMerchantIdentifier)
+            assertInvalidConfiguration(error, wrapping: .emptyMerchantIdentifier)
         }
     }
 
@@ -96,7 +96,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCountryCode)
+            assertInvalidConfiguration(error, wrapping: .invalidCountryCode)
         }
     }
 
@@ -111,7 +111,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCurrencyCode)
+            assertInvalidConfiguration(error, wrapping: .invalidCurrencyCode)
         }
     }
 
@@ -126,7 +126,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .emptySummaryItems)
+            assertInvalidConfiguration(error, wrapping: .emptySummaryItems)
         }
     }
 
@@ -141,7 +141,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .negativeGrandTotal)
+            assertInvalidConfiguration(error, wrapping: .negativeGrandTotal)
         }
     }
 
@@ -159,7 +159,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertThrowsError(
             try ApplePayConfiguration(paymentRequest: request)
         ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidSummaryItem)
+            assertInvalidConfiguration(error, wrapping: .invalidSummaryItem)
         }
     }
 
@@ -229,12 +229,23 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(sut.viewController === viewController)
     }
 
-    func test_viewDidLoad_shouldNotSendRenderedEvent() throws {
+    func test_init_shouldNotSendSetupRequest() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+
+        // When
+        sut = try makeComponent(configuration: makeConfiguration(), context: context)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 0)
+    }
+
+    func test_viewDidLoad_shouldSendSetupRequestWithoutRenderedEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         sut = try makeComponent(configuration: makeConfiguration(), context: context)
-        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1, "The setup request is sent from init")
 
         // When
         sut.viewController.loadViewIfNeeded()
@@ -242,6 +253,54 @@ class ApplePayComponentTest: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertTrue(analyticsProviderMock.infos.isEmpty)
+    }
+
+    func test_submit_afterViewDidLoad_shouldNotSendSetupRequestAgain() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+        sut = try makeComponent(configuration: makeConfiguration(), context: context)
+        sut.viewController.loadViewIfNeeded()
+
+        // When
+        submit()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+    }
+
+    func test_submit_withoutViewDidLoad_shouldSendSetupRequestOnce() async throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+        sut = try makeComponent(configuration: makeConfiguration(), context: context)
+        let didFail = expectation(description: "didFail(.cancelled)")
+        mockDelegate.onDidFail = { _, _ in didFail.fulfill() }
+
+        // When
+        submit()
+        finishSheet()
+        await fulfillment(of: [didFail], timeout: 5)
+        sut.performSubmit()
+
+        // Then
+        XCTAssertEqual(makeControllerCallsCount, 2)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+    }
+
+    func test_setupRequest_whenInDropIn_shouldNotBeSent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+        sut = try makeComponent(configuration: makeConfiguration(), context: context)
+        sut._isDropIn = true
+
+        // When
+        sut.viewController.loadViewIfNeeded()
+        submit()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 0)
     }
 
     func test_submit_whenSheetOpens_shouldSendRenderedEvent() throws {
@@ -1090,6 +1149,19 @@ class ApplePayComponentTest: XCTestCase {
     /// Starts `finalize(success:)`, which returns only once the sheet is dismissed.
     private func startFinalize(success: Bool) -> Task<Void, Never> {
         Task { await self.sut.finalize(success: success) }
+    }
+
+    /// Checks that `error` is a `CheckoutError` with the `.invalidConfiguration` code that wraps `expectedError`.
+    private func assertInvalidConfiguration(
+        _ error: Error,
+        wrapping expectedError: ApplePayComponent.Error,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let checkoutError = error as? CheckoutError
+        XCTAssertEqual(checkoutError?.code, .invalidConfiguration, file: file, line: line)
+        XCTAssertEqual(checkoutError?.underlyingError as? ApplePayComponent.Error, expectedError, file: file, line: line)
+        XCTAssertEqual(checkoutError?.message, expectedError.localizedDescription, file: file, line: line)
     }
 
     private func makeConfiguration() throws -> ApplePayConfiguration {

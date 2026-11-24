@@ -16,14 +16,14 @@ class SEPADirectDebitComponentTests: XCTestCase {
     var context: AdyenContext!
     let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         context = Dummy.context
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testRequiresKeyboardInput() throws {

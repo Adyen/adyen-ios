@@ -72,7 +72,6 @@ extension AuthenticationConfiguration {
         return copy
     }
 
-    // TODO: Robert: ThreeDSComponent: This can be removed from the public interface and can be introduced later.
     /// Sets the configuration for Delegated Authentication.
     /// - Parameter delegatedAuthentication: The delegated authentication configuration.
     /// - Returns: A modified copy of the configuration.

@@ -21,17 +21,17 @@ class BACSDirectDebitComponentTests: XCTestCase {
         name: "BACS Direct Debit"
     )
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         paymentComponentDelegate = PaymentComponentDelegateMock()
         context = Dummy.context
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         paymentComponentDelegate = nil
         context = nil
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func test_amountConsentToggle_shouldIncludeContextAmount() {

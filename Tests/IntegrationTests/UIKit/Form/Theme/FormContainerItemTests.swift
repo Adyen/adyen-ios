@@ -50,6 +50,6 @@ final class FormContainerItemTests: XCTestCase {
     // MARK: - SUT Factory
 
     private func makeItem() -> FormLabelItem {
-        FormLabelItem(text: "Test", style: TextStyle(font: .systemFont(ofSize: 16), color: .black))
+        FormLabelItem(text: "Test")
     }
 }

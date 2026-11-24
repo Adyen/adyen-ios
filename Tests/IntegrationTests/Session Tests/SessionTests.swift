@@ -29,20 +29,20 @@ class SessionTests: XCTestCase {
         }
     }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         analyticsProviderMock = AnalyticsProviderMock(checkoutAttemptId: "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda")
         context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         analyticsProviderMock = nil
         context = nil
         sut = nil
         expectedPaymentMethods = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     private let paymentMethodsDictionary = [
@@ -688,7 +688,7 @@ class SessionTests: XCTestCase {
     
     private func makeTestCardDetails() -> CardDetails {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
-        let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
+        let encryptedCard = CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
         return CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
     }
 }

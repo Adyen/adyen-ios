@@ -14,12 +14,12 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     private var item: FormAddressPickerItem!
     private var sut: FormAddressPickerItemView!
 
-    override func setUp() {
+    override func setUp() async throws {
         item = makeMockItem()
         sut = makeSUT(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         sut = nil
     }

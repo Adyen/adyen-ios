@@ -6,15 +6,11 @@
 
 import Adyen
 
-// TODO: Since stored card component may be changed, maybe we won't need this generic option
 /// Factory for creating card payment components.
-///
-/// This factory is generic over any payment method that conforms to `AnyCardPaymentMethod`,
-/// allowing it to handle regular cards, stored cards, and BCMC payments.
 @MainActor
-package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: @MainActor PaymentComponentFactory {
+package struct CardComponentFactory: @MainActor PaymentComponentFactory {
     
-    package typealias Method = CardMethod
+    package typealias Method = CardPaymentMethod
     package typealias Configuration = CardConfiguration
     package typealias Component = CardComponent
     package typealias Callbacks = CardCallbacks
@@ -30,7 +26,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: @MainActo
     ///   - callbacks: The card callbacks, including any address callbacks.
     /// - Returns: A configured card component.
     package func create(
-        with paymentMethod: CardMethod,
+        with paymentMethod: CardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration,
         callbacks: CardCallbacks?

@@ -14,8 +14,8 @@ class LoadingViewTests: XCTestCase {
     var sut: LoadingView!
     var viewController: UIViewController!
     
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         let contentView = UIView()
         sut = LoadingView(contentView: contentView)
         sut.spinnerAppearanceDelay = .milliseconds(1)

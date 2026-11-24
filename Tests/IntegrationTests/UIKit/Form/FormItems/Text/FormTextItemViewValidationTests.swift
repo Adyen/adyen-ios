@@ -17,8 +17,8 @@ class FormTextItemViewValidationTests: XCTestCase {
     var validator: ValidatorMock!
     var sut: FormTextItemView<FormTextInputItem>!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         item = FormTextInputItem()
         validator = ValidatorMock()
         item.validator = validator
@@ -26,11 +26,11 @@ class FormTextItemViewValidationTests: XCTestCase {
         sut = FormTextItemView(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         validator = nil
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     // MARK: - UC1: Basic Text Field - Error on Explicit Validation

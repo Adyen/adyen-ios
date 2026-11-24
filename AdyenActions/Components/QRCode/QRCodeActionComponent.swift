@@ -39,19 +39,19 @@ package final class QRCodeActionComponent: @MainActor ActionComponent,
 
     /// The QR code component configurations.
     package struct Configuration {
-        
-        /// The component UI style.
-        package var style: QRCodeComponentStyle = .init()
+
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme
 
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
-        package init(style: QRCodeComponentStyle = QRCodeComponentStyle()) {
-            self.init(style: style, localizationParameters: nil)
-        }
 
-        package init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
-            self.style = style
+        @MainActor
+        package init(
+            theme: CheckoutTheme = .default,
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.theme = theme
             self.localizationParameters = localizationParameters
         }
     }
@@ -199,16 +199,6 @@ package final class QRCodeActionComponent: @MainActor ActionComponent,
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        let style = QRCodeViewStyle(
-            copyCodeButton: configuration.style.copyCodeButton,
-            saveAsImageButton: configuration.style.saveAsImageButton,
-            instructionLabel: configuration.style.instructionLabel,
-            amountToPayLabel: configuration.style.amountToPayLabel,
-            progressView: configuration.style.progressView,
-            expirationLabel: configuration.style.expirationLabel,
-            logoCornerRounding: configuration.style.logoCornerRounding,
-            backgroundColor: configuration.style.backgroundColor
-        )
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: qrCodeInstructions(for: action),
@@ -224,7 +214,7 @@ package final class QRCodeActionComponent: @MainActor ActionComponent,
                 UIPasteboard.general.string = code
             }
         )
-        return QRCodeViewController(viewModel: viewModel, style: style)
+        return QRCodeViewController(viewModel: viewModel, theme: configuration.theme)
     }
     
     private func qrCodeInstructions(for action: QRCodeAction) -> String {

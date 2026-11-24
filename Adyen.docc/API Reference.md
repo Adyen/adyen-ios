@@ -189,10 +189,9 @@ The entry points for integrating the SDK.
 
 ## Encryption
 
-- ``CardEncryptor``
-- ``BankDetailsEncryptor``
-- ``Card``
-- ``EncryptedCard``
+- ``CheckoutEncryptor``
+- ``CheckoutCard``
+- ``CheckoutEncryptedCard``
 
 ## Theming and UI
 
@@ -214,22 +213,18 @@ The entry points for integrating the SDK.
 - ``PaymentMethodDetails``
 - ``PartialPaymentMethodDetails``
 - ``OpaqueEncodable``
-- ``AdyenContextAware``
 - ``PresentationDelegate``
 
 ## Models
 
-- ``AdyenContext``
 - ``Amount``
 - ``Environment``
-- ``PartialPaymentOrder``
 - ``ActionComponentData``
 - ``PostalAddress``
 - ``AddressLookupResult``
 - ``ShopperName``
 - ``ShopperInteraction``
 - ``PrefilledShopperInformation``
-- ``BrowserInfo``
 - ``Issuer``
 - ``PhoneNumber``
 - ``PhoneExtension``
@@ -238,7 +233,7 @@ The entry points for integrating the SDK.
 
 ## Utilities
 
-- ``AdyenLogging``
+- ``CheckoutLogLevel``
 - ``LogoURLProvider``
 - ``AmountFormatter``
 - ``NumericFormatter``

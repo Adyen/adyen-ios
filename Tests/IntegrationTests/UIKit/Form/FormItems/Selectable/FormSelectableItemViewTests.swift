@@ -74,12 +74,12 @@ class FormSelectableItemViewTests: XCTestCase {
     private var item: FormSelectableValueItemMock!
     private var sut: FormSelectableValueItemViewMock!
 
-    override func setUp() {
+    override func setUp() async throws {
         item = FormSelectableValueItemMock()
         sut = FormSelectableValueItemViewMock(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         sut = nil
         AdyenAssertion.listener = nil
@@ -121,12 +121,12 @@ class FormPickerItemViewStyleTests: XCTestCase {
     private var item: TestFormPickerItem!
     private var sut: FormPickerItemView<FormPickerElement>!
 
-    override func setUp() {
+    override func setUp() async throws {
         item = TestFormPickerItem()
         sut = FormPickerItemView(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         sut = nil
     }

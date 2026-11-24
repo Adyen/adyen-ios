@@ -9,14 +9,25 @@
 import func Darwin.fputs
 import os
 
-/// Provides control over SDK logging.
-public enum AdyenLogging {
+/// The level of the SDK logs, ordered from most to least verbose. Set it with `Checkout.setLogLevel(_:)`.
+public enum CheckoutLogLevel: Sendable {
+    /// Logs everything the SDK logs, including networking.
+    ///
+    /// Only use this level during development. The logs include request URLs with the client key,
+    /// and request and response headers and bodies.
+    case verbose
 
-// TODO: 
+    /// Logs nothing. This is the default.
+    case off
+}
+
+/// Provides control over SDK logging.
+package enum AdyenLogging {
+
     private static let storage = OSAllocatedUnfairLock(initialState: false)
 
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool {
+    package static var isEnabled: Bool {
         get {
             storage.withLock { $0 }
         }

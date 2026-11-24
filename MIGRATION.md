@@ -49,13 +49,77 @@
   explicit `Sendable` conformance or `Sendable` members.
 - `Action`, `VoucherAction`, `SDKAction` and all action payload types conform to `Sendable`, as do `PaymentMethods`,
   `CheckoutResultCode`, `PartialPaymentOrder`, `Issuer`, `PhoneExtension`, `CardFundingSource`, `ShopperInteraction`,
-  `InstallmentOptions` and `InstallmentConfiguration`. These are additive conformances; you only benefit from them when
+  `InstallmentOptions`, `InstallmentConfiguration`, `CheckoutCard`, `CheckoutEncryptor.Field`,
+  `CheckoutEncryptor.Error.Code`, `CardDetails` and `DelegatedAuthenticationData`. These are additive
+  conformances; you only benefit from them when
   passing these values across actors with strict concurrency checking enabled.
 - `CardBrand` conforms to `Sendable`, so you can pass card brands across actors and concurrent tasks with strict concurrency checking enabled.
 - `CardScanner.createCardScanner(...)` and `CardScanner.isAvailable` are now `@MainActor`. Call them on the main actor;
   calling them from a nonisolated context requires `await` or a main-actor hop. The `completion` closure of
   `createCardScanner(...)` is `@MainActor @Sendable` and runs on the main actor. `CardScannerError` and
   `CardScannerError.Kind` conform to `Sendable`.
+
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
+### Colors
+
+- `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
+### Encryption
+
+`CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:
+
+| Before | After |
+|---|---|
+| `CardEncryptor.encrypt(card: card, with: publicKey)` | `CheckoutEncryptor.encrypt(card: card, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(number: number, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .cardNumber, value: number, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(securityCode: securityCode, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .securityCode, value: securityCode, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationMonth: month, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryMonth, value: month, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(expirationYear: year, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .expiryYear, value: year, publicKey: publicKey)` |
+| `CardEncryptor.encrypt(password: password, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .kcpPassword, value: password, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(accountNumber: accountNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankAccountNumber, value: accountNumber, publicKey: publicKey)` |
+| `BankDetailsEncryptor.encrypt(routingNumber: routingNumber, with: publicKey)` | `CheckoutEncryptor.encrypt(field: .bankRoutingNumber, value: routingNumber, publicKey: publicKey)` |
+| `CardEncryptor.encryptToken(from: card, with: publicKey)` | Removed. Encrypt each field separately. |
+| `CardEncryptor.encrypt(bin: bin, with: publicKey)` | Removed. To call `/cardDetails`, encrypt the card number with `.cardNumber`. |
+
+The card models are renamed. Their properties are unchanged:
+
+| Before | After |
+|---|---|
+| `Card` | `CheckoutCard` |
+| `EncryptedCard` | `CheckoutEncryptedCard` |
+
+The `encryptedCard` parameter of the `CardDetails`, `GiftCardDetails` and `MealVoucherDetails` initializers now takes a `CheckoutEncryptedCard`.
+
+Other changes:
+
+- `Card.holder` and the `holder` parameter of the initializer are removed. The holder name is never encrypted, so send it in plain text, for example as `holderName` of `CardDetails`.
+- Every failure throws `CheckoutEncryptor.Error`. Check its `code`: `.invalidCard` when all fields of the card are `nil`, `.invalidPublicKey` when the public key is invalid, and `.encryptionFailed` for any other failure. The original error, if any, is in `underlyingError`. `CardEncryptor.Error` and `BankDetailsEncryptor.Error` are removed.
+- Values are no longer validated. Empty and non-numeric values are encrypted instead of throwing an error, so validate them before you encrypt them.
+- The public key must be a 2048-bit RSA key in the format `Exponent|Modulus`, in uppercase hexadecimal: 5 characters, `|`, then 512 characters, with nothing before or after. Any other key throws `.invalidPublicKey`.
+
+### Logging
+
+- `AdyenLogging` is no longer public. Set the log level with `Checkout.setLogLevel(_:)` instead:
+
+| Before | After |
+|---|---|
+| `AdyenLogging.isEnabled = true` | `Checkout.setLogLevel(.verbose)` |
+| `AdyenLogging.isEnabled = false` | `Checkout.setLogLevel(.off)` |
+
+- Logging is off by default, as before. `.verbose` logs everything the SDK logs, including request URLs with the client key, and request and response headers and bodies, so only use it during development.
+
+For more details, see [Logging](guides/v6/README.md#logging).
 
 ## 6.0.0-alpha.1
 
@@ -215,9 +279,9 @@ let checkout = try await Checkout.setup(
 
 The advanced flow is not available in this release. Use the session flow for payment components.
 The `Checkout.setup(with: PaymentMethods, configuration:callbacks:)` overload, `AdvancedCheckoutCallbacks`,
-`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment` and `PaymentComponentData` are package-only and cannot be
-used by merchant integrations. In the session flow, inspect or patch shopper data with
-`CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
+`CheckoutSubmitHandler`, `SubmitResult`, `PartialPayment`, `PaymentComponentData`, `PartialPaymentOrder` and
+`BrowserInfo` are package-only and cannot be used by merchant integrations. In the session flow, inspect or patch
+shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `BeforeSubmitData`.
 `AdvancedCheckoutResult` remains public because action-only completion callbacks use it.
 
 #### Checkout callbacks
@@ -467,16 +531,19 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   When `showsSubmitButton(false)` is set on `CheckoutConfiguration`, the screen is empty.
 - To use your own Apple Pay button, call `submit()` on the component when the shopper taps it. This opens the Apple Pay sheet.
 - The component can be reused after the shopper cancels the sheet or a payment fails.
-- An invalid payment request no longer makes creating the component fail. The failure callback receives
-  `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
-- `ApplePayComponent.Error.submitNotSupported` is removed.
+- An invalid payment request no longer makes creating the component fail. When the sheet can't be opened, `onFailure`
+  receives a `CheckoutError` with the `.invalidConfiguration` code.
+- `ApplePayComponent.Error` is no longer public. Apple Pay errors are reported as `CheckoutError`: `.invalidConfiguration`
+  for an invalid configuration or payment request, and `.paymentMethodFailure` when the device or wallet can't make the
+  payment. `message` describes the specific problem.
+- `ApplePayConfiguration(paymentRequest:)` throws `CheckoutError` with the `.invalidConfiguration` code when the payment
+  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative. The initializer is
+  `@MainActor`-isolated; calling it off the main actor requires a main-actor hop.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
 - `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
-  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
-  `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
-- `ApplePayConfiguration(paymentRequest:)` is now `@MainActor`. Call it on the main actor; building it from a nonisolated
-  context requires `await` or a main-actor hop.
+  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with a `CheckoutError` with the
+  `.invalidConfiguration` code. The shopper can't continue paying with the previous items.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 

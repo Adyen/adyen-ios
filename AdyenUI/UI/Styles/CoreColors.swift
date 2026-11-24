@@ -7,56 +7,39 @@
 import Adyen
 import UIKit
 
-// TODO: Remove these colors
 extension UIColor {
     
-    public enum Adyen {
+    package enum Adyen {
 
-        public static var dimmBackground: UIColor {
-            componentSeparator
-        }
-
-        public static var componentBackground: UIColor {
+        package static var componentBackground: UIColor {
             .systemBackground
         }
         
-        public static var secondaryComponentBackground: UIColor {
+        package static var secondaryComponentBackground: UIColor {
             .secondarySystemBackground
         }
 
-        public static var componentLabel: UIColor {
+        package static var componentLabel: UIColor {
             .label
         }
 
-        public static var componentSecondaryLabel: UIColor {
+        package static var componentSecondaryLabel: UIColor {
             .secondaryLabel
         }
 
-        public static var componentTertiaryLabel: UIColor {
-            .tertiaryLabel
-        }
-
-        public static var componentQuaternaryLabel: UIColor {
-            .quaternaryLabel
-        }
-
-        public static var componentPlaceholderText: UIColor {
-            .placeholderText
-        }
-
-        public static var componentSeparator: UIColor {
+        package static var componentSeparator: UIColor {
             .separator
         }
 
-        public static var componentLoadingMessageColor: UIColor {
+        package static var componentLoadingMessageColor: UIColor {
             UIColor(
                 named: "awaitLoadingMessageColor",
                 in: Bundle.coreInternalResources,
                 compatibleWith: nil
-            ) ?? componentPlaceholderText
+            ) ?? .placeholderText
         }
 
-        public static var paidSectionFooterTitleColor: UIColor {
+        package static var paidSectionFooterTitleColor: UIColor {
             UIColor(
                 named: "paidPartialPaymentSectionFooterTitleColor",
                 in: Bundle.coreInternalResources,
@@ -64,7 +47,7 @@ extension UIColor {
             ) ?? orange
         }
 
-        public static var paidSectionFooterTitleBackgroundColor: UIColor {
+        package static var paidSectionFooterTitleBackgroundColor: UIColor {
             UIColor(
                 named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
                 in: Bundle.coreInternalResources,
@@ -72,19 +55,17 @@ extension UIColor {
             ) ?? yellow
         }
 
-        public static let defaultBlue = color(hex: 0x007AFF)
+        package static let defaultBlue = color(hex: 0x007AFF)
 
-        public static let defaultRed = color(hex: 0xFF3B30)
+        package static let errorRed = color(hex: 0xD10244)
 
-        public static let errorRed = color(hex: 0xD10244)
-
-        public static let lightGray = color(hex: 0xE6E9EB)
+        package static let lightGray = color(hex: 0xE6E9EB)
 
         private static let yellow = color(hex: 0xFFEACC)
 
         private static let orange = color(hex: 0x7F4A00)
         
-        public static let green40 = color(hex: 0x0ABF53)
+        package static let green40 = color(hex: 0x0ABF53)
 
         /// Create new UIColor from hex value.
         /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.

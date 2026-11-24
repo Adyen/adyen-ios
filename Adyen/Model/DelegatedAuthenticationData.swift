@@ -12,7 +12,7 @@ package protocol DelegatedAuthenticationAware {
 }
 
 /// Delegated Authentication Data.
-public enum DelegatedAuthenticationData: Codable {
+public enum DelegatedAuthenticationData: Codable, Sendable {
     
     /// Describes any error that occurs while decoding the `DelegatedAuthenticationData`.
     public enum DecodingError: LocalizedError {

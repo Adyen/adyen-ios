@@ -13,125 +13,78 @@ final class DropInFlowManagingMock: DropInFlowManaging {
 
     var dropInFlowRouter: DropInFlowRouting?
 
-    // MARK: - paymentInProgressPublisher
-
     let paymentInProgressSubject = CurrentValueSubject<Bool, Never>(false)
 
     var paymentInProgressPublisher: AnyPublisher<Bool, Never> {
         paymentInProgressSubject.eraseToAnyPublisher()
     }
 
-    // MARK: - submit
-
-    var submitFromCallsCount = 0
-    var submitFromCalled: Bool {
-        submitFromCallsCount > 0
+    var submitCallsCount = 0
+    var submitCalled: Bool {
+        submitCallsCount > 0
     }
 
-    var submitFromReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
-    var submitFromReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent)] = []
-    var submitFromClosure: ((PaymentComponentData, PaymentComponent) -> Void)?
-
+    var submitReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
     func submit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        submitFromCallsCount += 1
-        submitFromReceivedArguments = (data: data, component: component)
-        submitFromReceivedInvocations.append((data: data, component: component))
-        submitFromClosure?(data, component)
+        submitCallsCount += 1
+        submitReceivedArguments = (data: data, component: component)
     }
 
-    // MARK: - receive
-
-    var receiveActionCallsCount = 0
-    var receiveActionCalled: Bool {
-        receiveActionCallsCount > 0
+    var receiveCallsCount = 0
+    var receiveCalled: Bool {
+        receiveCallsCount > 0
     }
 
-    var receiveActionReceivedAction: Action?
-    var receiveActionReceivedInvocations: [Action] = []
-    var receiveActionClosure: ((Action) -> Void)?
-
+    var receiveReceivedArguments: Action?
     func receive(action: Action) {
-        receiveActionCallsCount += 1
-        receiveActionReceivedAction = action
-        receiveActionReceivedInvocations.append(action)
-        receiveActionClosure?(action)
+        receiveCallsCount += 1
+        receiveReceivedArguments = action
     }
 
-    // MARK: - fail
-
-    var failWithFromCallsCount = 0
-    var failWithFromCalled: Bool {
-        failWithFromCallsCount > 0
+    var failCallsCount = 0
+    var failCalled: Bool {
+        failCallsCount > 0
     }
 
-    var failWithFromReceivedArguments: (error: Error, component: PaymentComponent)?
-    var failWithFromReceivedInvocations: [(error: Error, component: PaymentComponent)] = []
-    var failWithFromClosure: ((Error, PaymentComponent) -> Void)?
-
+    var failReceivedArguments: (error: Error, component: PaymentComponent)?
     func fail(with error: Error, from component: PaymentComponent) {
-        failWithFromCallsCount += 1
-        failWithFromReceivedArguments = (error: error, component: component)
-        failWithFromReceivedInvocations.append((error: error, component: component))
-        failWithFromClosure?(error, component)
+        failCallsCount += 1
+        failReceivedArguments = (error: error, component: component)
     }
 
-    // MARK: - cancel
-
-    var cancelComponentCallsCount = 0
-    var cancelComponentCalled: Bool {
-        cancelComponentCallsCount > 0
+    var discardPendingSubmissionCallsCount = 0
+    var discardPendingSubmissionCalled: Bool {
+        discardPendingSubmissionCallsCount > 0
     }
 
-    var cancelComponentReceivedComponent: PaymentComponent?
-    var cancelComponentReceivedInvocations: [PaymentComponent] = []
-    var cancelComponentClosure: ((PaymentComponent) -> Void)?
-
-    func cancel(component: PaymentComponent) {
-        cancelComponentCallsCount += 1
-        cancelComponentReceivedComponent = component
-        cancelComponentReceivedInvocations.append(component)
-        cancelComponentClosure?(component)
+    func discardPendingSubmission() {
+        discardPendingSubmissionCallsCount += 1
     }
-
-    // MARK: - cancelDropIn
 
     var cancelDropInCallsCount = 0
     var cancelDropInCalled: Bool {
         cancelDropInCallsCount > 0
     }
 
-    var cancelDropInClosure: (() -> Void)?
-
     func cancelDropIn() {
         cancelDropInCallsCount += 1
-        cancelDropInClosure?()
     }
-
-    // MARK: - dismissDropIn
 
     var dismissDropInCallsCount = 0
     var dismissDropInCalled: Bool {
         dismissDropInCallsCount > 0
     }
 
-    var dismissDropInClosure: (() -> Void)?
-
     func dismissDropIn() {
         dismissDropInCallsCount += 1
-        dismissDropInClosure?()
     }
-
-    // MARK: - endPaymentAttempt
 
     var endPaymentAttemptCallsCount = 0
     var endPaymentAttemptCalled: Bool {
         endPaymentAttemptCallsCount > 0
     }
 
-    var onEndPaymentAttempt: (() -> Void)?
-
     func endPaymentAttempt() {
         endPaymentAttemptCallsCount += 1
-        onEndPaymentAttempt?()
     }
 }

@@ -27,19 +27,19 @@ package final class DocumentComponent: @MainActor ActionComponent,
 
     /// The document component configurations.
     package struct Configuration {
-        
-        /// The component UI style.
-        package var style: DocumentComponentStyle
-        
+
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme
+
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
-        package init(style: DocumentComponentStyle = DocumentComponentStyle()) {
-            self.init(style: style, localizationParameters: nil)
-        }
 
-        package init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
-            self.style = style
+        @MainActor
+        package init(
+            theme: CheckoutTheme = .default,
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.theme = theme
             self.localizationParameters = localizationParameters
         }
     }
@@ -80,7 +80,7 @@ package final class DocumentComponent: @MainActor ActionComponent,
             logoURL: imageURL,
             buttonTitle: localizedString(.boletoDownloadPdf, configuration.localizationParameters)
         )
-        let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
+        let view = DocumentActionView(viewModel: viewModel, theme: configuration.theme)
         view.delegate = self
         let viewController = ActionViewController(view: view)
         

@@ -14,8 +14,8 @@ final class DualBrandAccessoryViewTests: XCTestCase {
     private var sut: DualBrandAccessoryView!
     private var imageLoader: ImageLoaderMock!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
 
         imageLoader = ImageLoaderMock()
         sut = DualBrandAccessoryView(
@@ -24,10 +24,10 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         )
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         sut = nil
         imageLoader = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     // MARK: - Logo updates

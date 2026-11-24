@@ -87,8 +87,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The payment flow selection title  label item.
     internal func createFlowSelectionTitleItem() -> FormLabelItem {
         let item = FormLabelItem(
-            text: localizedString(.paytoModeSelection, localizationParameters),
-            style: style.textField.text
+            text: localizedString(.paytoModeSelection, localizationParameters)
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -112,8 +111,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The payid flow title label item.
     internal func createPayIdFlowTitleItem() -> FormContainerItem<FormLabelItem> {
         let item = FormLabelItem(
-            text: localizedString(.paytoPayidDescription, localizationParameters),
-            style: style.textField.text
+            text: localizedString(.paytoPayidDescription, localizationParameters)
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -247,8 +245,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             text: localizedString(
                 .paytoBsbDescription,
                 localizationParameters
-            ),
-            style: style.textField.text
+            )
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,

@@ -22,21 +22,21 @@ class QRCodeActionComponentTests: XCTestCase {
         }
     }
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         context = Dummy.context
     }
     
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
     
     lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
-    func testComponentSuccess() {
+    func test_handle_whenPollingSucceeds_shouldCallDidProvide() {
         let expectationForDidProvide = expectation(description: "didProvide expectation")
         
         let handler = PollingHandlerMock()
@@ -86,7 +86,7 @@ class QRCodeActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testComponentFailure() {
+    func test_handle_whenPollingFails_shouldCallDidFail() {
         let expectationForDidFail = expectation(description: "didFail expectation")
         
         let handler = PollingHandlerMock()
@@ -133,7 +133,7 @@ class QRCodeActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testCopyCodeButton() throws {
+    func test_copyCodeButton_whenTapped_shouldCopyQRCodeData() throws {
         // Given
         let expectedCode = "DummyData"
         let action = QRCodeAction(
@@ -147,17 +147,6 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let copyCodeExpectation = expectation(description: "Copy code completion was called.")
-        
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            instructionLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
         
         let viewModel = QRCodeViewModel(
             action: action,
@@ -173,7 +162,7 @@ class QRCodeActionComponentTests: XCTestCase {
                 copyCodeExpectation.fulfill()
             }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, theme: .default)
         
         setupRootViewController(qrCodeViewController)
         
@@ -184,7 +173,7 @@ class QRCodeActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testSaveAsImageButton() throws {
+    func test_saveAsImageButton_whenTapped_shouldSaveQRCode() throws {
         // Given
         let action = QRCodeAction(
             paymentMethodType: .promptPay,
@@ -197,17 +186,6 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let saveImageExpectation = expectation(description: "Save image completion was called.")
-        
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 17), color: .red)),
-            instructionLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: .systemFont(ofSize: 17), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
         
         let viewModel = QRCodeViewModel(
             action: action,
@@ -222,7 +200,7 @@ class QRCodeActionComponentTests: XCTestCase {
                 saveImageExpectation.fulfill()
             }, onCopyCode: { _ in /* Empty implementation */ }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, theme: .default)
         
         setupRootViewController(qrCodeViewController)
         
@@ -233,7 +211,7 @@ class QRCodeActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testQRCodeViewModelSaveAsImageActionButtonType() {
+    func test_flowType_withPromptPayAction_shouldBeSaveCodeAsImage() {
         let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)
@@ -253,7 +231,7 @@ class QRCodeActionComponentTests: XCTestCase {
         XCTAssertEqual(qrCodeViewModel.flowType, .saveCodeAsImage)
     }
     
-    func testQRCodeViewModelCopyCodeActionButtonType() {
+    func test_flowType_withPixAction_shouldBeCopyCode() {
         lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
@@ -274,7 +252,7 @@ class QRCodeActionComponentTests: XCTestCase {
         XCTAssertEqual(qrCodeViewModel.flowType, .copyCode)
     }
     
-    func testTimeoutForActions() {
+    func test_timeoutDuration_forEachPaymentMethod_shouldMatchExpectedDuration() {
         let sut = QRCodeActionComponent(context: context)
         let promptPay = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
         let pix = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
@@ -287,7 +265,7 @@ class QRCodeActionComponentTests: XCTestCase {
         XCTAssertEqual(sut.timeoutDuration(for: payNow), 180)
     }
     
-    func testExpiryTimer() {
+    func test_expirationTimer_whenStarted_shouldTickThenExpire() {
         let tickExpectation = expectation(description: "onTick is called")
         let expirationExpectation = expectation(description: "onExpiration is called")
         
@@ -303,7 +281,7 @@ class QRCodeActionComponentTests: XCTestCase {
         wait(for: [tickExpectation, expirationExpectation], timeout: 1.1)
     }
     
-    func testExpiryTimerCancellation() {
+    func test_expirationTimer_whenStopped_shouldNotExpire() {
         
         let tickExpectation = expectation(description: "onTick is called")
         

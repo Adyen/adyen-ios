@@ -13,7 +13,7 @@ class CardBrandProviderTests: XCTestCase {
     var apiClientMock: APIClientMock!
     var sut: BinInfoProvider!
 
-    override func setUp() {
+    override func setUp() async throws {
         apiClientMock = APIClientMock()
         sut = BinInfoProvider(
             apiClient: apiClientMock,
@@ -23,7 +23,7 @@ class CardBrandProviderTests: XCTestCase {
         )
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         apiClientMock = nil
         sut = nil
     }

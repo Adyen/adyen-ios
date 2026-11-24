@@ -18,12 +18,8 @@ class GenericPaymentComponentTests: XCTestCase {
     private var sut: GenericPaymentComponent!
     private var context: AdyenContext!
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         context = Dummy.context
 
         delegate = PaymentComponentDelegateMock()
@@ -36,12 +32,12 @@ class GenericPaymentComponentTests: XCTestCase {
         sut.delegate = delegate
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         paymentMethod = nil
         delegate = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testRequiresUserInteractionIsFalse() {

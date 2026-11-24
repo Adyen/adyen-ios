@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+import AdyenCheckout
 import UIKit
 
 @main
@@ -12,7 +12,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
-            AdyenLogging.isEnabled = true
+            Checkout.setLogLevel(.verbose)
         #endif
 
         return true

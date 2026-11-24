@@ -14,15 +14,15 @@ class AppleWalletPassProviderTests: XCTestCase {
 
     var context: AdyenContext!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         context = Dummy.context
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         AdyenAssertion.listener = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testMultipleFetchCallsAndOneRequestDispatched() throws {

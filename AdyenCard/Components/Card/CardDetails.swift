@@ -13,7 +13,7 @@ import AdyenEncryption
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails, ShopperInformation {
+public struct CardDetails: PaymentMethodDetails, ShopperInformation, Sendable {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
@@ -77,7 +77,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - kcpDetails: The additional details for KCP authentication.
     public init(
         paymentMethod: AnyCardPaymentMethod,
-        encryptedCard: EncryptedCard,
+        encryptedCard: CheckoutEncryptedCard,
         holderName: String? = nil,
         selectedBrand: String? = nil,
         billingAddress: PostalAddress? = nil,

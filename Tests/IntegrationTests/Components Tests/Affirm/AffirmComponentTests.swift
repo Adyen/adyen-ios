@@ -26,8 +26,8 @@ class AffirmComponentTests: XCTestCase {
     
     private var sut: AffirmComponent!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         sut = AffirmComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -35,9 +35,9 @@ class AffirmComponentTests: XCTestCase {
         )
     }
     
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
     
     func testComponent_shouldPaymentMethodTypeBeAffirm() {

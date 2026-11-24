@@ -10,55 +10,55 @@ import XCTest
 
 class CardBrandDetectorTests: XCTestCase {
     
-    func testMastercardBrand() {
+    func test_typeForCardNumber_withMasterCardNumbers_shouldReturnMasterCard() {
         assert(cardNumbers: CardNumbers.masterCard, with: CardBrand.masterCard)
     }
     
-    func testVisaType() {
+    func test_typeForCardNumber_withVisaNumbers_shouldReturnVisa() {
         assert(cardNumbers: CardNumbers.visa, with: CardBrand.visa)
     }
     
-    func testJCBType() {
+    func test_typeForCardNumber_withJCBNumbers_shouldReturnJCB() {
         assert(cardNumbers: CardNumbers.jcb, with: CardBrand.jcb)
     }
     
-    func testCarteBancaireType() {
+    func test_typeForCardNumber_withCarteBancaireNumbers_shouldReturnCarteBancaire() {
         assert(cardNumbers: CardNumbers.cartebancaire, with: CardBrand.carteBancaire)
     }
     
-    func testAmexType() {
+    func test_typeForCardNumber_withAmexNumbers_shouldReturnAmex() {
         assert(cardNumbers: CardNumbers.amex, with: CardBrand.americanExpress)
     }
     
-    func testDinersType() {
+    func test_typeForCardNumber_withDinersNumbers_shouldReturnDiners() {
         assert(cardNumbers: CardNumbers.diners, with: CardBrand.diners)
     }
     
-    func testDiscoverType() {
+    func test_typeForCardNumber_withDiscoverNumbers_shouldReturnDiscover() {
         assert(cardNumbers: CardNumbers.discover, with: CardBrand.discover)
     }
     
-    func testBancontactType() {
+    func test_typeForCardNumber_withBancontactNumbers_shouldReturnBancontact() {
         assert(cardNumbers: CardNumbers.bancontact, with: CardBrand.bcmc)
     }
     
-    func testHiperCardBrand() {
+    func test_typeForCardNumber_withHipercardNumbers_shouldReturnHipercard() {
         assert(cardNumbers: CardNumbers.hipercard, with: CardBrand.hipercard)
     }
     
-    func testEloType() {
+    func test_typeForCardNumber_withEloNumbers_shouldReturnElo() {
         assert(cardNumbers: CardNumbers.elo, with: CardBrand.elo)
     }
     
-    func testDankortType() {
+    func test_typeForCardNumber_withDankortNumbers_shouldReturnDankort() {
         assert(cardNumbers: CardNumbers.dankort, with: CardBrand.dankort)
     }
     
-    func testUATPType() {
+    func test_typeForCardNumber_withUATPNumbers_shouldReturnUATP() {
         assert(cardNumbers: CardNumbers.uatp, with: CardBrand.uatp)
     }
 
-    func testInvalid() {
+    func test_typeForCardNumber_withInvalidNumbers_shouldReturnNil() {
         assert(cardNumbers: CardNumbers.invalid, with: nil)
     }
 

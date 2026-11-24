@@ -20,11 +20,11 @@ class BLIKComponentTests: XCTestCase {
 
     var sut: BLIKComponent!
 
-    override func setUp() {
+    override func setUp() async throws {
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         sut = nil
     }
 

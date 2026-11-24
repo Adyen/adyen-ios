@@ -58,55 +58,40 @@ enum Dummy: Error {
         )
     }
 
-    internal static var visaCard: Card {
-        Card(
-            number: "4917 6100 0000 0000",
-            securityCode: "737",
-            expiryMonth: "03",
-            expiryYear: "30",
-            holder: nil
-        )
-    }
+    internal static let visaCard = CheckoutCard(
+        number: "4917 6100 0000 0000",
+        securityCode: "737",
+        expiryMonth: "03",
+        expiryYear: "30"
+    )
 
-    internal static var amexCard: Card {
-        Card(
-            number: "3714 4963 5398 431",
-            securityCode: "7373",
-            expiryMonth: "03",
-            expiryYear: "30",
-            holder: nil
-        )
-    }
+    internal static let amexCard = CheckoutCard(
+        number: "3714 4963 5398 431",
+        securityCode: "7373",
+        expiryMonth: "03",
+        expiryYear: "30"
+    )
 
-    internal static var bancontactCard: Card {
-        Card(
-            number: "6703 4444 4444 4449",
-            securityCode: nil,
-            expiryMonth: "03",
-            expiryYear: "30",
-            holder: nil
-        )
-    }
+    internal static let bancontactCard = CheckoutCard(
+        number: "6703 4444 4444 4449",
+        securityCode: nil,
+        expiryMonth: "03",
+        expiryYear: "30"
+    )
     
-    internal static var longBancontactCard: Card {
-        Card(
-            number: "6703 0000 0000 0000 003",
-            securityCode: nil,
-            expiryMonth: "03",
-            expiryYear: "30",
-            holder: nil
-        )
-    }
+    internal static let longBancontactCard = CheckoutCard(
+        number: "6703 0000 0000 0000 003",
+        securityCode: nil,
+        expiryMonth: "03",
+        expiryYear: "30"
+    )
 
-    internal static var kcpCard: Card {
-        Card(
-            number: "9490 2200 0661 1406",
-            securityCode: "637",
-            expiryMonth: "03",
-            expiryYear: "30",
-            holder: nil
-        )
-    }
+    internal static let kcpCard = CheckoutCard(
+        number: "9490 2200 0661 1406",
+        securityCode: "637",
+        expiryMonth: "03",
+        expiryYear: "30"
+    )
 
     internal static func createTestApplePayPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()

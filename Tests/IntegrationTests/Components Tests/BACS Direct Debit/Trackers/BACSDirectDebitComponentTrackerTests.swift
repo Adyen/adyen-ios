@@ -21,8 +21,8 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         name: "BACS Direct Debit"
     )
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         apiContext = Dummy.apiContext
         analyticsProvider = AnalyticsProviderMock()
@@ -40,12 +40,12 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         adyenContext = nil
         apiContext = nil
         analyticsProvider = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testSendInitialEventShouldCallAnalyticsProviderSendInitialEvent() {

@@ -51,6 +51,8 @@ package class ApplePayComponent: NSObject,
 
     package let type: PaymentComponentType = .regular
     package let requiresUserInteraction: Bool = true
+
+    private var didSendInitialAnalytics = false
     
     private var presentationWindow: UIWindow? {
         viewController.viewIfLoaded?.window ?? UIApplication.shared.adyen.mainKeyWindow
@@ -85,11 +87,6 @@ package class ApplePayComponent: NSObject,
         self.context = context
         self.applePayPaymentMethod = paymentMethod
         super.init()
-
-        // TODO: Move the setup analytics request out of the component
-        // because _isDropIn is not used yet.
-        // Inside Drop-in, this duplicates Drop-in's own setup request.
-        sendInitialAnalytics()
     }
 
     /// The screen that contains the Apple Pay button. It's empty when `showsSubmitButton` is `false`.
@@ -104,6 +101,9 @@ package class ApplePayComponent: NSObject,
         )
         viewController.onSubmit = { [weak self] in
             self?.performSubmit()
+        }
+        viewController.onViewDidLoad = { [weak self] in
+            self?.sendInitialAnalyticsIfNeeded()
         }
         return viewController
     }()
@@ -150,6 +150,7 @@ package class ApplePayComponent: NSObject,
     /// Does nothing while the sheet is already on screen.
     /// Reports `ApplePayComponent.Error.invalidPaymentRequest` if the sheet can't be presented.
     package func performSubmit() {
+        sendInitialAnalyticsIfNeeded()
         guard authorizationHandler == nil else { return }
 
         let handler = ApplePayAuthorizationHandler(
@@ -196,6 +197,13 @@ package class ApplePayComponent: NSObject,
         case let .failed(error):
             delegate?.didFail(with: error, from: self)
         }
+    }
+
+    /// Sends the setup request once, when the button screen loads or on the first submit, whichever comes first.
+    private func sendInitialAnalyticsIfNeeded() {
+        guard !didSendInitialAnalytics else { return }
+        didSendInitialAnalytics = true
+        sendInitialAnalytics()
     }
 }
 

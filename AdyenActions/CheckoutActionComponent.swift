@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -37,8 +38,8 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
         /// Localization parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// The UI style configurations.
-        package var style: ActionComponentStyle = .init()
+        /// The theme applied to action screens.
+        package var theme: CheckoutTheme
 
         /// Authentication configuration.
         package var authentication: AuthenticationConfiguration
@@ -49,18 +50,18 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
         /// Initializes a new instance.
         ///
         /// - Parameters:
-        ///   - style: The UI style configurations.
+        ///   - theme: The theme applied to action screens.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
         @MainActor
         package init(
-            style: ActionComponentStyle = .init(),
+            theme: CheckoutTheme = .default,
             authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.init(
                 localizationParameters: nil,
-                style: style,
+                theme: theme,
                 authentication: authentication,
                 twint: twint
             )
@@ -69,12 +70,12 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
         @MainActor
         package init(
             localizationParameters: LocalizationParameters? = nil,
-            style: ActionComponentStyle = .init(),
+            theme: CheckoutTheme = .default,
             authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters
-            self.style = style
+            self.theme = theme
             self.authentication = authentication
             self.twint = twint
         }
@@ -135,7 +136,6 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
     
     private func handle(_ action: RedirectAction) {
         let component = RedirectComponent(context: context)
-        component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -209,34 +209,41 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(context: context)
-        component.configuration.style = configuration.style.awaitComponentStyle
-        component._isDropIn = _isDropIn
-        component.delegate = delegate
-        component.actionPresentationDelegate = actionPresentationDelegate
-        component.configuration.localizationParameters = configuration.localizationParameters
-        component.appLauncher = appLauncher
-        
-        component.handle(action)
-        currentActionComponent = component
+        handle(awaitFlow: .standard(action))
     }
 
     private func handle(_ action: RedirectableAwaitAction) {
-        let component = AwaitComponent(context: context)
-        component.configuration.style = configuration.style.awaitComponentStyle
+        handle(awaitFlow: .redirectable(action))
+    }
+
+    private func handle(awaitFlow flow: AwaitComponent.Flow) {
+        guard let actionPresentationDelegate else {
+            let message = "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
+            AdyenAssertion.assertionFailure(message: message)
+            return
+        }
+
+        let component = AwaitComponent(
+            context: context,
+            flow: flow,
+            actionPresentationDelegate: actionPresentationDelegate,
+            configuration: .init(
+                theme: configuration.theme,
+                localizationParameters: configuration.localizationParameters
+            ),
+            appLauncher: appLauncher,
+            pollingHandlerProvider: PollingHandlerProvider(context: context)
+        )
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.actionPresentationDelegate = actionPresentationDelegate
-        component.configuration.localizationParameters = configuration.localizationParameters
-        component.appLauncher = appLauncher
-        
-        component.handle(action)
+
+        component.handle()
         currentActionComponent = component
     }
 
     private func handle(_ action: VoucherAction) {
         let component = VoucherComponent(context: context)
-        component.configuration.style = configuration.style.voucherComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -248,7 +255,7 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
     
     private func handle(_ action: QRCodeAction) {
         let component = QRCodeActionComponent(context: context)
-        component.configuration.style = configuration.style.qrCodeComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.actionPresentationDelegate = actionPresentationDelegate
@@ -260,7 +267,7 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
     
     private func handle(_ action: DocumentAction) {
         let component = DocumentComponent(context: context)
-        component.configuration.style = configuration.style.documentActionComponentStyle
+        component.configuration.theme = configuration.theme
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.configuration.localizationParameters = configuration.localizationParameters
@@ -268,6 +275,15 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
         
         component.handle(action)
         currentActionComponent = component
+    }
+}
+
+// MARK: - Cancellable
+
+extension CheckoutActionComponent: @MainActor Cancellable {
+
+    package func didCancel() {
+        (currentActionComponent as? Cancellable)?.didCancel()
     }
 }
 

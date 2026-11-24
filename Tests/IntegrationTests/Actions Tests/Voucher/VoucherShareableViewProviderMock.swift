@@ -6,13 +6,14 @@
 
 @_spi(AdyenInternal) import Adyen
 @testable import AdyenActions
+import AdyenUI
 import UIKit
 
 @MainActor
 internal final class VoucherShareableViewProviderMock: @MainActor AnyVoucherShareableViewProvider,
     @MainActor Localizable {
 
-    internal var style = VoucherComponentStyle()
+    internal var theme = CheckoutTheme.default
 
     internal var delegate: VoucherViewDelegate?
 

@@ -13,12 +13,12 @@ import XCTest
 @MainActor
 class EContextATMShareableVoucherViewProviderTests: XCTestCase {
 
-    func testCustomLocalization() throws {
+    func test_shareableView_withEContextATMActionAndCustomLocalization_shouldShowLocalizedDetails() throws {
         let econtextAction = try AdyenCoder.decode(econtextATMAction) as EContextATMVoucherAction
         let action: VoucherAction = .econtextATM(econtextAction)
 
         let viewProvider = VoucherShareableViewProvider(
-            style: VoucherComponentStyle(),
+            theme: .default,
             environment: Dummy.apiContext.environment
         )
         viewProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
