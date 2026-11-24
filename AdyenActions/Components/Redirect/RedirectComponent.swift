@@ -124,9 +124,7 @@ package final class RedirectComponent: ActionComponent {
         appLauncher.openUniversalAppUrl(action.url) { [weak self] success in
             guard let self else { return }
             self.registerRedirectBounceBackListener(action)
-            if success {
-                self.delegate?.didOpenExternalApplication(component: self)
-            } else {
+            if !success {
                 self.openInAppBrowser(action)
             }
         }
@@ -150,7 +148,6 @@ package final class RedirectComponent: ActionComponent {
             guard let self else { return }
             if success {
                 self.registerRedirectBounceBackListener(action)
-                self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.sendErrorEvent(.redirectFailed, type: .redirect)
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
@@ -225,10 +222,6 @@ extension RedirectComponent: BrowserComponentDelegate {
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
-
-    internal func didOpenExternalApplication() {
-        delegate?.didOpenExternalApplication(component: self)
-    }
     
 }
 
@@ -245,9 +238,4 @@ extension RedirectComponent: ActionComponentDelegate {
     package func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
-    
-    package func didOpenExternalApplication(component: ActionComponent) {
-        delegate?.didOpenExternalApplication(component: self)
-    }
-    
 }

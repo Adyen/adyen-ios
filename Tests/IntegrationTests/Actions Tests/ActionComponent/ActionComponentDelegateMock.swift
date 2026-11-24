@@ -23,10 +23,4 @@ final class ActionComponentDelegateMock: ActionComponentDelegate {
     }
 
     func didComplete(from component: ActionComponent) {}
-    
-    var onDidOpenExternalApplication: ((_ component: ActionComponent) -> Void)?
-    
-    func didOpenExternalApplication(component: ActionComponent) {
-        onDidOpenExternalApplication?(component)
-    }
 }
