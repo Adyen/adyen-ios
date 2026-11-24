@@ -22,7 +22,6 @@ package class CardComponent: SecondaryScreenPresentingComponent,
     LoadingComponent {
 
     internal enum Constant {
-        internal static let secondsThrottlingDelay = 0.5
         internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
@@ -176,8 +175,6 @@ package class CardComponent: SecondaryScreenPresentingComponent,
         return formViewController
     }()
 
-    private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
             component: paymentMethod.type.rawValue,
@@ -205,9 +202,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(pan: String) {
-        panThrottler.throttle { [weak self] in
-            self?.updateBrand(with: pan)
-        }
+        updateBrand(with: pan)
     }
 
     internal func didChange(bin: String) {

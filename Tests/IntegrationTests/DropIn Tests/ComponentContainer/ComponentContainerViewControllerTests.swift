@@ -76,11 +76,18 @@ struct ComponentContainerViewControllerTests {
         let navigationController = UINavigationController(rootViewController: sut)
         let window = show(UIViewController())
         let presenter = try #require(window.rootViewController)
-        presenter.present(navigationController, animated: false)
-        await waitUntil { sut.view.window != nil }
+        await withCheckedContinuation { continuation in
+            presenter.present(navigationController, animated: false) {
+                continuation.resume()
+            }
+        }
 
         // When
-        presenter.dismiss(animated: false)
+        await withCheckedContinuation { continuation in
+            presenter.dismiss(animated: false) {
+                continuation.resume()
+            }
+        }
 
         // Then
         await waitUntil { viewModelMock.viewDidDisappearCallsCount > 0 }
@@ -338,7 +345,7 @@ struct ComponentContainerViewControllerTests {
         let windowScene = UIApplication.shared.connectedScenes.first { $0 is UIWindowScene } as? UIWindowScene
         let window = windowScene.map { UIWindow(windowScene: $0) } ?? UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = viewController
-        window.isHidden = false
+        window.makeKeyAndVisible()
         return window
     }
 
