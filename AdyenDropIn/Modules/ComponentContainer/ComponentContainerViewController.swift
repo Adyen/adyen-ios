@@ -107,6 +107,9 @@ internal class ComponentContainerViewController: UIViewController {
             }
             definesPresentationContext = true
         }
+        // Adopt the component's bar appearance too, for example a solid background behind its search bar.
+        navigationItem.standardAppearance = componentNavigationItem.standardAppearance
+        navigationItem.scrollEdgeAppearance = componentNavigationItem.scrollEdgeAppearance
         if viewModel.isDropInRoot {
             navigationItem.leftBarButtonItem = cancelButtonItem
         }

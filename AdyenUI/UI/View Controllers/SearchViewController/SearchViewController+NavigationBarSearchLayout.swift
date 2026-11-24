@@ -58,6 +58,8 @@ extension SearchViewController {
     /// and lets the navigation bar track the results.
     internal func setupNavigationBarSearchLayout() {
         navigationItem.largeTitleDisplayMode = .never
+        // Also set when the view loads, so a container showing this navigation item's content can adopt the appearance.
+        hideNavigationBarHairline()
 
         if let headerView {
             scrollingHeaderView.addSubview(headerView)

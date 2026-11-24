@@ -328,7 +328,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         """) }
     }
     
-    private func hideNavigationBarHairline() {
+    internal func hideNavigationBarHairline() {
         let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = viewModel.theme.colors.background
