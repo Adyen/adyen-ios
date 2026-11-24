@@ -32,11 +32,11 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     ///     Only provide the scheme, without a host/path/... (e.g. "my-app", not a full URL like "my-app://...").
     @MainActor
     public init(callbackAppScheme: String) {
-        self.theme = .init()
         if !Self.isCallbackSchemeValid(callbackAppScheme) {
             AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
         }
         
+        self.theme = .init()
         self.callbackAppScheme = callbackAppScheme
         self.maxIssuerNumber = .max
     }

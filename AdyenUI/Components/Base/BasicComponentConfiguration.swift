@@ -17,7 +17,7 @@ package protocol AnyPersonalInformationConfiguration {
 }
 
 /// Any component's most basic configuration.
-package struct BasicComponentConfiguration: CheckoutComponentConfiguration {
+package struct BasicComponentConfiguration: PaymentComponentConfiguration {
 
     /// `BasicComponentConfiguration` is shared across multiple different payment method types,
     /// so this value is not tied to a specific `PaymentMethodType`. It is only used as a fallback

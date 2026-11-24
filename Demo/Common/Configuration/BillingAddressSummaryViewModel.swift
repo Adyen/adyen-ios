@@ -47,7 +47,7 @@ internal struct BillingAddressSummaryViewModel {
         }
     }
 
-    private var supportedCountryCodes: [String]? {
+    private var supportedCountryCodes: Set<String>? {
         guard case let .full(countryCodes, _) = billingAddress else { return nil }
         return countryCodes
     }

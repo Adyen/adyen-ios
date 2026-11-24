@@ -166,9 +166,6 @@ extension DropInFlowManager: @MainActor ActionComponentDelegate {
 
     internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
-
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didOpenExternalApplication(component: component, in: dropInComponent)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {

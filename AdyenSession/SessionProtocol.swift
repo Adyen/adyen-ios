@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import AdyenActions
 import AdyenNetworking
 
 @MainActor

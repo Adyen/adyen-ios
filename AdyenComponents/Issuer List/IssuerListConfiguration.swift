@@ -9,7 +9,7 @@ import AdyenUI
 import Foundation
 
 /// Configuration for Issuer List type components.
-package struct IssuerListConfiguration: CheckoutComponentConfiguration {
+package struct IssuerListConfiguration: PaymentComponentConfiguration {
 
     /// `IssuerListConfiguration` is shared across every issuer-based payment method
     /// (iDEAL, EPS, Dotpay and others), so this value is not tied to a specific `PaymentMethodType`.

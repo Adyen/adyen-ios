@@ -180,8 +180,7 @@ let package = Package(
         .target(
             name: "AdyenSession",
             dependencies: [
-                .target(name: "Adyen"),
-                .target(name: "AdyenActions")
+                .target(name: "Adyen")
             ],
             path: "AdyenSession",
             exclude: ["Info.plist"],

@@ -13,8 +13,6 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.threeDS2)
     
-    package var showsSubmitButton: Bool // TODO: get rid of this
-    
     package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
@@ -57,7 +55,6 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     @MainActor
     public init(theme: CheckoutTheme = .default) {
         self.theme = theme
-        self.showsSubmitButton = false
     }
 }
 

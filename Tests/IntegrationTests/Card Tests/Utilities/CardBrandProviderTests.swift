@@ -10,6 +10,10 @@ import XCTest
 @MainActor
 class CardBrandProviderTests: XCTestCase {
 
+    private enum Constants {
+        static let throttlingDelay: TimeInterval = 0.1
+    }
+
     var apiClientMock: APIClientMock!
     var sut: BinInfoProvider!
 
@@ -19,7 +23,8 @@ class CardBrandProviderTests: XCTestCase {
             apiClient: apiClientMock,
             adyenContext: Dummy.context,
             minBinLength: 11,
-            binLookupType: .card
+            binLookupType: .card,
+            binLookupThrottler: Throttler(minimumDelay: Constants.throttlingDelay)
         )
     }
 
@@ -42,17 +47,79 @@ class CardBrandProviderTests: XCTestCase {
         let mockedBrands = [DetectedCardBrand(brand: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
+        let completion = expectation(description: "Provider completes with remote brands")
+
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.brand), [.solo])
+            completion.fulfill()
         }
+
+        wait(for: [completion], timeout: 1)
     }
 
     func testRemoteCardBrandFetchWithAPIFailure() {
         apiClientMock.mockedResults = [.failure(Dummy.error)]
+        let completion = expectation(description: "Provider completes with fallback brands")
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.brand), [.maestro])
+            completion.fulfill()
         }
+
+        wait(for: [completion], timeout: 1)
+    }
+
+    func test_provide_whenBinChangesRapidlyAboveMinLength_shouldRequestBinLookupOnce() {
+        apiClientMock.mockedResults = [.success(BinLookupResponse(brands: [DetectedCardBrand(brand: .visa)]))]
+        let completion = expectation(description: "Provider completes once with remote brands")
+        let supportedTypes: [CardBrand] = [.masterCard, .visa]
+
+        sut.provide(for: "41111111111", supportedTypes: supportedTypes) { _ in completion.fulfill() }
+        sut.provide(for: "411111111111", supportedTypes: supportedTypes) { _ in completion.fulfill() }
+        sut.provide(for: "4111111111111", supportedTypes: supportedTypes) { _ in completion.fulfill() }
+
+        XCTAssertEqual(apiClientMock.counter, 0)
+        wait(for: [completion], timeout: 1)
+        XCTAssertEqual(apiClientMock.counter, 1)
+    }
+
+    func test_provide_whenBinShortenedBelowMinLength_shouldCancelPendingBinLookup() {
+        apiClientMock.onExecute = { _ in
+            XCTFail("Should not call APIClient")
+        }
+        let completion = expectation(description: "Provider completes with local brands")
+        let supportedTypes: [CardBrand] = [.masterCard, .visa]
+
+        sut.provide(for: "41111111111", supportedTypes: supportedTypes) { _ in
+            XCTFail("Should not complete the cancelled /binlookup request")
+        }
+        sut.provide(for: "4111", supportedTypes: supportedTypes) { response in
+            XCTAssertEqual(response.brands?.map(\.brand), [.visa])
+            completion.fulfill()
+        }
+
+        wait(for: [completion], timeout: 1)
+        wait(for: .milliseconds(300))
+        XCTAssertEqual(apiClientMock.counter, 0)
+    }
+
+    func test_provide_whenBinLookupResponseArrivesAfterNumberChanged_shouldIgnoreResponse() {
+        apiClientMock.mockedResults = [.success(BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard)]))]
+        let supportedTypes: [CardBrand] = [.masterCard, .visa]
+        let requestSent = expectation(description: "/binlookup request is sent")
+        apiClientMock.onExecute = { [weak self] _ in
+            self?.sut.provide(for: "4111", supportedTypes: supportedTypes) { response in
+                XCTAssertEqual(response.brands?.map(\.brand), [.visa])
+            }
+            requestSent.fulfill()
+        }
+
+        sut.provide(for: "41111111111", supportedTypes: supportedTypes) { _ in
+            XCTFail("Should ignore the late /binlookup response")
+        }
+
+        wait(for: [requestSent], timeout: 1)
+        wait(for: .milliseconds(300))
     }
 
     func test_fallbackBinInfoProvider_whenDetectingBrandLocally_shouldReturnUnreliableBrands() {

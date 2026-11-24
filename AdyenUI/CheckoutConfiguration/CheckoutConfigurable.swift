@@ -16,8 +16,6 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     var componentType: CheckoutComponentType { get }
     
-    var showsSubmitButton: Bool { get set }
-    
     // Internal runtime localization state. Merchant-facing checkout flows configure
     // localization through `CheckoutConfiguration.localizationProvider(...)`.
 
@@ -29,6 +27,18 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     /// Throws when the additional callbacks lack a callback this configuration requires.
     func validate(_ callbacks: AdditionalCallbacksStore) throws
+}
+
+extension CheckoutComponentConfiguration {
+
+    /// Empty default for components that require no extra callback.
+    package func validate(_: AdditionalCallbacksStore) throws {}
+}
+
+/// Configuration interface for payment components.
+package protocol PaymentComponentConfiguration: CheckoutComponentConfiguration {
+
+    var showsSubmitButton: Bool { get set }
 
     /// Returns a copy of the configuration with the session-owned settings applied.
     ///
@@ -36,11 +46,8 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     func applying(_ session: SessionComponentConfiguration) -> Self
 }
 
-extension CheckoutComponentConfiguration {
+extension PaymentComponentConfiguration {
 
-    /// Empty default for components that require no extra callback.
-    package func validate(_: AdditionalCallbacksStore) throws {}
-    
     /// Returns the configuration unchanged, for components without session-owned settings.
     package func applying(_: SessionComponentConfiguration) -> Self {
         self

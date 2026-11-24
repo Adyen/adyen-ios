@@ -30,4 +30,9 @@ package final class Throttler {
         // => delay the workItem execution by the minimum delay time
         queue.asyncAfter(deadline: .now() + minimumDelay, execute: workItem)
     }
+
+    /// Cancels the pending block, if it has not run yet.
+    package func cancel() {
+        workItem.cancel()
+    }
 }

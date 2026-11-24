@@ -9,7 +9,7 @@ import Adyen
 import Foundation
 
 package struct AddressViewModelBuilderContext {
-    package var countryCode: String
+    package var countryCode: String?
     package var isOptional: Bool
 }
 
