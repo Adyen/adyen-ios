@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
-import Foundation
+import UIKit
 
 /// A form item into which card expiry date is entered, formatted and validated.
 internal final class FormCardExpiryDateItem: FormTextInputItem {
@@ -56,7 +56,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     ) {
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
-        placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
+        placeholder = localizedString(.cardExpiryDateHint, localizationParameters)
         formatter = CardExpiryDateFormatter()
         validator = expiryDateValidator
         validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
@@ -86,10 +86,19 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
         let view = FormTextInputItemView(item: item, theme: theme)
+        view.hintAccessoryView = makeExpiryDateHintView(for: item)
         view.observe(item.$title) { _ in
             view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
         }
         view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        return view
+    }
+
+    private func makeExpiryDateHintView(for item: FormCardExpiryDateItem) -> UIImageView {
+        let view = UIImageView(image: UIImage(named: "ic_card_expiry_date", in: .cardInternalResources, compatibleWith: nil))
+        view.setContentHuggingPriority(.required, for: .horizontal)
+        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: item, postfix: "expiryDateHintIcon")
         return view
     }
 }
