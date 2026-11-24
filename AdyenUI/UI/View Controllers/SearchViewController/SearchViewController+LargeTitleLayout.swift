@@ -57,7 +57,7 @@ extension SearchViewController {
     /// Places the header in the results' table header and the search bar in the navigation bar,
     /// and lets the navigation bar track the results.
     internal func setupLargeTitleLayout() {
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .never
 
         if let headerView {
             scrollingHeaderView.addSubview(headerView)

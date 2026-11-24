@@ -71,7 +71,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
     ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
     ///   - usesLargeTitleLayout: Shows the search bar in the navigation bar, where it stays visible while scrolling,
-    ///     and scrolls the header with the results, so a large navigation title can collapse.
+    ///     and scrolls the header with the results. The navigation title is always shown inline.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,

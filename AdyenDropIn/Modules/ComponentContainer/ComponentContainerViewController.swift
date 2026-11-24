@@ -92,10 +92,11 @@ internal class ComponentContainerViewController: UIViewController {
     
     private func setupNavigationItem() {
         navigationItem.title = componentViewController.title
-        navigationItem.largeTitleDisplayMode = .always
+        let componentNavigationItem = componentViewController.navigationItem
+        // Keep the title inline when the component asks for it, otherwise show it large.
+        navigationItem.largeTitleDisplayMode = componentNavigationItem.largeTitleDisplayMode == .never ? .never : .always
         navigationController?.navigationBar.prefersLargeTitles = true
         // The navigation bar shows the container's item, so adopt the component's search controller.
-        let componentNavigationItem = componentViewController.navigationItem
         if let searchController = componentNavigationItem.searchController {
             navigationItem.searchController = searchController
             navigationItem.preferredSearchBarPlacement = componentNavigationItem.preferredSearchBarPlacement
