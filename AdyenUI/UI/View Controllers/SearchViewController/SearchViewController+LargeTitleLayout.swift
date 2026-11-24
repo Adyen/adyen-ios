@@ -43,6 +43,7 @@ extension SearchViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.automaticallyShowsCancelButton = false
         searchController.searchResultsUpdater = self
 
         let searchBar = searchController.searchBar
