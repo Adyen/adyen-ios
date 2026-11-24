@@ -11,9 +11,9 @@ import XCTest
 
 class MultibancoShareableVoucherViewProviderTests: XCTestCase {
 
-    func testMultibancoVoucher() throws {
+    func test_shareableView_withMultibancoAction_shouldShowVoucherDetails() throws {
         let viewProvider = VoucherShareableViewProvider(
-            style: VoucherComponentStyle(),
+            theme: .default,
             environment: Dummy.apiContext.environment
         )
 

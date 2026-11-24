@@ -21,8 +21,8 @@ package extension AddressLookupViewController {
         internal let style: AddressLookupStyle
         internal let theme: CheckoutTheme
         internal let localizationParameters: LocalizationParameters?
-        internal let supportedCountryCodes: [String]?
-        internal let initialCountry: String
+        internal let supportedCountryCodes: Set<String>?
+        internal let initialCountry: String?
         
         internal let lookupProvider: AddressLookupProvider
         private let completionHandler: (PostalAddress?) -> Void
@@ -49,7 +49,7 @@ package extension AddressLookupViewController {
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
-        ///   - initialCountry: The initially selected country.
+        ///   - initialCountry: The initially selected country, or `nil` to select none.
         ///   - prefillAddress: The address to prefill the form with. If `nil` the search screen is shown on first appearance.
         ///   - lookupProvider: A closure providing addresses based on a search term
         ///   - completionHandler: A closure that takes an optional address.
@@ -59,8 +59,8 @@ package extension AddressLookupViewController {
             style: AddressLookupStyle = .init(),
             theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters?,
-            supportedCountryCodes: [String]?,
-            initialCountry: String,
+            supportedCountryCodes: Set<String>?,
+            initialCountry: String?,
             prefillAddress: PostalAddress? = nil,
             lookupProvider: AddressLookupProvider,
             completionHandler: @escaping (PostalAddress?) -> Void

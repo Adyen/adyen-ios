@@ -34,8 +34,4 @@ extension CheckoutCore: DropInComponentDelegate {
     package func didFail(with error: any Error, from dropInComponent: any AnyDropInComponent) {
         handle(error, from: pendingPaymentComponent)
     }
-
-    package func didOpenExternalApplication(component: any ActionComponent, in dropInComponent: any AnyDropInComponent) {
-        // TODO: Eren: expose a Checkout callback for external app handoff if needed.
-    }
 }

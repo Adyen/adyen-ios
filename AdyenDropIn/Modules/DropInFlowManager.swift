@@ -29,7 +29,8 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Handles the action returned by the payment session for the pending submission.
     func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
-    func cancel(component: PaymentComponent)
+    /// The shopper left the payment method before its submission completed, so a late action is ignored.
+    func discardPendingSubmission()
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
@@ -53,6 +54,12 @@ internal class DropInFlowManager: DropInFlowManaging {
     private var didCancelDropIn = false
     @Published private var isPaymentInProgress = false
 
+    private var dropInComponentDelegate: DropInComponentDelegate? {
+        dropInComponent?.delegate
+    }
+
+    internal private(set) var actionComponent: CheckoutActionComponent?
+
     // MARK: - Initializers
 
     internal init(
@@ -66,22 +73,6 @@ internal class DropInFlowManager: DropInFlowManaging {
         self.actionComponentConfiguration = actionComponentConfiguration
         self.paymentActionAssembler = paymentActionAssembler
     }
-
-    // MARK: - Private
-
-    private var dropInComponentDelegate: DropInComponentDelegate? {
-        dropInComponent?.delegate
-    }
-
-    private lazy var actionComponent: CheckoutActionComponent = {
-        let actionComponent = CheckoutActionComponent(
-            context: context,
-            configuration: actionComponentConfiguration
-        )
-        actionComponent.delegate = self
-        actionComponent.actionPresentationDelegate = self
-        return actionComponent
-    }()
 
     // MARK: - DropInFlowManaging
 
@@ -104,7 +95,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         guard isAwaitingAction else { return }
         isAwaitingAction = false
 
-        actionComponent.handle(action)
+        actionComponent = makeActionComponentIfNeeded()
+        actionComponent?.handle(action)
     }
 
     internal func fail(with error: Error, from component: PaymentComponent) {
@@ -112,11 +104,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 
-    internal func cancel(component: PaymentComponent) {
+    internal func discardPendingSubmission() {
         endSubmission()
-
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
     internal func cancelDropIn() {
@@ -124,6 +113,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         didCancelDropIn = true
 
         endSubmission()
+        actionComponent?.cancel()
         sendExitEvent()
 
         guard let dropInComponent else { return }
@@ -150,6 +140,20 @@ internal class DropInFlowManager: DropInFlowManaging {
         isAwaitingAction = false
     }
 
+    private func makeActionComponentIfNeeded() -> CheckoutActionComponent {
+        if let actionComponent {
+            return actionComponent
+        }
+
+        let actionComponent = CheckoutActionComponent(
+            context: context,
+            configuration: actionComponentConfiguration
+        )
+        actionComponent.delegate = self
+        actionComponent.actionPresentationDelegate = self
+        return actionComponent
+    }
+
     private func sendExitEvent() {
         let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
         context.analyticsProvider?.add(log: logEvent)
@@ -162,9 +166,6 @@ extension DropInFlowManager: ActionComponentDelegate {
 
     internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
-
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didOpenExternalApplication(component: component, in: dropInComponent)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
@@ -189,6 +190,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         // Dismissing an action, for example by closing the web page of a redirect,
         // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
+            guard !didCancelDropIn else { return }
             cancelDropIn()
             return dismissDropIn()
         }

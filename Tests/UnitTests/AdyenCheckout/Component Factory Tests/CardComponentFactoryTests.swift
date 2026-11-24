@@ -31,7 +31,7 @@ final class CardComponentFactoryTests: XCTestCase {
         let configuration = CardConfiguration()
             .showStorePaymentMethod(false)
             .installmentConfiguration(merchantInstallments)
-        let factory = CardComponentFactory<CardPaymentMethod>()
+        let factory = CardComponentFactory()
 
         let component = factory.create(
             with: paymentMethod,
@@ -54,7 +54,7 @@ final class CardComponentFactoryTests: XCTestCase {
             return []
         })
 
-        let component = CardComponentFactory<CardPaymentMethod>().create(
+        let component = CardComponentFactory().create(
             with: paymentMethod,
             context: context,
             configuration: CardConfiguration(),
@@ -70,7 +70,7 @@ final class CardComponentFactoryTests: XCTestCase {
     func test_create_withoutCallbacks_usesEmptyCallbacks() throws {
         let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
 
-        let component = CardComponentFactory<CardPaymentMethod>().create(
+        let component = CardComponentFactory().create(
             with: paymentMethod,
             context: context,
             configuration: CardConfiguration(),
@@ -93,7 +93,7 @@ final class CardComponentFactoryTests: XCTestCase {
             })
         ])
 
-        let callbacks = try XCTUnwrap(CardComponentFactory<CardPaymentMethod>().callbacks(from: store))
+        let callbacks = try XCTUnwrap(CardComponentFactory().callbacks(from: store))
         callbacks.onBinChange?("411111")
         _ = await callbacks.addressCallbacks?.onAddressLookup("Amsterdam")
 
@@ -104,7 +104,7 @@ final class CardComponentFactoryTests: XCTestCase {
     func test_callbacks_withOnlyAddressCallbacks_attachesThemToEmptyCardCallbacks() throws {
         let store = AdditionalCallbacksStore([AddressCallbacks(onAddressLookup: { _ in [] })])
 
-        let callbacks = try XCTUnwrap(CardComponentFactory<CardPaymentMethod>().callbacks(from: store))
+        let callbacks = try XCTUnwrap(CardComponentFactory().callbacks(from: store))
 
         XCTAssertNil(callbacks.onBinChange)
         XCTAssertNil(callbacks.onBinLookup)
@@ -112,7 +112,7 @@ final class CardComponentFactoryTests: XCTestCase {
     }
 
     func test_callbacks_withoutEntries_returnsEmptyCardCallbacks() throws {
-        let callbacks = try XCTUnwrap(CardComponentFactory<CardPaymentMethod>().callbacks(from: AdditionalCallbacksStore()))
+        let callbacks = try XCTUnwrap(CardComponentFactory().callbacks(from: AdditionalCallbacksStore()))
 
         XCTAssertNil(callbacks.onBinChange)
         XCTAssertNil(callbacks.onBinLookup)
@@ -135,7 +135,7 @@ final class CardComponentFactoryTests: XCTestCase {
             })
         ])
 
-        let callbacks = try XCTUnwrap(CardComponentFactory<CardPaymentMethod>().callbacks(from: store))
+        let callbacks = try XCTUnwrap(CardComponentFactory().callbacks(from: store))
         callbacks.onBinChange?("411111")
         _ = await callbacks.addressCallbacks?.onAddressLookup("Amsterdam")
 

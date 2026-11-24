@@ -10,10 +10,8 @@ import PassKit
 
 extension ApplePayComponent {
 
-    // TODO: Eren: Make package and decide
-    // how to connect with CheckoutError
     /// Describes the errors that can occur during Apple Pay payment.
-    public enum Error: Swift.Error, LocalizedError {
+    package enum Error: Swift.Error, LocalizedError {
         /// Indicates that the user can't make payments on any of the payment request’s supported networks.
         case userCannotMakePayment
 
@@ -49,7 +47,7 @@ extension ApplePayComponent {
         /// Reported when the component is submitted.
         case invalidPaymentRequest
 
-        public var errorDescription: String? {
+        package var errorDescription: String? {
             switch self {
             case .userCannotMakePayment:
                 return String(localized: "The user can't make payments on any of the payment request's supported networks.")

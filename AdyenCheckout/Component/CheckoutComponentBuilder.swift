@@ -289,7 +289,7 @@ extension CheckoutComponentBuilder {
     /// Creates a component using the provided factory for standard payment methods.
     ///
     /// This works for all components whose configurations conform to
-    /// `CheckoutComponentConfiguration`.
+    /// `PaymentComponentConfiguration`.
     ///
     /// - Parameters:
     ///   - factory: The factory to use for component creation.
@@ -309,7 +309,7 @@ extension CheckoutComponentBuilder {
         sessionConfiguration: SessionComponentConfiguration?,
         additionalCallbacks: AdditionalCallbacksStore,
         context: AdyenContext
-    ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
+    ) throws -> PaymentComponent where Factory.Configuration: PaymentComponentConfiguration {
 
         let componentConfiguration = try resolveConfiguration(
             for: paymentMethod,
@@ -372,7 +372,7 @@ extension CheckoutComponentBuilder {
     
     /// Looks up the merchant's component configuration, or the default, and applies the settings the flow provides.
     @MainActor
-    private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
+    private static func resolveConfiguration<Configuration: PaymentComponentConfiguration>(
         for paymentMethod: PaymentMethod,
         defaultValue: @autoclosure () throws -> Configuration,
         configuration: CheckoutConfiguration,

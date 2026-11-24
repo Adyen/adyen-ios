@@ -34,7 +34,7 @@ extension ComponentBuildPolicy {
     package static let dropIn = Self(showsSubmitButton: true)
 }
 
-extension CheckoutComponentConfiguration {
+extension PaymentComponentConfiguration {
 
     /// Returns a copy of the configuration with the policy's settings applied.
     package func applying(_ policy: ComponentBuildPolicy) -> Self {

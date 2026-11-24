@@ -102,24 +102,6 @@ class DropInComponentDelegateMock: DropInComponentDelegate {
         didFailActionWithFromInClosure?(error, component, dropInComponent)
     }
 
-    // MARK: - didOpenExternalApplication
-
-    var didOpenExternalApplicationComponentInCallsCount = 0
-    var didOpenExternalApplicationComponentInCalled: Bool {
-        didOpenExternalApplicationComponentInCallsCount > 0
-    }
-
-    var didOpenExternalApplicationComponentInReceivedArguments: (component: ActionComponent, dropInComponent: AnyDropInComponent)?
-    var didOpenExternalApplicationComponentInReceivedInvocations: [(component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-    var didOpenExternalApplicationComponentInClosure: ((ActionComponent, AnyDropInComponent) -> Void)?
-
-    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didOpenExternalApplicationComponentInCallsCount += 1
-        didOpenExternalApplicationComponentInReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didOpenExternalApplicationComponentInReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didOpenExternalApplicationComponentInClosure?(component, dropInComponent)
-    }
-
     // MARK: - didFail
 
     var didFailWithFromCallsCount = 0
@@ -136,24 +118,6 @@ class DropInComponentDelegateMock: DropInComponentDelegate {
         didFailWithFromReceivedArguments = (error: error, dropInComponent: dropInComponent)
         didFailWithFromReceivedInvocations.append((error: error, dropInComponent: dropInComponent))
         didFailWithFromClosure?(error, dropInComponent)
-    }
-
-    // MARK: - didCancel
-
-    var didCancelComponentFromCallsCount = 0
-    var didCancelComponentFromCalled: Bool {
-        didCancelComponentFromCallsCount > 0
-    }
-
-    var didCancelComponentFromReceivedArguments: (component: PaymentComponent, dropInComponent: AnyDropInComponent)?
-    var didCancelComponentFromReceivedInvocations: [(component: PaymentComponent, dropInComponent: AnyDropInComponent)] = []
-    var didCancelComponentFromClosure: ((PaymentComponent, AnyDropInComponent) -> Void)?
-
-    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        didCancelComponentFromCallsCount += 1
-        didCancelComponentFromReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didCancelComponentFromReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didCancelComponentFromClosure?(component, dropInComponent)
     }
 
 }

@@ -28,7 +28,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
 
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = customStyle()
+        sut.configuration.theme = customTheme()
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         sut.actionPresentationDelegate = actionPresentationDelegate
 
@@ -54,7 +54,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
 
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = customStyle()
+        sut.configuration.theme = customTheme()
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         sut.actionPresentationDelegate = actionPresentationDelegate
 
@@ -80,7 +80,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
 
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = customStyle()
+        sut.configuration.theme = customTheme()
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         sut.actionPresentationDelegate = actionPresentationDelegate
 
@@ -110,47 +110,16 @@ private extension QRCodeActionComponentUITests {
         self.wait(for: .aMoment)
     }
 
-    func customStyle() -> QRCodeComponentStyle {
-
-        var style = QRCodeComponentStyle()
-
-        style.saveAsImageButton = ButtonStyle(
-            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
-            cornerRadius: 4,
-            background: .black
+    func customTheme() -> CheckoutTheme {
+        CheckoutTheme(
+            colors: CheckoutColors(
+                background: .lightGray,
+                container: .cyan,
+                primary: .brown,
+                textOnPrimary: .yellow,
+                text: .red,
+                textSecondary: .blue
+            )
         )
-
-        style.copyCodeButton = ButtonStyle(
-            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
-            cornerRadius: 4,
-            background: .black
-        )
-
-        style.instructionLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .red,
-            textAlignment: .left
-        )
-
-        style.amountToPayLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .yellow,
-            textAlignment: .left
-        )
-
-        style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
-        )
-
-        style.expirationLabel = TextStyle(
-            font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
-        )
-
-        style.logoCornerRounding = .fixed(10)
-
-        style.backgroundColor = UIColor.Adyen.componentSeparator
-
-        return style
     }
 }

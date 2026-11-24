@@ -113,8 +113,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .first { $0.type == .applePay }
     }
 
-    // TODO: Eren: Building the Apple Pay component here sends its setup analytics request when the list loads,
-    // duplicating Drop-in's own setup request. Remove once setup analytics move out of components.
     private lazy var applePayComponent: PaymentComponent? = {
         guard let applePayPaymentMethod,
               let component = componentManager.buildComponent(for: applePayPaymentMethod) else {

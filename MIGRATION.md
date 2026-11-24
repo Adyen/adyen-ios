@@ -30,6 +30,18 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Await action screen
+
+- The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
+- `CheckoutLocalizationKey.awaitLoading` is removed. Use `CheckoutLocalizationKey.awaitStatus` instead.
+- The previous await texts are removed, together with their `LocalizationKey` constants:
+  - `adyen.await.waitForConfirmation` (`awaitWaitForConfirmation`)
+  - `adyen.mbway.confirmPayment` (`mbwayConfirmPayment`)
+  - `adyen.blik.confirmPayment` (`blikConfirmPayment`)
+  - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
+  - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
+  - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
@@ -245,6 +257,8 @@ shopper data with `CheckoutCallbacks.onBeforeSubmit(_:)`, which receives `Before
 Pass callbacks to `Checkout.setup(..., callbacks:)` rather than chaining them on the returned checkout.
 `CheckoutCallbacks(onComplete:onFailure:)` requires both result handlers for session checkout. Session setup now returns
 `Checkout`; `SessionCheckout` has been removed, and `SessionCheckoutResult` is renamed to `CheckoutResult`.
+`CheckoutResult.sessionResult` is now optional (`String?`) because the `/sessions/{sessionId}/payments` and
+`/sessions/{sessionId}/paymentDetails` responses can omit it. Unwrap it before passing it to the `/sessions/{sessionId}` endpoint.
 Use `.onBeforeSubmit` and `.onAction` on the callbacks value for optional behavior. Modifiers return a copy, so retain the returned value.
 
 Action-only setup requires `ActionOnlyCheckoutCallbacks(onAdditionalDetails:onFailure:)`. Its `.onComplete` and `.onAction`
@@ -480,14 +494,18 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   When `showsSubmitButton(false)` is set on `CheckoutConfiguration`, the screen is empty.
 - To use your own Apple Pay button, call `submit()` on the component when the shopper taps it. This opens the Apple Pay sheet.
 - The component can be reused after the shopper cancels the sheet or a payment fails.
-- An invalid payment request no longer makes creating the component fail. The failure callback receives
-  `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
-- `ApplePayComponent.Error.submitNotSupported` is removed.
+- An invalid payment request no longer makes creating the component fail. When the sheet can't be opened, `onFailure`
+  receives a `CheckoutError` with the `.invalidConfiguration` code.
+- `ApplePayComponent.Error` is no longer public. Apple Pay errors are reported as `CheckoutError`: `.invalidConfiguration`
+  for an invalid configuration or payment request, and `.paymentMethodFailure` when the device or wallet can't make the
+  payment. `message` describes the specific problem.
+- `ApplePayConfiguration(paymentRequest:)` throws `CheckoutError` with the `.invalidConfiguration` code when the payment
+  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
 - `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns
-  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with the validation error, for example
-  `ApplePayComponent.Error.negativeGrandTotal`. The shopper can't continue paying with the previous items.
+  invalid summary items, the Apple Pay sheet closes and `onFailure` is called once with a `CheckoutError` with the
+  `.invalidConfiguration` code. The shopper can't continue paying with the previous items.
 
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 

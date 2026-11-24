@@ -82,6 +82,15 @@ class FormAddressItemTests: XCTestCase {
         wait(for: [expectation], timeout: 0)
     }
     
+    func test_nilInitialCountry_noAvailableCountries_then_noCountrySelectedAndRequiredFormInvalid() {
+
+        let formAddressItem = makeSUT(initialCountry: nil, supportedCountryCodes: [])
+
+        XCTAssertNil(formAddressItem.countryPickerItem.value)
+        XCTAssertNil(formAddressItem.value.country)
+        XCTAssertFalse(formAddressItem.countryPickerItem.isValid())
+    }
+
     func testUpdateContext() {
         
         let expectation = expectation(description: "Should call delegate.didUpdateItems")
@@ -102,6 +111,18 @@ class FormAddressItemTests: XCTestCase {
         formAddressItem.updateOptionalStatus(isOptional: true)
         
         wait(for: [expectation], timeout: 10)
+    }
+
+    private func makeSUT(
+        initialCountry: String?,
+        supportedCountryCodes: Set<String>? = nil
+    ) -> FormAddressItem {
+        FormAddressItem(
+            initialCountry: initialCountry,
+            configuration: .init(supportedCountryCodes: supportedCountryCodes),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
     }
 }
 
