@@ -18,7 +18,7 @@ package final class Throttler {
         self.queue = queue
     }
     
-    /// Throttle a block of code after `minimumDelay`.
+    /// Throttles a block of code after `minimumDelay`.
     /// - Parameter block: Block of code to be throttled.
     package func throttle(_ block: @escaping () -> Void) {
         // Cancel any existing work item if it has not yet executed
