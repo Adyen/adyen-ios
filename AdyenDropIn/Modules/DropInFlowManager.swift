@@ -164,10 +164,6 @@ internal class DropInFlowManager: @MainActor DropInFlowManaging {
 
 extension DropInFlowManager: @MainActor ActionComponentDelegate {
 
-    internal func didOpenExternalApplication(component: any ActionComponent) {
-        component.stopLoading()
-    }
-
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         // The details are sent to the payment session, which can return a follow up action,
         // as happens between the fingerprint and the challenge of a 3DS2 authentication.

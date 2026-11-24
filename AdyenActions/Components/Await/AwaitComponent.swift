@@ -112,7 +112,6 @@ package final class AwaitComponent: @MainActor ActionComponent,
                 )
                 
                 self.handle(awaitAction)
-                self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
                 self.didCancel()

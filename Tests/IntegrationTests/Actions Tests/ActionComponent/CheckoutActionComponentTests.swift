@@ -106,10 +106,6 @@ class CheckoutActionComponentTests: XCTestCase {
         sut.actionPresentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
 
-        delegate.onDidOpenExternalApplication = { _ in
-            XCTFail("delegate.didOpenExternalApplication() must not to be called")
-        }
-
         let action = try Action.redirect(RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data"))
         sut.handle(action)
 

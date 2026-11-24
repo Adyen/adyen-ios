@@ -226,19 +226,6 @@ struct DropInFlowManagerTests {
 
     // MARK: - ActionComponentDelegate Tests
 
-    @Test("The loading state is reset when the shopper leaves the app, as they can come back without completing the action.")
-    func didOpenExternalApplication_shouldStopTheActionComponentLoading() {
-        // Given
-        let environment = makeSUT()
-        let actionComponent = ActionComponentMock()
-
-        // When
-        environment.sut.didOpenExternalApplication(component: actionComponent)
-
-        // Then
-        #expect(actionComponent.stopLoadingCallsCount == 1)
-    }
-
     @Test
     func didProvide_shouldNotifyTheMerchantOfTheActionDetails() throws {
         // Given
@@ -442,15 +429,9 @@ struct DropInFlowManagerTests {
     // MARK: - Mocks
 
     @MainActor
-    private final class ActionComponentMock: @MainActor ActionComponent, @MainActor LoadingComponent {
+    private final class ActionComponentMock: ActionComponent {
         let context = Dummy.context
         weak var delegate: ActionComponentDelegate?
-
-        var stopLoadingCallsCount = 0
-
-        func stopLoading() {
-            stopLoadingCallsCount += 1
-        }
     }
 
     @MainActor
