@@ -22,7 +22,7 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
     /// `BasicComponentConfiguration` is shared across multiple different payment method types,
     /// so this value is not tied to a specific `PaymentMethodType`. It is only used as a fallback
     /// key when no explicit per-payment-method-type configuration has been registered.
-    package var componentType: CheckoutComponentType = .payment(.other(""))
+    package var componentType: CheckoutComponentType = .payment(PaymentMethodType(rawValue: ""))
 
     /// The UI style of the component.
     package var style: FormComponentStyle

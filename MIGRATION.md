@@ -42,6 +42,23 @@
   - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
   - `adyen.payto.await.description` (`paytoAwaitDescription`)
 
+### Payment method type
+
+- `PaymentMethodType` is a struct instead of an enum, so Adyen can add payment method types without breaking your code. Known types are static properties, for example `PaymentMethodType.scheme`. A `switch` over a `PaymentMethodType` needs a `default` case.
+- `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(rawValue:)` instead. It keeps any raw value, including types the SDK doesn't know.
+- `PaymentMethodType(rawValue:)` no longer returns an optional.
+- New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
+- `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
+- Some properties are renamed:
+
+| Before | After |
+|---|---|
+| `PaymentMethodType.giftcard` | `PaymentMethodType.giftCard` |
+| `PaymentMethodType.onlineBankingPoland` | `PaymentMethodType.onlineBankingPL` |
+| `PaymentMethodType.upiQr` | `PaymentMethodType.upiQR` |
+
+- The SDK doesn't support the following payment method types and leaves them out of the payment methods list, so they are no longer public: `bcmcMobileQR`, `weChatMiniProgram`, `weChatQR`, `weChatPayWeb`, `googlePay`, `afterpay`, `androidPay` and `amazonPay`. To check for one of them, compare the raw value, for example `type.rawValue == "wechatpayQR"`.
+
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.

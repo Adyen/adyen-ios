@@ -11,7 +11,7 @@ import XCTest
 class CardDetailsTests: XCTestCase {
     
     func testSerializeCreditCard() throws {
-        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.maestro, .accel])
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: PaymentMethodType(rawValue: "test_type"), name: "test name", brands: [.maestro, .accel])
         let sut = CardDetails(
             paymentMethod: paymentMethod,
             encryptedCard: CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
@@ -40,7 +40,7 @@ class CardDetailsTests: XCTestCase {
     }
     
     func testSerializeDebitCard() throws {
-        let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: .other("test_type"), name: "test name", brands: [.visa, .alphaBankBonusVISA])
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: PaymentMethodType(rawValue: "test_type"), name: "test name", brands: [.visa, .alphaBankBonusVISA])
         let sut = CardDetails(
             paymentMethod: paymentMethod,
             encryptedCard: CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),

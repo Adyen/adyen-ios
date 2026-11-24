@@ -32,7 +32,7 @@ class QRCodeActionComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
+    lazy var method = GenericPaymentMethod(type: PaymentMethodType(rawValue: "pix"), name: "pix")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
@@ -232,7 +232,7 @@ class QRCodeActionComponentTests: XCTestCase {
     }
     
     func test_flowType_withPixAction_shouldBeCopyCode() {
-        lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
+        lazy var method = GenericPaymentMethod(type: PaymentMethodType(rawValue: "pix"), name: "pix")
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)

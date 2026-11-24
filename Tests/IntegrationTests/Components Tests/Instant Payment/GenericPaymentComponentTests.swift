@@ -27,7 +27,7 @@ class GenericPaymentComponentTests: XCTestCase {
         context = Dummy.context
 
         delegate = PaymentComponentDelegateMock()
-        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
+        paymentMethod = GiftCardPaymentMethod(type: .giftCard, name: "name", brand: "brand")
         sut = GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,

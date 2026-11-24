@@ -43,7 +43,11 @@ import Foundation
              Handling multiple WeChatPaySDKAction's in parallel is not supported.
             """)
         
-            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
+            Analytics.sendEvent(
+                component: PaymentMethodType.weChatPaySDK.rawValue,
+                flavor: _isDropIn ? .dropin : .components,
+                context: context.apiContext
+            )
         
             currentlyHandledAction = action
         
