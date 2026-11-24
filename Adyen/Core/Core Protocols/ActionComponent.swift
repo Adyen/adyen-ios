@@ -18,13 +18,6 @@ package protocol ActionComponent: Component {
 @MainActor
 package protocol ActionComponentDelegate: AnyObject {
 
-    /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
-    /// e.g WeChat Pay Application.
-    /// In which case you can for example stop any loading animations.
-    ///
-    /// - parameter component: The component that handled the action.
-    func didOpenExternalApplication(component: ActionComponent)
-    
     /// Invoked when there is new data provided to initiate the payment details call.
     ///
     /// - Parameters:
@@ -46,12 +39,5 @@ package protocol ActionComponentDelegate: AnyObject {
     ///   - error: The error that occurred.
     ///   - component: The component that failed.
     func didFail(with error: Error, from component: ActionComponent)
-    
-}
-
-/// provides a default empty implementation for ``didOpenExternalApplication(component:)``.
-package extension ActionComponentDelegate {
-    
-    func didOpenExternalApplication(component: ActionComponent) {}
     
 }

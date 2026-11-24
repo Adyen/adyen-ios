@@ -151,10 +151,6 @@ package final class AuthenticationComponent: ActionComponent {
 /// This is for the RedirectComponent inside the AuthenticationComponent
 extension AuthenticationComponent: ActionComponentDelegate {
 
-    package func didOpenExternalApplication(component: ActionComponent) {
-        delegate?.didOpenExternalApplication(component: self)
-    }
-
     package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
