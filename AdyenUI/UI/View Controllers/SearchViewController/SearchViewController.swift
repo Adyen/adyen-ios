@@ -53,12 +53,12 @@ package class SearchViewController: UIViewController, AdyenObserver {
     package var separatesResultsIntoSections = false
 
     /// Whether the search bar is shown in the navigation bar and the header scrolls with the results.
-    internal let usesLargeTitleLayout: Bool
+    internal let usesNavigationBarSearchLayout: Bool
 
-    /// Holds the header as the results' table header when ``usesLargeTitleLayout`` is enabled.
+    /// Holds the header as the results' table header when ``usesNavigationBarSearchLayout`` is enabled.
     internal lazy var scrollingHeaderView = UIView()
 
-    /// Shows the search bar in the navigation bar when ``usesLargeTitleLayout`` is enabled.
+    /// Shows the search bar in the navigation bar when ``usesNavigationBarSearchLayout`` is enabled.
     internal lazy var searchController = makeSearchController()
 
     /// Initializes the search view controller.
@@ -70,7 +70,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     ///   - footerView: The view pinned below the results, above the keyboard.
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
     ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
-    ///   - usesLargeTitleLayout: Shows the search bar in the navigation bar, where it stays visible while scrolling,
+    ///   - usesNavigationBarSearchLayout: Shows the search bar in the navigation bar, where it stays visible while scrolling,
     ///     and scrolls the header with the results. The navigation title is always shown inline.
     package init(
         viewModel: ViewModel,
@@ -79,7 +79,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         footerView: UIView? = nil,
         resultsHorizontalInset: CGFloat = 0,
         searchTextFieldToResultsSpacing: CGFloat? = nil,
-        usesLargeTitleLayout: Bool = false
+        usesNavigationBarSearchLayout: Bool = false
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
@@ -87,7 +87,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         self.footerView = footerView
         self.resultsHorizontalInset = resultsHorizontalInset
         self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
-        self.usesLargeTitleLayout = usesLargeTitleLayout
+        self.usesNavigationBarSearchLayout = usesNavigationBarSearchLayout
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -107,7 +107,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        if usesLargeTitleLayout {
+        if usesNavigationBarSearchLayout {
             return searchController.searchBar
         }
         return .prominent(
@@ -139,8 +139,8 @@ package class SearchViewController: UIViewController, AdyenObserver {
         
         headerView?.translatesAutoresizingMaskIntoConstraints = false
 
-        if usesLargeTitleLayout {
-            setupLargeTitleLayout()
+        if usesNavigationBarSearchLayout {
+            setupNavigationBarSearchLayout()
         } else {
             if viewModel.shouldShowSearchBar {
                 searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -205,16 +205,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func setupConstraints() {
-        // With a large title, the results start at the top of the view, under the navigation bar, and the header is part of their content.
-        let (resultsTopAnchor, resultsTopSpacing) = usesLargeTitleLayout
+        // In the navigation bar search layout, the results start at the top of the view, under the navigation bar,
+        // and the header is part of their content.
+        let (resultsTopAnchor, resultsTopSpacing) = usesNavigationBarSearchLayout
             ? (view.topAnchor, 0)
             : setupFixedHeaderConstraints()
         // The empty and loading views sit below the header, wherever it is.
-        let placeholderTopAnchor = usesLargeTitleLayout ? scrollingHeaderView.bottomAnchor : resultsTopAnchor
-        let placeholderTopSpacing = usesLargeTitleLayout ? 0 : resultsTopSpacing
+        let placeholderTopAnchor = usesNavigationBarSearchLayout ? scrollingHeaderView.bottomAnchor : resultsTopAnchor
+        let placeholderTopSpacing = usesNavigationBarSearchLayout ? 0 : resultsTopSpacing
         let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
-        // The large title layout insets the rows inside the table instead.
-        let tableHorizontalInset = usesLargeTitleLayout ? 0 : resultsHorizontalInset
+        // The navigation bar search layout insets the rows inside the table instead.
+        let tableHorizontalInset = usesNavigationBarSearchLayout ? 0 : resultsHorizontalInset
 
         NSLayoutConstraint.activate([
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: tableHorizontalInset),
@@ -285,7 +286,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         emptyView.isHidden = true
         loadingView.stopAnimating()
         // The header is part of the results, so they stay visible to keep it on screen.
-        resultsListViewController.view.isHidden = !usesLargeTitleLayout
+        resultsListViewController.view.isHidden = !usesNavigationBarSearchLayout
         
         switch interfaceState {
             
@@ -295,7 +296,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         case let .empty(searchTerm):
             emptyView.isHidden = false
             emptyView.searchTerm = searchTerm
-            if usesLargeTitleLayout {
+            if usesNavigationBarSearchLayout {
                 resultsListViewController.reload(newSections: [])
             }
             
@@ -357,7 +358,7 @@ extension SearchViewController {
     ///   for example to present another view controller from the same context.
     package func endSearch(completion: (() -> Void)? = nil) {
         searchBar.resignFirstResponder()
-        guard usesLargeTitleLayout else {
+        guard usesNavigationBarSearchLayout else {
             completion?()
             return
         }

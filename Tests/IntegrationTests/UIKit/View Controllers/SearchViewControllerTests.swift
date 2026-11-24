@@ -276,7 +276,7 @@ class SearchViewControllerTests: XCTestCase {
 
     func test_searchController_whenSearchIsCancelled_shouldRequestAllResults() throws {
         var lookups: [String] = []
-        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        let searchViewController = makeNavigationBarSearchViewController { lookups.append($0) }
         searchViewController.loadViewIfNeeded()
         let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
         searchController.searchBar.text = "term"
@@ -290,7 +290,7 @@ class SearchViewControllerTests: XCTestCase {
 
     func test_searchController_whenTextChanges_shouldRequestResultsOnce() throws {
         var lookups: [String] = []
-        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        let searchViewController = makeNavigationBarSearchViewController { lookups.append($0) }
         searchViewController.loadViewIfNeeded()
         let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
 
@@ -301,15 +301,15 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(lookups, ["", "term"])
     }
 
-    func test_largeTitleLayout_withoutSearchBar_shouldSpaceHeaderBelowTitleAndAboveResults() throws {
-        try assertLargeTitleHeaderSpacing(shouldShowSearchBar: false, expectedTopSpacing: 12)
+    func test_navigationBarSearchLayout_withoutSearchBar_shouldSpaceHeaderBelowTitleAndAboveResults() throws {
+        try assertNavigationBarSearchHeaderSpacing(shouldShowSearchBar: false, expectedTopSpacing: 12)
     }
 
-    func test_largeTitleLayout_withSearchBar_shouldOnlyKeepNavigationBarSpacingAboveHeader() throws {
-        try assertLargeTitleHeaderSpacing(shouldShowSearchBar: true, expectedTopSpacing: 0)
+    func test_navigationBarSearchLayout_withSearchBar_shouldOnlyKeepNavigationBarSpacingAboveHeader() throws {
+        try assertNavigationBarSearchHeaderSpacing(shouldShowSearchBar: true, expectedTopSpacing: 0)
     }
 
-    private func assertLargeTitleHeaderSpacing(shouldShowSearchBar: Bool, expectedTopSpacing: CGFloat) throws {
+    private func assertNavigationBarSearchHeaderSpacing(shouldShowSearchBar: Bool, expectedTopSpacing: CGFloat) throws {
         let headerView = UIView()
         headerView.heightAnchor.constraint(equalToConstant: 22).isActive = true
         let viewModel = SearchViewController.ViewModel(
@@ -322,7 +322,7 @@ class SearchViewControllerTests: XCTestCase {
             viewModel: viewModel,
             emptyView: emptyView,
             headerView: headerView,
-            usesLargeTitleLayout: true
+            usesNavigationBarSearchLayout: true
         )
         setupRootViewController(UINavigationController(rootViewController: searchViewController))
         let tableView: UITableView = searchViewController.resultsListViewController.tableView
@@ -336,7 +336,7 @@ class SearchViewControllerTests: XCTestCase {
 
     func test_endSearch_shouldResignSearchFieldAndDeactivateSearchKeepingResults() throws {
         var lookups: [String] = []
-        let searchViewController = makeLargeTitleSearchViewController { lookups.append($0) }
+        let searchViewController = makeNavigationBarSearchViewController { lookups.append($0) }
         setupRootViewController(UINavigationController(rootViewController: searchViewController))
         let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
         searchController.isActive = true
@@ -354,7 +354,7 @@ class SearchViewControllerTests: XCTestCase {
     }
 
     func test_endSearch_whenSearchIsPresented_shouldCompleteOnceItIsDismissed() throws {
-        let searchViewController = makeLargeTitleSearchViewController { _ in }
+        let searchViewController = makeNavigationBarSearchViewController { _ in }
         setupRootViewController(UINavigationController(rootViewController: searchViewController))
         let searchController = try XCTUnwrap(searchViewController.navigationItem.searchController)
         searchController.isActive = true
@@ -368,7 +368,7 @@ class SearchViewControllerTests: XCTestCase {
     }
 
     func test_endSearch_whenSearchIsNotPresented_shouldCompleteImmediately() {
-        let searchViewController = makeLargeTitleSearchViewController { _ in }
+        let searchViewController = makeNavigationBarSearchViewController { _ in }
         searchViewController.loadViewIfNeeded()
         var isCompleted = false
 
@@ -560,12 +560,12 @@ private extension SearchViewControllerTests {
         )
     }
 
-    func makeLargeTitleSearchViewController(onLookup: @escaping (String) -> Void) -> SearchViewController {
+    func makeNavigationBarSearchViewController(onLookup: @escaping (String) -> Void) -> SearchViewController {
         let viewModel = SearchViewController.ViewModel(style: DummyStyle()) { searchTerm, handler in
             onLookup(searchTerm)
             handler([ListItem(title: "Result")])
         }
-        return SearchViewController(viewModel: viewModel, emptyView: emptyView, usesLargeTitleLayout: true)
+        return SearchViewController(viewModel: viewModel, emptyView: emptyView, usesNavigationBarSearchLayout: true)
     }
 
     func emptyViewBottomConstraint(

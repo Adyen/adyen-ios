@@ -122,7 +122,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             headerView: headerView,
             footerView: configuration.showsSubmitButton ? submitButton : nil,
             resultsHorizontalInset: Layout.resultsHorizontalInset,
-            usesLargeTitleLayout: true
+            usesNavigationBarSearchLayout: true
         )
         searchViewController.title = title
         searchViewController.separatesResultsIntoSections = true

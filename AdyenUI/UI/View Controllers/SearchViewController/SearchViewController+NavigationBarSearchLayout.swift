@@ -6,13 +6,13 @@
 
 import UIKit
 
-private enum LargeTitleLayout {
+private enum NavigationBarSearchLayout {
     static let headerTopSpacing: CGFloat = 12
     static let headerTopSpacingBelowSearchBar: CGFloat = 0
     static let headerBottomSpacing: CGFloat = 24
 }
 
-// MARK: - Large Title Layout
+// MARK: - Navigation Bar Search Layout
 
 extension SearchViewController {
 
@@ -24,16 +24,16 @@ extension SearchViewController {
         view.setNeedsLayout()
         view.layoutIfNeeded()
 
-        guard revealingHeader, usesLargeTitleLayout else { return }
+        guard revealingHeader, usesNavigationBarSearchLayout else { return }
         let tableView: UITableView = resultsListViewController.tableView
         tableView.setContentOffset(CGPoint(x: 0, y: -tableView.adjustedContentInset.top), animated: true)
     }
 
     internal func makeResultsListViewController() -> ListViewController {
-        // A large title only collapses when the scroll view spans the navigation bar's width,
-        // so the large title layout insets the rows inside a full-width table instead.
+        // The results scroll under the navigation bar across its whole width,
+        // so this layout insets the rows inside a full-width table instead.
         let listViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
-        if usesLargeTitleLayout {
+        if usesNavigationBarSearchLayout {
             listViewController.rowHorizontalInset = resultsHorizontalInset
         }
         return listViewController
@@ -56,21 +56,21 @@ extension SearchViewController {
 
     /// Places the header in the results' table header and the search bar in the navigation bar,
     /// and lets the navigation bar track the results.
-    internal func setupLargeTitleLayout() {
+    internal func setupNavigationBarSearchLayout() {
         navigationItem.largeTitleDisplayMode = .never
 
         if let headerView {
             scrollingHeaderView.addSubview(headerView)
             let headerTopSpacing = viewModel.shouldShowSearchBar
-                ? LargeTitleLayout.headerTopSpacingBelowSearchBar
-                : LargeTitleLayout.headerTopSpacing
+                ? NavigationBarSearchLayout.headerTopSpacingBelowSearchBar
+                : NavigationBarSearchLayout.headerTopSpacing
             NSLayoutConstraint.activate([
                 headerView.topAnchor.constraint(equalTo: scrollingHeaderView.topAnchor, constant: headerTopSpacing),
                 headerView.leadingAnchor.constraint(equalTo: scrollingHeaderView.leadingAnchor, constant: resultsHorizontalInset),
                 headerView.trailingAnchor.constraint(equalTo: scrollingHeaderView.trailingAnchor, constant: -resultsHorizontalInset),
                 scrollingHeaderView.bottomAnchor.constraint(
                     equalTo: headerView.bottomAnchor,
-                    constant: LargeTitleLayout.headerBottomSpacing
+                    constant: NavigationBarSearchLayout.headerBottomSpacing
                 )
             ])
         }
@@ -96,7 +96,7 @@ extension SearchViewController {
 
     /// Sizes the table header to fit its content, which `UITableView` doesn't do for Auto Layout content.
     internal func layoutScrollingHeaderIfNeeded() {
-        guard usesLargeTitleLayout else { return }
+        guard usesNavigationBarSearchLayout else { return }
         let tableView: UITableView = resultsListViewController.tableView
         let width = tableView.bounds.width
         guard width > 0 else { return }
