@@ -52,7 +52,7 @@ internal struct ADYAppearanceConfigurationBuilder {
         textFieldAppearance.textColor = textField.text.color
         textFieldAppearance.borderWidth = textField.defaultBorderWidth
         textFieldAppearance.borderColor = textField.borderColor
-        textFieldAppearance.cornerRadius = textField.cornerRadius.cgFloatValue
+        textFieldAppearance.cornerRadius = textField.cornerRadius.radius
     }
     
     // MARK: - Button Appearances
@@ -92,7 +92,7 @@ internal struct ADYAppearanceConfigurationBuilder {
         buttonAppearance.textColor = style.textColor
         buttonAppearance.disabledBackgroundColor = style.disabledBackgroundColor
         buttonAppearance.disabledTextColor = style.disabledTextColor
-        buttonAppearance.cornerRadius = style.cornerRadius?.cgFloatValue ?? defaultCornerRadius
+        buttonAppearance.cornerRadius = style.cornerRadius?.radius ?? defaultCornerRadius
     }
     
     // MARK: - Switch Appearance
@@ -126,18 +126,5 @@ internal struct ADYAppearanceConfigurationBuilder {
         infoAppearance.headingTextColor = theme.colors.textSecondary
         infoAppearance.borderColor = colors.separator
         infoAppearance.selectionIndicatorTintColor = colors.primary
-    }
-}
-
-// MARK: - CornerRounding Extension
-
-private extension CornerRounding {
-    var cgFloatValue: CGFloat {
-        switch self {
-        case .none:
-            return 0
-        case let .fixed(value):
-            return value
-        }
     }
 }

@@ -60,12 +60,7 @@ extension XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        switch cornerRounding {
-        case .none:
-            break
-        case let .fixed(radius):
-            XCTAssertEqual(layer.cornerRadius, radius, file: file, line: line)
-        }
+        XCTAssertEqual(layer.cornerRadius, cornerRounding.radius, file: file, line: line)
     }
     
 }

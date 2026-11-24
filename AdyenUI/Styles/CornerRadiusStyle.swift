@@ -16,6 +16,16 @@ import UIKit
     /// The fixed radius of corners in display points.
     case fixed(CGFloat)
     
+    /// The corner radius value.
+    package var radius: CGFloat {
+        switch self {
+        case .none:
+            return 0
+        case let .fixed(value):
+            return value
+        }
+    }
+    
 }
 
 @_spi(AdyenInternal)

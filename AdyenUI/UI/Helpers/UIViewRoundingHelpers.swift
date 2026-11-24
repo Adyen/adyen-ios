@@ -41,13 +41,7 @@ extension AdyenScope where Base: UIView {
     ///   - radius: The radius of each corner oval.
     package func round(using rounding: CornerRounding) {
         base.layer.cornerCurve = .continuous
-        
-        switch rounding {
-        case let .fixed(value):
-            base.layer.cornerRadius = value
-        case .none:
-            base.layer.cornerRadius = 0
-        }
+        base.layer.cornerRadius = rounding.radius
     }
     
 }
