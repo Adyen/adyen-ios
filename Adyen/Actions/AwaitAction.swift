@@ -6,33 +6,11 @@
 
 import Foundation
 
-/// Indicates the payment methods that has an `await` action in its flow.
-public enum AwaitPaymentMethod: String, Decodable {
-    
-    /// MBWay payment method.
-    case mbway
-
-    /// BLIK payment method.
-    case blik
-
-    /// UPI Collect payment method
-    case upicollect = "upi_collect"
-
-    /// UPI Intent payment method
-    case upiIntent = "upi_intent"
-
-    /// Twint payment method
-    case twint
-    
-    /// PayTo payment method
-    case payTo = "payto"
-}
-
 /// Describes an action in which the SDK is waiting for user action.
 public struct AwaitAction: PaymentDataAware, Decodable {
     
     /// The `paymentMethodType` for which the await action is used.
-    public let paymentMethodType: AwaitPaymentMethod
+    public let paymentMethodType: PaymentMethodType
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
@@ -45,7 +23,7 @@ public struct AwaitAction: PaymentDataAware, Decodable {
     ///   - redirectUrl: The URL to which to redirect the user.
     public init(
         paymentData: String,
-        paymentMethodType: AwaitPaymentMethod
+        paymentMethodType: PaymentMethodType
     ) {
         self.paymentData = paymentData
         self.paymentMethodType = paymentMethodType

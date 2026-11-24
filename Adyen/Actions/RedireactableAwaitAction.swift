@@ -10,7 +10,7 @@ import Foundation
 public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
 
     /// The `paymentMethodType` for which the await action is used.
-    public let paymentMethodType: AwaitPaymentMethod
+    public let paymentMethodType: PaymentMethodType
 
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
@@ -26,7 +26,7 @@ public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
     ///   - url: The URL to which to redirect the user.
     public init(
         paymentData: String,
-        paymentMethodType: AwaitPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         url: URL
     ) {
         self.paymentData = paymentData

@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Codable, CaseIterable {
+/// The voucher payment methods, used to decode the matching voucher action.
+package enum VoucherPaymentMethodType: String, Decodable {
 
     /// Doku Indomaret.
     case dokuIndomaret = "doku_indomaret"
@@ -21,8 +21,8 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     /// E-Context ATM
     case econtextATM = "econtext_atm"
     
-    /// Boleto Bancairo Santander
-    case boletoBancairoSantander = "boletobancario_santander"
+    /// Boleto Bancario Santander
+    case boletoBancarioSantander = "boletobancario_santander"
 
     /// Boleto Bancario
     case boletoBancario = "boletobancario"
@@ -75,7 +75,7 @@ public enum VoucherAction: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        let type = try container.decode(VoucherPaymentMethodType.self, forKey: .paymentMethodType)
 
         switch type {
         case .dokuIndomaret:
@@ -86,7 +86,7 @@ public enum VoucherAction: Decodable {
             self = try .econtextStores(EContextStoresVoucherAction(from: decoder))
         case .econtextATM:
             self = try .econtextATM(EContextATMVoucherAction(from: decoder))
-        case .boletoBancairoSantander:
+        case .boletoBancarioSantander:
             self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
         case .boletoBancario:
             self = try .boletoBancario(BoletoVoucherAction(from: decoder))
@@ -142,7 +142,7 @@ package protocol InstructionAwareVoucherAction {
 public class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: VoucherPaymentMethod
+    public let paymentMethodType: PaymentMethodType
 
     /// The initial  amount.
     public let initialAmount: Amount
@@ -164,7 +164,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Amount.self, forKey: .initialAmount)
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
@@ -192,7 +192,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     }
 
     internal init(
-        paymentMethodType: VoucherPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         initialAmount: Amount,
         totalAmount: Amount,
         reference: String,

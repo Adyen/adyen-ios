@@ -35,15 +35,10 @@ final class PollingHandlerMock: AnyPollingHandler {
 @MainActor
 struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
 
-    var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler)?
-    var onQRHandler: ((_ paymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler)?
+    var onHandler: (() -> AnyPollingHandler)?
 
-    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
-        onAwaitHandler?(paymentMethodType) ?? PollingHandlerMock()
-    }
-    
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
-        onQRHandler?(qrPaymentMethodType) ?? PollingHandlerMock()
+    func handler() -> AnyPollingHandler {
+        onHandler?() ?? PollingHandlerMock()
     }
 }
 
@@ -60,7 +55,7 @@ class AwaitComponentTests: XCTestCase {
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let sut = AwaitComponent(
             context: Dummy.context,
-            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .mbway)),
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .mbWay)),
             actionPresentationDelegate: actionPresentationDelegate,
             configuration: .init(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)),
             pollingHandlerProvider: PollingHandlerProvider(context: Dummy.context)
@@ -85,12 +80,10 @@ class AwaitComponentTests: XCTestCase {
     func test_handle_withCustomTheme_shouldStartPollingAndApplyTheme() {
         let theme = CheckoutTheme(colors: CheckoutColors(background: .green, text: .red, textSecondary: .blue))
 
-        let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)
+        let action = AwaitAction(paymentData: "data", paymentMethodType: .mbWay)
 
         let handlerExpectation = expectation(description: "AwaitActionHandler.handle() must be called.")
-        let handlerProvider = AwaitActionHandlerProviderMock(onAwaitHandler: { type in
-            XCTAssertEqual(type, AwaitPaymentMethod.mbway)
-                
+        let handlerProvider = AwaitActionHandlerProviderMock(onHandler: {
             let handler = PollingHandlerMock()
             handler.onHandle = {
                 XCTAssertTrue($0.paymentData == action.paymentData)
@@ -98,7 +91,7 @@ class AwaitComponentTests: XCTestCase {
             }
                 
             return handler
-        }, onQRHandler: nil)
+        })
 
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the actionPresentationDelegate to be called.")
@@ -145,7 +138,7 @@ class AwaitComponentTests: XCTestCase {
             context: Dummy.context,
             flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
             actionPresentationDelegate: actionPresentationDelegate,
-            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onHandler: { handler })
         )
 
         sut.didCancel()
@@ -175,7 +168,7 @@ class AwaitComponentTests: XCTestCase {
             flow: .redirectable(action),
             actionPresentationDelegate: actionPresentationDelegate,
             appLauncher: appLauncher,
-            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onHandler: { handler })
         )
 
         let delegate = ActionComponentDelegateMock()
@@ -200,7 +193,7 @@ class AwaitComponentTests: XCTestCase {
             context: Dummy.context,
             flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
             actionPresentationDelegate: XCTUnwrap(actionPresentationDelegate),
-            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onHandler: { handler })
         )
         actionPresentationDelegate = nil
 
@@ -223,7 +216,7 @@ class AwaitComponentTests: XCTestCase {
             context: Dummy.context,
             flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
             actionPresentationDelegate: actionPresentationDelegate,
-            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onHandler: { handler })
         )
 
         let delegate = ActionComponentDelegateMock()
@@ -248,7 +241,7 @@ class AwaitComponentTests: XCTestCase {
             context: Dummy.context,
             flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
             actionPresentationDelegate: actionPresentationDelegate,
-            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onHandler: { handler })
         )
 
         let delegate = ActionComponentDelegateMock()

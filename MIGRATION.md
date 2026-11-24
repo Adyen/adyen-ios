@@ -30,6 +30,22 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Action payment method types
+
+- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. The `paymentMethodType` property of `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `AnyVoucherAction` and the voucher action classes is now a `PaymentMethodType`. Compare it with the `PaymentMethodType` static properties or use its `rawValue`. Most property names stay the same. These differ:
+
+| Before | After |
+|---|---|
+| `AwaitPaymentMethod.mbway` | `PaymentMethodType.mbWay` |
+| `AwaitPaymentMethod.upicollect` | `PaymentMethodType.upiCollect` |
+| `VoucherPaymentMethod.boletoBancairoSantander` | `PaymentMethodType.boletoBancarioSantander` |
+| `DocumentPaymentMethod.bacs` | `PaymentMethodType.bacsDirectDebit` |
+| `QRCodePaymentMethod.upiQRCode` | `PaymentMethodType.upiQR` |
+
+- `TwintSDKAction.paymentMethodType` is a `PaymentMethodType` instead of a `String`.
+- The `AwaitAction` and `RedirectableAwaitAction` initializers take a `PaymentMethodType`.
+- Await actions are decoded for any payment method. Before, an await action for a payment method that was not listed in `AwaitPaymentMethod` failed to decode.
+
 ### Await action screen
 
 - The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.

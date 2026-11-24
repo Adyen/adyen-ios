@@ -45,7 +45,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result, result, result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -86,7 +86,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result, result, result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -128,7 +128,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [resultPending, resultError, resultPending, resultError, resultPending]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 10, handler: nil)
 
@@ -165,7 +165,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [resultPending, resultError, resultError, resultPending]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -206,7 +206,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -247,7 +247,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -288,7 +288,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -329,7 +329,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         waitForExpectations(timeout: 5, handler: nil)
 
@@ -365,7 +365,7 @@ class PollingComponentTests: XCTestCase {
 
         apiClient.mockedResults = [result, result, result]
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbWay))
 
         sut.cancel()
 

@@ -22,8 +22,8 @@ class QRCodeActionComponentUITests: XCTestCase {
     }
 
     func testUIConfigurationForPromptPay() {
-        lazy var method = GenericPaymentMethod(type: PaymentMethodType(rawValue: "promptpay"), name: "promptpay")
-        let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+        lazy var method = GenericPaymentMethod(type: .promptPay, name: "promptpay")
+        let action = QRCodeAction(qrCodePaymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
 
@@ -48,8 +48,8 @@ class QRCodeActionComponentUITests: XCTestCase {
     }
 
     func testUIConfigurationForPix() {
-        lazy var method = GenericPaymentMethod(type: PaymentMethodType(rawValue: "pix"), name: "pix")
-        let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+        lazy var method = GenericPaymentMethod(type: .pix, name: "pix")
+        let action = QRCodeAction(qrCodePaymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
 
@@ -75,7 +75,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
     func testUIConfigurationForUPIQRCode() {
         lazy var method = GenericPaymentMethod(type: .upiQR, name: "upi")
-        let action = QRCodeAction(paymentMethodType: .upiQRCode, qrCodeData: "DummyData", paymentData: "DummyData")
+        let action = QRCodeAction(qrCodePaymentMethodType: .upiQR, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
 

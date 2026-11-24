@@ -54,10 +54,6 @@ The entry points for integrating the SDK.
 - ``AnyCardPaymentMethod``
 - ``PartialPaymentMethod``
 - ``IssuerListPaymentMethod``
-- ``AwaitPaymentMethod``
-- ``VoucherPaymentMethod``
-- ``QRCodePaymentMethod``
-- ``DocumentPaymentMethod``
 - ``GenericPaymentMethod``
 
 ### Card payment methods

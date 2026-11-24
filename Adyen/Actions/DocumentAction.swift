@@ -6,13 +6,6 @@
 
 import Foundation
 
-/// Indicates document action payment methods.
-public enum DocumentPaymentMethod: String, Codable, CaseIterable {
-
-    /// BACS payment method.
-    case bacs = "directdebit_GB"
-}
-
 /// Describes an action in which shoppers can view and download the document after payment.
 public struct DocumentAction: Decodable, Downloadable {
     
@@ -20,7 +13,7 @@ public struct DocumentAction: Decodable, Downloadable {
     public let downloadUrl: URL
     
     /// Payment method type string.
-    public let paymentMethodType: DocumentPaymentMethod
+    public let paymentMethodType: PaymentMethodType
     
     private enum CodingKeys: String, CodingKey {
         case downloadUrl = "url"

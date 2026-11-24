@@ -64,7 +64,7 @@ public enum Action: Decodable {
     
     private static func handleQRCodeType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if (try? container.decode(QRCodePaymentMethod.self, forKey: .paymentMethodType)) != nil {
+        if (try? container.decode(QRCodePaymentMethodType.self, forKey: .paymentMethodType)) != nil {
             return try .qrCode(QRCodeAction(from: decoder))
         } else {
             return try .redirect(RedirectAction(from: decoder))

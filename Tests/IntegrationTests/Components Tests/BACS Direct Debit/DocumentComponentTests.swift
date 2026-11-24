@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 class DocumentComponentTests: XCTestCase {
     
-    let action: DocumentAction = .init(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs)
+    let action: DocumentAction = .init(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacsDirectDebit)
     
     override func run() {
         AdyenDependencyValues.runTestWithValues {
@@ -53,7 +53,7 @@ class DocumentComponentTests: XCTestCase {
             XCTAssertEqual(logo?.layer.cornerRadius, CGFloat(AdyenUIConstants.imageCornerRadius))
         }
         
-        try sut.handle(DocumentAction(downloadUrl: XCTUnwrap(URL(string: "www.adyen.com")), paymentMethodType: .bacs))
+        try sut.handle(DocumentAction(downloadUrl: XCTUnwrap(URL(string: "www.adyen.com")), paymentMethodType: .bacsDirectDebit))
         
     }
     

@@ -34,12 +34,12 @@ class AwaitComponentUITests: XCTestCase {
                 textSecondary: .blue
             )
         )
-        verifyAwaitScreen(for: .mbway, theme: theme, named: "mbway_customTheme")
+        verifyAwaitScreen(for: .mbWay, theme: theme, named: "mbway_customTheme")
     }
 
     // MARK: - Private
 
-    private func verifyAwaitScreen(for paymentMethodType: AwaitPaymentMethod, theme: CheckoutTheme, named name: String) {
+    private func verifyAwaitScreen(for paymentMethodType: PaymentMethodType, theme: CheckoutTheme, named name: String) {
         let presentationExpectation = expectation(description: "Await screen presented")
 
         let actionPresentationDelegate = ActionPresentationDelegateMock()

@@ -16,7 +16,7 @@ public final class TwintSDKAction: PaymentDataAware, Decodable {
     public let paymentData: String
 
     /// The payment method type
-    public let paymentMethodType: String
+    public let paymentMethodType: PaymentMethodType
 
     /// The payment method subtype
     public let type: String
@@ -32,14 +32,14 @@ public final class TwintSDKAction: PaymentDataAware, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.sdkData = try container.decode(TwintSDKData.self, forKey: .sdkData)
         self.paymentData = try container.decode(String.self, forKey: .paymentData)
-        self.paymentMethodType = try container.decode(String.self, forKey: .paymentMethodType)
+        self.paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         self.type = try container.decode(String.self, forKey: .type)
     }
     
     internal init(
         sdkData: TwintSDKData,
         paymentData: String,
-        paymentMethodType: String,
+        paymentMethodType: PaymentMethodType,
         type: String
     ) {
         self.sdkData = sdkData

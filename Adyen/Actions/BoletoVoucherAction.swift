@@ -17,7 +17,7 @@ package protocol Downloadable {
 public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
     
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: VoucherPaymentMethod
+    public let paymentMethodType: PaymentMethodType
 
     /// The totalAmount  amount.
     public let totalAmount: Amount
@@ -37,7 +37,7 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         downloadUrl = try container.decode(URL.self, forKey: .downloadUrl)
@@ -64,7 +64,7 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     }
     
     internal init(
-        paymentMethodType: VoucherPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         totalAmount: Amount,
         reference: String,
         expiresAt: Date,
