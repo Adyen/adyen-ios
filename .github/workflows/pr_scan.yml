@@ -62,8 +62,6 @@ jobs:
           -test-iterations 3 \
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
-          -parallel-testing-enabled YES \
-          -parallel-testing-worker-count 3 \
           ${params} \
           -destination "${{env.destination}}" \
           2>&1 | tee xcodebuild-tests.log | xcbeautify --quieter --is-ci
