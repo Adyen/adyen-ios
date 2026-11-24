@@ -16,16 +16,16 @@ final class DokuComponentUITests: XCTestCase {
     private var paymentMethod: DokuPaymentMethod!
     private var style = FormComponentStyle()
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         context = Dummy.context
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
-        try super.setUpWithError()
+        try await super.setUp()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         paymentMethod = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testUIConfiguration() {

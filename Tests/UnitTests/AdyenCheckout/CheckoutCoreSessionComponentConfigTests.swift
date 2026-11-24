@@ -22,8 +22,8 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
         analyticsConfiguration: .init()
     )
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         let paymentMethodsDictionary: [String: Any] = ["paymentMethods": [creditCardDictionary, achDirectDebit]]
         paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }

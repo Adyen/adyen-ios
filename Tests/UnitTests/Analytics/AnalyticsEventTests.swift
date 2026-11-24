@@ -14,8 +14,8 @@ class AnalyticsEventTests: XCTestCase {
     var apiClient: APIClientMock!
     var sut: AnyAnalyticsProvider!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         apiClient = APIClientMock()
         let emptyResponse = EmptyResponse()
         let emptyResult: Result<Response, Error> = .success(emptyResponse)
@@ -28,10 +28,10 @@ class AnalyticsEventTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         apiClient = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
     
     private func sendInitialAnalytics(flavor: AnalyticsFlavor = .components(type: .achDirectDebit)) {
