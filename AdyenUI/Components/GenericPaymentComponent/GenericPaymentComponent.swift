@@ -45,12 +45,12 @@ package final class GenericPaymentComponent: @MainActor PaymentComponent, @MainA
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         paymentData: PaymentComponentData,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
 
     /// Initializes a new instance of `GenericPaymentComponent`.
@@ -64,11 +64,11 @@ package final class GenericPaymentComponent: @MainActor PaymentComponent, @MainA
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         order: PartialPaymentOrder?,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
 
         let details = GenericPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(

@@ -20,9 +20,9 @@ package struct AddressLookupStyle: ViewStyle {
     @MainActor
     package init(
         search: AddressLookupSearchStyle = .init(),
-        form: FormComponentStyle = .init()
+        form: FormComponentStyle? = nil
     ) {
         self.search = search
-        self.form = form
+        self.form = form ?? .init()
     }
 }

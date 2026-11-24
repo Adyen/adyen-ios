@@ -38,7 +38,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     }
 
     /// Indicates the `FormViewController` UI styling.
-    public var style: ViewStyle = FormComponentStyle()
+    public var style: ViewStyle
 
     /// Indicates the `FormViewController` UI styling theme.
     package var theme: CheckoutTheme = .init()
@@ -89,6 +89,7 @@ open class FormViewController: UIViewController, AdyenObserver {
         self.scrollEnabled = scrollEnabled
         self.localizationParameters = localizationParameters
         self.theme = theme
+        self.style = FormComponentStyle()
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
 

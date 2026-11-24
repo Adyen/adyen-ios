@@ -57,12 +57,12 @@ package class SupportedPaymentMethodLogosView: UIView {
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
-        style: Style = .init()
+        style: Style? = nil
     ) {
         self.imageSize = imageSize
         self.imageUrls = imageUrls
         self.trailingText = trailingText
-        self.style = style
+        self.style = style ?? .init()
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         

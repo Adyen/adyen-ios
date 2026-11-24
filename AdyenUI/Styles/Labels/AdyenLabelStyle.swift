@@ -26,7 +26,7 @@ package struct AdyenLabelStyle {
     package var lineHeight: CGFloat?
 
     /// A default instance of AdyenLabelStyle.
-    @MainActor internal static let `default` = AdyenLabelStyle()
+    internal static let `default` = AdyenLabelStyle()
 
     /// Initializes the label style.
     ///
@@ -35,7 +35,6 @@ package struct AdyenLabelStyle {
     /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
     /// - Parameter lineHeight: The fixed height of each line of text, or `nil` to use the font's natural line height.
-    @MainActor
     internal init(
         font: UIFont = AdyenFonts.default.body,
         color: UIColor = CheckoutColors.default.primary,
@@ -50,7 +49,6 @@ package struct AdyenLabelStyle {
         self.lineHeight = lineHeight
     }
 
-    @MainActor
     internal init() {
         self.font = AdyenFonts.default.body
         self.color = CheckoutColors.default.primary

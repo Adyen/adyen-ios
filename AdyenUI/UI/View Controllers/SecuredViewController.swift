@@ -58,11 +58,11 @@ package final class SecuredViewController<ChildViewController: UIViewController>
     ///    /// - Parameter theme: checkout theme.
     package init(
         child: ChildViewController,
-        style: ViewStyle = FormComponentStyle(),
+        style: ViewStyle? = nil,
         theme: CheckoutTheme
     ) {
         self.childViewController = child
-        self.style = style
+        self.style = style ?? FormComponentStyle()
         self.theme = theme
 
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))

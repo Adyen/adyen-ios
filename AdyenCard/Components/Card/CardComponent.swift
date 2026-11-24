@@ -77,9 +77,10 @@ package class CardComponent: @MainActor PaymentComponent,
     package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init(),
+        configuration: CardConfiguration? = nil,
         callbacks: CardCallbacks
     ) {
+        let configuration = configuration ?? .init()
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
             adyenContext: context,

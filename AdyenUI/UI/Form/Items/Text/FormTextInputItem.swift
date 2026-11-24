@@ -22,8 +22,14 @@ open class FormTextInputItem: FormTextItem {
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
     @MainActor
-    override public init(style: FormTextItemStyle = FormTextItemStyle()) {
+    override public init(style: FormTextItemStyle) {
         super.init(style: style)
+    }
+
+    /// Initiate new instance of `FormTextInputItem` with the default style.
+    @MainActor
+    public convenience init() {
+        self.init(style: FormTextItemStyle())
     }
     
     override public func isValid() -> Bool {

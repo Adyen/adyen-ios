@@ -29,7 +29,6 @@ package struct IssuerListConfiguration: PaymentComponentConfiguration {
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
-    @MainActor
     package init(
         style: ListComponentStyle = .init(),
         theme: CheckoutTheme = .default,

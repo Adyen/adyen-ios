@@ -29,7 +29,7 @@ package extension FormAddressItem {
         ///   - showsHeader: Whether to show a title header.
         @MainActor
         package init(
-            style: AddressStyle = AddressStyle(),
+            style: AddressStyle? = nil,
             supportedCountryCodes: Set<String>? = nil,
             showsHeader: Bool = true
         ) {
@@ -43,12 +43,12 @@ package extension FormAddressItem {
 
         @MainActor
         package init(
-            style: AddressStyle = AddressStyle(),
+            style: AddressStyle? = nil,
             localizationParameters: LocalizationParameters? = nil,
             supportedCountryCodes: Set<String>? = nil,
             showsHeader: Bool = true
         ) {
-            self.style = style
+            self.style = style ?? AddressStyle()
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes
             self.showsHeader = showsHeader

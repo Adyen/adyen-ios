@@ -52,7 +52,6 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     }
     
     /// Initializes a new instance of AuthenticationConfiguration
-    @MainActor
     public init(theme: CheckoutTheme = .default) {
         self.theme = theme
     }

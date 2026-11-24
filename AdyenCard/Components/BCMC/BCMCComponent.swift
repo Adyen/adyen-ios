@@ -20,10 +20,10 @@ package final class BCMCComponent: CardComponent {
     package init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init(),
+        configuration: CardConfiguration? = nil,
         callbacks: CardCallbacks
     ) {
-        let configuration = configuration.bcmcConfiguration()
+        let configuration = (configuration ?? CardConfiguration()).bcmcConfiguration()
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
             adyenContext: context,

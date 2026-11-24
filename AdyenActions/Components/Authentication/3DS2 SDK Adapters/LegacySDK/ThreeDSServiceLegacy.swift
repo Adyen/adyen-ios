@@ -17,9 +17,9 @@ internal final class ThreeDSServiceLegacy: @MainActor ThreeDSServiceable {
     private var transaction: AnyADYTransaction?
     
     internal init(
-        service: AnyADYService = ADYServiceAdapter()
+        service: AnyADYService? = nil
     ) {
-        self.service = service
+        self.service = service ?? ADYServiceAdapter()
     }
     
     internal func performFingerprint(

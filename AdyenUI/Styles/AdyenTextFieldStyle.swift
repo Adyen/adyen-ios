@@ -43,7 +43,7 @@ package struct AdyenTextFieldStyle {
     package var focusedBorderWidth: CGFloat
     
     /// A default instance of AdyenTextFieldStyle.
-    @MainActor internal static let `default` = AdyenElements.default.textField
+    internal static let `default` = AdyenElements.default.textField
 
     /// Initializes a new AdyenTextFieldStyle with all parameters required.
     ///

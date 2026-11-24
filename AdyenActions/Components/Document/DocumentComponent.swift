@@ -34,7 +34,6 @@ package final class DocumentComponent: @MainActor ActionComponent,
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
 
-        @MainActor
         package init(
             theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters? = nil

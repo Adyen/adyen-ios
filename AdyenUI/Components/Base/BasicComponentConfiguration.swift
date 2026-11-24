@@ -47,7 +47,7 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
     ///   - localizationParameters: The localization parameters.
     @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true
     ) {
         self.init(
@@ -59,11 +59,11 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
 
     @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.style = style
+        self.style = style ?? FormComponentStyle()
         self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.localizationParameters = localizationParameters
@@ -97,7 +97,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     ///   - localizationParameters: The localization parameters.
     @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil
     ) {
@@ -111,12 +111,12 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
 
     @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.style = style
+        self.style = style ?? FormComponentStyle()
         self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.shopperInformation = shopperInformation

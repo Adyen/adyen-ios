@@ -75,6 +75,10 @@
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
 
+### Fonts
+
+- `AdyenFonts.default` is now immutable (`static let`) and can no longer be reassigned or mutated in place. To customize fonts, create an `AdyenFonts(...)` value and apply it through `CheckoutTheme` and `CheckoutConfiguration.theme(_:)`.
+
 ### Encryption
 
 `CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:
@@ -158,8 +162,8 @@ Drop-in now always skips the payment method list when exactly one presentable re
 `CheckoutConfiguration.showsSubmitButton(_:)` applies only to components created with `createPaymentComponent`. Drop-in
 ignores it and always shows the submit buttons of the components it presents.
 
-`DropInConfiguration()` is now `@MainActor`. Call it on the main actor; building it from a nonisolated context requires
-`await` or a main-actor hop.
+`DropInConfiguration` is a plain value type. `DropInConfiguration()` is not `@MainActor`-isolated, so you can
+build it from any context.
 
 ### Drop-in creation
 
@@ -353,10 +357,9 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 
 #### Action configurations
 
-- `AuthenticationConfiguration(theme:)` is now `@MainActor`. Call it on the main actor; building it from a nonisolated
-  context requires `await` or a main-actor hop.
-- `TwintActionConfiguration(callbackAppScheme:)` is now `@MainActor`. Call it on the main actor; building it from a
-  nonisolated context requires `await` or a main-actor hop.
+- `AuthenticationConfiguration` and `TwintActionConfiguration` are plain value types. Their initializers,
+  including `AuthenticationConfiguration(theme:)` and `TwintActionConfiguration(callbackAppScheme:)`, are not
+  `@MainActor`-isolated, so you can build them from any context.
 
 #### Summary
 

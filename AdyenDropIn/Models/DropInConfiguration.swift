@@ -29,7 +29,6 @@ public struct DropInConfiguration: CheckoutConfigurable {
     package var startWithLastStoredPaymentMethod: Bool = true
 
     /// Creates a Drop-in configuration with default behavior.
-    @MainActor
     public init() {
         self.theme = .init()
     }

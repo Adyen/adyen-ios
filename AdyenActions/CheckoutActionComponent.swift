@@ -53,7 +53,6 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
         ///   - theme: The theme applied to action screens.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
-        @MainActor
         package init(
             theme: CheckoutTheme = .default,
             authentication: AuthenticationConfiguration = .init(),
@@ -67,7 +66,6 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
             )
         }
 
-        @MainActor
         package init(
             localizationParameters: LocalizationParameters? = nil,
             theme: CheckoutTheme = .default,

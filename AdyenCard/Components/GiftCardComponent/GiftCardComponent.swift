@@ -85,7 +85,7 @@ package final class GiftCardComponent: @MainActor PaymentComponent,
         paymentMethod: GiftCardPaymentMethod,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
@@ -113,7 +113,7 @@ package final class GiftCardComponent: @MainActor PaymentComponent,
         paymentMethod: MealVoucherPaymentMethod,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
@@ -131,13 +131,13 @@ package final class GiftCardComponent: @MainActor PaymentComponent,
         partialPaymentMethodType: PartialPaymentMethodType,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
-        self.style = style
+        self.style = style ?? FormComponentStyle()
         self.showsSubmitButton = showsSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.amount = amount

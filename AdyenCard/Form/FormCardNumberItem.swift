@@ -70,9 +70,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal var onUserBrandSelection: ((DetectedCardBrand) -> Void)?
 
     /// Initializes the form card number item.
+    @MainActor
     internal init(
         cardBrandLogos: [FormCardLogosItem.CardBrandLogo],
-        style: FormTextItemStyle = FormTextItemStyle(),
+        style: FormTextItemStyle? = nil,
         localizationParameters: LocalizationParameters? = nil,
         scanCardHandler: (() -> Void)? = nil
     ) {
@@ -82,7 +83,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         self.scanCardHandler = scanCardHandler
         self.scanYourCardButtonTitle = localizedString(.cardScanYourCardButton, localizationParameters)
 
-        super.init(style: style)
+        super.init(style: style ?? FormTextItemStyle())
 
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
