@@ -22,8 +22,6 @@ package final class SecuredViewController<ChildViewController: UIViewController>
 
     private var blurConstraints: [NSLayoutConstraint]?
 
-    private var backgroundObservers: [Any]?
-
     package weak var delegate: ViewControllerDelegate?
 
     override public var preferredContentSize: CGSize {
@@ -75,11 +73,11 @@ package final class SecuredViewController<ChildViewController: UIViewController>
 
     #if compiler(>=6.2)
         isolated deinit {
-            backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
+            notificationCenter.removeObserver(self)
         }
     #else
         deinit {
-            backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
+            notificationCenter.removeObserver(self)
         }
     #endif
 
@@ -125,20 +123,26 @@ package final class SecuredViewController<ChildViewController: UIViewController>
     }
 
     private func listenToBackgroundNotifications() {
-        var array = [Any]()
-        array.append(notificationCenter.addObserver(
-            forName: UIApplication.willResignActiveNotification,
-            object: nil,
-            queue: OperationQueue.main,
-            using: { [weak self] _ in self?.addBlur() }
-        ))
-        array.append(notificationCenter.addObserver(
-            forName: UIApplication.didBecomeActiveNotification,
-            object: nil,
-            queue: OperationQueue.main,
-            using: { [weak self] _ in self?.removeBlur() }
-        ))
-        backgroundObservers = array
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(handleWillResignActiveNotification),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(handleDidBecomeActiveNotification),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    @objc private func handleWillResignActiveNotification() {
+        addBlur()
+    }
+
+    @objc private func handleDidBecomeActiveNotification() {
+        removeBlur()
     }
 
     private func addBlur() {

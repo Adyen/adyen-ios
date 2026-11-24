@@ -38,7 +38,6 @@ import Foundation
     
     #if compiler(>=6.2)
         isolated deinit {
-            batchTimer?.invalidate()
             // fire-and-forget remaining events without capturing self
             if let request = requestWithAllEvents() {
                 let apiClient = apiClient
@@ -48,16 +47,8 @@ import Foundation
             }
         }
     #else
-        deinit {
-            batchTimer?.invalidate()
-            // fire-and-forget remaining events without capturing self
-            if let request = requestWithAllEvents() {
-                let apiClient = apiClient
-                Task {
-                    _ = try? await apiClient.performAsync(request)
-                }
-            }
-        }
+        /// Swift <6.2: pending events cannot be flushed in deinit; the batch timer self-invalidates.
+        deinit {}
     #endif
     
     internal func add(info: AnalyticsEventInfo) {
@@ -117,8 +108,12 @@ import Foundation
     @MainActor
     private func startNextTimer() {
         batchTimer?.invalidate()
-        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.sendEventsIfNeeded() }
+        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] timer in
+            guard let self else {
+                timer.invalidate()
+                return
+            }
+            Task { @MainActor in self.sendEventsIfNeeded() }
         }
     }
 }
