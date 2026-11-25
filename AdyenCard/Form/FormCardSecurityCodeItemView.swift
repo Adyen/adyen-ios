@@ -18,7 +18,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     ///   - theme: The theme to use for styling.
     internal required init(item: FormCardSecurityCodeItem, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
-        accessory = .customView(cardHintView)
+        hintAccessoryView = cardHintView
         textField.allowsEditingActions = false
         
         observe(item.$placeholder) { [weak self] _ in
@@ -29,6 +29,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
 
         observe(item.$displayMode) { [weak self] _ in
+            self?.updateValidation()
+        }
+
+        observe(item.$selectedCard) { [weak self] _ in
             self?.updateValidation()
         }
         
@@ -50,18 +54,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         
         alpha = item.displayMode.isVisible ? 1.0 : 0.0
         isUserInteractionEnabled = item.displayMode.isVisible
-        
-        switch item.displayMode {
-        case .optional:
-            accessory = .customView(cardHintView)
-        case .hidden, .required:
-            break
-        }
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
-        accessory = .customView(cardHintView)
         cardHintView.isHighlighted = true
     }
     
@@ -141,6 +137,14 @@ extension FormCardSecurityCodeItemView {
             }
         }
         
+        /// Restarts the blinking when the hint is shown again after being replaced by another accessory.
+        override internal func didMoveToWindow() {
+            super.didMoveToWindow()
+            if isHighlighted, window != nil {
+                animateHint()
+            }
+        }
+        
         private func flipCard(toFront: Bool) {
             guard showFront != toFront else { return }
             showFront = toFront
@@ -157,6 +161,8 @@ extension FormCardSecurityCodeItemView {
         }
         
         private func animateHint() {
+            hintImage.layer.removeAllAnimations()
+            hintImage.alpha = 1
             UIView.animate(
                 withDuration: blinkDuration,
                 delay: 0,
@@ -174,6 +180,7 @@ extension FormCardSecurityCodeItemView {
         
         private func setupConstraints() {
             addSubview(hintImage)
+            setContentHuggingPriority(.required, for: .horizontal)
             setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             hintImage.adyen.anchor(inside: self)
         }
