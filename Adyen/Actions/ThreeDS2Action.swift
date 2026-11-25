@@ -8,7 +8,7 @@ import Foundation
 
 /// Describes an action in which a full 3D Secure 2 flow should be executed including fingerprint collection,
 /// and potentially a challenge or a fallback to 3DS1.
-public enum ThreeDS2Action: Decodable {
+package enum ThreeDS2Action: Decodable {
 
     /// Indicates a 3D Secure device fingerprint should be taken.
     case fingerprint(ThreeDS2FingerprintAction)
@@ -16,7 +16,7 @@ public enum ThreeDS2Action: Decodable {
     /// Indicates a 3D Secure challenge should be presented.
     case challenge(ThreeDS2ChallengeAction)
 
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
 
@@ -29,7 +29,7 @@ public enum ThreeDS2Action: Decodable {
     }
 
     /// The 3DS2 flow type.
-    public enum ActionType: String, Decodable {
+    package enum ActionType: String, Decodable {
 
         /// Device fingerprint action.
         case fingerprint

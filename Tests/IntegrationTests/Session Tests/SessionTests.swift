@@ -253,7 +253,7 @@ class SessionTests: XCTestCase {
         let result = try await sut.performSubmit(data)
         switch result {
         case let .action(action):
-            if case let .redirect(redirect) = action {
+            if case let .redirect(redirect) = action.kind {
                 XCTAssertEqual(redirect.url, expectedAction.url)
             } else {
                 XCTFail("Expected redirect action")

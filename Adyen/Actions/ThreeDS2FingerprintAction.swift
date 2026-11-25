@@ -7,16 +7,16 @@
 import Foundation
 
 /// Describes an action in which a 3D Secure device fingerprint is taken.
-public struct ThreeDS2FingerprintAction: Decodable {
+package struct ThreeDS2FingerprintAction: Decodable {
 
     /// The 3D Secure fingerprint token.
-    public let fingerprintToken: String
+    package let fingerprintToken: String
 
     /// The 3D Secure authorization token.
-    public let authorisationToken: String?
+    package let authorisationToken: String?
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String?
+    package let paymentData: String?
     
     /// Initializes a 3D Secure fingerprint action.
     ///
@@ -24,7 +24,7 @@ public struct ThreeDS2FingerprintAction: Decodable {
     ///   - fingerprintToken: The 3D Secure fingerprint token.
     ///   - authorisationToken: The 3D Secure authorization token.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public init(fingerprintToken: String, authorisationToken: String? = nil, paymentData: String?) {
+    package init(fingerprintToken: String, authorisationToken: String? = nil, paymentData: String?) {
         self.authorisationToken = authorisationToken
         self.fingerprintToken = fingerprintToken
         self.paymentData = paymentData

@@ -7,18 +7,18 @@
 import Foundation
 
 /// Describes an action in which a Doku voucher is presented to the shopper.
-public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVoucherAction {
+package final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVoucherAction {
     
     /// Shopper Name.
-    public let shopperName: String
+    package let shopperName: String
 
     /// The shopper email.
-    public let shopperEmail: String
+    package let shopperEmail: String
     
     /// The instruction `URL` object.
-    public let instructionsURL: URL
+    package let instructionsURL: URL
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         shopperName = try container.decode(String.self, forKey: .shopperName)
         shopperEmail = try container.decode(String.self, forKey: .shopperEmail)

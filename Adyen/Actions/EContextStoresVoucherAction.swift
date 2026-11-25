@@ -7,16 +7,16 @@
 import Foundation
 
 /// Describes an action in which an EContext Stores voucher is presented to the shopper.
-public class EContextStoresVoucherAction: GenericVoucherAction,
+package class EContextStoresVoucherAction: GenericVoucherAction,
     InstructionAwareVoucherAction {
 
     /// Masked shopper telephone number.
-    public let maskedTelephoneNumber: String
+    package let maskedTelephoneNumber: String
     
     /// The instruction `URL` object.
-    public let instructionsURL: URL
+    package let instructionsURL: URL
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         maskedTelephoneNumber = try container.decode(String.self, forKey: .maskedTelephoneNumber)
         instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)

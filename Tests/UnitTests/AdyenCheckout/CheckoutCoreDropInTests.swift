@@ -158,7 +158,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
         let dropIn = ActionHandlingDropInMock()
         let handledAction = expectation(description: "Drop-in handled action")
         dropIn.onHandle = { receivedAction in
-            guard case let .await(receivedAwaitAction) = receivedAction else {
+            guard case let .await(receivedAwaitAction) = receivedAction.kind else {
                 return XCTFail("Expected an await action.")
             }
             XCTAssertEqual(receivedAwaitAction.paymentData, awaitAction.paymentData)

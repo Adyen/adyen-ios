@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable {
+package enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -40,7 +40,7 @@ public enum VoucherAction: Decodable {
     case multibanco(MultibancoVoucherAction)
 
     // swiftlint:disable:next cyclomatic_complexity
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
 
@@ -112,30 +112,29 @@ package protocol InstructionAwareVoucherAction {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable, AnyVoucherAction {
+package class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: PaymentMethodType
+    package let paymentMethodType: PaymentMethodType
 
     /// The initial  amount.
-    public let initialAmount: Amount
+    package let initialAmount: Amount
 
     /// The totalAmount  amount.
-    public let totalAmount: Amount
+    package let totalAmount: Amount
 
     /// The payment reference.
-    public let reference: String
+    package let reference: String
 
     /// Expiry Date.
-    public let expiresAt: Date
+    package let expiresAt: Date
 
     /// Merchant Name.
-    public let merchantName: String
+    package let merchantName: String
 
-    @_spi(AdyenInternal)
-    public let passCreationToken: String?
+    package let passCreationToken: String?
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Amount.self, forKey: .initialAmount)

@@ -26,20 +26,20 @@ package enum QRCodePaymentMethodType: String, Decodable {
 }
 
 /// Describes any QR code action.
-public struct QRCodeAction: PaymentDataAware, Decodable {
+package struct QRCodeAction: PaymentDataAware, Decodable {
     
     /// The `paymentMethodType` for which the QR code is presented.
-    public var paymentMethodType: PaymentMethodType {
+    package var paymentMethodType: PaymentMethodType {
         PaymentMethodType(rawValue: qrCodePaymentMethodType.rawValue)
     }
 
     package let qrCodePaymentMethodType: QRCodePaymentMethodType
     
     /// The QR code data to be shown/copied.
-    public let qrCodeData: String
+    package let qrCodeData: String
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String
+    package let paymentData: String
 
     private enum CodingKeys: String, CodingKey {
         case qrCodePaymentMethodType = "paymentMethodType"

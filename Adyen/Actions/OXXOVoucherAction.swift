@@ -7,24 +7,24 @@
 import Foundation
 
 /// Describes an action in which an OXXO voucher is presented to the shopper.
-public class OXXOVoucherAction: GenericVoucherAction,
+package class OXXOVoucherAction: GenericVoucherAction,
     Downloadable,
     InstructionAwareVoucherAction {
 
     /// This reference is a short version of the barcode number of the voucher.
-    public let alternativeReference: String
+    package let alternativeReference: String
     
     /// The reference to uniquely identify a payment.
     /// This reference is used in all communication with you about the payment status.
-    public let merchantReference: String
+    package let merchantReference: String
     
     /// Download URL.
-    public let downloadUrl: URL
+    package let downloadUrl: URL
     
     /// The instruction `URL` object.
-    public let instructionsURL: URL
+    package let instructionsURL: URL
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         alternativeReference = try container.decode(String.self, forKey: .alternativeReference)
         merchantReference = try container.decode(String.self, forKey: .merchantReference)

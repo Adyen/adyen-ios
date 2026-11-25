@@ -104,7 +104,7 @@ package final class AuthenticationComponent: ActionComponent {
     }
 
     private func didReceive(_ action: Action) {
-        switch action {
+        switch action.kind {
         case let .redirect(redirectAction):
             redirectComponent.handle(redirectAction)
         case let .threeDS2(threeDS2Action):

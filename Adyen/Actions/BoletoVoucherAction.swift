@@ -14,27 +14,26 @@ package protocol Downloadable {
 }
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
+package final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
     
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: PaymentMethodType
+    package let paymentMethodType: PaymentMethodType
 
     /// The totalAmount  amount.
-    public let totalAmount: Amount
+    package let totalAmount: Amount
 
     /// The payment reference.
-    public let reference: String
+    package let reference: String
 
     /// Expiry Date.
-    public let expiresAt: Date
+    package let expiresAt: Date
     
     /// Download URL
-    public let downloadUrl: URL
+    package let downloadUrl: URL
 
-    @_spi(AdyenInternal)
-    public let passCreationToken: String?
+    package let passCreationToken: String?
     
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
