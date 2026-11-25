@@ -29,6 +29,14 @@ extension SearchViewController {
         tableView.setContentOffset(CGPoint(x: 0, y: -tableView.adjustedContentInset.top), animated: true)
     }
 
+    /// Enables or disables interaction with the content and with the search bar,
+    /// which is outside the view in the navigation bar search layout.
+    package func setInteractionEnabled(_ isEnabled: Bool) {
+        view.isUserInteractionEnabled = isEnabled
+        guard usesNavigationBarSearchLayout, viewModel.shouldShowSearchBar else { return }
+        searchController.searchBar.isUserInteractionEnabled = isEnabled
+    }
+
     internal func makeResultsListViewController() -> ListViewController {
         // The results scroll under the navigation bar across its whole width,
         // so this layout insets the rows inside a full-width table instead.

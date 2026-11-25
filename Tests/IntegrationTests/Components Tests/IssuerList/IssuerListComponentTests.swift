@@ -217,6 +217,38 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertTrue(sut.viewController.view.isUserInteractionEnabled)
     }
 
+    func test_performSubmit_withSearchBar_shouldDisableSearchBar() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        let listViewController = try presentList()
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let searchBar = try XCTUnwrap(searchViewController.navigationItem.searchController).searchBar
+        selectRow(at: 0, in: listViewController)
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        XCTAssertFalse(searchBar.isUserInteractionEnabled)
+    }
+
+    func test_stopLoading_afterSubmit_withSearchBar_shouldEnableSearchBar() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        let listViewController = try presentList()
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let searchBar = try XCTUnwrap(searchViewController.navigationItem.searchController).searchBar
+        selectRow(at: 0, in: listViewController)
+        sut.performSubmit()
+        XCTAssertFalse(searchBar.isUserInteractionEnabled)
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        XCTAssertTrue(searchBar.isUserInteractionEnabled)
+    }
+
     func test_performSubmit_whenSubmitButtonHidden_shouldNotShowButton_andShouldSubmitSelectedIssuer() throws {
         // Given
         var configuration = IssuerListConfiguration()

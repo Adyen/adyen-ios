@@ -82,7 +82,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 
         setShowsError(false)
         submitButton.showsActivityIndicator = true
-        searchViewController.view.isUserInteractionEnabled = false
+        searchViewController.setInteractionEnabled(false)
 
         let details = IssuerListDetails(
             paymentMethod: issuerListPaymentMethod,
@@ -149,7 +149,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 
     package func stopLoading() {
         submitButton.showsActivityIndicator = false
-        searchViewController.view.isUserInteractionEnabled = true
+        searchViewController.setInteractionEnabled(true)
     }
 
     // MARK: - Private
