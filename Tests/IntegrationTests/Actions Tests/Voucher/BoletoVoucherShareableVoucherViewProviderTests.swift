@@ -18,7 +18,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
         )
 
         let boletoDecoded = try AdyenCoder.decode(boletoAction) as BoletoVoucherAction
-        let action: VoucherAction = .boletoBancairoSantander(boletoDecoded)
+        let action: VoucherAction = .boletoBancarioSantander(boletoDecoded)
 
         let sut = viewProvider.provideView(with: action, logo: nil)
 

@@ -107,6 +107,18 @@ public struct PaymentMethodType: RawRepresentable, Hashable, Codable, Sendable {
     package static let amazonPay = PaymentMethodType(rawValue: "amazonpay")
 }
 
+extension PaymentMethodType: ExpressibleByStringLiteral {
+
+    /// Creates a payment method type with the given string literal.
+    ///
+    /// Equivalent to ``init(rawValue:)``. Allows comparing a payment method type with a string literal,
+    /// for example `paymentMethod.type == "ideal"`.
+    /// - Parameter value: The `txVariant` of the payment method.
+    public init(stringLiteral value: String) {
+        self.init(rawValue: value)
+    }
+}
+
 extension PaymentMethodType {
     
     /// The brand name of the card type

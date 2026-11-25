@@ -1105,6 +1105,21 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(PaymentMethodType(rawValue: "paywithgoogle"), .googlePayLegacy)
     }
 
+    func test_paymentMethodType_withStringLiteral_shouldEqualRawValueInit() {
+        let type: PaymentMethodType = "ideal"
+        XCTAssertEqual(type, PaymentMethodType(rawValue: "ideal"))
+        XCTAssertEqual(type, .ideal)
+        XCTAssertTrue(PaymentMethodType.scheme == "scheme")
+        XCTAssertFalse(PaymentMethodType.scheme == "card")
+
+        switch PaymentMethodType.giftCard {
+        case "giftcard":
+            break
+        default:
+            XCTFail("Expected the giftcard literal to match")
+        }
+    }
+
     func test_decodingPaymentMethods_withGooglePayTypes_shouldSkipBoth() throws {
         let paymentMethods: PaymentMethods = try AdyenCoder.decode([
             "paymentMethods": [

@@ -21,8 +21,8 @@ public enum VoucherAction: Decodable {
     /// Indicates an EContext ATM Voucher type.
     case econtextATM(EContextATMVoucherAction)
     
-    /// Indicates a Boleto Bancairo Santander Voucher type.
-    case boletoBancairoSantander(BoletoVoucherAction)
+    /// Indicates a Boleto Bancario Santander Voucher type.
+    case boletoBancarioSantander(BoletoVoucherAction)
 
     /// Indicates a Boleto Bancario Voucher type.
     case boletoBancario(BoletoVoucherAction)
@@ -54,7 +54,7 @@ public enum VoucherAction: Decodable {
         case .econtextATM:
             self = try .econtextATM(EContextATMVoucherAction(from: decoder))
         case .boletoBancarioSantander:
-            self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
+            self = try .boletoBancarioSantander(BoletoVoucherAction(from: decoder))
         case .boletoBancario:
             self = try .boletoBancario(BoletoVoucherAction(from: decoder))
         case .boletoBancarioItau:
@@ -80,7 +80,7 @@ public enum VoucherAction: Decodable {
 
     package var anyAction: AnyVoucherAction {
         switch self {
-        case let .boletoBancairoSantander(action):
+        case let .boletoBancarioSantander(action):
             return action
         case let .boletoBancario(action):
             return action

@@ -44,6 +44,7 @@
 
 - `TwintSDKAction.paymentMethodType` is a `PaymentMethodType` instead of a `String`.
 - The `AwaitAction` and `RedirectableAwaitAction` initializers take a `PaymentMethodType`.
+- `VoucherAction.boletoBancairoSantander` is renamed to `VoucherAction.boletoBancarioSantander`.
 - Await actions are decoded for any payment method. Before, an await action for a payment method that was not listed in `AwaitPaymentMethod` failed to decode.
 
 ### Await action screen
@@ -63,6 +64,7 @@
 - `PaymentMethodType` is a struct instead of an enum, so Adyen can add payment method types without breaking your code. Known types are static properties, for example `PaymentMethodType.scheme`. A `switch` over a `PaymentMethodType` needs a `default` case.
 - `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(rawValue:)` instead. It keeps any raw value, including types the SDK doesn't know.
 - `PaymentMethodType(rawValue:)` no longer returns an optional.
+- A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
 - New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
 - `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
 - Some properties are renamed:
