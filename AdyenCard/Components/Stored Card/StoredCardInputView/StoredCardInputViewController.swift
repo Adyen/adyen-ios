@@ -197,7 +197,7 @@ internal class StoredCardInputViewController: UIViewController {
 
 }
 
-extension StoredCardInputViewController: @MainActor FormTextItemViewDelegate {
+extension StoredCardInputViewController: FormTextItemViewDelegate {
     internal func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
         securityCodeItemView.resignFirstResponder()
     }

@@ -381,7 +381,7 @@ class CheckoutActionComponentTests: XCTestCase {
 }
 
 @MainActor
-private final class CancellableActionComponentMock: @MainActor ActionComponent, @MainActor Cancellable {
+private final class CancellableActionComponentMock: ActionComponent, Cancellable {
     let context = Dummy.context
     weak var delegate: ActionComponentDelegate?
 

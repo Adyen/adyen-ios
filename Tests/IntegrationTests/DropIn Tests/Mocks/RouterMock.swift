@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 class RouterMock: Router {
     var childRouter: Router?
     var rootViewController: UIViewController = .init()

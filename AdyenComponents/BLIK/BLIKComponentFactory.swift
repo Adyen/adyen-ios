@@ -12,7 +12,7 @@ import AdyenUI
 /// This factory creates `BLIKComponent` instances configured with the
 /// provided BLIK payment method and component configuration.
 @MainActor
-package struct BLIKComponentFactory: @MainActor PaymentComponentFactory {
+package struct BLIKComponentFactory: PaymentComponentFactory {
     package typealias Configuration = BasicComponentConfiguration
     package typealias Method = BLIKPaymentMethod
     package typealias Component = BLIKComponent

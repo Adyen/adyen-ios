@@ -8,6 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol AnyThreeDS2FingerprintSubmitter {
     func submit(
         fingerprint: String,
@@ -17,7 +18,7 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
 }
 
 @MainActor
-internal final class ThreeDS2FingerprintSubmitter: @MainActor AnyThreeDS2FingerprintSubmitter {
+internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
     
     private enum Constants {
         static let fingerprintEvent = "threeDS2Fingerprint"

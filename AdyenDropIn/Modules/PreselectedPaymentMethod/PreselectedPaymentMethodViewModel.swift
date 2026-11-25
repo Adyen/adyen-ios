@@ -10,7 +10,7 @@ import AdyenUI
 import Foundation
 
 @MainActor
-internal final class PreselectedPaymentMethodViewModel: @MainActor ObservableObject {
+internal final class PreselectedPaymentMethodViewModel {
 
     // MARK: - Properties
 
@@ -125,7 +125,7 @@ internal final class PreselectedPaymentMethodViewModel: @MainActor ObservableObj
 
 // MARK: - PaymentComponentDelegate
 
-extension PreselectedPaymentMethodViewModel: @MainActor PaymentComponentDelegate {
+extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
     
     internal func didSubmit(
         _ data: PaymentComponentData,
@@ -153,3 +153,9 @@ extension PreselectedPaymentMethodViewModel: @MainActor PaymentComponentDelegate
         analyticsProvider?.add(info: infoEvent)
     }
 }
+
+#if compiler(>=6.2)
+    extension PreselectedPaymentMethodViewModel: @MainActor ObservableObject {}
+#else
+    extension PreselectedPaymentMethodViewModel: ObservableObject {}
+#endif

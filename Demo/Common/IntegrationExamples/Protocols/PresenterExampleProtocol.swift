@@ -6,6 +6,7 @@
 
 import UIKit
 
+@MainActor
 internal protocol PresenterExampleProtocol: AnyObject {
 
     func present(viewController: UIViewController, completion: (() -> Void)?)

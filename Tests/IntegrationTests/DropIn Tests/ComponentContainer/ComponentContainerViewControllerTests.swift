@@ -275,6 +275,7 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Mocks
 
+    @MainActor
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()

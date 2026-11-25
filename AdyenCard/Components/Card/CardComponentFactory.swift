@@ -8,7 +8,7 @@ import Adyen
 
 /// Factory for creating card payment components.
 @MainActor
-package struct CardComponentFactory: @MainActor PaymentComponentFactory {
+package struct CardComponentFactory: PaymentComponentFactory {
     
     package typealias Method = CardPaymentMethod
     package typealias Configuration = CardConfiguration

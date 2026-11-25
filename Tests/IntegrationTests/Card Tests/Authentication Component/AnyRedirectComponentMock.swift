@@ -9,7 +9,7 @@
 import Foundation
 
 @MainActor
-final class AnyRedirectComponentMock: @MainActor AnyRedirectComponent {
+final class AnyRedirectComponentMock: AnyRedirectComponent {
     
     var context: AdyenContext {
         Dummy.context

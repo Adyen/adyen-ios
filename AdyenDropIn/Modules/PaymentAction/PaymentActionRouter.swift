@@ -20,7 +20,7 @@ internal protocol PaymentActionRouting: AnyObject {
 }
 
 @MainActor
-internal class PaymentActionRouter: @MainActor Router, @MainActor PaymentActionRouting {
+internal class PaymentActionRouter: Router, PaymentActionRouting {
 
     // MARK: - Properties
 

@@ -982,7 +982,7 @@ final class CheckoutTests: XCTestCase {
 struct TestError: Error {}
 
 @MainActor
-private final class ActionComponentMock: @MainActor ActionComponent {
+private final class ActionComponentMock: ActionComponent {
     var context: AdyenContext = Dummy.context
     var delegate: ActionComponentDelegate?
 }

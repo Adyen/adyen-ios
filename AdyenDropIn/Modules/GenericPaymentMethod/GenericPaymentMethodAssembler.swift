@@ -20,7 +20,7 @@ internal protocol GenericPaymentMethodAssemblerProtocol {
 }
 
 @MainActor
-internal struct GenericPaymentMethodAssembler: @MainActor GenericPaymentMethodAssemblerProtocol {
+internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol {
 
     // MARK: - Properties
 

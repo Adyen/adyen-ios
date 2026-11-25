@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Describes any entity that is UI localizable.
+@MainActor
 package protocol Localizable {
     
     /// Indicates the localization parameters, leave it nil to use the default parameters.
@@ -15,6 +16,7 @@ package protocol Localizable {
 }
 
 /// Represents any object than can handle a cancel event.
+@MainActor
 package protocol Cancellable: AnyObject {
     
     /// Called when the user cancels the component.

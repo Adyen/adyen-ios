@@ -7,6 +7,7 @@
 import Adyen
 import UIKit
 
+@MainActor
 class PresenterMock: ViewControllerPresenter {
     
     var present: (UIViewController, Bool) -> Void

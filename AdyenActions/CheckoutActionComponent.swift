@@ -14,10 +14,10 @@ import UIKit
  An action handler component to perform any supported action out of the box.
  */
 @MainActor
-package final class CheckoutActionComponent: @MainActor ActionComponent,
-    @MainActor ActionHandlingComponent,
-    @MainActor Component,
-    @MainActor AdyenContextAware {
+package final class CheckoutActionComponent: ActionComponent,
+    ActionHandlingComponent,
+    Component,
+    AdyenContextAware {
 
     /// :nodoc:
     /// The context object for this component.
@@ -90,10 +90,10 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
     ///   - configuration: The configuration.
     package init(
         context: AdyenContext,
-        configuration: Configuration = Configuration()
+        configuration: Configuration? = nil
     ) {
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? Configuration()
     }
     
     // MARK: - Performing Actions
@@ -278,7 +278,7 @@ package final class CheckoutActionComponent: @MainActor ActionComponent,
 
 // MARK: - Cancellable
 
-extension CheckoutActionComponent: @MainActor Cancellable {
+extension CheckoutActionComponent: Cancellable {
 
     package func didCancel() {
         (currentActionComponent as? Cancellable)?.didCancel()

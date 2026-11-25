@@ -314,6 +314,7 @@ struct PaymentMethodListViewControllerTests {
 
 // MARK: - Test Helper
 
+@MainActor
 private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     let context: AdyenContext = Dummy.context

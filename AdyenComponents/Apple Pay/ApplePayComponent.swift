@@ -12,12 +12,12 @@ import PassKit
 /// A component that handles Apple Pay payments.
 @MainActor
 package class ApplePayComponent: NSObject,
-    @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PartialPaymentOrderAware,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware,
-    @MainActor FinalizableComponent {
+    PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    FinalizableComponent {
 
     /// The Apple Pay payment request. Kept on the configuration; exposed here as a
     /// convenience that returns the same `PKPaymentRequest` reference.
@@ -210,4 +210,4 @@ package class ApplePayComponent: NSObject,
 // MARK: - Analytics
 
 /// The `rendered` event is sent each time the Apple Pay sheet opens.
-extension ApplePayComponent: @MainActor TrackableComponent {}
+extension ApplePayComponent: TrackableComponent {}

@@ -63,6 +63,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
+    @MainActor
     internal struct CardScannerProviderWrapper: CardScannerProviding {
         // swiftlint:disable:this unneeded_synthesized_initializer
         internal nonisolated init() {}

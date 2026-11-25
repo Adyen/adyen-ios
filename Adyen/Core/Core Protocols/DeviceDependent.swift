@@ -7,6 +7,7 @@
 import Foundation
 
 /// Represents any structure/object whose behavior is device dependent.
+@MainActor
 package protocol DeviceDependent {
     
     /// Decides whether current device is supported.

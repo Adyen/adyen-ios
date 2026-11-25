@@ -11,10 +11,10 @@ import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 @MainActor
-internal final class ThreeDS2CompactActionHandler: @MainActor AnyThreeDS2ActionHandler,
-    @MainActor ComponentWrapper,
-    @MainActor Component,
-    @MainActor AdyenContextAware {
+internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler,
+    ComponentWrapper,
+    Component,
+    AdyenContextAware {
     
     // MARK: - Private
 

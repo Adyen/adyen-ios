@@ -10,7 +10,7 @@ import AdyenUI
 import UIKit
 
 @MainActor
-internal final class AddressFormItemInjector: @MainActor FormItemInjector, @MainActor Localizable {
+internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     
     internal var localizationParameters: LocalizationParameters?
 
@@ -71,7 +71,7 @@ internal final class AddressFormItemInjector: @MainActor FormItemInjector, @Main
     
 }
 
-extension AddressFormItemInjector: @MainActor ViewControllerPresenter {
+extension AddressFormItemInjector: ViewControllerPresenter {
     
     internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
         presenter?.presentViewController(viewController, animated: animated)

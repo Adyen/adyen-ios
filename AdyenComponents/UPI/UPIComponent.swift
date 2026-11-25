@@ -12,12 +12,12 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 @MainActor
-package final class UPIComponent: @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PartialPaymentOrderAware,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware,
-    @MainActor LoadingComponent {
+package final class UPIComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    LoadingComponent {
     
     /// The flow types for UPI component.
     package enum UPIFlowType: Int {

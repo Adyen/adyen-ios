@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 
 /// A `ListViewController` data source.
+@MainActor
 internal protocol ListViewControllerDataSource: UITableViewDataSource {
     
     /// All sections data.
@@ -36,7 +37,7 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
 }
 
 @MainActor
-internal final class CoreListDataSource: NSObject, @MainActor ListViewControllerDataSource {
+internal final class CoreListDataSource: NSObject, ListViewControllerDataSource {
     
     internal var sections: [ListSection] = []
     

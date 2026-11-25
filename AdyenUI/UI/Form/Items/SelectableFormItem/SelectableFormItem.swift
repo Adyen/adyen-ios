@@ -68,10 +68,16 @@ package class SelectableFormItem: FormItem {
 
 }
 
-extension SelectableFormItem: @MainActor Equatable {
+extension SelectableFormItem {
 
     package static func == (lhs: SelectableFormItem, rhs: SelectableFormItem) -> Bool {
         lhs.title == rhs.title &&
             lhs.identifier == rhs.identifier
     }
 }
+
+#if compiler(>=6.2)
+    extension SelectableFormItem: @MainActor Equatable {}
+#else
+    extension SelectableFormItem: Equatable {}
+#endif

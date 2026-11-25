@@ -10,6 +10,7 @@ import Foundation
 /// This protocol abstracts the SDK logic away.
 /// The 3DS2 SDK performs 2 tasks - fingerprint & challenge.
 /// Additionally we provide a way to reset the transaction.
+@MainActor
 internal protocol ThreeDSServiceable {
     func performFingerprint(
         parameters: FingerprintServiceParameters,

@@ -14,12 +14,12 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 @MainActor
-package final class CashAppPayComponent: @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PartialPaymentOrderAware,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware,
-    @MainActor LoadingComponent {
+package final class CashAppPayComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    LoadingComponent {
 
     /// The notification to post when returning back to your application from Cash App.
     package static let RedirectNotification = CashAppPay.RedirectNotification
@@ -225,7 +225,7 @@ package final class CashAppPayComponent: @MainActor PaymentComponent,
 
 }
 
-extension CashAppPayComponent: @MainActor CashAppPayObserver {
+extension CashAppPayComponent {
 
     package func stateDidChange(to state: CashAppPayState) {
         switch state {
@@ -287,6 +287,12 @@ extension CashAppPayComponent {
     }
 }
 
-extension CashAppPayComponent: @MainActor TrackableComponent {}
+extension CashAppPayComponent: TrackableComponent {}
 
-extension CashAppPayComponent: @MainActor ViewControllerDelegate {}
+extension CashAppPayComponent: ViewControllerDelegate {}
+
+#if compiler(>=6.2)
+    extension CashAppPayComponent: @MainActor CashAppPayObserver {}
+#else
+    extension CashAppPayComponent: CashAppPayObserver {}
+#endif

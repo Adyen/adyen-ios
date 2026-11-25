@@ -8,7 +8,7 @@
 import AdyenUI
 
 @MainActor
-class PaymentComponentMock: @MainActor PaymentComponent {
+class PaymentComponentMock: PaymentComponent {
 
     var context: AdyenContext = Dummy.context
 
@@ -59,7 +59,7 @@ class PaymentComponentMock: @MainActor PaymentComponent {
     }
 }
 
-class PresentablePaymentComponentMock: PaymentComponentMock, @MainActor LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
 
     // MARK: - Properties
 
@@ -96,7 +96,7 @@ class PresentablePaymentComponentMock: PaymentComponentMock, @MainActor LoadingC
     }
 }
 
-class StoredComponentMock: PaymentComponentMock, @MainActor StoredPaymentComponent {
+class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
 
     var order: PartialPaymentOrder?
 

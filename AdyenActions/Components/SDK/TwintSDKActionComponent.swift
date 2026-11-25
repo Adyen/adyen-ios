@@ -14,9 +14,9 @@ import Foundation
 #if canImport(TwintSDK)
     /// A component that handles Twint SDK action's.
     @MainActor
-    package final class TwintSDKActionComponent: @MainActor ActionComponent,
-        @MainActor Component,
-        @MainActor AdyenContextAware {
+    package final class TwintSDKActionComponent: ActionComponent,
+        Component,
+        AdyenContextAware {
 
         /// The context object for this component.
         package let context: AdyenContext
@@ -210,7 +210,7 @@ import Foundation
         }
     }
 
-    extension TwintSDKActionComponent: @MainActor ActionComponentDelegate {
+    extension TwintSDKActionComponent: ActionComponentDelegate {
 
         package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
             cleanup()

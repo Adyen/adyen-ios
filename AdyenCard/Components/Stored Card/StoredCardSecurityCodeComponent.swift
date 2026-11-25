@@ -12,12 +12,12 @@ import UIKit
 
 /// A component that provides a form for stored card payments.
 @MainActor
-package final class StoredCardSecurityCodeComponent: @MainActor StoredPaymentComponent,
-    @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware,
-    @MainActor Localizable {
+package final class StoredCardSecurityCodeComponent: StoredPaymentComponent,
+    PaymentComponent,
+    Component,
+    PaymentMethodAware,
+    AdyenContextAware,
+    Localizable {
 
     // MARK: - Properties
 

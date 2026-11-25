@@ -9,7 +9,7 @@ import Adyen3DS2
 import Foundation
 
 @MainActor
-final class AnyADYServiceMock: @MainActor AnyADYService {
+final class AnyADYServiceMock: AnyADYService {
     var onService: ((ADYServiceParameters, ADYAppearanceConfiguration, @MainActor @Sendable (AnyADYService) -> Void) -> Void)?
 
     func service(
@@ -64,7 +64,7 @@ internal struct AnyChallengeResultMock: AnyChallengeResult {
 }
 
 @MainActor
-final class AnyADYTransactionMock: @MainActor AnyADYTransaction {
+final class AnyADYTransactionMock: AnyADYTransaction {
 
     let authenticationParameters: AnyAuthenticationRequestParameters
 

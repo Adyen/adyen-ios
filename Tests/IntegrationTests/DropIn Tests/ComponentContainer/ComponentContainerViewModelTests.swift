@@ -117,7 +117,7 @@ struct ComponentContainerViewModelTests {
     // MARK: - Mocks
 
     @MainActor
-    private class ComponentContainerRoutingMock: @MainActor ComponentContainerRouting {
+    private class ComponentContainerRoutingMock: ComponentContainerRouting {
         var childRouter: Router?
         var rootViewController: UIViewController = .init()
 

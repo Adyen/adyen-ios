@@ -15,7 +15,7 @@ import UIKit
 internal protocol DropInRouting: Router, DropInFlowRouting, AnyObject {}
 
 @MainActor
-internal class DropInRouter: @MainActor DropInRouting {
+internal class DropInRouter: DropInRouting {
     
     // MARK: - Properties
     
@@ -126,7 +126,7 @@ extension DropInRouter {
 
 // MARK: - PreselectedPaymentMethodRouterListener
 
-extension DropInRouter: @MainActor PreselectedPaymentMethodRouterListener {
+extension DropInRouter: PreselectedPaymentMethodRouterListener {
     internal func didDismissPreselectedPaymentMethod(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
         completion?()
@@ -135,7 +135,7 @@ extension DropInRouter: @MainActor PreselectedPaymentMethodRouterListener {
 
 // MARK: - PaymentMethodListRouterListener
 
-extension DropInRouter: @MainActor PaymentMethodListRouterListener {
+extension DropInRouter: PaymentMethodListRouterListener {
     
     /// Dismissing the payment method list dismisses the drop in it is the root of.
     internal func didDismissPaymentMethodList(completion: (@MainActor @Sendable () -> Void)?) {
@@ -145,7 +145,7 @@ extension DropInRouter: @MainActor PaymentMethodListRouterListener {
 
 // MARK: - ComponentContainerRouterListener
 
-extension DropInRouter: @MainActor ComponentContainerRouterListener {
+extension DropInRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil

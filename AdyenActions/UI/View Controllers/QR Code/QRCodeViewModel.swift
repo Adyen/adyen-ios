@@ -25,7 +25,7 @@ internal protocol QRCodeViewModelProtocol {
 }
 
 @MainActor
-internal class QRCodeViewModel: @MainActor QRCodeViewModelProtocol, @MainActor Localizable {
+internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
     private enum Constants {
         static let copyAnimationDuration: TimeInterval = 2

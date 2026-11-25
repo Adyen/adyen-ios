@@ -12,10 +12,10 @@ import UIKit
 
 /// A component that handles document actions.
 @MainActor
-package final class DocumentComponent: @MainActor ActionComponent,
-    @MainActor Component,
-    @MainActor AdyenContextAware,
-    @MainActor ShareableComponent {
+package final class DocumentComponent: ActionComponent,
+    Component,
+    AdyenContextAware,
+    ShareableComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -95,7 +95,7 @@ package final class DocumentComponent: @MainActor ActionComponent,
     }
 }
 
-extension DocumentComponent: @MainActor DocumentActionViewDelegate {
+extension DocumentComponent: DocumentActionViewDelegate {
     
     internal func didComplete() {
         delegate?.didComplete(from: self)

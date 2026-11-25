@@ -24,7 +24,7 @@ internal protocol StoredPaymentMethodContentAssembling {
 }
 
 @MainActor
-internal struct StoredPaymentMethodContentAssembler: @MainActor StoredPaymentMethodContentAssembling {
+internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling {
 
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider

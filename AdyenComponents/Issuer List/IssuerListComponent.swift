@@ -13,12 +13,12 @@ import UIKit
 /// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 @MainActor
-package final class IssuerListComponent: @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PartialPaymentOrderAware,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware,
-    @MainActor LoadingComponent {
+package final class IssuerListComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    LoadingComponent {
 
     private enum Constants {
         static let searchDelay: TimeInterval = 1
@@ -172,9 +172,9 @@ package final class IssuerListComponent: @MainActor PaymentComponent,
     }
 }
 
-extension IssuerListComponent: @MainActor ViewControllerDelegate {}
+extension IssuerListComponent: ViewControllerDelegate {}
 
-extension IssuerListComponent: @MainActor TrackableComponent {}
+extension IssuerListComponent: TrackableComponent {}
 
 /// Provides an issuer selection list for MOLPay payments.
 package typealias MOLPayComponent = IssuerListComponent

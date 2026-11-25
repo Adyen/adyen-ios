@@ -13,11 +13,11 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-package class AbstractPersonalInformationComponent: @MainActor PaymentComponent,
-    @MainActor Component,
-    @MainActor PartialPaymentOrderAware,
-    @MainActor PaymentMethodAware,
-    @MainActor AdyenContextAware {
+package class AbstractPersonalInformationComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware {
 
     package typealias Configuration = PersonalInformationConfiguration
 
@@ -273,7 +273,7 @@ package class AbstractPersonalInformationComponent: @MainActor PaymentComponent,
     }
 }
 
-extension AbstractPersonalInformationComponent: @MainActor ViewControllerPresenter {
+extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     
     package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
@@ -284,7 +284,7 @@ extension AbstractPersonalInformationComponent: @MainActor ViewControllerPresent
     }
 }
 
-extension AbstractPersonalInformationComponent: @MainActor ViewControllerDelegate {
+extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
     // MARK: - ViewControllerDelegate
 

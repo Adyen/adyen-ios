@@ -443,7 +443,7 @@ final class CheckoutCoreFinishTests: XCTestCase {
 
 /// Stays in `finalize(success:)` until the test calls `releaseFinalize()`.
 @MainActor
-private final class FinalizablePaymentComponentMock: PaymentComponentMock, @MainActor FinalizableComponent {
+private final class FinalizablePaymentComponentMock: PaymentComponentMock, FinalizableComponent {
 
     private(set) var finalizeCalls: [Bool] = []
     var onFinalize: (() -> Void)?
@@ -488,7 +488,7 @@ private final class DropInComponentMock: @preconcurrency AnyDropInComponent, Act
 }
 
 @MainActor
-private final class ActionComponentMock: @MainActor ActionComponent {
+private final class ActionComponentMock: ActionComponent {
     let context = Dummy.context
     weak var delegate: ActionComponentDelegate?
 }

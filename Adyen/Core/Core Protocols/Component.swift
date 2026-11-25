@@ -37,6 +37,7 @@ extension Component {
 }
 
 /// A component that shows the payment result in its own UI before the payment ends.
+@MainActor
 package protocol FinalizableComponent: Component {
 
     /// Shows the payment result and returns once the component's UI is gone.

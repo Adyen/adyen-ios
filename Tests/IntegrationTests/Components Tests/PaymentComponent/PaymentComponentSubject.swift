@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 @MainActor
-class PaymentComponentSubject: @MainActor PaymentComponent {
+class PaymentComponentSubject: PaymentComponent {
 
     // MARK: - Properties
 

@@ -20,8 +20,8 @@ internal protocol AnyVoucherShareableViewProvider: Localizable {
 }
 
 @MainActor
-internal final class VoucherShareableViewProvider: @MainActor AnyVoucherShareableViewProvider,
-    @MainActor Localizable {
+internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider,
+    Localizable {
 
     internal var theme: CheckoutTheme
 

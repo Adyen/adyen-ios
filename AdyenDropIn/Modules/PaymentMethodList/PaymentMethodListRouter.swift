@@ -24,7 +24,7 @@ internal protocol PaymentMethodListRouting: Router {
 }
 
 @MainActor
-internal class PaymentMethodListRouter: @MainActor PaymentMethodListRouting {
+internal class PaymentMethodListRouter: PaymentMethodListRouting {
 
     // MARK: - Properties
 
@@ -165,7 +165,7 @@ internal class PaymentMethodListRouter: @MainActor PaymentMethodListRouting {
 
 // MARK: - ComponentContainerRouterListener
 
-extension PaymentMethodListRouter: @MainActor ComponentContainerRouterListener {
+extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
@@ -175,7 +175,7 @@ extension PaymentMethodListRouter: @MainActor ComponentContainerRouterListener {
 
 // MARK: - GenericPaymentMethodRouterListener
 
-extension PaymentMethodListRouter: @MainActor GenericPaymentMethodRouterListener {
+extension PaymentMethodListRouter: GenericPaymentMethodRouterListener {
 
     internal func didDismissGenericPaymentMethod() {
         childRouter = nil
@@ -184,7 +184,7 @@ extension PaymentMethodListRouter: @MainActor GenericPaymentMethodRouterListener
 
 // MARK: - StoredPaymentMethodManagementListener
 
-extension PaymentMethodListRouter: @MainActor StoredPaymentMethodManagementListener {
+extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
 
     internal func didRemoveStoredPaymentMethod(_ paymentMethod: any StoredPaymentMethod) {
         onStoredPaymentMethodRemoved(paymentMethod)
@@ -200,7 +200,7 @@ extension PaymentMethodListRouter: @MainActor StoredPaymentMethodManagementListe
     }
 }
 
-extension PaymentMethodListRouter: @MainActor StoredPaymentMethodContentRouterListener {
+extension PaymentMethodListRouter: StoredPaymentMethodContentRouterListener {
 
     internal func dismissStoredPaymentMethodContent() {
         if viewController.navigationController?.topViewController === childRouter?.rootViewController {

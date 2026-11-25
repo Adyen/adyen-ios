@@ -429,13 +429,13 @@ struct DropInFlowManagerTests {
     // MARK: - Mocks
 
     @MainActor
-    private final class ActionComponentMock: @MainActor ActionComponent {
+    private final class ActionComponentMock: ActionComponent {
         let context = Dummy.context
         weak var delegate: ActionComponentDelegate?
     }
 
     @MainActor
-    private final class CancellableActionComponentMock: @MainActor ActionComponent, @MainActor Adyen.Cancellable {
+    fileprivate final class CancellableActionComponentMock: ActionComponent, Adyen.Cancellable {
         let context = Dummy.context
         weak var delegate: ActionComponentDelegate?
 

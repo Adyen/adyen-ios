@@ -7,6 +7,7 @@
 import Adyen3DS2
 import Foundation
 
+@MainActor
 internal protocol AnyADYTransaction {
 
     var authenticationParameters: AnyAuthenticationRequestParameters { get }
@@ -14,7 +15,7 @@ internal protocol AnyADYTransaction {
     func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping @MainActor (AnyChallengeResult?, Error?) -> Void)
 }
 
-extension ADYTransaction: AnyADYTransaction {
+extension ADYTransaction: @preconcurrency AnyADYTransaction {
 
     internal var authenticationParameters: AnyAuthenticationRequestParameters {
         authenticationRequestParameters

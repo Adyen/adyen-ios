@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class ThreeDSServiceableMock: @MainActor ThreeDSConfigurable, @MainActor ThreeDSServiceable {
+final class ThreeDSServiceableMock: ThreeDSConfigurable, ThreeDSServiceable {
     var configuration: ThreeDSFeatureChecker?
     
     var onResetTransaction: (() -> Void)?

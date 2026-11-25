@@ -17,7 +17,7 @@ internal protocol PaymentActionViewModelProtocol: AnyObject {
 }
 
 @MainActor
-internal class PaymentActionViewModel: @MainActor PaymentActionViewModelProtocol {
+internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
 
     // MARK: - Properties
 

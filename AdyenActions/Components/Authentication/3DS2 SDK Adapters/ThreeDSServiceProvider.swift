@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+@MainActor
 internal protocol ThreeDSConfigurable {
     var configuration: ThreeDSFeatureChecker? { get set }
 }
@@ -17,7 +18,7 @@ internal protocol ThreeDSFeatureChecker {
 
 /// This type creates a ThreeDSServiceable implementation and consumes ThreeDSConfigurable.
 @MainActor
-internal final class ThreeDSServiceProvider: @MainActor ThreeDSServiceable, @MainActor ThreeDSConfigurable {
+internal final class ThreeDSServiceProvider: ThreeDSServiceable, ThreeDSConfigurable {
     
     /// An optional configuration that can be provided to the service provider.
     internal var configuration: ThreeDSFeatureChecker?

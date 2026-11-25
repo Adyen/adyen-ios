@@ -8,6 +8,7 @@
 @testable import AdyenComponents
 import Foundation
 
+@MainActor
 final class ReadyToSubmitPaymentComponentDelegateMock: ReadyToSubmitPaymentComponentDelegate {
     var onShowConfirmation: ((PaymentComponent, PartialPaymentOrder?) -> Void)?
 

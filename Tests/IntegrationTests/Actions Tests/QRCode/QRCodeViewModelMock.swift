@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 
 @MainActor
-internal final class QRCodeViewModelMock: @MainActor QRCodeViewModelProtocol {
+internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     
     // MARK: - Properties
     

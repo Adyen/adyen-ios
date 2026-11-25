@@ -11,7 +11,7 @@ import AdyenUI
 import Foundation
 
 @MainActor
-internal final class EmailFormItemInjector: @MainActor FormItemInjector, @MainActor Localizable {
+internal final class EmailFormItemInjector: FormItemInjector, Localizable {
 
     internal var localizationParameters: LocalizationParameters?
 

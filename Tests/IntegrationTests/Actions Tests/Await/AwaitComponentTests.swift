@@ -12,7 +12,7 @@ import SwiftUI
 import XCTest
 
 @MainActor
-final class PollingHandlerMock: @MainActor AnyPollingHandler {
+final class PollingHandlerMock: AnyPollingHandler {
     
     var context: AdyenContext {
         Dummy.context

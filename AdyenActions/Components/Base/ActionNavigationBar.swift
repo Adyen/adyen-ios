@@ -38,7 +38,7 @@ internal protocol AnyActionNavigationBarStyle {
     var backgroundColor: UIColor { get }
 }
 
-internal class ActionNavigationBar: UIView, @MainActor AnyActionNavigationBar {
+internal class ActionNavigationBar: UIView, AnyActionNavigationBar {
     
     internal let model: AnyActionNavigationBarModel
     

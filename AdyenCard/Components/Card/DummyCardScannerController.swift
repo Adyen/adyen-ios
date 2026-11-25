@@ -34,6 +34,7 @@ internal final class DummyCardScannerController: CardScannerControlling {
         }
     }
 
+    @MainActor
     internal struct DummyCardScannerProvider: CardScannerProviding {
         internal nonisolated init() {}
 

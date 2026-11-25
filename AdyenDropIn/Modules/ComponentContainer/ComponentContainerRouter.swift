@@ -23,7 +23,7 @@ internal protocol ComponentContainerRouting: Router {
 }
 
 @MainActor
-internal class ComponentContainerRouter: @MainActor ComponentContainerRouting {
+internal class ComponentContainerRouter: ComponentContainerRouting {
 
     // MARK: - Properties
 

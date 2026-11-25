@@ -19,7 +19,7 @@ internal protocol PreselectedPaymentMethodAssemblerProtocol {
 }
 
 @MainActor
-internal struct PreselectedPaymentMethodAssembler: @MainActor PreselectedPaymentMethodAssemblerProtocol {
+internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
     
     // MARK: - Properties
     

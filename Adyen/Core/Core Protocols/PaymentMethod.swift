@@ -18,7 +18,7 @@ public protocol PaymentMethod: Codable, Sendable {
 
 /// A payment method that can build a `PaymentComponent` using a `PaymentComponentBuilder`.
 package protocol PaymentComponentBuildable {
-    func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
+    @MainActor func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
 }
 
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.

@@ -37,7 +37,7 @@ extension IssuerListEmptyView {
 }
 
 /// The empty view to be used in the IssuerListComponent SearchViewController
-internal class IssuerListEmptyView: UIView, @MainActor SearchResultsEmptyView {
+internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     
     private let style: Style
     private let localizationParameters: LocalizationParameters?

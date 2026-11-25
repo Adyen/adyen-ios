@@ -73,7 +73,7 @@ struct ComponentContainerRouterTests {
     // MARK: - Mocks
 
     @MainActor
-    private class ComponentContainerRouterListenerMock: @MainActor ComponentContainerRouterListener {
+    private class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
         var didDismissComponentContainerCompletionCallsCount = 0
         var didDismissComponentContainerCompletionReceivedCompletion: (@MainActor @Sendable () -> Void)?
 
@@ -84,6 +84,7 @@ struct ComponentContainerRouterTests {
         }
     }
 
+    @MainActor
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()

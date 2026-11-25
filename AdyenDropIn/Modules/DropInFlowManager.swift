@@ -39,7 +39,7 @@ internal protocol DropInFlowManaging: AnyObject {
 }
 
 @MainActor
-internal class DropInFlowManager: @MainActor DropInFlowManaging {
+internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
 
@@ -162,7 +162,7 @@ internal class DropInFlowManager: @MainActor DropInFlowManaging {
 
 // MARK: - ActionComponentDelegate
 
-extension DropInFlowManager: @MainActor ActionComponentDelegate {
+extension DropInFlowManager: ActionComponentDelegate {
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         // The details are sent to the payment session, which can return a follow up action,
@@ -198,7 +198,7 @@ extension DropInFlowManager: @MainActor ActionComponentDelegate {
 
 // MARK: - ActionPresentationDelegate
 
-extension DropInFlowManager: @MainActor ActionPresentationDelegate {
+extension DropInFlowManager: ActionPresentationDelegate {
 
     internal func present(actionViewController: UIViewController, actionData: ActionData) {
         guard let dropInFlowRouter else { return }

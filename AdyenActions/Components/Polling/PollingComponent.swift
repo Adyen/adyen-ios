@@ -10,11 +10,11 @@ import Foundation
 
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
 @MainActor
-internal final class PollingComponent: @MainActor AnyPollingHandler,
-    @MainActor ActionComponent,
-    @MainActor Component,
-    @MainActor AdyenContextAware,
-    @MainActor Cancellable {
+internal final class PollingComponent: AnyPollingHandler,
+    ActionComponent,
+    Component,
+    AdyenContextAware,
+    Cancellable {
     
     private let maxErrorNumber = 1
 

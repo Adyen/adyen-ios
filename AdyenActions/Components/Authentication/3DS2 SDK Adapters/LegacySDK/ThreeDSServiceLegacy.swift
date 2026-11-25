@@ -12,7 +12,7 @@ import Foundation
 /// This translates simple non specific sdk bound types such as
 /// `FingerprintServiceParameters` & `ChallengeParameters` to sdk specific types and performs actions.
 @MainActor
-internal final class ThreeDSServiceLegacy: @MainActor ThreeDSServiceable {
+internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
     private var service: AnyADYService
     private var transaction: AnyADYTransaction?
     

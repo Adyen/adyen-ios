@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class AnyThreeDS2FingerprintSubmitterMock: @MainActor AnyThreeDS2FingerprintSubmitter {
+final class AnyThreeDS2FingerprintSubmitterMock: AnyThreeDS2FingerprintSubmitter {
     var mockedResult: Result<ThreeDSActionHandlerResult, Error>?
     var onSubmitFingerprint: (
         (

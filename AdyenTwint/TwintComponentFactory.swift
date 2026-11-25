@@ -12,7 +12,7 @@ import AdyenUI
 /// This factory creates `TwintComponent` instances configured with the
 /// provided Twint payment method and component configuration.
 @MainActor
-package struct TwintComponentFactory: @MainActor PaymentComponentFactory {
+package struct TwintComponentFactory: PaymentComponentFactory {
     package typealias Configuration = BasicComponentConfiguration
     package typealias Method = TwintPaymentMethod
     package typealias Component = TwintComponent

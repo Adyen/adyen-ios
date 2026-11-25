@@ -21,7 +21,7 @@ internal protocol VoucherViewDelegate: AnyObject {
     func mainButtonTap(sourceView: UIView, action: VoucherAction)
 }
 
-internal final class VoucherView: UIView, @MainActor Localizable {
+internal final class VoucherView: UIView, Localizable {
     
     internal let model: Model
     

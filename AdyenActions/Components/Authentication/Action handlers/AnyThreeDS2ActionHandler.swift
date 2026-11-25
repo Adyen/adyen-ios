@@ -26,6 +26,7 @@ internal protocol AnyThreeDS2ActionHandler {
     var actionPresentationDelegate: ActionPresentationDelegate? { get set }
 }
 
+@MainActor
 internal protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }

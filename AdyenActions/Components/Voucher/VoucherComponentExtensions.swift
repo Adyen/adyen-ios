@@ -10,7 +10,7 @@ import AdyenUI
 import PassKit
 import UIKit
 
-extension VoucherComponent: @MainActor VoucherViewDelegate, @MainActor DocumentActionViewDelegate {
+extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     
     private static let maximumDisplayedCodeLength = 10
     

@@ -25,7 +25,7 @@ internal protocol PreselectedPaymentMethodRouting: Router {
 }
 
 @MainActor
-internal class PreselectedPaymentMethodRouter: @MainActor PreselectedPaymentMethodRouting {
+internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     private enum Constants {
         static let chevronBackwardImage = "chevron.backward"
     }
@@ -155,7 +155,7 @@ internal class PreselectedPaymentMethodRouter: @MainActor PreselectedPaymentMeth
 
 // MARK: - PaymentMethodListRouterListener
 
-extension PreselectedPaymentMethodRouter: @MainActor PaymentMethodListRouterListener {
+extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
     
     /// Closing the payment method list closes the drop in it was opened from,
     /// as the shopper asked to leave the flow rather than to go back.
@@ -169,7 +169,7 @@ extension PreselectedPaymentMethodRouter: @MainActor PaymentMethodListRouterList
 
 // MARK: - ComponentContainerRouterListener
 
-extension PreselectedPaymentMethodRouter: @MainActor ComponentContainerRouterListener {
+extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
@@ -177,7 +177,7 @@ extension PreselectedPaymentMethodRouter: @MainActor ComponentContainerRouterLis
     }
 }
 
-extension PreselectedPaymentMethodRouter: @MainActor StoredPaymentMethodContentRouterListener {
+extension PreselectedPaymentMethodRouter: StoredPaymentMethodContentRouterListener {
 
     internal func dismissStoredPaymentMethodContent() {
         rootViewController.dismiss(animated: true)

@@ -9,7 +9,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormButtonItem
 import UIKit
 
-extension AbstractPersonalInformationComponent: @MainActor LoadingComponent {
+extension AbstractPersonalInformationComponent: LoadingComponent {
 
     package func stopLoading() {
         button.showsActivityIndicator = false
@@ -33,7 +33,7 @@ extension AbstractPersonalInformationComponent: @MainActor LoadingComponent {
     }
 }
 
-extension AbstractPersonalInformationComponent: @MainActor TrackableComponent {}
+extension AbstractPersonalInformationComponent: TrackableComponent {}
 
 package enum PersonalInformation: Equatable {
     case firstName

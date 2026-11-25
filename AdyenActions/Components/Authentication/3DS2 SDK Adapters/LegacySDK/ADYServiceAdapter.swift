@@ -20,7 +20,7 @@ internal protocol AnyADYService {
 }
 
 @MainActor
-internal final class ADYServiceAdapter: NSObject, @MainActor AnyADYService {
+internal final class ADYServiceAdapter: NSObject, AnyADYService {
 
     private var service: ADYService?
 

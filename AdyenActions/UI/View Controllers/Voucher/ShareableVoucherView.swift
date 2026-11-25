@@ -9,7 +9,7 @@ import PassKit
 import UIKit
 @_spi(AdyenInternal) import AdyenUI
 
-internal class ShareableVoucherView: UIView, @MainActor Localizable {
+internal class ShareableVoucherView: UIView, Localizable {
 
     internal var localizationParameters: LocalizationParameters?
 

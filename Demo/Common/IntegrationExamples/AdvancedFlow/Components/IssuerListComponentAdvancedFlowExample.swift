@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenComponents
 
+@MainActor
 internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     // MARK: - Properties

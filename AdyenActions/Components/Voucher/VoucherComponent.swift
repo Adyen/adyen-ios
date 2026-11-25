@@ -11,18 +11,19 @@ import PassKit
 import UIKit
 
 /// A component that handles voucher action.
+@MainActor
 internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
     func handle(_ action: VoucherAction)
 }
 
 /// A component that handles voucher action.
 @MainActor
-package final class VoucherComponent: @MainActor AnyVoucherActionHandler,
-    @MainActor ShareableComponent,
-    @MainActor ActionComponent,
-    @MainActor Component,
-    @MainActor AdyenContextAware,
-    @MainActor Cancellable {
+package final class VoucherComponent: AnyVoucherActionHandler,
+    ShareableComponent,
+    ActionComponent,
+    Component,
+    AdyenContextAware,
+    Cancellable {
 
     /// The context object for this component.
     package let context: AdyenContext

@@ -9,6 +9,7 @@ import AdyenNetworking
 import Foundation
 
 /// A component that handles Await action's.
+@MainActor
 internal protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
@@ -22,7 +23,7 @@ internal protocol AnyPollingHandlerProvider {
 }
 
 @MainActor
-internal struct PollingHandlerProvider: @MainActor AnyPollingHandlerProvider {
+internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     private let context: AdyenContext
 

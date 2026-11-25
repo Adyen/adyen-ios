@@ -9,7 +9,7 @@ import UIKit
 
 extension GiftCardComponent: TrackableComponent {}
 
-extension GiftCardComponent: @MainActor ViewControllerDelegate {
+extension GiftCardComponent: ViewControllerDelegate {
 
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()

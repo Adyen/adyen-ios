@@ -9,7 +9,7 @@
     @testable import AdyenCardScanner
 
     @MainActor
-    internal class CardScannerProviderSpy: @MainActor CardScannerProviding {
+    internal class CardScannerProviderSpy: CardScannerProviding {
         private var completion: (@MainActor @Sendable (Result<CardScannerCardDetails, Error>) -> Void)?
 
         func createCardScanner(

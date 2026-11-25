@@ -16,7 +16,7 @@ internal protocol DropInViewModelProtocol {
 }
 
 @MainActor
-internal class DropInViewModel: @MainActor DropInViewModelProtocol {
+internal class DropInViewModel: DropInViewModelProtocol {
 
     // MARK: - Properties
 

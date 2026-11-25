@@ -10,6 +10,7 @@ import AdyenUI
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
@@ -32,9 +33,9 @@ internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 @MainActor
-internal class ThreeDS2CoreActionHandler: @MainActor AnyThreeDS2CoreActionHandler,
-    @MainActor Component,
-    @MainActor AdyenContextAware {
+internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler,
+    Component,
+    AdyenContextAware {
     private enum Constants {
         static let transStatusWhenError = "U"
         static let fingerprintEvent = "threeDS2Fingerprint"
@@ -303,7 +304,7 @@ internal class ThreeDS2CoreActionHandler: @MainActor AnyThreeDS2CoreActionHandle
     }
 }
 
-extension ThreeDS2CoreActionHandler: @MainActor ActionPresentationDelegate {
+extension ThreeDS2CoreActionHandler: ActionPresentationDelegate {
     internal func present(actionViewController: UIViewController, actionData: ActionData) {
         AdyenAssertion.assert(message: "actionPresentationDelegate should not be nil", condition: actionPresentationDelegate == nil)
         actionPresentationDelegate?.present(actionViewController: actionViewController, actionData: actionData)

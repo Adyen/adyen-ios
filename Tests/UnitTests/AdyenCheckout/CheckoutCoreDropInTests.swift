@@ -291,7 +291,7 @@ private final class ActionHandlingDropInMock: @preconcurrency AnyDropInComponent
 }
 
 @MainActor
-private final class ActionComponentMock: @MainActor ActionComponent {
+private final class ActionComponentMock: ActionComponent {
     let context = Dummy.context
     weak var delegate: ActionComponentDelegate?
 }

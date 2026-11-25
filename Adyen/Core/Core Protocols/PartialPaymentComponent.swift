@@ -7,6 +7,7 @@
 import Foundation
 
 /// Any component that provides partial payments.
+@MainActor
 package protocol PartialPaymentComponent: AdyenContextAware {
 
     /// The delegate that handles partial payments.

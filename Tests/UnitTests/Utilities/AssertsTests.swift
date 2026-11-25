@@ -108,7 +108,7 @@ class AssertsTests: XCTestCase {
 
     }
 
-    class MockComponent: @MainActor Component {
+    class MockComponent: Component {
         let context: AdyenContext
         
         init(context: AdyenContext = Dummy.context) {

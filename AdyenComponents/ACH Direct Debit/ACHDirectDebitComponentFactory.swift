@@ -11,7 +11,7 @@ import Adyen
 /// This factory creates `ACHDirectDebitComponent` instances configured with the
 /// provided ACH payment method and component configuration.
 @MainActor
-package struct ACHDirectDebitComponentFactory: @MainActor PaymentComponentFactory {
+package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package typealias Configuration = ACHDirectDebitConfiguration
     package typealias Method = ACHDirectDebitPaymentMethod
     package typealias Component = ACHDirectDebitComponent

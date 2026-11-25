@@ -22,7 +22,7 @@ internal protocol PaymentActionAssemblerProtocol {
 }
 
 @MainActor
-internal struct PaymentActionAssembler: @MainActor PaymentActionAssemblerProtocol {
+internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
 
     // MARK: - Properties
 

@@ -33,7 +33,7 @@ internal protocol PaymentMethodListViewModelProtocol {
 }
 
 @MainActor
-internal class PaymentMethodListViewModel: @MainActor PaymentMethodListViewModelProtocol {
+internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Constants
 
@@ -212,7 +212,7 @@ internal class PaymentMethodListViewModel: @MainActor PaymentMethodListViewModel
 
 // MARK: - PaymentComponentDelegate
 
-extension PaymentMethodListViewModel: @MainActor PaymentComponentDelegate {
+extension PaymentMethodListViewModel: PaymentComponentDelegate {
 
     internal func didSubmit(
         _ data: PaymentComponentData,
