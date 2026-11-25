@@ -15,10 +15,10 @@ public struct Action: Decodable {
     public let type: ActionType
 
     /// The payment data to submit to the `/payments/details` endpoint, if the action has any.
-    public let paymentData: String?
+    package let paymentData: String?
 
     /// The type of the payment method the action belongs to, if the response includes one.
-    public let paymentMethodType: PaymentMethodType?
+    package let paymentMethodType: PaymentMethodType?
 
     package let kind: Kind
 
@@ -69,8 +69,8 @@ public struct Action: Decodable {
         let type = try container.decode(ActionType.self, forKey: .type)
 
         self.type = type
-        self.paymentData = (try? container.decodeIfPresent(String.self, forKey: .paymentData)) ?? nil
-        self.paymentMethodType = (try? container.decodeIfPresent(PaymentMethodType.self, forKey: .paymentMethodType)) ?? nil
+        self.paymentData = try? container.decodeIfPresent(String.self, forKey: .paymentData)
+        self.paymentMethodType = try? container.decodeIfPresent(PaymentMethodType.self, forKey: .paymentMethodType)
 
         switch type {
         case .redirect, .nativeRedirect:
@@ -106,7 +106,7 @@ public struct Action: Decodable {
     private static func voucherKind(from decoder: Decoder) throws -> Kind {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // extract bacs from others since it is not fully a voucher
-        if (try? container.decode(String.self, forKey: .paymentMethodType)) == PaymentMethodType.bacsDirectDebit.rawValue {
+        if (try? container.decode(PaymentMethodType.self, forKey: .paymentMethodType)) == .bacsDirectDebit {
             return try .document(DocumentAction(from: decoder))
         } else {
             return try .voucher(VoucherAction(from: decoder))

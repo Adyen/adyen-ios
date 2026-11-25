@@ -32,9 +32,9 @@
 
 ### Actions
 
-- `Action` is a struct instead of an enum, so Adyen can add action types without breaking your code. Decode it from the `action` object of the `/payments` response and pass it to `handle(action:)` as before. You can no longer switch over its cases. To inspect an action, use its `type`, `paymentData` and `paymentMethodType` properties.
+- `Action` is a struct instead of an enum, so Adyen can add action types without breaking your code. Decode it from the `action` object of the `/payments` response and pass it to `handle(action:)` as before. You can no longer switch over its cases. To check what kind of action it is, use its `type` property.
 - The types that describe each kind of action are no longer public: `RedirectAction`, `ThreeDS2Action`, `ThreeDS2FingerprintAction`, `ThreeDS2ChallengeAction`, `SDKAction`, `WeChatPaySDKAction`, `WeChatPaySDKData`, `TwintSDKAction`, `TwintSDKData`, `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `VoucherAction`, `AnyVoucherAction`, `GenericVoucherAction`, `BoletoVoucherAction`, `DokuVoucherAction`, `EContextStoresVoucherAction`, `EContextATMVoucherAction`, `OXXOVoucherAction` and `MultibancoVoucherAction`.
-- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. Compare `Action.paymentMethodType` with the `PaymentMethodType` static properties or use its `rawValue`. Most property names stay the same. These differ:
+- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. Use the matching `PaymentMethodType` static properties instead. Most property names stay the same. These differ:
 
 | Before | After |
 |---|---|
