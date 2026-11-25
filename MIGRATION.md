@@ -413,7 +413,7 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 - `CardComponentDelegate.didChangeBIN` -> `CardCallbacks.onBinChange(_:)`
   The callback receives the first 6 digits of the card number and fires only when that value changes, so it is
   silent for digits 7–15. It sends the first 8 digits once the card number is valid and has at least 16 digits,
-  and an empty string when the field is cleared.
+  goes back to 6 digits if the number is no longer valid, and sends an empty string when the field is cleared.
 - card brand detection callbacks -> `CardCallbacks.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
