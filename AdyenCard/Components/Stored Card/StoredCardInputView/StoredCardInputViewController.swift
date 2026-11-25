@@ -165,7 +165,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupBindings() {
         viewModel.inProgressPublisher
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
                 self?.updateLoadingState(isLoading)
             }
