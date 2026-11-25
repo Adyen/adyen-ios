@@ -22,6 +22,8 @@ import Foundation
     private let batchInterval: TimeInterval
     private let checkoutAttemptId: String
 
+    private let flushRemainingEvents: @MainActor @Sendable () -> Void
+
     internal init(
         apiClient: AsyncAPIClientProtocol,
         eventDataSource: AnyAnalyticsEventDataSource,
@@ -32,24 +34,24 @@ import Foundation
         self.eventDataSource = eventDataSource
         self.batchInterval = batchInterval
         self.checkoutAttemptId = checkoutAttemptId
-        
+        self.flushRemainingEvents = { [eventDataSource, apiClient, checkoutAttemptId] in
+            guard let request = Self.requestWithAllEvents(
+                from: eventDataSource,
+                checkoutAttemptId: checkoutAttemptId
+            ) else { return }
+
+            Task { _ = try? await apiClient.performAsync(request) }
+        }
+
         Task { startNextTimer() }
     }
-    
-    #if compiler(>=6.2)
-        isolated deinit {
-            // fire-and-forget remaining events without capturing self
-            if let request = requestWithAllEvents() {
-                let apiClient = apiClient
-                Task {
-                    _ = try? await apiClient.performAsync(request)
-                }
-            }
-        }
-    #else
-        /// Swift <6.2: pending events cannot be flushed in deinit; the batch timer self-invalidates.
-        deinit {}
-    #endif
+
+    /// Pending events are flushed on the main actor across all compilers; the batch timer self-invalidates.
+    deinit {
+        // fire-and-forget remaining events without capturing self
+        let flushRemainingEvents = self.flushRemainingEvents
+        Task { @MainActor in flushRemainingEvents() }
+    }
     
     internal func add(info: AnalyticsEventInfo) {
         eventDataSource.add(info: info)
@@ -81,6 +83,13 @@ import Foundation
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
+        Self.requestWithAllEvents(from: eventDataSource, checkoutAttemptId: checkoutAttemptId)
+    }
+
+    private static func requestWithAllEvents(
+        from eventDataSource: AnyAnalyticsEventDataSource,
+        checkoutAttemptId: String
+    ) -> AnalyticsRequest? {
         guard let events = eventDataSource.allEvents() else { return nil }
 
         // as per this call's limitation, we only send up to the

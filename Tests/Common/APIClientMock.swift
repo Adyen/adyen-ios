@@ -13,6 +13,7 @@ internal final class APIClientMock: APIClientProtocol, AsyncAPIClientProtocol {
 
     internal var mockedResults: [MockedResult] = []
     internal var onExecute: ((any Request) -> Void)?
+    internal var onExecuteAsync: (@MainActor () async -> Void)?
 
     internal private(set) var counter: Int = 0
 
@@ -40,6 +41,7 @@ internal final class APIClientMock: APIClientProtocol, AsyncAPIClientProtocol {
         counter += 1
         let nextResult = self.mockedResults.removeFirst()
         onExecute?(request)
+        await onExecuteAsync?()
         switch nextResult {
         case let .success(response):
             guard let response = response as? R.ResponseType else {

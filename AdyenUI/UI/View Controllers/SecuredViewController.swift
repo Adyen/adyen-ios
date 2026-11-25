@@ -71,15 +71,9 @@ package final class SecuredViewController<ChildViewController: UIViewController>
         fatalError("init(coder:) has not been implemented")
     }
 
-    #if compiler(>=6.2)
-        isolated deinit {
-            notificationCenter.removeObserver(self)
-        }
-    #else
-        deinit {
-            notificationCenter.removeObserver(self)
-        }
-    #endif
+    deinit {
+        notificationCenter.removeObserver(self)
+    }
 
     // MARK: - View lifecycle
 
