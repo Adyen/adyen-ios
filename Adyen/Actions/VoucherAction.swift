@@ -6,40 +6,6 @@
 
 import Foundation
 
-/// The voucher payment methods, used to decode the matching voucher action.
-package enum VoucherPaymentMethodType: String, Decodable {
-
-    /// Doku Indomaret.
-    case dokuIndomaret = "doku_indomaret"
-
-    /// Doku Alfamart.
-    case dokuAlfamart = "doku_alfamart"
-
-    /// E-Context Stores
-    case econtextStores = "econtext_stores"
-
-    /// E-Context ATM
-    case econtextATM = "econtext_atm"
-    
-    /// Boleto Bancario Santander
-    case boletoBancarioSantander = "boletobancario_santander"
-
-    /// Boleto Bancario
-    case boletoBancario = "boletobancario"
-
-    /// Boleto Bancario Itau
-    case boletoBancarioItau = "boletobancario_itau"
-
-    /// Primeiro Pay Boleto
-    case primeiroPayBoleto = "primeiropay_boleto"
-
-    /// OXXO
-    case oxxo
-    
-    /// Multibanco
-    case multibanco
-}
-
 /// Describes any Voucher action.
 public enum VoucherAction: Decodable {
 
@@ -73,9 +39,10 @@ public enum VoucherAction: Decodable {
     /// Indicates an Multibanco voucher type
     case multibanco(MultibancoVoucherAction)
 
+    // swiftlint:disable:next cyclomatic_complexity
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(VoucherPaymentMethodType.self, forKey: .paymentMethodType)
+        let type = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
 
         switch type {
         case .dokuIndomaret:
@@ -98,6 +65,12 @@ public enum VoucherAction: Decodable {
             self = try .oxxo(OXXOVoucherAction(from: decoder))
         case .multibanco:
             self = try .multibanco(MultibancoVoucherAction(from: decoder))
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .paymentMethodType,
+                in: container,
+                debugDescription: "Unknown voucher payment method type \(type.rawValue)."
+            )
         }
     }
 
