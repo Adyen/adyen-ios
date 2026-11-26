@@ -130,7 +130,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func didLoad() {
-        // TODO: - Handle analytics on list load.
+        // TODO: Naufal - Handle analytics on list load.
         let sections = getSections()
         state = .loaded(sections: sections)
     }

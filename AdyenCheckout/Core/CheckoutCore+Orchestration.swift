@@ -110,7 +110,7 @@ internal extension CheckoutCore {
 
     func completeAction(from component: (any PaymentComponent)?) {
         guard let resultCode = session?.state.resultCode else {
-            // TODO: need a result code for advanced non-session action flows.
+            // TODO: Eren: need a result code for advanced non-session action flows.
             return
         }
         finish(.completed(resultCode), from: component)

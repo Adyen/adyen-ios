@@ -9,7 +9,6 @@ import AdyenUI
 import Foundation
 import UIKit
 
-// TODO: make package
 /**
  An action handler component to perform any supported action out of the box.
  */
