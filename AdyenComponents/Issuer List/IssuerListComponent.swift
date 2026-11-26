@@ -51,7 +51,9 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     private let searchThrottler = Throttler(minimumDelay: Constants.searchDelay)
 
     /// The index of the selected issuer in the payment method's issuers.
-    private var selectedIssuerIndex: Int?
+    private var selectedIssuerIndex: Int? {
+        issuerItems.firstIndex(where: \.isSelected)
+    }
 
     /// The search text of the last results, used to send search events only when it changes.
     private var lastSearchText = ""
@@ -207,7 +209,6 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             issuerItems[selectedIssuerIndex].isSelected = false
         }
         issuerItems[index].isSelected = true
-        selectedIssuerIndex = index
         setShowsError(false)
         sendIssuerSelectedEvent(issuerListPaymentMethod.issuers[index])
     }

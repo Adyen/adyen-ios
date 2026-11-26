@@ -78,19 +78,14 @@ final class ListCellTests: XCTestCase {
         XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
     }
 
-    func test_cell_whenItemIsReplaced_shouldNotFollowSelectionOfPreviousItem() throws {
+    func test_cell_whenItemIsReplaced_shouldStopObservingPreviousItem() {
         let previousItem = makeItem()
         let cell = makeCell(item: previousItem)
-        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+        XCTAssertFalse(previousItem.$isSelected.eventHandlers.isEmpty)
+
         cell.item = makeItem()
-        cell.layoutIfNeeded()
 
-        previousItem.isSelected = true
-        cell.layoutIfNeeded()
-
-        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.background)
-        XCTAssertTrue(checkmarkImageView.isHidden)
-        XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
+        XCTAssertTrue(previousItem.$isSelected.eventHandlers.isEmpty)
     }
 
     func test_cell_whenSelectedItemHasTrailingText_shouldShowTrailingTextAndCheckmark() throws {
