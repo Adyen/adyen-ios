@@ -40,7 +40,8 @@ final class CardComponentEventTests: XCTestCase {
         XCTAssertEqual(configDataDict["showCardholderName"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
-        XCTAssertEqual(configDataDict.keys.count, 7)
+        XCTAssertEqual(configDataDict["showCardScanner"], "true")
+        XCTAssertEqual(configDataDict.keys.count, 8)
     }
 
     // MARK: - Focus/unfocus events

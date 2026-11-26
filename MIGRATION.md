@@ -370,6 +370,8 @@ let configuration = CardConfiguration()
     .socialSecurityNumberVisibility(.auto)
 ```
 
+`CardConfiguration` also offers `showCardScanner(_:)` (default `true`) to control whether the card scanner button is shown in the card number field.
+
 #### Sessions flow
 
 ##### Before (v5)

@@ -23,6 +23,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     private let enableStoredDetails: Bool
     private let hasInstallmentOptions: Bool
     private let brands: String?
+    private let showCardScanner: Bool
     
     internal init(configuration: CardConfiguration) {
         self.billingAddressMode = configuration.billingAddressMode.analyticsDescription
@@ -44,6 +45,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
         self.brands = configuration.supportedCardBrands?
             .map(\.rawValue)
             .joined(separator: Constants.stringSeparator)
+        self.showCardScanner = configuration.showCardScanner
     }
 }
 
