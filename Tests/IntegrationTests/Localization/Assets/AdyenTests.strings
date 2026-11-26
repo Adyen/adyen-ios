@@ -14,14 +14,14 @@
 "adyen.sepa.nameItem.placeholder" = "TestBundle-J. Smith";
 "adyen.sepa.consentLabel" = "TestBundle-By pressing the button above, you agree that the specified amount will be debited from your bank account.";
 "adyen.sepa.nameItem.invalid" = "TestBundle-Holder name invalid";
-"adyen.card.storeDetailsButton" = "TestBundle-Remember for next time";
+"adyen_checkout_card_store_details_label" = "TestBundle-Remember for next time";
 "adyen.card.nameItem.title" = "TestBundle-Name on card";
 "adyen.card.nameItem.placeholder" = "TestBundle-J. Smith";
 "adyen.card.nameItem.invalid" = "TestBundle-Invalid cardholder name";
 "adyen.card.numberItem.title" = "TestBundle-Card number";
 "adyen.card.numberItem.placeholder" = "TestBundle-1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "TestBundle-Invalid card number";
-"adyen.card.expiryItem.placeholder" = "TestBundle-MM/YY";
+"adyen_checkout_card_expiry_date_hint" = "TestBundle-MM/YY";
 "adyen.card.expiryItem.invalid" = "TestBundle-Invalid expiration date";
 "adyen.card.cvcItem.title" = "TestBundle-CVC / CVV";
 //"adyen.card.cvcItem.placeholder" = "TestBundle-123";

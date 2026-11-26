@@ -11,7 +11,6 @@ import UIKit
 @MainActor
 internal protocol BrowserComponentDelegate: AnyObject {
     func didCancel()
-    func didOpenExternalApplication()
 }
 
 /// A component that opens a URL in web browsed and presents it.
@@ -65,9 +64,7 @@ internal final class BrowserComponent: NSObject {
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
         openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
-            if didOpenExternalApp {
-                self.delegate?.didOpenExternalApplication()
-            } else {
+            if !didOpenExternalApp {
                 self.delegate?.didCancel()
             }
         }
@@ -87,10 +84,5 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
     /// Called when user drag VC down to dismiss.
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.delegate?.didCancel()
-    }
-
-    /// Called when the user opens the current page in the default browser by tapping the toolbar button.
-    internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
-        self.delegate?.didOpenExternalApplication()
     }
 }

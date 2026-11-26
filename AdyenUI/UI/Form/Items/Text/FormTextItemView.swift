@@ -50,6 +50,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         observe(item.$formattedValue) { [weak self] newValue in
             self?.handleFormattedValueDidChange(newValue)
         }
+
+        observe(item.publisher) { [weak self] _ in
+            guard let self, self.hintAccessoryView != nil else { return }
+            self.updateAccessory()
+        }
         
         updateValidation()
         
@@ -166,28 +171,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             changeAccessories()
         }
     }
-    
-    private func changeAccessories() {
-        accessoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        let accessoryView: UIView
-        switch accessory {
-        case .valid:
-            accessoryView = AccessoryLogo(image: .adyenCheckmark)
-            accessoryView.tintColor = theme.colors.text
-        case .invalid:
-            accessoryView = AccessoryLogo(image: .adyenWarning)
-            accessoryView.tintColor = theme.colors.destructive
-        case let .customView(view):
-            accessoryView = view
-            accessoryView.tintColor = theme.colors.primary
-        default:
-            accessoryStackView.isHidden = true
-            return
+
+    /// A hint shown as the accessory of the entry text field while its value is empty or not valid.
+    /// When set, the accessory switches to the valid checkmark as soon as the value is valid, also while editing.
+    package var hintAccessoryView: UIView? {
+        didSet {
+            updateAccessory()
         }
-        
-        accessoryStackView.isHidden = false
-        accessoryStackView.addArrangedSubview(accessoryView)
     }
     
     // MARK: - Private
@@ -310,6 +300,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     private func removeAccessoryIfNeeded() {
+        if hintAccessoryView != nil {
+            updateAccessory()
+            return
+        }
         if case .customView = accessory {
             return
         }
@@ -331,6 +325,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     private func updateAccessory(state: ValidationState) {
         if state.shouldShowError {
             accessory = .invalid
+            return
+        }
+
+        if let hintAccessoryView {
+            accessory = item.isValid() && !item.isEmpty() ? .valid : .customView(hintAccessoryView)
             return
         }
         
@@ -377,6 +376,47 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 }
 
+// MARK: - Accessory Views
+
+private extension FormTextItemView {
+
+    func changeAccessories() {
+        guard hintAccessoryView != nil, window != nil else {
+            updateAccessoryViews()
+            return
+        }
+        UIView.transition(
+            with: accessoryStackView,
+            duration: Constants.accessoryTransitionDuration,
+            options: [.transitionCrossDissolve, .beginFromCurrentState],
+            animations: updateAccessoryViews
+        )
+    }
+
+    func updateAccessoryViews() {
+        accessoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        let accessoryView: UIView
+        switch accessory {
+        case .valid:
+            accessoryView = AccessoryLogo(image: .adyenCheckmark)
+            accessoryView.tintColor = theme.colors.text
+        case .invalid:
+            accessoryView = AccessoryLogo(image: .adyenWarning)
+            accessoryView.tintColor = theme.colors.destructive
+        case let .customView(view):
+            accessoryView = view
+            accessoryView.tintColor = theme.colors.primary
+        default:
+            accessoryStackView.isHidden = true
+            return
+        }
+        
+        accessoryStackView.isHidden = false
+        accessoryStackView.addArrangedSubview(accessoryView)
+    }
+}
+
 @_spi(AdyenInternal)
 public extension FormTextItemView {
 
@@ -401,4 +441,8 @@ public extension FormTextItemView {
             fatalError("init(coder:) has not been implemented")
         }
     }
+}
+
+private enum Constants {
+    static let accessoryTransitionDuration: TimeInterval = 0.2
 }
