@@ -12,7 +12,6 @@
 "adyen_sepa_ibanItem_invalid" = "Test-Invalid account number";
 "adyen_sepa_nameItem_title" = "Test-Holder Name";
 "adyen_sepa_nameItem_placeholder" = "Test-J. Smith";
-"adyen_sepa_consentLabel" = "Test-By pressing the button above, you agree that the specified amount will be debited from your bank account_";
 "adyen_sepa_nameItem_invalid" = "Test-Holder name invalid";
 "adyen_checkout_card_store_details_label" = "Test-Remember my card details for future payments";
 "adyen_checkout_store_details_label" = "Test-Remember for next time";
@@ -24,13 +23,7 @@
 "adyen_card_numberItem_invalid" = "Test-Enter a valid card number";
 "adyen_checkout_card_expiry_date_hint" = "Test-Front of card in MM/YY format";
 "adyen_card_expiryItem_invalid" = "Test-Enter a valid expiration date. Front of card in MM/YY format";
-"adyen_card_cvcItem_title" = "Test-CVC / CVV";
 "adyen_card_cvcItem_placeholder" = "Test-123";
-"adyen_card_stored_title" = "Test-Verify your card";
-"adyen_card_stored_message" = "Test-Please enter the CVC code for %@";
-"adyen_card_stored_expires" = "Test-Expires %@";
-"adyen_card_securityCode_title" = "Test-Enter security code";
-"adyen_card_securityCode_description" = "Test-Enter the security code for %@";
 "adyen_checkout_card_security_code_label" = "Test-CVC / CVV";
 "adyen_checkout_card_security_code_hint_three_digits" = "Test-3 digits on back of card";
 "adyen_checkout_card_security_code_hint_four_digits" = "Test-4 digits on front of card";
@@ -38,7 +31,6 @@
 "adyen_checkout_card_security_code_error_empty_four_digits" = "Test-Enter the security code. 4 digits on front of card";
 "adyen_checkout_card_security_code_error_incomplete_three_digits" = "Test-Enter a valid security code. 3 digits on back of card";
 "adyen_checkout_card_security_code_error_incomplete_four_digits" = "Test-Enter a valid security code. 4 digits on front of card";
-"adyen_dropIn_stored_title" = "Test-Confirm %@ payment";
 "adyen_phoneNumber_title" = "Phone Number";
 "adyen_phoneNumber_placeholder" = "Test 123 456 789";
 "adyen_phoneNumber_invalid" = "Test Invalid phone number.";

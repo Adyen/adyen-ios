@@ -1,72 +1,72 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "adyen.card.stored.title" : {
+    "adyen.card.numberItem.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "da-DK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - DK"
+            "value" : "TestBundle - Card number - DK"
           }
         },
         "fr-FR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - FR"
+            "value" : "TestBundle - Card number - FR"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - HI"
+            "value" : "TestBundle - Card number - HI"
           }
         },
         "is-IS" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - IS"
+            "value" : "TestBundle - Card number - IS"
           }
         },
         "ro-RO" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - RO"
+            "value" : "TestBundle - Card number - RO"
           }
         }
       }
     },
-    "adyen.dropIn.stored.title" : {
+    "adyen.submitButton.formatted" : {
       "extractionState" : "manual",
       "localizations" : {
         "da-DK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Confirm %@ payment - DK"
+            "value" : "TestBundle - Pay %@ - DK"
           }
         },
         "fr-FR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Confirm %@ payment - FR"
+            "value" : "TestBundle - Pay %@ - FR"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Confirm %@ payment - HI"
+            "value" : "TestBundle - Pay %@ - HI"
           }
         },
         "is-IS" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Confirm %@ payment - IS"
+            "value" : "TestBundle - Pay %@ - IS"
           }
         },
         "ro-RO" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Confirm %@ payment - RO"
+            "value" : "TestBundle - Pay %@ - RO"
           }
         }
       }

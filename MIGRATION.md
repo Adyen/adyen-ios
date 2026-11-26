@@ -56,6 +56,52 @@
 
 - The card expiry date field now shows a hint below the field that reads "Front of card in MM/YY format" in English. Its localization key was renamed from `adyen.card.expiryItem.placeholder` to `adyen_checkout_card_expiry_date_hint`. If you override this string in your own strings table, rename your override to keep the custom text. Overrides through `CheckoutLocalizationKey.cardExpiryDateHint` keep working.
 
+### Removed localization keys
+
+- `CheckoutLocalizationKey.cardNumberInvalidUnsupportedBrand` and `CheckoutLocalizationKey.cardDualBrandSelectorTitle` are removed. The SDK did not request these strings, so a value returned for them from a `CheckoutLocalizationProvider` had no effect.
+- The following localization keys are no longer used by the SDK and are removed from the English strings, together with their `LocalizationKey` constants. Overrides for them in your own strings table have no effect and can be deleted:
+  - `adyen.paymentMethod.removeButton` (`paymentMethodRemoveButton`)
+  - `adyen.sepa.consentLabel` (`sepaConsentLabel`)
+  - `adyen.card.cvcItem.title` (`cardCvcItemTitle`), replaced by `adyen_checkout_card_security_code_label`
+  - `adyen.card.cvcItem.placeholder.digits` (`cardCvcItemPlaceholderDigits`)
+  - `adyen.card.securityCode.title` (`cardSecurityCodeTitle`)
+  - `adyen.card.securityCode.description` (`cardSecurityCodeDescription`)
+  - `adyen.card.stored.title` (`cardStoredTitle`)
+  - `adyen.card.stored.message` (`cardStoredMessage`)
+  - `adyen.card.stored.expires` (`cardStoredExpires`)
+  - `adyen.card.numberItem.unsupportedBrand` (`cardNumberItemUnsupportedBrand`)
+  - `adyen.creditCard.dualBrand.title` (`creditCardDualBrandTitle`)
+  - `adyen.card.taxNumber.label` (`cardTaxNumberLabel`)
+  - `adyen.card.installments.numberOfInstallments` (`cardInstallmentsNumberOfInstallments`)
+  - `adyen.card.installments.monthsAndPrice` (`cardInstallmentsMonthsAndPrice`)
+  - `adyen.card.installments.months` (`cardInstallmentsMonths`)
+  - `adyen.card.installments.plan` (`cardInstallmentsPlan`)
+  - `adyen.card.installments.oneTime`, replaced by `adyen_checkout_card_installments_option_one_time`
+  - `adyen.card.installments.title`, replaced by `adyen_checkout_card_installments_title`
+  - `adyen.card.installments.revolving`, replaced by `adyen_checkout_card_installments_option_revolving`
+  - `adyen.dropIn.stored.title` (`dropInStoredTitle`)
+  - `adyen.dropIn.preselected.openAll.title` (`dropInPreselectedOpenAllTitle`)
+  - `adyen.preselectedPaymentMethod.subtitle` (`preselectedPaymentMethodSubtitle`)
+  - `adyen.applePay.total` (`applePayTotal`)
+  - `adyen.preauthorizeWith` (`preauthorizeWith`)
+  - `adyen.confirmPreauthorization` (`confirmPreauthorization`)
+  - `adyen.voucher.finish` (`voucherFinish`)
+  - `adyen.amount` (`amount`)
+  - `adyen.countryField.title` (`countryFieldTitle`)
+  - `adyen.stateField.placeholder` (`stateFieldPlaceholder`)
+  - `adyen.stateOrProvinceField.title` (`stateOrProvinceFieldTitle`)
+  - `adyen.stateOrProvinceField.placeholder` (`stateOrProvinceFieldPlaceholder`)
+  - `adyen.errorFeedback.emptyField` (`errorFeedbackEmptyField`)
+  - `adyen.errorFeedback.incorrectFormat` (`errorFeedbackIncorrectFormat`)
+  - `adyen.boleto.personalDetails` (`boletoPersonalDetails`)
+  - `adyen.giftcard.remove.title` (`giftcardRemoveTitle`)
+  - `adyen.giftcard.remove.message` (`giftcardRemoveMessage`)
+  - `adyen.giftcard.paymentMethod.title` (`giftcardPaymentMethodTitle`)
+  - `adyen.partialPayment.payRemainingAmount` (`partialPaymentPayRemainingAmount`)
+  - `adyen.cashAppPay.title` (`cashAppPayTitle`)
+  - `adyen.threeds2.DA.opticID` (`threeds2DAOpticID`)
+  - `adyen.payto.bsb.label.bankAccountNumber` (`paytoBsbLabelBankAccountNumber`)
+
 ### Encryption
 
 `CardEncryptor` and `BankDetailsEncryptor` are replaced by `CheckoutEncryptor`:

@@ -242,7 +242,7 @@ struct StoredCardInputViewModelTests {
     /// don't support dots in key names.
     ///
     /// The test uses `AdyenUIHostCustomSeparator.strings` where keys use underscores instead of dots
-    /// (e.g., `adyen_card_securityCode_title` instead of `adyen.card.securityCode.title`).
+    /// (e.g., `adyen_submitButton_formatted` instead of `adyen.submitButton.formatted`).
     @Test
     func localizationWithCustomKeySeparator() {
         // Given
