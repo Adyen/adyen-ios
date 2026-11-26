@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     
     // MARK: - Properties
@@ -27,9 +28,9 @@ internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     
     private(set) var loadLogoImageCalled = false
     private(set) var loadLogoImageCallsCount = 0
-    private(set) var loadLogoImageCompletions: [(UIImage?) -> Void] = []
+    private(set) var loadLogoImageCompletions: [@MainActor @Sendable (UIImage?) -> Void] = []
     
-    func loadLogoImage(completion: @escaping (UIImage?) -> Void) {
+    func loadLogoImage(completion: @escaping @MainActor @Sendable (UIImage?) -> Void) {
         loadLogoImageCalled = true
         loadLogoImageCallsCount += 1
         loadLogoImageCompletions.append(completion)

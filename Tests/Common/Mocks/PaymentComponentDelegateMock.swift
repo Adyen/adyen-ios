@@ -6,6 +6,7 @@
 
 @testable import Adyen
 
+@MainActor
 final class PaymentComponentDelegateMock: PaymentComponentDelegate {
 
     // MARK: - didSubmit

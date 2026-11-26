@@ -54,9 +54,10 @@ package extension AddressLookupViewController {
         ///   - lookupProvider: A closure providing addresses based on a search term
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
+        @MainActor
         package init(
             for addressType: FormAddressPickerItem.AddressType,
-            style: AddressLookupStyle = .init(),
+            style: AddressLookupStyle? = nil,
             theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters?,
             supportedCountryCodes: Set<String>?,
@@ -66,7 +67,7 @@ package extension AddressLookupViewController {
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
             self.addressType = addressType
-            self.style = style
+            self.style = style ?? .init()
             self.theme = theme
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes

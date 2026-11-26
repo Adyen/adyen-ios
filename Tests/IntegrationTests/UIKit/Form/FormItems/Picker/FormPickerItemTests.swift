@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 class FormPickerItemTests: XCTestCase {
     
     override func run() {

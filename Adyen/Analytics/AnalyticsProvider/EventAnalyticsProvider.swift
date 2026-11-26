@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
+@MainActor internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
 
     private enum Constants {
         static let batchInterval: TimeInterval = 10
@@ -22,6 +22,8 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     private let batchInterval: TimeInterval
     private let checkoutAttemptId: String
 
+    private let flushRemainingEvents: @MainActor @Sendable () -> Void
+
     internal init(
         apiClient: AsyncAPIClientProtocol,
         eventDataSource: AnyAnalyticsEventDataSource,
@@ -32,19 +34,23 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.eventDataSource = eventDataSource
         self.batchInterval = batchInterval
         self.checkoutAttemptId = checkoutAttemptId
-        
-        Task { await startNextTimer() }
-    }
-    
-    deinit {
-        batchTimer?.invalidate()
-        // fire-and-forget remaining events without capturing self
-        if let request = requestWithAllEvents() {
-            let apiClient = apiClient
-            Task {
-                _ = try? await apiClient.performAsync(request)
-            }
+        self.flushRemainingEvents = { [eventDataSource, apiClient, checkoutAttemptId] in
+            guard let request = Self.requestWithAllEvents(
+                from: eventDataSource,
+                checkoutAttemptId: checkoutAttemptId
+            ) else { return }
+
+            Task { _ = try? await apiClient.performAsync(request) }
         }
+
+        Task { startNextTimer() }
+    }
+
+    /// Pending events are flushed on the main actor across all compilers; the batch timer self-invalidates.
+    deinit {
+        // fire-and-forget remaining events without capturing self
+        let flushRemainingEvents = self.flushRemainingEvents
+        Task { @MainActor in flushRemainingEvents() }
     }
     
     internal func add(info: AnalyticsEventInfo) {
@@ -77,6 +83,13 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
+        Self.requestWithAllEvents(from: eventDataSource, checkoutAttemptId: checkoutAttemptId)
+    }
+
+    private static func requestWithAllEvents(
+        from eventDataSource: AnyAnalyticsEventDataSource,
+        checkoutAttemptId: String
+    ) -> AnalyticsRequest? {
         guard let events = eventDataSource.allEvents() else { return nil }
 
         // as per this call's limitation, we only send up to the
@@ -104,8 +117,12 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     @MainActor
     private func startNextTimer() {
         batchTimer?.invalidate()
-        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
-            self?.sendEventsIfNeeded()
+        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] timer in
+            guard let self else {
+                timer.invalidate()
+                return
+            }
+            Task { @MainActor in self.sendEventsIfNeeded() }
         }
     }
 }

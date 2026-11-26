@@ -12,6 +12,7 @@ import AdyenUI
 import Foundation
 
 // sourcery: AutoMockable
+@MainActor
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var securityCodeItem: FormCardSecurityCodeItem { get }
 
@@ -27,6 +28,7 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     func viewDidLoad()
 }
 
+@MainActor
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
 
     private let localizationParameters: LocalizationParameters?
@@ -45,7 +47,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     /// This informs the status of the payment after submitting the security code.
-    internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
+    internal var cardDetailsCompletionHandler: (@MainActor (Result<CardDetails, Error>) -> Void)?
 
     internal init(
         theme: CheckoutTheme,

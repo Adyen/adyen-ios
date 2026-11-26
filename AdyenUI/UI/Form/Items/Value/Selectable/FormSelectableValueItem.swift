@@ -12,7 +12,7 @@ import Foundation
 open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueItem<ValueType> {
     
     /// A closure that will be invoked when the item is selected.
-    public var selectionHandler: () -> Void
+    public var selectionHandler: @MainActor () -> Void
     
     /// The formatted value to show in the view
     @AdyenObservable(nil) public var formattedValue: String?

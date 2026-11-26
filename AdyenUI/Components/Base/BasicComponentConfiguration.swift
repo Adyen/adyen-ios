@@ -28,7 +28,7 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
     package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: CheckoutTheme = .init()
+    package var theme: CheckoutTheme
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     package var showsSubmitButton: Bool
@@ -45,8 +45,9 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
+    @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true
     ) {
         self.init(
@@ -56,12 +57,14 @@ package struct BasicComponentConfiguration: PaymentComponentConfiguration {
         )
     }
 
+    @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.style = style
+        self.style = style ?? FormComponentStyle()
+        self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.localizationParameters = localizationParameters
     }
@@ -75,7 +78,7 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     package var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: CheckoutTheme = .init()
+    package var theme: CheckoutTheme
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     package let showsSubmitButton: Bool
@@ -92,8 +95,9 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
+    @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil
     ) {
@@ -105,13 +109,15 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
         )
     }
 
+    @MainActor
     package init(
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.style = style
+        self.style = style ?? FormComponentStyle()
+        self.theme = .init()
         self.showsSubmitButton = showsSubmitButton
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters

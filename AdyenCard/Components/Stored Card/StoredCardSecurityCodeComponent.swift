@@ -12,7 +12,12 @@ import UIKit
 
 /// A component that provides a form for stored card payments.
 @MainActor
-package final class StoredCardSecurityCodeComponent: StoredPaymentComponent, Localizable {
+package final class StoredCardSecurityCodeComponent: StoredPaymentComponent,
+    PaymentComponent,
+    Component,
+    PaymentMethodAware,
+    AdyenContextAware,
+    Localizable {
 
     // MARK: - Properties
 
@@ -69,21 +74,19 @@ package final class StoredCardSecurityCodeComponent: StoredPaymentComponent, Loc
 
     // MARK: - Private
 
-    private func makeCompletionHandler() -> (Result<CardDetails, Error>) -> Void {
+    private func makeCompletionHandler() -> @MainActor @Sendable (Result<CardDetails, Error>) -> Void {
         { [weak self] result in
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                switch result {
-                case let .success(details):
-                    self.submit(
-                        data: PaymentComponentData(
-                            paymentMethodDetails: details,
-                            order: order
-                        )
+            guard let self else { return }
+            switch result {
+            case let .success(details):
+                self.submit(
+                    data: PaymentComponentData(
+                        paymentMethodDetails: details,
+                        order: order
                     )
-                case let .failure(error):
-                    self.delegate?.didFail(with: error, from: self)
-                }
+                )
+            case let .failure(error):
+                self.delegate?.didFail(with: error, from: self)
             }
         }
     }

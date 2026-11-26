@@ -8,6 +8,7 @@
 import AdyenActions
 import Foundation
 
+@MainActor
 final class ActionComponentDelegateMock: ActionComponentDelegate {
     
     var onDidProvide: ((_ data: ActionComponentData, _ component: ActionComponent) -> Void)?

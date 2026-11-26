@@ -13,13 +13,7 @@ package class SupportedPaymentMethodLogosView: UIView {
     package struct Style: ViewStyle {
         package var backgroundColor: UIColor = .clear
 
-        package var images: ImageStyle = .init(
-            borderColor: UIColor.Adyen.componentSeparator,
-            borderWidth: 1.0 / UIScreen.main.nativeScale,
-            cornerRadius: 3.0,
-            clipsToBounds: true,
-            contentMode: .scaleAspectFit
-        )
+        package var images: ImageStyle
         
         /// The color of the shadow shown behind each logo. `nil` shows no shadow.
         package var logoShadowColor: UIColor?
@@ -29,7 +23,16 @@ package class SupportedPaymentMethodLogosView: UIView {
             color: UIColor.Adyen.componentSecondaryLabel
         )
         
-        package init() {}
+        @MainActor
+        package init() {
+            images = ImageStyle(
+                borderColor: UIColor.Adyen.componentSeparator,
+                borderWidth: 1.0 / UIScreen.main.nativeScale,
+                cornerRadius: 3.0,
+                clipsToBounds: true,
+                contentMode: .scaleAspectFit
+            )
+        }
     }
     
     internal let imageSize: CGSize
@@ -54,12 +57,12 @@ package class SupportedPaymentMethodLogosView: UIView {
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
-        style: Style = .init()
+        style: Style? = nil
     ) {
         self.imageSize = imageSize
         self.imageUrls = imageUrls
         self.trailingText = trailingText
-        self.style = style
+        self.style = style ?? .init()
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         

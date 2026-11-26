@@ -8,6 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// An object that needs an Adyen context.
+@MainActor
 package protocol AdyenContextAware: AnyObject {
 
     /// The context object for this component.

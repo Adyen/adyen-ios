@@ -8,7 +8,7 @@ import Foundation
 
 /// Builds different types of `FormItemView's`  from the corresponding concrete `FormItem`.
 @_spi(AdyenInternal)
-public struct FormItemViewBuilder {
+@MainActor public struct FormItemViewBuilder {
 
     /// The theme to use for building views.
     package let theme: CheckoutTheme
@@ -115,6 +115,7 @@ public struct FormItemViewBuilder {
     }
 
     @_spi(AdyenInternal)
+    @MainActor
     public static func build(_ item: FormItem) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier

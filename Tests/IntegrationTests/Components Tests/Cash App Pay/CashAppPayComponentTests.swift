@@ -77,14 +77,14 @@ import XCTest
             .init(id: "onFileGrantId1", customerID: "testId", action: onFileAction, status: .ACTIVE, type: .EXTENDED, channel: .IN_APP, createdAt: Date(), updatedAt: Date(), expiresAt: nil)
         }
         
-        override func setUpWithError() throws {
-            try super.setUpWithError()
+        override func setUp() async throws {
+            try await super.setUp()
             context = Dummy.context
         }
 
-        override func tearDownWithError() throws {
+        override func tearDown() async throws {
             context = nil
-            try super.tearDownWithError()
+            try await super.tearDown()
         }
         
         // TODO: Re-enable after theme injection is complete

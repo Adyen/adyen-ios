@@ -12,7 +12,10 @@ import UIKit
 
 /// A component that handles document actions.
 @MainActor
-package final class DocumentComponent: ActionComponent, ShareableComponent {
+package final class DocumentComponent: ActionComponent,
+    Component,
+    AdyenContextAware,
+    ShareableComponent {
 
     /// The context object for this component.
     package let context: AdyenContext

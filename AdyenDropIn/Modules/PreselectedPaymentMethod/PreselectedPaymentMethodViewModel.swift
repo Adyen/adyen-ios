@@ -10,7 +10,7 @@ import AdyenUI
 import Foundation
 
 @MainActor
-internal final class PreselectedPaymentMethodViewModel: ObservableObject {
+internal final class PreselectedPaymentMethodViewModel {
 
     // MARK: - Properties
 
@@ -24,7 +24,7 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
     internal weak var router: PreselectedPaymentMethodRouting?
 
     /// Callback for when the component is loaded on display.
-    internal var onDidLoad: (() -> Void)?
+    internal var onDidLoad: (@MainActor () -> Void)?
 
     @Published internal private(set) var isLoading = false
 
@@ -153,3 +153,9 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         analyticsProvider?.add(info: infoEvent)
     }
 }
+
+#if compiler(>=6.2)
+    extension PreselectedPaymentMethodViewModel: @MainActor ObservableObject {}
+#else
+    extension PreselectedPaymentMethodViewModel: ObservableObject {}
+#endif

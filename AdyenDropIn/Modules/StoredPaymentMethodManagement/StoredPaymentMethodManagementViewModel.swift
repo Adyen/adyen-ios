@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 @MainActor
-internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
+internal final class StoredPaymentMethodManagementViewModel {
 
     private enum Constants {
         static let analyticsComponentIdentifier = "storedPaymentMethodManagement"
@@ -177,3 +177,9 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         }
     }
 }
+
+#if compiler(>=6.2)
+    extension StoredPaymentMethodManagementViewModel: @MainActor ObservableObject {}
+#else
+    extension StoredPaymentMethodManagementViewModel: ObservableObject {}
+#endif

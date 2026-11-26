@@ -11,7 +11,11 @@ import UIKit
 
 /// A component that handles a Pay by Bank US payment.
 @MainActor
-package final class PayByBankUSComponent: PaymentComponent {
+package final class PayByBankUSComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware {
 
     /// The context object for this component.
     package let context: AdyenContext

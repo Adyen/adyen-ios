@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
+@MainActor
 class PublicKeyFetcherTests: XCTestCase {
 
     func testFetchPublicKeySuccess() async throws {

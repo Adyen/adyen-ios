@@ -35,7 +35,7 @@ extension CheckoutEncryptor {
 public extension CheckoutEncryptor.Error {
 
     /// An open-ended error code type backed by a raw string value.
-    struct Code: RawRepresentable, Hashable {
+    struct Code: RawRepresentable, Hashable, Sendable {
         public let rawValue: String
 
         public init(rawValue: String) {

@@ -21,6 +21,7 @@ extension ThreeDS2ChallengeAction: Equatable {
     }
 }
 
+@MainActor
 class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testRedirect() throws {

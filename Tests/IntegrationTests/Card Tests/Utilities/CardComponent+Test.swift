@@ -13,9 +13,14 @@ extension CardComponent {
     convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init()
+        configuration: CardConfiguration? = nil
     ) {
-        self.init(paymentMethod: paymentMethod, context: context, configuration: configuration, callbacks: CardCallbacks())
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration ?? .init(),
+            callbacks: CardCallbacks()
+        )
     }
 }
 
@@ -25,8 +30,13 @@ extension BCMCComponent {
     convenience init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init()
+        configuration: CardConfiguration? = nil
     ) {
-        self.init(paymentMethod: paymentMethod, context: context, configuration: configuration, callbacks: CardCallbacks())
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration ?? .init(),
+            callbacks: CardCallbacks()
+        )
     }
 }

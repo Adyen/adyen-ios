@@ -11,8 +11,8 @@ import UIKit
 /// Hosts a SwiftUI Drop-in screen that keeps the system back button, and locks the navigation while a payment is in progress.
 internal final class NavigationLockingHostingController<Content: View>: UIHostingController<Content> {
 
-    private let onPop: () -> Void
-    private let onCancel: (() -> Void)?
+    private let onPop: @MainActor () -> Void
+    private let onCancel: (@MainActor () -> Void)?
     private var isLocked = false
     private var cancellables = Set<AnyCancellable>()
 
@@ -31,8 +31,8 @@ internal final class NavigationLockingHostingController<Content: View>: UIHostin
     internal init(
         rootView: Content,
         isNavigationLocked: AnyPublisher<Bool, Never>,
-        onPop: @escaping () -> Void,
-        onCancel: (() -> Void)? = nil
+        onPop: @escaping @MainActor () -> Void,
+        onCancel: (@MainActor () -> Void)? = nil
     ) {
         self.onPop = onPop
         self.onCancel = onCancel

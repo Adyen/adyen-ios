@@ -14,6 +14,7 @@ package enum ViewIdentifierBuilder {
     ///   - scopeInstance: The instance that encapsulate the view,
     ///    it serves as a name space for the identifier, to avoid identifier collisions.
     ///   - postfix: This should uniquely identify the view inside the scope provided by the `scopeInstance`.
+    @MainActor
     public static func build(scopeInstance: Any, postfix: String) -> String {
         var scope = (scopeInstance as? UIView)?.accessibilityIdentifier
         scope = scope ?? (scopeInstance as? FormItem)?.identifier

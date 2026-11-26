@@ -13,7 +13,7 @@ import UIKit
 // sourcery:AutoMockable
 @MainActor
 internal protocol DropInDismissing: AnyObject {
-    func dismissDropIn(completion: (() -> Void)?)
+    func dismissDropIn(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 /// The root router of the drop in, on which the flow manager presents actions and which it dismisses.

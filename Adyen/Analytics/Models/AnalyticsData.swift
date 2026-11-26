@@ -37,9 +37,9 @@ internal struct AnalyticsData: Encodable {
         }
     }()
     
-    internal let deviceModel = UIDevice.current.model
+    internal let deviceModel: String
 
-    internal let systemVersion = UIDevice.current.systemVersion
+    internal let systemVersion: String
 
     internal let referrer: String = Bundle.main.bundleIdentifier ?? ""
 
@@ -65,6 +65,7 @@ internal struct AnalyticsData: Encodable {
 
     // MARK: - Initializers
 
+    @MainActor
     internal init(
         flavor: AnalyticsFlavor,
         additionalFields: AdditionalAnalyticsFields?,
@@ -74,6 +75,9 @@ internal struct AnalyticsData: Encodable {
         self.flavor = flavor.value
         self.amount = additionalFields?.amount
         self.sessionId = additionalFields?.sessionId
+
+        self.deviceModel = UIDevice.current.model
+        self.systemVersion = UIDevice.current.systemVersion
         
         self.version = checkoutPlatformParams.version
         self.platform = checkoutPlatformParams.platform.rawValue

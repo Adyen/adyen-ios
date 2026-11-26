@@ -22,17 +22,17 @@ final class CheckoutCoreFinishTests: XCTestCase {
     private var onComplete: AdvancedCheckoutCompletionHandler = { _ in }
     private var onFailure: CheckoutFailureHandler = { _ in }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         paymentMethods = try AdyenCoder.decode(["paymentMethods": [blik]]) as PaymentMethods
         paymentMethod = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
 
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         paymentMethod = nil
         paymentMethods = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     // MARK: - Waiting for the component
@@ -442,6 +442,7 @@ final class CheckoutCoreFinishTests: XCTestCase {
 }
 
 /// Stays in `finalize(success:)` until the test calls `releaseFinalize()`.
+@MainActor
 private final class FinalizablePaymentComponentMock: PaymentComponentMock, FinalizableComponent {
 
     private(set) var finalizeCalls: [Bool] = []

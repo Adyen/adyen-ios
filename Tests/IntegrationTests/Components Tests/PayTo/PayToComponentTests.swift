@@ -14,8 +14,8 @@ class PayToComponentTests: XCTestCase {
 
     var sut: PayToComponent!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         sut = try PayToComponent(
             paymentMethod: AdyenCoder.decode(payto),
             context: Dummy.context

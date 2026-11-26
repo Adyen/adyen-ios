@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class DokuVoucherUITests: XCTestCase {
 
     func test_shareableView_withDokuIndomaretActionAndCustomLocalization_shouldShowLocalizedDetails() throws {

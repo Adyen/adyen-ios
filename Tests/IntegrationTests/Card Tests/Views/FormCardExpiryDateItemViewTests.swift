@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormCardExpiryDateItemViewTests: XCTestCase {
     ///
     func test_accessibilityLabel_withoutTitle_shouldOnlyDescribeFormat() {

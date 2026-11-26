@@ -16,7 +16,7 @@ struct StoredPaymentMethodMock: StoredPaymentMethod {
     
     var name: String
     
-    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    @MainActor func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     

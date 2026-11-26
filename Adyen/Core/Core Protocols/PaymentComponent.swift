@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Any Object that is aware of a `PaymentMethod`.
+@MainActor
 package protocol PaymentMethodAware {
 
     /// The payment method for which to gather payment details.
@@ -16,6 +17,7 @@ package protocol PaymentMethodAware {
 }
 
 /// A component that handles stored payment methods.
+@MainActor
 package protocol StoredPaymentComponent: PaymentComponent {}
 
 package enum PaymentComponentType {

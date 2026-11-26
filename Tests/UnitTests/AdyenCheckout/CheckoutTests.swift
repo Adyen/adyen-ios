@@ -20,7 +20,11 @@ final class CheckoutTests: XCTestCase {
     private static let missingResultCode = ""
     
     var mockProvider: CheckoutProviderMock!
-    var configuration: CheckoutConfiguration!
+    lazy var configuration: CheckoutConfiguration! = CheckoutConfiguration(
+        apiContext: Dummy.apiContext,
+        analyticsApiContext: nil,
+        analyticsConfiguration: .init()
+    )
     var paymentMethods: PaymentMethods!
     
     private let paymentMethodsDictionary = [
@@ -38,11 +42,6 @@ final class CheckoutTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockProvider = CheckoutProviderMock()
-        configuration = CheckoutConfiguration(
-            apiContext: Dummy.apiContext,
-            analyticsApiContext: nil,
-            analyticsConfiguration: .init()
-        )
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 

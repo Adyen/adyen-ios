@@ -6,9 +6,10 @@
 
 import Foundation
 #if canImport(AdyenAuthentication)
-    import AdyenAuthentication
+    @preconcurrency import AdyenAuthentication
 
-    internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
+    @MainActor
+    internal final class AuthenticationServiceMock: @preconcurrency AuthenticationServiceProtocol {
         func registeredCredentials(withAuthenticationInput input: String) async throws -> [String] {
             []
         }

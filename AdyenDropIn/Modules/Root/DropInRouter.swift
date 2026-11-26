@@ -11,6 +11,7 @@ import Foundation
 import SafariServices
 import UIKit
 
+@MainActor
 internal protocol DropInRouting: Router, DropInFlowRouting, AnyObject {}
 
 @MainActor
@@ -79,7 +80,7 @@ internal class DropInRouter: DropInRouting {
 
 extension DropInRouter {
 
-    internal func dismissDropIn(completion: (() -> Void)?) {
+    internal func dismissDropIn(completion: (@MainActor @Sendable () -> Void)?) {
         // Dismissing the root itself only tears down what is presented on top of it,
         // so the drop in is dismissed by the view controller presenting it.
         let dismissingViewController = rootViewController.presentingViewController ?? rootViewController
@@ -118,7 +119,7 @@ extension DropInRouter {
 
     /// Dismissing an action dismisses the drop in it is presented on top of,
     /// as there is no way back to the payment details of the selected payment method.
-    internal func didDismissPaymentAction(completion: (() -> Void)?) {
+    internal func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?) {
         dismissDropIn(completion: completion)
     }
 }
@@ -126,7 +127,7 @@ extension DropInRouter {
 // MARK: - PreselectedPaymentMethodRouterListener
 
 extension DropInRouter: PreselectedPaymentMethodRouterListener {
-    internal func didDismissPreselectedPaymentMethod(completion: (() -> Void)?) {
+    internal func didDismissPreselectedPaymentMethod(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
         completion?()
     }
@@ -137,7 +138,7 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 extension DropInRouter: PaymentMethodListRouterListener {
     
     /// Dismissing the payment method list dismisses the drop in it is the root of.
-    internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
+    internal func didDismissPaymentMethodList(completion: (@MainActor @Sendable () -> Void)?) {
         dismissDropIn(completion: completion)
     }
 }
@@ -146,7 +147,7 @@ extension DropInRouter: PaymentMethodListRouterListener {
 
 extension DropInRouter: ComponentContainerRouterListener {
     
-    internal func didDismissComponentContainer(completion: (() -> Void)?) {
+    internal func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         childRouter = nil
         completion?()
     }

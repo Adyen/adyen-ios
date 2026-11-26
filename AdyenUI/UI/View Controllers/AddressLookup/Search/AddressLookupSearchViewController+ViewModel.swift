@@ -11,7 +11,7 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The model for ``AddressLookupSearchViewController``
-    internal struct ViewModel {
+    @MainActor internal struct ViewModel {
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: AddressLookupSearchStyle
@@ -65,7 +65,7 @@ extension AddressLookupSearchViewController {
             switchToManualEntryHandler()
         }
         
-        internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+        internal func handleLookUp(searchTerm: String, resultHandler: @escaping @MainActor @Sendable ([ListItem]) -> Void) {
             
             lookupProvider?.lookUp(searchTerm: searchTerm) { result in
                 DispatchQueue.main.async { [self] in

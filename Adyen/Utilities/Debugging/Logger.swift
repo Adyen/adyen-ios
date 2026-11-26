@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenNetworking
+// AdyenNetworking does not annotate `Logging.isEnabled` for concurrency; remove `@preconcurrency` once it does.
+@preconcurrency import AdyenNetworking
 import func Darwin.fputs
+import os
 
 /// The level of the SDK logs, ordered from most to least verbose. Set it with `Checkout.setLogLevel(_:)`.
 public enum CheckoutLogLevel: Sendable {
@@ -21,10 +23,19 @@ public enum CheckoutLogLevel: Sendable {
 
 /// Provides control over SDK logging.
 package enum AdyenLogging {
+
+    private static let storage = OSAllocatedUnfairLock(initialState: false)
+
     /// Indicates whether to enable printing to the console.
-    package static var isEnabled: Bool = false {
-        didSet {
-            AdyenNetworking.Logging.isEnabled = isEnabled
+    package static var isEnabled: Bool {
+        get {
+            storage.withLock { $0 }
+        }
+        set {
+            storage.withLock {
+                $0 = newValue
+                AdyenNetworking.Logging.isEnabled = newValue
+            }
         }
     }
 }

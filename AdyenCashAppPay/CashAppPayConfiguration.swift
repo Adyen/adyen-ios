@@ -45,12 +45,13 @@ package struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+    @MainActor
     package init(
         redirectURL: URL,
         referenceId: String? = nil,
         showsStorePaymentMethodField: Bool = true,
         storePaymentMethod: Bool = false,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true
     ) {
         self.init(
@@ -58,18 +59,19 @@ package struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
             referenceId: referenceId,
             showsStorePaymentMethodField: showsStorePaymentMethodField,
             storePaymentMethod: storePaymentMethod,
-            style: style,
+            style: style ?? .init(),
             showsSubmitButton: showsSubmitButton,
             localizationParameters: nil
         )
     }
 
+    @MainActor
     package init(
         redirectURL: URL,
         referenceId: String? = nil,
         showsStorePaymentMethodField: Bool = true,
         storePaymentMethod: Bool = false,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -77,7 +79,7 @@ package struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
         self.referenceId = referenceId
         self.showsStorePaymentMethodField = showsStorePaymentMethodField
         self.storePaymentMethod = storePaymentMethod
-        self.style = style
+        self.style = style ?? .init()
         self.showsSubmitButton = showsSubmitButton
         self.localizationParameters = localizationParameters
     }

@@ -12,7 +12,7 @@ import Foundation
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
  */
-public struct PaymentMethods: Codable {
+public struct PaymentMethods: Codable, Sendable {
 
     /// The already paid payment methods, in case of partial payments.
     public var paid: [PaymentMethod] = []

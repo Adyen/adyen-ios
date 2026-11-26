@@ -12,23 +12,9 @@ import XCTest
 @MainActor
 class AtomeComponentUITests: XCTestCase {
 
-    private var paymentMethod: PaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        context = Dummy.context
-        style = FormComponentStyle()
-    }
-
-    override func tearDownWithError() throws {
-        paymentMethod = nil
-        context = nil
-        style = nil
-        try super.tearDownWithError()
-    }
+    private var paymentMethod: PaymentMethod! = AtomePaymentMethod(type: .atome, name: "Atome")
+    private var context: AdyenContext! = Dummy.context
+    private var style = FormComponentStyle()
     
     func testUIConfiguration() {
         style.backgroundColor = .green

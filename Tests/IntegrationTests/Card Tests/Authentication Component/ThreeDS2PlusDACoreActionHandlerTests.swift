@@ -33,8 +33,8 @@ import XCTest
             context: Dummy.apiContext
         )
         
-        override func setUp() {
-            super.setUp()
+        override func setUp() async throws {
+            try await super.setUp()
 
             authenticationRequestParameters = AuthenticationRequestParametersMock(
                 deviceInformation: "device_info",

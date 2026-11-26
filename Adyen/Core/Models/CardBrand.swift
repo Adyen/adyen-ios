@@ -7,7 +7,7 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-public enum CardBrand: RawRepresentable, Codable, Equatable, Hashable {
+public enum CardBrand: RawRepresentable, Codable, Equatable, Hashable, Sendable {
     
     /// Accel
     case accel

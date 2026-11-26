@@ -9,10 +9,10 @@ import Foundation
 /// Defines the installment options available for a specific card brand or as a default.
 ///
 /// All values in `values` must be greater than 1.
-public struct InstallmentOptions: Equatable, Codable {
+public struct InstallmentOptions: Equatable, Codable, Sendable {
 
     /// An installment plan type.
-    public enum Plan: String {
+    public enum Plan: String, Sendable {
         /// Regular installment payments.
         case regular
 
@@ -92,7 +92,7 @@ public struct InstallmentOptions: Equatable, Codable {
 /// to the shopper.
 ///
 /// `defaultOptions` applies to all card brands unless overridden by `cardBasedOptions`.
-public struct InstallmentConfiguration: Decodable, Equatable {
+public struct InstallmentConfiguration: Decodable, Equatable, Sendable {
 
     /// Options applied to all card brands not present in `cardBasedOptions`.
     package let defaultOptions: InstallmentOptions?

@@ -11,9 +11,9 @@ import Foundation
 extension SearchViewController {
     
     /// The view model for the `SearchViewController`
-    public struct ViewModel {
+    @MainActor public struct ViewModel {
 
-        public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
+        public typealias ResultProvider = @MainActor (_ searchTerm: String, _ handler: @escaping @MainActor @Sendable ([ListItem]) -> Void) -> Void
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: ViewStyle

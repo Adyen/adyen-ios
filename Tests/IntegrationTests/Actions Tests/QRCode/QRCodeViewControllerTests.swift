@@ -10,6 +10,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 final class QRCodeViewControllerTests: XCTestCase {
     
     // MARK: - Tests

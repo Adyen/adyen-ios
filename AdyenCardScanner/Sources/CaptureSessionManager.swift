@@ -20,20 +20,23 @@ internal protocol CaptureSessionDelegate: AnyObject {
 
 internal protocol CaptureSessionManaging {
     var delegate: CaptureSessionDelegate? { get set }
-    func requestCaptureAuthorization() async -> CaptureAuthorizationStatus
+    @MainActor func requestCaptureAuthorization() async -> CaptureAuthorizationStatus
     func configureSession()
     func startCaptureSession()
     func stopCaptureSession()
-    func updateVideoOrientation()
+    @MainActor func updateVideoOrientation()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
 }
 
 internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
     private enum Constants {
-        static let videoSettings: [String: Any] = [
-            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-        ]
+        static var videoSettings: [String: Any] {
+            [
+                kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+            ]
+        }
+
         static let captureDeviceMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
         static let captureDeviceMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
     }
@@ -100,6 +103,7 @@ internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
         }
     }
 
+    @MainActor
     internal func updateVideoOrientation() {
         guard
             let connection = videoPreviewLayer.connection,

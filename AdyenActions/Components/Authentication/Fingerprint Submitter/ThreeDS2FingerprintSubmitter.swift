@@ -8,14 +8,16 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol AnyThreeDS2FingerprintSubmitter {
     func submit(
         fingerprint: String,
         paymentData: String?,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
 }
 
+@MainActor
 internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
     
     private enum Constants {
@@ -34,7 +36,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     internal func submit(
         fingerprint: String,
         paymentData: String?,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void
+        completionHandler: @escaping @MainActor (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void
     ) {
 
         let request = Submit3DS2FingerprintRequest(
@@ -54,7 +56,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
         }
     }
     
-    private func sendApiErrorEvent() {
+    @MainActor private func sendApiErrorEvent() {
         var errorEvent = AnalyticsEventError(component: Constants.fingerprintEvent, type: .api)
         errorEvent.code = AnalyticsConstants.ErrorCode.apiErrorThreeDS2.stringValue
         context.analyticsProvider?.add(error: errorEvent)

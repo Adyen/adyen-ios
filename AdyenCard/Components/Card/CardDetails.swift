@@ -13,7 +13,7 @@ import AdyenEncryption
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails, ShopperInformation {
+public struct CardDetails: PaymentMethodDetails, ShopperInformation, Sendable {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?

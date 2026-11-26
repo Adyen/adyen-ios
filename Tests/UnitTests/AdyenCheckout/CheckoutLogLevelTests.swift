@@ -6,7 +6,7 @@
 
 @testable import Adyen
 @testable import AdyenCheckout
-import AdyenNetworking
+@preconcurrency import AdyenNetworking
 import XCTest
 
 final class CheckoutLogLevelTests: XCTestCase {

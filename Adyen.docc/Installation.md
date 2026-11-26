@@ -5,8 +5,8 @@ Adyen Components for iOS are available through Swift Package Manager.
 ### Minimum Requirements
 
 - iOS 16.0
-- Xcode 16.0
-- Swift 5.7
+- Xcode 26.0
+- Swift 6.2
 
 @TabNavigator {
     @Tab(SPM) {

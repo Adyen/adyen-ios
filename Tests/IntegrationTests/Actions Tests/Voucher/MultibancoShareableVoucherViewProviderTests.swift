@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class MultibancoShareableVoucherViewProviderTests: XCTestCase {
 
     func test_shareableView_withMultibancoAction_shouldShowVoucherDetails() throws {

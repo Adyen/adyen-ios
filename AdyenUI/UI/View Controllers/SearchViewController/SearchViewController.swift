@@ -9,6 +9,7 @@ import UIKit
 
 /// Protocol specifying the interface of a view that is shown
 /// when the results of the ``SearchViewController`` are empty.
+@MainActor
 package protocol SearchResultsEmptyView: UIView {
     /// The searchTerm that caused the search results to be empty
     ///

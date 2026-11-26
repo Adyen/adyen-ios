@@ -9,6 +9,7 @@
 import Foundation
 import XCTest
 
+@MainActor
 class AddressInputFormViewControllerTests: XCTestCase {
     
     override func run() {
@@ -445,14 +446,14 @@ private extension AddressInputFormViewControllerTests {
         localizationParameters: LocalizationParameters? = nil,
         initialCountry: String = "NL",
         prefillAddress: PostalAddress? = nil,
-        style: FormComponentStyle = .init(),
+        style: FormComponentStyle? = nil,
         supportedCountryCodes: Set<String>? = nil,
         searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
             for: .billing,
-            style: style,
+            style: style ?? .init(),
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,

@@ -10,6 +10,7 @@ import UIKit
 
 extension AVCaptureVideoOrientation {
 
+    @MainActor
     static var currentVideoOrientation: AVCaptureVideoOrientation {
         let orientation = UIDevice.current.orientation
         switch orientation {

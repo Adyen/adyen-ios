@@ -8,6 +8,7 @@
 @testable import AdyenActions
 import XCTest
 
+@MainActor
 final class ActionConfigurationTests: XCTestCase {
     
     // MARK: - AuthenticationConfiguration Tests

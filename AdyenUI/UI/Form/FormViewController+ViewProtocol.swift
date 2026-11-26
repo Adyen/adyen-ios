@@ -6,6 +6,7 @@
 
 import Foundation
 
+@MainActor
 package protocol FormViewProtocol {
 
     func add(item: (some FormItem)?)

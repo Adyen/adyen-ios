@@ -27,7 +27,7 @@ internal struct StoredPaymentMethodComponentTests {
         }
 
         // Then
-        let details = try #require(data.paymentMethod as? StoredPaymentDetails)
+        let details = try #require(data)
         #expect(details.type == .other("type"))
         #expect(details.storedPaymentMethodIdentifier == "id")
     }
@@ -46,7 +46,7 @@ internal struct StoredPaymentMethodComponentTests {
         }
 
         // Then
-        #expect(data.paymentMethod is StoredPaymentDetails)
+        #expect(data != nil)
     }
 
     // MARK: - Payment method types
@@ -81,7 +81,7 @@ internal struct StoredPaymentMethodComponentTests {
         }
 
         // Then
-        let details = try #require(data.paymentMethod as? StoredPaymentDetails)
+        let details = try #require(data)
         #expect(details.type == storedMethod.expectedType)
         #expect(details.storedPaymentMethodIdentifier == storedMethod.expectedIdentifier)
     }
@@ -200,16 +200,30 @@ internal struct StoredPaymentMethodComponentTests {
         return try #require(titleLabel.text)
     }
 
+    /// A Sendable snapshot of the submitted stored details, extracted on the delegate
+    /// callback so the non-Sendable `PaymentComponentData` never crosses the continuation.
+    private struct SubmittedStoredDetails {
+        internal var type: PaymentMethodType
+        internal var storedPaymentMethodIdentifier: String
+    }
+
     /// Bridges the delegate callback that submission reports asynchronously.
+    /// Returns `nil` when the submitted payment method is not `StoredPaymentDetails`.
     private func submittedData(
         from component: StoredPaymentMethodComponent,
         delegate: PaymentComponentDelegateMock,
         when action: () -> Void
-    ) async throws -> PaymentComponentData {
+    ) async throws -> SubmittedStoredDetails? {
         try await withCheckedThrowingContinuation { continuation in
             delegate.onDidSubmit = { data, submittingComponent in
                 #expect(submittingComponent === component)
-                continuation.resume(returning: data)
+                let details = data.paymentMethod as? StoredPaymentDetails
+                continuation.resume(returning: details.map {
+                    SubmittedStoredDetails(
+                        type: $0.type,
+                        storedPaymentMethodIdentifier: $0.storedPaymentMethodIdentifier
+                    )
+                })
             }
             delegate.onDidFail = { error, _ in
                 continuation.resume(throwing: error)

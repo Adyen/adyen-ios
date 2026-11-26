@@ -7,7 +7,8 @@
 @testable import Adyen
 import UIKit
 
-class ImageLoaderMock: ImageLoading {
+@MainActor
+final class ImageLoaderMock: ImageLoading {
 
     var imageProvider: (URL) -> UIImage? = { url in
         url.absoluteString.generateImage()
@@ -20,11 +21,12 @@ class ImageLoaderMock: ImageLoading {
     }
 
     private(set) var loadCallsCount = 0
-    private var completions: [(UIImage?) -> Void] = []
-    func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> any AdyenCancellable {
+    private var completions: [@MainActor @Sendable (UIImage?) -> Void] = []
+    func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> any AdyenCancellable {
         loadCallsCount += 1
         completions.append(completion)
-        completion(self.imageProvider(url))
+        // The mock itself is @MainActor so the completion can be delivered synchronously.
+        completion(imageProvider(url))
         return cancellable
     }
 }

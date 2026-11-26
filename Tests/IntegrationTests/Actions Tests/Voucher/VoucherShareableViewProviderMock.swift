@@ -9,7 +9,9 @@
 import AdyenUI
 import UIKit
 
-internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider {
+@MainActor
+internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider,
+    Localizable {
 
     internal var theme = CheckoutTheme.default
 

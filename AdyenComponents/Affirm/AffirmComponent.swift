@@ -32,11 +32,13 @@ package final class AffirmComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Affirm payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    @MainActor
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration? = nil
     ) {
+        let configuration = configuration ?? .init()
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
         let fields: [PersonalInformation] = [

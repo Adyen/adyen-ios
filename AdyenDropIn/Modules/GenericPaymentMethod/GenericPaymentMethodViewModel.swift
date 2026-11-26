@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @MainActor
-internal class GenericPaymentMethodViewModel: ObservableObject {
+internal class GenericPaymentMethodViewModel {
 
     internal enum State {
         case idle
@@ -124,3 +124,9 @@ extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
         dropInFlowManager.fail(with: error, from: component)
     }
 }
+
+#if compiler(>=6.2)
+    extension GenericPaymentMethodViewModel: @MainActor ObservableObject {}
+#else
+    extension GenericPaymentMethodViewModel: ObservableObject {}
+#endif

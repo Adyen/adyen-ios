@@ -18,7 +18,7 @@ class OnlineBankingComponentTests: XCTestCase {
     private var sut: OnlineBankingComponent!
     private var analyticsProviderMock: AnalyticsProviderMock!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         paymentMethod = try! AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
         analyticsProviderMock = AnalyticsProviderMock()
         context = AdyenContext(
@@ -37,13 +37,13 @@ class OnlineBankingComponentTests: XCTestCase {
         getFormViewController().title = "Test title"
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         style = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testComponent_ShouldPaymentMethodTypeBeOnlineBanking() {

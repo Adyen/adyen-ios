@@ -13,7 +13,11 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-package class AbstractPersonalInformationComponent: PaymentComponent {
+package class AbstractPersonalInformationComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware {
 
     package typealias Configuration = PersonalInformationConfiguration
 

@@ -14,31 +14,31 @@ import Foundation
 
     internal class TwintSpy: Twint {
     
-        internal typealias HandleFetchBlock = (Int, @escaping ([TWAppConfiguration]) -> Void) -> Void
-    
+        internal typealias HandleFetchBlock = (Int, @escaping @MainActor ([TWAppConfiguration]) -> Void) -> Void
+
         internal typealias HandlePayBlock = (
             _ code: String,
             _ appConfiguration: TWAppConfiguration,
             _ callbackAppScheme: String,
-            _ completionHandler: @escaping ((any Error)?) -> Void
+            _ completionHandler: @escaping @MainActor @Sendable ((any Error)?) -> Void
         ) -> Void
 
         internal typealias HandleRegisterForUOF = (
             _ code: String,
             _ appConfiguration: TWAppConfiguration,
             _ callbackAppScheme: String,
-            _ completionHandler: @escaping ((any Error)?) -> Void
+            _ completionHandler: @escaping @MainActor @Sendable ((any Error)?) -> Void
         ) -> Void
 
         internal typealias HandleControllerBlock = (
             _ installedAppConfigurations: [TWAppConfiguration],
-            _ selectionHandler: @escaping (TWAppConfiguration?) -> Void,
-            _ cancelHandler: @escaping () -> Void
+            _ selectionHandler: @escaping @MainActor (TWAppConfiguration?) -> Void,
+            _ cancelHandler: @escaping @MainActor () -> Void
         ) -> UIAlertController?
-    
+
         internal typealias HandleOpenBlock = (
             _ url: URL,
-            _ responseHandler: @escaping ((any Error)?) -> Void
+            _ responseHandler: @escaping @MainActor @Sendable ((any Error)?) -> Void
         ) -> Bool
     
         internal var handleFetchInstalledAppConfigurations: HandleFetchBlock
@@ -63,7 +63,7 @@ import Foundation
     
         @objc override internal func fetchInstalledAppConfigurations(
             maxIssuerNumber: Int,
-            completion: @escaping ([TWAppConfiguration]) -> Void
+            completion: @escaping @MainActor ([TWAppConfiguration]) -> Void
         ) {
             handleFetchInstalledAppConfigurations(maxIssuerNumber, completion)
         }
@@ -72,7 +72,7 @@ import Foundation
             withCode code: String,
             appConfiguration: TWAppConfiguration,
             callback callbackAppScheme: String,
-            completionHandler: @escaping ((any Error)?) -> Void
+            completionHandler: @escaping @MainActor @Sendable ((any Error)?) -> Void
         ) {
             handlePay(code, appConfiguration, callbackAppScheme, completionHandler)
         }
@@ -81,20 +81,20 @@ import Foundation
             withCode code: String,
             appConfiguration: TWAppConfiguration,
             callback: String,
-            completionHandler: @escaping (Error?) -> Void
+            completionHandler: @escaping @MainActor @Sendable (Error?) -> Void
         ) {
             handleRegisterForUOF(code, appConfiguration, callback, completionHandler)
         }
 
         @objc override internal func controller(
             for installedAppConfigurations: [TWAppConfiguration],
-            selectionHandler: @escaping (TWAppConfiguration?) -> Void,
-            cancelHandler: @escaping () -> Void
+            selectionHandler: @escaping @MainActor (TWAppConfiguration?) -> Void,
+            cancelHandler: @escaping @MainActor () -> Void
         ) -> UIAlertController? {
             handleController(installedAppConfigurations, selectionHandler, cancelHandler)
         }
-    
-        @objc override func handleOpen(_ url: URL, responseHandler: @escaping ((any Error)?) -> Void) -> Bool {
+
+        @objc override func handleOpen(_ url: URL, responseHandler: @escaping @MainActor @Sendable ((any Error)?) -> Void) -> Bool {
             handleOpenUrl(url, responseHandler)
         }
     }

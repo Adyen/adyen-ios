@@ -23,13 +23,13 @@ internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
 
     internal let theme: CheckoutTheme
     internal weak var router: PaymentActionRouting?
-    private let onCancel: () -> Void
+    private let onCancel: @MainActor @Sendable () -> Void
 
     // MARK: - Initializers
 
     internal init(
         theme: CheckoutTheme,
-        onCancel: @escaping () -> Void
+        onCancel: @escaping @MainActor @Sendable () -> Void
     ) {
         self.theme = theme
         self.onCancel = onCancel

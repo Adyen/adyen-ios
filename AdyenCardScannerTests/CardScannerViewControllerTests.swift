@@ -7,6 +7,7 @@
 @testable import AdyenCardScanner
 import XCTest
 
+@MainActor
 final class CardScannerViewControllerTests: XCTestCase {
 
     var viewModel: CardScannerViewModelMock!

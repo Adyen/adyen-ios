@@ -16,19 +16,11 @@ import XCTest
 @MainActor
 final class ComponentManagerTests: XCTestCase {
 
-    private var context: AdyenContext!
-    private var configuration: DropInConfiguration!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        context = Dummy.context
-        configuration = DropInConfiguration()
-    }
+    private var context = Dummy.context
+    private var configuration = DropInConfiguration()
 
     override func tearDownWithError() throws {
         AdyenAssertion.listener = nil
-        context = nil
-        configuration = nil
         try super.tearDownWithError()
     }
 
@@ -254,8 +246,7 @@ final class ComponentManagerTests: XCTestCase {
         let methods = try AdyenCoder.decode([
             "paymentMethods": [oxxo, ["type": "pix", "name": "PIX"]]
         ]) as PaymentMethods
-        var assertionCount = 0
-        AdyenAssertion.listener = { _ in assertionCount += 1 }
+        AdyenAssertion.listener = { message in XCTFail("Unexpected Adyen assertion: \(message)") }
         let sut = makeSUT(
             paymentMethods: methods,
             paymentComponentBuilder: genericBuilder
@@ -263,7 +254,6 @@ final class ComponentManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type.rawValue), ["oxxo", "pix"])
         XCTAssertEqual(sut.sections.count, 1)
-        XCTAssertEqual(assertionCount, 0)
     }
 
     func test_componentConfigurationResolvedByInjectedBuilder_isNotOverwritten() throws {

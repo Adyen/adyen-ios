@@ -7,6 +7,7 @@
 import Foundation
 
 /// A component provides payment method-specific UI and handling.
+@MainActor
 package protocol Component: AdyenContextAware {}
 
 /// Provides convenience functions to `Component` instances.
@@ -36,6 +37,7 @@ extension Component {
 }
 
 /// A component that shows the payment result in its own UI before the payment ends.
+@MainActor
 package protocol FinalizableComponent: Component {
 
     /// Shows the payment result and returns once the component's UI is gone.
@@ -60,10 +62,7 @@ package extension Component {
 
 }
 
+@MainActor
 private enum AssociatedKeys {
     internal static var isDropIn: Void?
-
-    internal static var environment: Void?
-
-    internal static var clientKey: Void?
 }

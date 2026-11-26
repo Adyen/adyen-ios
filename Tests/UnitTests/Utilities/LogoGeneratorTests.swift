@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
+@MainActor
 class LogoURLProviderTests: XCTestCase {
 
     let scale = Int(UIScreen.main.scale)

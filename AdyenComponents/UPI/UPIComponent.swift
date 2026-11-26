@@ -13,6 +13,10 @@ import UIKit
 /// A component that provides a upi flows for UPI component.
 @MainActor
 package final class UPIComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
     LoadingComponent {
     
     /// The flow types for UPI component.
@@ -79,14 +83,15 @@ package final class UPIComponent: PaymentComponent,
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
+    @MainActor
     package init(
         paymentMethod: UPIPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.upiPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }

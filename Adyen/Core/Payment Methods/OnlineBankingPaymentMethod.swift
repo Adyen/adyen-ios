@@ -7,7 +7,7 @@
 import Foundation
 
 /// An issuer (typically a bank) in an issuer list payment method.
-public struct Issuer: Codable, CustomStringConvertible, Equatable {
+public struct Issuer: Codable, CustomStringConvertible, Equatable, Sendable {
 
     /// The unique identifier of the issuer.
     public let identifier: String

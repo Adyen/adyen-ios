@@ -10,7 +10,7 @@ import WebKit
 /// Provides the device default browser info.
 package struct BrowserInfo: Encodable {
 
-    internal static var cachedUserAgent: String?
+    @MainActor internal static var cachedUserAgent: String?
 
     /// The device default user-agent.
     package let userAgent: String

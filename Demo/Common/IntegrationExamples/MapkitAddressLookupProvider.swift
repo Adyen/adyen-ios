@@ -11,15 +11,24 @@ import Foundation
 import MapKit
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
+@MainActor
 internal class MapkitAddressLookupProvider {
 
     internal init() {}
 
     private let minDebounceDelay: TimeInterval = 0.3
     
+    /// Bumped whenever a new search replaces the previous one; stale in-flight lookups check it before completing.
+    private var searchGeneration = 0
+    
     private var searchTask: DispatchWorkItem? {
         willSet {
             searchTask?.cancel()
+            
+            // Invalidating any in-flight search when no new task replaces it
+            if newValue == nil {
+                searchGeneration += 1
+            }
         }
         didSet {
             guard let searchTask else { return }
@@ -31,7 +40,7 @@ internal class MapkitAddressLookupProvider {
         }
     }
     
-    internal func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
+    internal func lookUp(searchTerm: String, resultHandler: @escaping @Sendable ([AddressLookupResult]) -> Void) {
 
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
@@ -67,12 +76,13 @@ private extension MapkitAddressLookupProvider {
     
     func searchTask(
         for searchTerm: String,
-        completion: @escaping ([AddressLookupResult]) -> Void
+        completion: @escaping @Sendable ([AddressLookupResult]) -> Void
     ) -> DispatchWorkItem {
         
-        var dispatchWorkItem: DispatchWorkItem?
+        searchGeneration += 1
+        let generation = searchGeneration
         
-        dispatchWorkItem = DispatchWorkItem {
+        return DispatchWorkItem { [weak self] in
             
             /*
              Perform network request /
@@ -84,36 +94,35 @@ private extension MapkitAddressLookupProvider {
 
             let search = MKLocalSearch(request: searchRequest)
             search.start { response, _ in
-                
-                guard let dispatchWorkItem, !dispatchWorkItem.isCancelled else {
-                    return // Bailing out if the task was cancelled
-                }
-                
-                guard let response else {
-                    // Handle the error.
-                    completion([])
-                    return
-                }
-                
-                let addresses: [AddressLookupResult] = response.mapItems.map {
-                    .init(
-                        identifier: UUID().uuidString,
-                        postalAddress: .init(
-                            city: $0.placemark.locality,
-                            country: $0.placemark.countryCode,
-                            houseNumberOrName: $0.placemark.subThoroughfare,
-                            postalCode: $0.placemark.postalCode,
-                            stateOrProvince: $0.placemark.administrativeArea,
-                            street: $0.placemark.thoroughfare,
-                            apartment: nil
+                Task { @MainActor [weak self] in
+                    guard self?.searchGeneration == generation else {
+                        return // Bailing out if the task was cancelled
+                    }
+                    
+                    guard let response else {
+                        // Handle the error.
+                        completion([])
+                        return
+                    }
+                    
+                    let addresses: [AddressLookupResult] = response.mapItems.map {
+                        .init(
+                            identifier: UUID().uuidString,
+                            postalAddress: .init(
+                                city: $0.placemark.locality,
+                                country: $0.placemark.countryCode,
+                                houseNumberOrName: $0.placemark.subThoroughfare,
+                                postalCode: $0.placemark.postalCode,
+                                stateOrProvince: $0.placemark.administrativeArea,
+                                street: $0.placemark.thoroughfare,
+                                apartment: nil
+                            )
                         )
-                    )
+                    }
+                    
+                    completion(addresses)
                 }
-                
-                completion(addresses)
             }
         }
-        
-        return dispatchWorkItem!
     }
 }

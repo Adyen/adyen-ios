@@ -14,6 +14,9 @@ import UIKit
 /// A component that provides a form for gift card payments.
 @MainActor
 package final class GiftCardComponent: PaymentComponent,
+    Component,
+    PaymentMethodAware,
+    AdyenContextAware,
     Localizable,
     LoadingComponent,
     AdyenObserver {
@@ -82,7 +85,7 @@ package final class GiftCardComponent: PaymentComponent,
         paymentMethod: GiftCardPaymentMethod,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
@@ -110,7 +113,7 @@ package final class GiftCardComponent: PaymentComponent,
         paymentMethod: MealVoucherPaymentMethod,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
@@ -128,13 +131,13 @@ package final class GiftCardComponent: PaymentComponent,
         partialPaymentMethodType: PartialPaymentMethodType,
         context: AdyenContext,
         amount: Amount,
-        style: FormComponentStyle = FormComponentStyle(),
+        style: FormComponentStyle? = nil,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
-        self.style = style
+        self.style = style ?? FormComponentStyle()
         self.showsSubmitButton = showsSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.amount = amount

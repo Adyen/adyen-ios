@@ -18,8 +18,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     var challengeAction: ThreeDS2ChallengeAction!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
 
         let sdkPublicKey = "{\"y\":\"zv0kz1SKfNvT3ql75L217de6ZszxfLA8LUKOIKe5Zf4\",\"x\":\"3b3mPfWhuOxwOWydLejS3DJEUPiMVFxtzGCV6906rfc\",\"kty\":\"EC\",\"crv\":\"P-256\"}"
         authenticationRequestParameters = AuthenticationRequestParametersMock(

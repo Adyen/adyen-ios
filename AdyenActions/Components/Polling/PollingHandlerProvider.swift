@@ -9,10 +9,12 @@ import AdyenNetworking
 import Foundation
 
 /// A component that handles Await action's.
+@MainActor
 internal protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
 
+@MainActor
 internal protocol AnyPollingHandlerProvider {
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler

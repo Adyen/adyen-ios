@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 
 /// Defines an interface for components to support share activity controller.
+@MainActor
 internal protocol ShareableComponent: AnyObject {
     var presenterViewController: UIViewController { get }
     

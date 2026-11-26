@@ -11,6 +11,7 @@ import Contacts
 import PassKit
 import XCTest
 
+// swiftlint:disable type_body_length
 @MainActor
 class ApplePayComponentTest: XCTestCase {
 
@@ -35,7 +36,7 @@ class ApplePayComponentTest: XCTestCase {
         return vc
     }
 
-    override func setUp() {
+    override func setUp() async throws {
         do {
             let configuration = try ApplePayConfiguration(
                 paymentRequest: Dummy.createTestApplePayPaymentRequest()
@@ -48,7 +49,7 @@ class ApplePayComponentTest: XCTestCase {
         mockDelegate = PaymentComponentDelegateMock()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         // The sheet only ends when PassKit reports that it finished.
         sut?.delegate = nil
         sut?.authorizationHandler?.paymentAuthorizationControllerDidFinish(passKitController)
@@ -585,15 +586,15 @@ class ApplePayComponentTest: XCTestCase {
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
         // When — run the authorization, then resolve it from outside once it's waiting for the result.
-        let resultTask = Task {
-            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+        let authorizeTask = Task {
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment).status == .success
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
         XCTAssertNotNil(receivedPayment)
 
         let finalizeTask = startFinalize(success: true)
-        let result = await resultTask.value
-        XCTAssertEqual(result.status, .success)
+        let authorizeResult = await authorizeTask.value
+        XCTAssertTrue(authorizeResult)
         finishSheet()
         await finalizeTask.value
     }
@@ -661,15 +662,15 @@ class ApplePayComponentTest: XCTestCase {
             mockDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
             let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
-            let resultTask = Task {
-                await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+            let authorizeTask = Task {
+                await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment).status == .success
             }
             await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
             let finalizeTask = startFinalize(success: success)
 
-            let result = await resultTask.value
-            XCTAssertEqual(result.status, success ? .success : .failure)
+            let authorizeResult = await authorizeTask.value
+            XCTAssertEqual(authorizeResult, success)
             finishSheet()
             await finalizeTask.value
         }
@@ -682,8 +683,8 @@ class ApplePayComponentTest: XCTestCase {
         let didSubmitExpectation = expectation(description: "didSubmit should be called")
         mockDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
-        let resultTask = Task {
-            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+        let authorizeTask = Task {
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment).status == .success
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
@@ -692,11 +693,11 @@ class ApplePayComponentTest: XCTestCase {
             await self.sut.finalize(success: true)
             finalized = true
         }
-        let result = await resultTask.value
+        let authorizationSucceeded = await authorizeTask.value
         // Give a wrong early return enough time to happen.
         try await Task.sleep(for: .milliseconds(100))
 
-        XCTAssertEqual(result.status, .success)
+        XCTAssertTrue(authorizationSucceeded)
         XCTAssertFalse(finalized)
         XCTAssertEqual(controllerMock.dismissCallsCount, 0)
 
@@ -769,17 +770,16 @@ class ApplePayComponentTest: XCTestCase {
             mockDelegate.onDidSubmit = { _, _ in XCTFail("didSubmit must not fire after the sheet finished") }
             let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
-            let resultTask = Task {
-                await handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+            let authorizeTask = Task {
+                await handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment).status == .failure
             }
             await fulfillment(of: [onAuthorizeStarted], timeout: 5)
             finishSheet()
             await fulfillment(of: [cancelled], timeout: 5)
 
             releaseOnAuthorize.fulfill()
-            let result = await resultTask.value
-
-            XCTAssertEqual(result.status, .failure)
+            let authorizeResult = await authorizeTask.value
+            XCTAssertTrue(authorizeResult)
             XCTAssertEqual(errors.count, 1)
             XCTAssertEqual(errors.first as? ComponentError, .cancelled)
         }
@@ -794,8 +794,8 @@ class ApplePayComponentTest: XCTestCase {
         mockDelegate.onDidFail = { error, _ in XCTFail("didFail must not fire; got \(error)") }
         let payment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
 
-        let resultTask = Task {
-            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment)
+        let authorizeTask = Task {
+            await self.handler.paymentAuthorizationController(self.passKitController, didAuthorizePayment: payment).status == .failure
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
@@ -804,8 +804,8 @@ class ApplePayComponentTest: XCTestCase {
         try await Task.sleep(for: .milliseconds(200))
         XCTAssertEqual(controllerMock.dismissCallsCount, 1)
         XCTAssertNil(sut.authorizationHandler)
-        let result = await resultTask.value
-        XCTAssertEqual(result.status, .failure)
+        let authorizeResult = await authorizeTask.value
+        XCTAssertTrue(authorizeResult)
 
         await sut.finalize(success: true)
     }
@@ -1168,6 +1168,8 @@ class ApplePayComponentTest: XCTestCase {
         try ApplePayConfiguration(paymentRequest: Dummy.createTestApplePayPaymentRequest())
     }
 }
+
+// swiftlint:enable type_body_length
 
 // MARK: - PKPaymentAuthorizationController Mock
 

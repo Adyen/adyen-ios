@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormCardSecurityCodeItemViewTests: XCTestCase {
 
     var sut: FormCardSecurityCodeItemView!
@@ -16,8 +17,8 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
     var validator: CardSecurityCodeValidator!
     var formatter: CardSecurityCodeFormatter!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         item = FormCardSecurityCodeItem()
         validator = CardSecurityCodeValidator()
         formatter = CardSecurityCodeFormatter()
@@ -27,12 +28,12 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         sut = FormCardSecurityCodeItemView(item: item)
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         validator = nil
         formatter = nil
         item = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func test_textFieldSanitization_givenNonAllowedCharacters_shouldSanitizeAndFormatInput() {
@@ -330,6 +331,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
 
     func test_strings_givenCardBrands_shouldSelectMatchingHintsAndErrors() {
         let sut = CardSecurityCodeStrings.self
+        // swiftlint:disable:next large_tuple
         let cases: [(CardBrand?, LocalizationKey, LocalizationKey, LocalizationKey)] = [
             (nil, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),
             (.visa, .cardSecurityCodeHintThreeDigits, .cardSecurityCodeErrorEmptyThreeDigits, .cardSecurityCodeErrorIncompleteThreeDigits),

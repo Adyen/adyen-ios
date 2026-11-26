@@ -26,6 +26,7 @@ package final class AdyenContext {
 
     // MARK: - Initializers
     
+    @MainActor
     package convenience init(
         apiContext: APIContext,
         amount: Amount?,
@@ -65,6 +66,7 @@ package final class AdyenContext {
         self.analyticsProvider = analyticsProvider
     }
 
+    @MainActor
     private static func createAnalyticsProvider(
         analyticsApiContext: APIContext?,
         checkoutAttemptId: String?,

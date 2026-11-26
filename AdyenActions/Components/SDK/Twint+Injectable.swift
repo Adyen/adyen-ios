@@ -6,18 +6,22 @@
 
 import Foundation
 #if canImport(TwintSDK)
-    import TwintSDK
+    @preconcurrency import TwintSDK
 #endif
 
 #if canImport(TwintSDK)
     extension Twint {
-        
+
         @objc func fetchInstalledAppConfigurations(
             maxIssuerNumber: Int,
-            completion: @escaping ([TWAppConfiguration]) -> Void
+            completion: @escaping @MainActor ([TWAppConfiguration]) -> Void
         ) {
             Twint.fetchInstalledAppConfigurations(withMaxIssuerNumber: maxIssuerNumber) { configurations in
-                completion(Self.reCastedAppConfigurations(from: configurations))
+                let sendableConfigurations = Self.reCastedAppConfigurations(from: configurations)
+                    .map(SendableAppConfiguration.init)
+                Task { @MainActor in
+                    completion(sendableConfigurations.map(\.appConfiguration))
+                }
             }
         }
         
@@ -25,13 +29,13 @@ import Foundation
             withCode code: String,
             appConfiguration: TWAppConfiguration,
             callback: String,
-            completionHandler: @escaping (Error?) -> Void
+            completionHandler: @escaping @MainActor @Sendable (Error?) -> Void
         ) {
             Twint.pay(
                 withCode: code,
                 appConfiguration: appConfiguration,
                 callback: callback,
-                completionHandler: completionHandler
+                completionHandler: { error in Task { @MainActor in completionHandler(error) } }
             )
         }
 
@@ -40,35 +44,56 @@ import Foundation
             withCode code: String,
             appConfiguration: TWAppConfiguration,
             callback: String,
-            completionHandler: @escaping (Error?) -> Void
+            completionHandler: @escaping @MainActor @Sendable (Error?) -> Void
         ) {
             Twint.registerForUOF(
                 withCode: code,
                 appConfiguration: appConfiguration,
                 callback: callback,
-                completionHandler: completionHandler
+                completionHandler: { error in Task { @MainActor in completionHandler(error) } }
             )
         }
 
         @objc func controller(
             for installedAppConfigurations: [TWAppConfiguration],
-            selectionHandler: @escaping (TWAppConfiguration?) -> Void,
-            cancelHandler: @escaping () -> Void
+            selectionHandler: @escaping @MainActor (TWAppConfiguration?) -> Void,
+            cancelHandler: @escaping @MainActor () -> Void
         ) -> UIAlertController? {
             Twint.controller(
                 for: installedAppConfigurations,
-                selectedConfigurationHandler: { selectionHandler($0) },
-                cancelHandler: { cancelHandler() }
+                selectedConfigurationHandler: { selection in
+                    let sendableSelection = selection.map(SendableAppConfiguration.init)
+                    Task { @MainActor in selectionHandler(sendableSelection?.appConfiguration) }
+                },
+                cancelHandler: { Task { @MainActor in cancelHandler() } }
             )
         }
         
         @discardableResult @objc func handleOpen(
             _ url: URL,
-            responseHandler: @escaping (Error?) -> Void
+            responseHandler: @escaping @MainActor @Sendable (Error?) -> Void
         ) -> Bool {
-            Twint.handleOpen(url, withResponseHandler: responseHandler)
+            Twint.handleOpen(url) { error in Task { @MainActor in responseHandler(error) } }
         }
         
+        /// A `Sendable` snapshot of a `TWAppConfiguration` that can safely cross isolation boundaries.
+        private struct SendableAppConfiguration {
+
+            let appURLScheme: String
+            let appDisplayName: String?
+
+            init(_ configuration: TWAppConfiguration) {
+                appURLScheme = configuration.appURLScheme
+                appDisplayName = configuration.appDisplayName
+            }
+
+            var appConfiguration: TWAppConfiguration {
+                let configuration = TWAppConfiguration(appURLScheme: appURLScheme)
+                configuration.appDisplayName = appDisplayName
+                return configuration
+            }
+        }
+
         /// Re-casting **`[TWAppConfiguration]`** into **`[TWAppConfiguration]`** via **`[NSObject]`**
         ///
         /// - **Background:** If different SDKs that use the **TwintSDK** internally are imported by an app,

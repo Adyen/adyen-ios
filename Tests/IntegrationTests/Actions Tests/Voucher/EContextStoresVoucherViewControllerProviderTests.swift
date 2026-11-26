@@ -10,6 +10,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
     func test_shareableView_withEContextStoresActionAndCustomLocalization_shouldShowLocalizedDetails() throws {

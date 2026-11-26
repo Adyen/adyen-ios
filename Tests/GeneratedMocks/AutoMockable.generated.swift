@@ -23,6 +23,7 @@ import Foundation
 @testable import AdyenDropIn
 @testable import AdyenUI
 
+@MainActor
 package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
@@ -81,38 +82,40 @@ package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
 }
 
-class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrackerProtocol {
+@MainActor
+package class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - sendInitialAnalytics
 
-    var sendInitialAnalyticsCallsCount = 0
-    var sendInitialAnalyticsCalled: Bool {
+    package var sendInitialAnalyticsCallsCount = 0
+    package var sendInitialAnalyticsCalled: Bool {
         sendInitialAnalyticsCallsCount > 0
     }
 
-    var sendInitialAnalyticsClosure: (() -> Void)?
+    package var sendInitialAnalyticsClosure: (() -> Void)?
 
-    func sendInitialAnalytics() {
+    package func sendInitialAnalytics() {
         sendInitialAnalyticsCallsCount += 1
         sendInitialAnalyticsClosure?()
     }
 
     // MARK: - sendDidLoadEvent
 
-    var sendDidLoadEventCallsCount = 0
-    var sendDidLoadEventCalled: Bool {
+    package var sendDidLoadEventCallsCount = 0
+    package var sendDidLoadEventCalled: Bool {
         sendDidLoadEventCallsCount > 0
     }
 
-    var sendDidLoadEventClosure: (() -> Void)?
+    package var sendDidLoadEventClosure: (() -> Void)?
 
-    func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         sendDidLoadEventCallsCount += 1
         sendDidLoadEventClosure?()
     }
 
 }
 
+@MainActor
 class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
     // MARK: - didDismissComponentContainer
@@ -122,15 +125,16 @@ class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
         didDismissComponentContainerCompletionCallsCount > 0
     }
 
-    var didDismissComponentContainerCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissComponentContainerCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissComponentContainer(completion: (() -> Void)?) {
+    func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissComponentContainerCompletionCallsCount += 1
         didDismissComponentContainerCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class ComponentContainerRoutingMock: ComponentContainerRouting {
 
     var childRouter: Router?
@@ -166,15 +170,16 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         dismissCompletionCallsCount > 0
     }
 
-    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class DropInDismissingMock: DropInDismissing {
 
     // MARK: - dismissDropIn
@@ -184,15 +189,16 @@ class DropInDismissingMock: DropInDismissing {
         dismissDropInCompletionCallsCount > 0
     }
 
-    var dismissDropInCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissDropInCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismissDropIn(completion: (() -> Void)?) {
+    func dismissDropIn(completion: (@MainActor @Sendable () -> Void)?) {
         dismissDropInCompletionCallsCount += 1
         dismissDropInCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class DropInFlowRoutingMock: DropInFlowRouting {
 
     // MARK: - dismissDropIn
@@ -202,9 +208,9 @@ class DropInFlowRoutingMock: DropInFlowRouting {
         dismissDropInCompletionCallsCount > 0
     }
 
-    var dismissDropInCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissDropInCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismissDropIn(completion: (() -> Void)?) {
+    func dismissDropIn(completion: (@MainActor @Sendable () -> Void)?) {
         dismissDropInCompletionCallsCount += 1
         dismissDropInCompletionClosure?(completion)
     }
@@ -234,15 +240,16 @@ class DropInFlowRoutingMock: DropInFlowRouting {
         didDismissPaymentActionCompletionCallsCount > 0
     }
 
-    var didDismissPaymentActionCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissPaymentActionCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissPaymentAction(completion: (() -> Void)?) {
+    func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissPaymentActionCompletionCallsCount += 1
         didDismissPaymentActionCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class GenericPaymentMethodAssemblerProtocolMock: GenericPaymentMethodAssemblerProtocol {
 
     // MARK: - resolveGenericPaymentMethodRouter
@@ -270,6 +277,7 @@ class GenericPaymentMethodAssemblerProtocolMock: GenericPaymentMethodAssemblerPr
 
 }
 
+@MainActor
 class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener {
 
     // MARK: - didDismissGenericPaymentMethod
@@ -288,6 +296,7 @@ class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener
 
 }
 
+@MainActor
 class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
 
     var childRouter: Router?
@@ -314,6 +323,7 @@ class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
 
 }
 
+@MainActor
 class PaymentActionAssemblerProtocolMock: PaymentActionAssemblerProtocol {
 
     // MARK: - resolvePaymentActionRouter
@@ -326,9 +336,9 @@ class PaymentActionAssemblerProtocolMock: PaymentActionAssemblerProtocol {
     var resolvePaymentActionRouterForListenerOnCancelReceivedArguments: (actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: () -> Void)?
     var resolvePaymentActionRouterForListenerOnCancelReceivedInvocations: [(actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: () -> Void)] = []
     var resolvePaymentActionRouterForListenerOnCancelReturnValue: Router!
-    var resolvePaymentActionRouterForListenerOnCancelClosure: ((UIViewController, PaymentActionRouterListener, @escaping () -> Void) -> Router)?
+    var resolvePaymentActionRouterForListenerOnCancelClosure: ((UIViewController, PaymentActionRouterListener, @MainActor @Sendable @escaping () -> Void) -> Router)?
 
-    func resolvePaymentActionRouter(for actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: @escaping () -> Void) -> Router {
+    func resolvePaymentActionRouter(for actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: @MainActor @Sendable @escaping () -> Void) -> Router {
         resolvePaymentActionRouterForListenerOnCancelCallsCount += 1
         resolvePaymentActionRouterForListenerOnCancelReceivedArguments = (actionViewController: actionViewController, listener: listener, onCancel: onCancel)
         resolvePaymentActionRouterForListenerOnCancelReceivedInvocations.append((actionViewController: actionViewController, listener: listener, onCancel: onCancel))
@@ -341,6 +351,7 @@ class PaymentActionAssemblerProtocolMock: PaymentActionAssemblerProtocol {
 
 }
 
+@MainActor
 class PaymentActionPresentingMock: PaymentActionPresenting {
 
     // MARK: - present
@@ -368,15 +379,16 @@ class PaymentActionPresentingMock: PaymentActionPresenting {
         didDismissPaymentActionCompletionCallsCount > 0
     }
 
-    var didDismissPaymentActionCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissPaymentActionCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissPaymentAction(completion: (() -> Void)?) {
+    func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissPaymentActionCompletionCallsCount += 1
         didDismissPaymentActionCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PaymentActionRouterListenerMock: PaymentActionRouterListener {
 
     // MARK: - didDismissPaymentAction
@@ -386,15 +398,16 @@ class PaymentActionRouterListenerMock: PaymentActionRouterListener {
         didDismissPaymentActionCompletionCallsCount > 0
     }
 
-    var didDismissPaymentActionCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissPaymentActionCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissPaymentAction(completion: (() -> Void)?) {
+    func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissPaymentActionCompletionCallsCount += 1
         didDismissPaymentActionCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PaymentActionRoutingMock: PaymentActionRouting {
 
     // MARK: - dismiss
@@ -404,15 +417,16 @@ class PaymentActionRoutingMock: PaymentActionRouting {
         dismissCompletionCallsCount > 0
     }
 
-    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
 
     var theme: CheckoutTheme {
@@ -438,6 +452,7 @@ class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
 
 }
 
+@MainActor
 class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol {
 
     // MARK: - resolvePaymentMethodListRouter
@@ -465,6 +480,7 @@ class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol
 
 }
 
+@MainActor
 class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
 
     // MARK: - didDismissPaymentMethodList
@@ -474,15 +490,16 @@ class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
         didDismissPaymentMethodListCompletionCallsCount > 0
     }
 
-    var didDismissPaymentMethodListCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissPaymentMethodListCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissPaymentMethodList(completion: (() -> Void)?) {
+    func didDismissPaymentMethodList(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissPaymentMethodListCompletionCallsCount += 1
         didDismissPaymentMethodListCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     var childRouter: Router?
@@ -532,15 +549,16 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         dismissCompletionCallsCount > 0
     }
 
-    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol {
 
     var context: AdyenContext {
@@ -612,6 +630,7 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
 
 }
 
+@MainActor
 class PreselectedPaymentMethodAssemblerProtocolMock: PreselectedPaymentMethodAssemblerProtocol {
 
     // MARK: - resolvePreselectedPaymentMethodRouter
@@ -639,6 +658,7 @@ class PreselectedPaymentMethodAssemblerProtocolMock: PreselectedPaymentMethodAss
 
 }
 
+@MainActor
 class PreselectedPaymentMethodRouterListenerMock: PreselectedPaymentMethodRouterListener {
 
     // MARK: - didDismissPreselectedPaymentMethod
@@ -648,15 +668,16 @@ class PreselectedPaymentMethodRouterListenerMock: PreselectedPaymentMethodRouter
         didDismissPreselectedPaymentMethodCompletionCallsCount > 0
     }
 
-    var didDismissPreselectedPaymentMethodCompletionClosure: (((() -> Void)?) -> Void)?
+    var didDismissPreselectedPaymentMethodCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func didDismissPreselectedPaymentMethod(completion: (() -> Void)?) {
+    func didDismissPreselectedPaymentMethod(completion: (@MainActor @Sendable () -> Void)?) {
         didDismissPreselectedPaymentMethodCompletionCallsCount += 1
         didDismissPreselectedPaymentMethodCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
     var childRouter: Router?
@@ -706,15 +727,16 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
         dismissCompletionCallsCount > 0
     }
 
-    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+    var dismissCompletionClosure: (((@MainActor @Sendable () -> Void)?) -> Void)?
 
-    func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
     }
 
 }
 
+@MainActor
 class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
 
     var securityCodeItem: FormCardSecurityCodeItem {

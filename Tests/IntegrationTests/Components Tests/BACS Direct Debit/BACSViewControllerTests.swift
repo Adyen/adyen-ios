@@ -17,46 +17,34 @@ class BACSViewControllerTests: XCTestCase {
     var itemsFactory: BACSItemsFactoryProtocolMock!
     var viewModel: BACSViewModel!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         tracker = BACSDirectDebitComponentTrackerProtocolMock()
         itemsFactory = makeItemsFactoryMock()
-
-        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
-        let amount = Amount(value: 10570, currencyCode: "USD", localeIdentifier: nil)
-        let configuration = BasicComponentConfiguration(showsSubmitButton: true)
-
-        viewModel = BACSViewModel(
-            paymentMethod: paymentMethod,
-            amount: amount,
-            configuration: configuration,
-            tracker: tracker,
-            itemsFactory: itemsFactory,
-            onSubmit: { _ in }
-        )
-
-        sut = BACSViewController(
-            title: "BACS Direct Debit",
-            viewModel: viewModel
-        )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         tracker = nil
         itemsFactory = nil
         viewModel = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func test_title_shouldBeSetOnCreation() throws {
+        // Given
+        sut = makeSUT()
+
         // When
         let title = try XCTUnwrap(sut.title)
         XCTAssertFalse(title.isEmpty)
     }
 
     func test_viewDidLoad_shouldCallViewModelViewDidLoad() {
+        // Given
+        sut = makeSUT()
+
         // When
         sut.loadViewIfNeeded()
 
@@ -66,6 +54,9 @@ class BACSViewControllerTests: XCTestCase {
     }
 
     func test_viewDidLoad_shouldAddItemsToForm() {
+        // Given
+        sut = makeSUT()
+
         // When
         sut.loadViewIfNeeded()
 
@@ -74,6 +65,9 @@ class BACSViewControllerTests: XCTestCase {
     }
 
     func test_viewDidLoad_shouldNotShowLoading() throws {
+        // Given
+        sut = makeSUT()
+
         // When
         sut.loadViewIfNeeded()
 
@@ -85,6 +79,7 @@ class BACSViewControllerTests: XCTestCase {
 
     func test_performSubmit_whenFormIsValid_shouldShowLoading() throws {
         // Given
+        sut = makeSUT()
         sut.loadViewIfNeeded()
         populateValidFormData()
 
@@ -99,6 +94,7 @@ class BACSViewControllerTests: XCTestCase {
 
     func test_performSubmit_whenFormIsInvalid_shouldNotShowLoading() throws {
         // Given
+        sut = makeSUT()
         sut.loadViewIfNeeded()
 
         // When
@@ -113,6 +109,7 @@ class BACSViewControllerTests: XCTestCase {
 
     func test_stopLoading_shouldHideLoading() throws {
         // Given
+        sut = makeSUT()
         sut.loadViewIfNeeded()
         populateValidFormData()
         viewModel.performSubmit()
@@ -127,6 +124,26 @@ class BACSViewControllerTests: XCTestCase {
     }
 
     // MARK: - Private
+
+    private func makeSUT() -> BACSViewController {
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+        let amount = Amount(value: 10570, currencyCode: "USD", localeIdentifier: nil)
+        let configuration = BasicComponentConfiguration(showsSubmitButton: true)
+
+        viewModel = BACSViewModel(
+            paymentMethod: paymentMethod,
+            amount: amount,
+            configuration: configuration,
+            tracker: tracker,
+            itemsFactory: itemsFactory,
+            onSubmit: { _ in }
+        )
+
+        return BACSViewController(
+            title: "BACS Direct Debit",
+            viewModel: viewModel
+        )
+    }
 
     private func populateValidFormData() {
         viewModel.amountConsentToggleItem.value = true

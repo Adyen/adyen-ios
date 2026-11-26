@@ -8,6 +8,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class TextField_AdyenLabelStyle_Tests: XCTestCase {
 
     var sut: TextField!
@@ -144,14 +145,15 @@ final class TextField_AdyenLabelStyle_Tests: XCTestCase {
 
     // MARK: - Helpers
 
+    @MainActor
     func makeAdyenlabelStyle(
-        font: UIFont = AdyenFonts.default.bodyEmphasized,
-        color: UIColor = CheckoutColors.default.textOnDisabled,
+        font: UIFont? = nil,
+        color: UIColor? = nil,
         textAlignment: NSTextAlignment = .center
     ) -> AdyenLabelStyle {
         AdyenLabelStyle(
-            font: font,
-            color: color,
+            font: font ?? AdyenFonts.default.bodyEmphasized,
+            color: color ?? CheckoutColors.default.textOnDisabled,
             textAlignment: textAlignment
         )
     }

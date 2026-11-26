@@ -26,9 +26,38 @@
 
 - With CocoaPods, all subspecs are compiled into a single `Adyen` module. With Swift Package Manager, each product is its own module, so import the modules you use (for example `import AdyenCheckout`, `import AdyenUI`, `import AdyenCard`) next to `import Adyen`.
 
+### Requirements
+
+- Building the SDK requires Xcode 26 (Swift 6.2) or later. The minimum deployment target is still iOS 16.
+
 ### Internal types
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
+
+### Actions
+
+- The voucher action classes are now `final` and no longer inherit from `GenericVoucherAction`; each of
+  `DokuVoucherAction`, `MultibancoVoucherAction`, `OXXOVoucherAction`, `EContextStoresVoucherAction` and
+  `EContextATMVoucherAction` declares its members directly, and `GenericVoucherAction` itself is also `final`. Code that
+  casts a voucher action to `GenericVoucherAction` (`is`/`as?`) or subclasses any of these types no longer compiles — use
+  the `AnyVoucherAction` protocol members instead.
+
+### Concurrency
+
+- `PaymentMethod` now refines `Sendable`. If your integration declares a custom `PaymentMethod` conformance, it must now
+  satisfy `Sendable` — this is automatic for value types whose members are all `Sendable`; other conformers may need an
+  explicit `Sendable` conformance or `Sendable` members.
+- `Action`, `VoucherAction`, `SDKAction` and all action payload types conform to `Sendable`, as do `PaymentMethods`,
+  `CheckoutResultCode`, `PartialPaymentOrder`, `Issuer`, `PhoneExtension`, `CardFundingSource`, `ShopperInteraction`,
+  `InstallmentOptions`, `InstallmentConfiguration`, `CheckoutCard`, `CheckoutEncryptor.Field`,
+  `CheckoutEncryptor.Error.Code`, `CardDetails` and `DelegatedAuthenticationData`. These are additive
+  conformances; you only benefit from them when
+  passing these values across actors with strict concurrency checking enabled.
+- `CardBrand` conforms to `Sendable`, so you can pass card brands across actors and concurrent tasks with strict concurrency checking enabled.
+- `CardScanner.createCardScanner(...)` and `CardScanner.isAvailable` are now `@MainActor`. Call them on the main actor;
+  calling them from a nonisolated context requires `await` or a main-actor hop. The `completion` closure of
+  `createCardScanner(...)` is `@MainActor @Sendable` and runs on the main actor. `CardScannerError` and
+  `CardScannerError.Kind` conform to `Sendable`.
 
 ### Await action screen
 
@@ -45,6 +74,10 @@
 ### Colors
 
 - `UIColor.Adyen` is no longer public. Customize colors through `CheckoutTheme` and `CheckoutColors` instead, and pass the theme with `CheckoutConfiguration.theme(_:)`.
+
+### Fonts
+
+- `AdyenFonts.default` is now immutable (`static let`) and can no longer be reassigned or mutated in place. To customize fonts, create an `AdyenFonts(...)` value and apply it through `CheckoutTheme` and `CheckoutConfiguration.theme(_:)`.
 
 ### Store payment method strings
 
@@ -138,6 +171,9 @@ Drop-in now always skips the payment method list when exactly one presentable re
 
 `CheckoutConfiguration.showsSubmitButton(_:)` applies only to components created with `createPaymentComponent`. Drop-in
 ignores it and always shows the submit buttons of the components it presents.
+
+`DropInConfiguration` is a plain value type. `DropInConfiguration()` is not `@MainActor`-isolated, so you can
+build it from any context.
 
 ### Drop-in creation
 
@@ -329,6 +365,12 @@ Both `CheckoutCallbacks` and `ActionOnlyCheckoutCallbacks` expose the optional `
 
 Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
 
+#### Action configurations
+
+- `AuthenticationConfiguration` and `TwintActionConfiguration` are plain value types. Their initializers,
+  including `AuthenticationConfiguration(theme:)` and `TwintActionConfiguration(callbackAppScheme:)`, are not
+  `@MainActor`-isolated, so you can build them from any context.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
@@ -513,7 +555,8 @@ In v6, the Apple Pay component shows the Apple Pay button itself:
   for an invalid configuration or payment request, and `.paymentMethodFailure` when the device or wallet can't make the
   payment. `message` describes the specific problem.
 - `ApplePayConfiguration(paymentRequest:)` throws `CheckoutError` with the `.invalidConfiguration` code when the payment
-  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative.
+  request is invalid, for example when `merchantIdentifier` is empty or the grand total is negative. The initializer is
+  `@MainActor`-isolated; calling it off the main actor requires a main-actor hop.
 - Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
 - `onComplete` and `onFailure` are called after the Apple Pay sheet has shown the result and is dismissed.
 - When `onSelectShippingContact`, `onSelectShippingMethod`, `onChangeCouponCode` or `onSelectPaymentMethod` returns

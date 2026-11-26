@@ -12,7 +12,9 @@ extension RedirectComponent: AnyRedirectComponent {}
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
 @MainActor
-package final class RedirectComponent: ActionComponent {
+package final class RedirectComponent: ActionComponent,
+    Component,
+    AdyenContextAware {
 
     /// Describes the types of errors that can be returned by the component.
     package enum Error: LocalizedError {

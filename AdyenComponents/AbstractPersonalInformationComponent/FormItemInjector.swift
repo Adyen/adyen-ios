@@ -9,6 +9,7 @@ import AdyenUI
 import Foundation
 
 /// Builds a `FormItem` and injects it into a `FormViewController`.
+@MainActor
 package protocol FormItemInjector {
 
     func inject(into formViewController: FormViewController)
@@ -16,6 +17,7 @@ package protocol FormItemInjector {
 }
 
 /// Injects a custom `FormItem` into a `FormViewController`.
+@MainActor
 package struct CustomFormItemInjector<T: FormItem>: FormItemInjector {
 
     private let item: T

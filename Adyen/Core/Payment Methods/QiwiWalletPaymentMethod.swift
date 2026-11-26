@@ -76,7 +76,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
 }
 
 /// Describes a country phone extension.
-public struct PhoneExtension: Codable, Equatable {
+public struct PhoneExtension: Codable, Equatable, Sendable {
     
     /// The phone extension.
     public let value: String

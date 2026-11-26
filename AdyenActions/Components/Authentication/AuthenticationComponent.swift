@@ -7,13 +7,16 @@
 import Adyen
 import Foundation
 
+@MainActor
 internal protocol AnyRedirectComponent: ActionComponent {
     func handle(_ action: RedirectAction)
 }
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 @MainActor
-package final class AuthenticationComponent: ActionComponent {
+package final class AuthenticationComponent: ActionComponent,
+    Component,
+    AdyenContextAware {
 
     /// The context object for this component.
     package let context: AdyenContext

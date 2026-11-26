@@ -36,7 +36,7 @@ private class FormSelectableValueItemViewMock: FormSelectableValueItemView<Strin
 private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
 
     convenience init(
-        style: FormTextItemStyle = .init(),
+        style: FormTextItemStyle? = nil,
         title: String = "Title",
         placeholder: String = placeholderText,
         preselectedValue: FormPickerElement? = nil,
@@ -46,7 +46,7 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
             placeholder: placeholder,
-            style: style,
+            style: style ?? .init(),
             presenter: nil,
             configuration: .init(title: title)
         )
@@ -68,17 +68,18 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
 
 // MARK: - Tests for FormSelectableValueItemView
 
+@MainActor
 class FormSelectableItemViewTests: XCTestCase {
 
     private var item: FormSelectableValueItemMock!
     private var sut: FormSelectableValueItemViewMock!
 
-    override func setUp() {
+    override func setUp() async throws {
         item = FormSelectableValueItemMock()
         sut = FormSelectableValueItemViewMock(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         sut = nil
         AdyenAssertion.listener = nil
@@ -114,17 +115,18 @@ class FormSelectableItemViewTests: XCTestCase {
 
 // MARK: - Tests for FormPickerItemView (real production class)
 
+@MainActor
 class FormPickerItemViewStyleTests: XCTestCase {
 
     private var item: TestFormPickerItem!
     private var sut: FormPickerItemView<FormPickerElement>!
 
-    override func setUp() {
+    override func setUp() async throws {
         item = TestFormPickerItem()
         sut = FormPickerItemView(item: item)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         sut = nil
     }

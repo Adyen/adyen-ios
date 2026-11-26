@@ -10,13 +10,14 @@
     @testable import AdyenCardScanner
     import XCTest
 
+    @MainActor
     class CardScannerControllerTests: XCTestCase {
         
         private var currentEventSubtype: AnalyticsEventLog.LogSubType?
         
-        override func tearDownWithError() throws {
+        override func tearDown() async throws {
             currentEventSubtype = nil
-            try super.tearDownWithError()
+            try await super.tearDown()
         }
 
         /// This test requires AdyenCardScanner framework to be imported for the test target

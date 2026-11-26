@@ -23,6 +23,8 @@ import UIKit
 @MainActor
 package final class DropInComponent: NSObject,
     AnyDropInComponent,
+    Component,
+    AdyenContextAware,
     ActionHandlingComponent {
 
     // MARK: - Properties
@@ -85,14 +87,14 @@ package final class DropInComponent: NSObject,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInConfiguration = .init(),
-        actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
+        actionComponentConfiguration: CheckoutActionComponent.Configuration? = nil,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? = nil,
         paymentComponentProvider: DropInPaymentComponentProvider,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
-        self.actionComponentConfiguration = actionComponentConfiguration
+        self.actionComponentConfiguration = actionComponentConfiguration ?? .init()
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.paymentComponentProvider = paymentComponentProvider
         self.context = context

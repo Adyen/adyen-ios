@@ -7,6 +7,7 @@
 @testable import AdyenCard
 import XCTest
 
+@MainActor
 class CardBrandProviderTests: XCTestCase {
 
     private enum Constants {
@@ -16,7 +17,7 @@ class CardBrandProviderTests: XCTestCase {
     var apiClientMock: APIClientMock!
     var sut: BinInfoProvider!
 
-    override func setUp() {
+    override func setUp() async throws {
         apiClientMock = APIClientMock()
         sut = BinInfoProvider(
             apiClient: apiClientMock,
@@ -27,7 +28,7 @@ class CardBrandProviderTests: XCTestCase {
         )
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         apiClientMock = nil
         sut = nil
     }
@@ -106,7 +107,7 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard)]))]
         let supportedTypes: [CardBrand] = [.masterCard, .visa]
         let requestSent = expectation(description: "/binlookup request is sent")
-        apiClientMock.onExecute = { [weak self] _ in
+        apiClientMock.onExecuteAsync = { @MainActor [weak self] in
             self?.sut.provide(for: "4111", supportedTypes: supportedTypes) { response in
                 XCTAssertEqual(response.brands?.map(\.brand), [.visa])
             }

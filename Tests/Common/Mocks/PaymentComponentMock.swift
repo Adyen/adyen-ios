@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenUI
 
+@MainActor
 class PaymentComponentMock: PaymentComponent {
 
     var context: AdyenContext = Dummy.context

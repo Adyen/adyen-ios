@@ -7,7 +7,7 @@
 import Foundation
 
 /// A payment method that is available to use.
-public protocol PaymentMethod: Codable {
+public protocol PaymentMethod: Codable, Sendable {
     
     /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
     var type: PaymentMethodType { get }
@@ -18,7 +18,7 @@ public protocol PaymentMethod: Codable {
 
 /// A payment method that can build a `PaymentComponent` using a `PaymentComponentBuilder`.
 package protocol PaymentComponentBuildable {
-    func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
+    @MainActor func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
 }
 
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.

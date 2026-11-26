@@ -10,13 +10,13 @@ import UIKit
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentActionRouterListener: AnyObject {
-    func didDismissPaymentAction(completion: (() -> Void)?)
+    func didDismissPaymentAction(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentActionRouting: AnyObject {
-    func dismiss(completion: (() -> Void)?)
+    func dismiss(completion: (@MainActor @Sendable () -> Void)?)
 }
 
 @MainActor
@@ -45,7 +45,7 @@ internal class PaymentActionRouter: Router, PaymentActionRouting {
 
     /// The action view is dismissed along with the drop in it is presented on top of,
     /// so the listener is only informed about the dismissal.
-    internal func dismiss(completion: (() -> Void)?) {
+    internal func dismiss(completion: (@MainActor @Sendable () -> Void)?) {
         listener?.didDismissPaymentAction(completion: completion)
     }
 }

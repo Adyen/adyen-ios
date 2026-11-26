@@ -123,7 +123,9 @@ internal struct PaymentsRequest: APIRequest {
 
 internal struct PaymentsResponse: Response {
 
-    internal static var received: PaymentsResponse = .init()
+    internal static var received: PaymentsResponse {
+        .init()
+    }
     
     internal let resultCode: CheckoutResultCode
     

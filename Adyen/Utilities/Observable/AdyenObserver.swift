@@ -154,7 +154,7 @@ package extension AdyenObserver {
     
     /// The observation manager that manages the observations of the observer.
     private var observationManager: ObservationManager {
-        let existingObservationManager = objc_getAssociatedObject(self, &AssociatedKeys.observationManager)
+        let existingObservationManager = objc_getAssociatedObject(self, AssociatedKeys.observationManager.pointer)
         if let observationManager = existingObservationManager as? ObservationManager {
             return observationManager
         }
@@ -162,7 +162,7 @@ package extension AdyenObserver {
         let observationManager = ObservationManager()
         objc_setAssociatedObject(
             self,
-            &AssociatedKeys.observationManager,
+            AssociatedKeys.observationManager.pointer,
             observationManager,
             .OBJC_ASSOCIATION_RETAIN_NONATOMIC
         )
@@ -174,8 +174,15 @@ package extension AdyenObserver {
 
 /// The keys used for associated objects.
 private enum AssociatedKeys {
-    
+
     /// The observation manager associated with the object.
-    public static var observationManager: Void?
-    
+    internal static let observationManager = AssociatedObjectKey()
+
+}
+// TODO: Rob
+/// A unique, immutable key whose object address identifies an associated object.
+private final class AssociatedObjectKey: Sendable {
+    internal var pointer: UnsafeRawPointer {
+        UnsafeRawPointer(Unmanaged.passUnretained(self).toOpaque())
+    }
 }

@@ -7,7 +7,7 @@
 import Foundation
 
 /// The type of a payment method
-public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
+public enum PaymentMethodType: RawRepresentable, Hashable, Codable, Sendable {
     case card
     case scheme
     case ideal

@@ -9,6 +9,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class ComponentConfigurationCallbacksValidationTests: XCTestCase {
 
     func test_cardConfiguration_withLookupAndNoAddressCallbacks_shouldThrowInvalidConfiguration() {

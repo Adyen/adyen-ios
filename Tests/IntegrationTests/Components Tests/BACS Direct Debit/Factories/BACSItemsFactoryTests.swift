@@ -9,12 +9,13 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BACSItemsFactoryTests: XCTestCase {
 
     var sut: BACSItemsFactory!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         let styleProvider = FormComponentStyle()
         sut = BACSItemsFactory(
             styleProvider: styleProvider,
@@ -23,9 +24,9 @@ class BACSItemsFactoryTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func test_createHolderNameItem_shouldReturnItemWithCorrectProperties() throws {

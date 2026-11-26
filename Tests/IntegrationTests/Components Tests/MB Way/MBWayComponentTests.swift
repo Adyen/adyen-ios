@@ -15,18 +15,18 @@ class MBWayComponentTests: XCTestCase {
     private var context: AdyenContext!
     private var paymentMethod: MBWayPaymentMethod!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         context = Dummy.context
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         paymentMethod = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testLocalizationWithCustomTableName() throws {

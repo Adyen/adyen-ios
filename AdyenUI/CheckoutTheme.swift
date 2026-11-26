@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public struct CheckoutTheme {
+public struct CheckoutTheme: Sendable {
 
     public private(set) var colors: CheckoutColors
     package private(set) var attributes: AdyenAttributes

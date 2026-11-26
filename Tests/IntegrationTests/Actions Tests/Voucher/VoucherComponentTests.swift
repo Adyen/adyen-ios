@@ -25,8 +25,8 @@ class VoucherComponentTests: XCTestCase {
         }
     }
     
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         actionPresentationDelegate = ActionPresentationDelegateMock()
         sut = VoucherComponent(context: Dummy.context)
         sut.configuration.theme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))

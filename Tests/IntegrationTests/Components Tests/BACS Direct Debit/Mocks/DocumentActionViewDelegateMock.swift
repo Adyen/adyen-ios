@@ -8,6 +8,7 @@
 @testable import AdyenActions
 import Foundation
 
+@MainActor
 internal final class DocumentActionViewDelegateMock: DocumentActionViewDelegate {
     var onDidComplete: (() -> Void)?
     

@@ -50,11 +50,12 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
+    @MainActor
     internal init(
-        style: FormTextItemStyle = FormTextItemStyle(),
+        style: FormTextItemStyle? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        super.init(style: style)
+        super.init(style: style ?? FormTextItemStyle())
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
         placeholder = localizedString(.cardExpiryDateHint, localizationParameters)
         formatter = CardExpiryDateFormatter()
@@ -83,7 +84,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     }
 }
 
-extension FormItemViewBuilder {
+@MainActor extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
         let view = FormTextInputItemView(item: item, theme: theme)
         view.hintAccessoryView = makeExpiryDateHintView(for: item)

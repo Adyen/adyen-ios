@@ -72,17 +72,19 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Mocks
 
+    @MainActor
     private class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
         var didDismissComponentContainerCompletionCallsCount = 0
-        var didDismissComponentContainerCompletionReceivedCompletion: (() -> Void)?
+        var didDismissComponentContainerCompletionReceivedCompletion: (@MainActor @Sendable () -> Void)?
 
-        func didDismissComponentContainer(completion: (() -> Void)?) {
+        func didDismissComponentContainer(completion: (@MainActor @Sendable () -> Void)?) {
             didDismissComponentContainerCompletionCallsCount += 1
             didDismissComponentContainerCompletionReceivedCompletion = completion
             completion?()
         }
     }
 
+    @MainActor
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
         var theme: CheckoutTheme = .init()

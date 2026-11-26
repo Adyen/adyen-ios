@@ -8,7 +8,7 @@ import Contacts
 import Foundation
 
 /// The model for address data.
-public struct PostalAddress: Equatable, Encodable {
+public struct PostalAddress: Equatable, Encodable, Sendable {
 
     internal static let invalidCountry = "ZZ"
     internal static let invalidValue = "null"
@@ -118,7 +118,7 @@ public struct PostalAddress: Equatable, Encodable {
 /// Use this type to return results from the `onLookup` closure in ``BillingAddressMode/lookup(onLookup:onAddressSelected:)``.
 /// The result may contain partial address data. When the shopper selects a result,
 /// use the `identifier` in `onAddressSelected` to fetch the complete address from your service.
-public struct AddressLookupResult {
+public struct AddressLookupResult: Sendable {
     
     /// A unique identifier for this address result.
     ///

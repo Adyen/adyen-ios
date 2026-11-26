@@ -9,13 +9,14 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormCardNumberItemTests: XCTestCase {
 
     var apiClient: APIClientMock!
     let supportedCardBrands: [CardBrand] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
     var cardBrandProvider: BinInfoProvider!
 
-    override func setUp() {
+    override func setUp() async throws {
         apiClient = APIClientMock()
         cardBrandProvider = BinInfoProvider(
             apiClient: apiClient,
@@ -25,7 +26,7 @@ class FormCardNumberItemTests: XCTestCase {
         )
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         apiClient = nil
         cardBrandProvider = nil
     }

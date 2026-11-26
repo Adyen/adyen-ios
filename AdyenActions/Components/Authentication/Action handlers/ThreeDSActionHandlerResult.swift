@@ -11,7 +11,7 @@ internal enum ThreeDSActionHandlerResult: Decodable {
 
     case action(Action)
 
-    case details(AdditionalDetails)
+    case details(ThreeDSResult)
 
     // MARK: - Coding
 

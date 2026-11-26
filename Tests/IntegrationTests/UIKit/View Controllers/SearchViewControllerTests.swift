@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class SearchViewControllerTests: XCTestCase {
     
     class DummyEmptyView: UIView, SearchResultsEmptyView {
@@ -40,8 +41,8 @@ class SearchViewControllerTests: XCTestCase {
         }
     }
     
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         
         emptyView = DummyEmptyView()
     }

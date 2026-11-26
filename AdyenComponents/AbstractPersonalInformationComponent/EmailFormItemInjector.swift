@@ -10,6 +10,7 @@ import AdyenUI
 @_spi(AdyenInternal) import class AdyenUI.FormViewController
 import Foundation
 
+@MainActor
 internal final class EmailFormItemInjector: FormItemInjector, Localizable {
 
     internal var localizationParameters: LocalizationParameters?

@@ -55,6 +55,7 @@ public protocol AnyFormItemView: UIView {
     var childItemViews: [AnyFormItemView] { get }
 }
 
+@MainActor
 package protocol AppearanceChangeRefreshable: AnyObject {
     func refreshAppearance(with traitCollection: UITraitCollection)
 }

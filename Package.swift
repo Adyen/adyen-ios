@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -101,18 +101,27 @@ let package = Package(
             exclude: [
                 "Info.plist"
             ],
-            resources: [.process("PrivacyInfo.xcprivacy")]
+            resources: [.process("PrivacyInfo.xcprivacy")],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenEncryption",
             path: "AdyenEncryption",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenSwiftUI",
             dependencies: [],
             path: "AdyenSwiftUI",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenActions",
@@ -124,6 +133,9 @@ let package = Package(
             path: "AdyenActions",
             exclude: [
                 "Info.plist"
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -137,6 +149,9 @@ let package = Package(
             path: "AdyenCard",
             exclude: [
                 "Info.plist"
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -144,6 +159,9 @@ let package = Package(
             path: "AdyenCardScanner",
             exclude: [
                 "Info.plist"
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
             ]
         ),
         .target(
@@ -154,7 +172,10 @@ let package = Package(
                 .target(name: "AdyenEncryption")
             ],
             path: "AdyenComponents",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenSession",
@@ -162,7 +183,10 @@ let package = Package(
                 .target(name: "Adyen")
             ],
             path: "AdyenSession",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenDropIn",
@@ -174,7 +198,10 @@ let package = Package(
                 .target(name: "AdyenUI")
             ],
             path: "AdyenDropIn",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenWeChatPay",
@@ -182,7 +209,10 @@ let package = Package(
                 .product(name: "AdyenWeChatPayInternal", package: "adyen-wechatpay-ios"),
                 .target(name: "AdyenActions")
             ],
-            path: "AdyenWeChatPay/WeChatPayActionComponent"
+            path: "AdyenWeChatPay/WeChatPayActionComponent",
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenCashAppPay",
@@ -193,7 +223,10 @@ let package = Package(
                 .product(name: "PayKitUI", package: "cash-app-pay-ios-sdk")
             ],
             path: "AdyenCashAppPay",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenTwint",
@@ -203,7 +236,10 @@ let package = Package(
                 .target(name: "TwintSDK")
             ],
             path: "AdyenTwint",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenCheckout",
@@ -217,7 +253,10 @@ let package = Package(
                 .target(name: "AdyenTwint")
             ],
             path: "AdyenCheckout",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .target(
             name: "AdyenUI",
@@ -225,7 +264,10 @@ let package = Package(
                 .target(name: "Adyen")
             ],
             path: "AdyenUI",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .binaryTarget(
             name: "TwintSDK",
@@ -235,7 +277,10 @@ let package = Package(
             name: "AdyenDelegatedAuthentication",
             dependencies: [.product(name: "AdyenAuthentication", package: "adyen-authentication-ios")],
             path: "AdyenDelegatedAuthentication",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         )
     ]
 )

@@ -11,6 +11,7 @@ import UIKit
 
 extension PayByBankUSComponent.ConfirmationViewController {
     
+    @MainActor
     internal class Model {
         
         internal let headerImageUrl: URL

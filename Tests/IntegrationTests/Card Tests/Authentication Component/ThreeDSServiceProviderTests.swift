@@ -9,6 +9,7 @@
 @testable import AdyenCard
 import XCTest
 
+@MainActor
 final class ThreeDSServiceProviderTests: XCTestCase {
     private let authenticationRequestParameters = AuthenticationRequestParametersMock(
         deviceInformation: "device_info",
@@ -129,14 +130,17 @@ final class ThreeDSServiceProviderTests: XCTestCase {
 }
 
 private extension FingerprintServiceParameters {
-    static let mock = FingerprintServiceParameters(
-        directoryServerIdentifier: "",
-        directoryServerPublicKey: "",
-        directoryServerRootCertificates: "",
-        deviceExcludedParameters: nil,
-        theme: .default,
-        threeDSMessageVersion: ""
-    )
+    @MainActor
+    static var mock: FingerprintServiceParameters {
+        FingerprintServiceParameters(
+            directoryServerIdentifier: "",
+            directoryServerPublicKey: "",
+            directoryServerRootCertificates: "",
+            deviceExcludedParameters: nil,
+            theme: .default,
+            threeDSMessageVersion: ""
+        )
+    }
 }
 
 private extension ChallengeParameters {

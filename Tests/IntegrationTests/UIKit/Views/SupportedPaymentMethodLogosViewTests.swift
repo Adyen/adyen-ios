@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class SupportedPaymentMethodLogosViewTests: XCTestCase {
     
     override func run() {

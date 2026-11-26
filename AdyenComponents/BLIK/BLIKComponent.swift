@@ -13,7 +13,12 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-package final class BLIKComponent: PaymentComponent, LoadingComponent {
+package final class BLIKComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    LoadingComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -42,14 +47,15 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
+    @MainActor
     package init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
     
     package func stopLoading() {

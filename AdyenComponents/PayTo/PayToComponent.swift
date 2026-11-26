@@ -11,7 +11,13 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
+package final class PayToComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
+    LoadingComponent,
+    AdyenObserver {
 
     /// The context object for this component.
     package var context: AdyenContext
@@ -89,14 +95,15 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     /// - Parameter paymentMethod: The PayTo payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
+    @MainActor
     package init(
         paymentMethod: PayToPaymentMethod,
         context: AdyenContext,
-        configuration: BasicComponentConfiguration = .init()
+        configuration: BasicComponentConfiguration? = nil
     ) {
         self.payToPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        self.configuration = configuration ?? .init()
     }
 
     package func performSubmit() {

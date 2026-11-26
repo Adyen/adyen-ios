@@ -8,6 +8,7 @@
 @testable import AdyenCard
 import Foundation
 
+@MainActor
 final class AnyRedirectComponentMock: AnyRedirectComponent {
     
     var context: AdyenContext {

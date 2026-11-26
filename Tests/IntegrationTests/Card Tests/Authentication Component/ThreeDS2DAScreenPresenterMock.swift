@@ -13,6 +13,7 @@ import Foundation
     import Foundation
     import UIKit
 
+    @MainActor
     final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
     
         func showDeletionConfirmation(component: any Adyen.Component, handler: @escaping VoidHandler) {

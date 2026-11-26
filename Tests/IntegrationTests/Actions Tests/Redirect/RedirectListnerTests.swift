@@ -7,6 +7,7 @@
 @testable import AdyenActions
 import XCTest
 
+@MainActor
 class RedirectListenerTests: XCTestCase {
 
     func testRedirectListenerWithoutThrowing() throws {

@@ -15,7 +15,7 @@ struct CardPaymentMethodMock: AnyCardPaymentMethod {
     
     var brands: [CardBrand]
     
-    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    @MainActor func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     

@@ -19,6 +19,10 @@ import UIKit
  */
 @MainActor
 package class CardComponent: PaymentComponent,
+    Component,
+    PartialPaymentOrderAware,
+    PaymentMethodAware,
+    AdyenContextAware,
     LoadingComponent {
 
     internal enum Constant {
@@ -73,9 +77,10 @@ package class CardComponent: PaymentComponent,
     package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardConfiguration = .init(),
+        configuration: CardConfiguration? = nil,
         callbacks: CardCallbacks
     ) {
+        let configuration = configuration ?? .init()
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
             adyenContext: context,
@@ -228,6 +233,7 @@ private extension CardComponent {
 
 private extension CardConfiguration {
 
+    @MainActor
     func addressLookupViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
@@ -246,6 +252,7 @@ private extension CardConfiguration {
         )
     }
 
+    @MainActor
     func addressInputFormViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,

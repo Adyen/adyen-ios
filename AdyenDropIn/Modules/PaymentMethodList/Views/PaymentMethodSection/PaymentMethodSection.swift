@@ -10,7 +10,7 @@ import Foundation
 internal struct PaymentMethodSection: Identifiable {
     internal struct HeaderTrailingButton {
         internal let title: String
-        internal let handler: () -> Void
+        internal let handler: @MainActor () -> Void
     }
 
     internal let id = UUID()

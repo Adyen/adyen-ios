@@ -11,6 +11,7 @@ import SwiftUI
 import UIKit
 
 /// Callback protocol for document action views.
+@MainActor
 internal protocol DocumentActionViewDelegate: AnyObject {
     
     func didComplete()

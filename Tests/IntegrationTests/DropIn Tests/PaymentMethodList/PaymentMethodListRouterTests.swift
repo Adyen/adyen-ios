@@ -370,7 +370,7 @@ struct PaymentMethodListRouterTests {
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
-        onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void = { _ in }
+        onStoredPaymentMethodRemoved: @escaping @MainActor @Sendable (any StoredPaymentMethod) -> Void = { _ in }
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()

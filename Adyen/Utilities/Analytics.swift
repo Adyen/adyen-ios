@@ -6,6 +6,7 @@
 
 import AdyenNetworking
 import Foundation
+import os
 import UIKit
 
 @_spi(AdyenInternal)
@@ -38,7 +39,17 @@ public class Analytics {
         }
     }
 
-    public static var isEnabled = true
+    // TODO: Rober
+    private static let isEnabledStorage = OSAllocatedUnfairLock(initialState: true)
+
+    public static var isEnabled: Bool {
+        get {
+            isEnabledStorage.withLock { $0 }
+        }
+        set {
+            isEnabledStorage.withLock { $0 = newValue }
+        }
+    }
     
     public static func sendEvent(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
         guard isEnabled, let url = urlFor(component: component, flavor: flavor, environment: environment) else {

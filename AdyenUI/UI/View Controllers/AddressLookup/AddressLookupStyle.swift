@@ -11,17 +11,18 @@ package struct AddressLookupStyle: ViewStyle {
     
     package var backgroundColor: UIColor = .Adyen.componentBackground
     package var search: AddressLookupSearchStyle = .init()
-    package var form: FormComponentStyle = .init()
+    package var form: FormComponentStyle
     
     /// Initializes the address lookup style.
     ///
     /// - Parameter search: The address lookup search style
     /// - Parameter form: The form style
+    @MainActor
     package init(
         search: AddressLookupSearchStyle = .init(),
-        form: FormComponentStyle = .init()
+        form: FormComponentStyle? = nil
     ) {
         self.search = search
-        self.form = form
+        self.form = form ?? .init()
     }
 }

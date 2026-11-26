@@ -22,14 +22,14 @@ class QRCodeActionComponentTests: XCTestCase {
         }
     }
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         context = Dummy.context
     }
     
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
     
     lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")

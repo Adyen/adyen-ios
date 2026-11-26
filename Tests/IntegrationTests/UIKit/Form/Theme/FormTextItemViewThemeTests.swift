@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextItemView_withDefaultTheme_shouldUseDefaultColors() {
@@ -120,11 +121,11 @@ final class FormTextItemViewThemeTests: XCTestCase {
     // MARK: - SUT Factory
 
     private func makeSUT(
-        item: FormTextInputItem = FormTextInputItem(),
+        item: FormTextInputItem? = nil,
         colors: CheckoutColors = .default
     ) -> FormTextInputItemView {
         let theme = CheckoutTheme(colors: colors)
-        return FormTextInputItemView(item: item, theme: theme)
+        return FormTextInputItemView(item: item ?? FormTextInputItem(), theme: theme)
     }
 
     // MARK: - Helpers

@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class OXXOShareableVoucherViewProviderTests: XCTestCase {
 
     func test_shareableView_withOXXOAction_shouldShowVoucherDetails() throws {

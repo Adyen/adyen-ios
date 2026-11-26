@@ -10,6 +10,7 @@ import Foundation
 import LocalAuthentication
 import UIKit
 
+@MainActor
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(
         component: Component,

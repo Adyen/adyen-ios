@@ -13,22 +13,9 @@ import XCTest
 @MainActor
 final class MBWayComponentUITests: XCTestCase {
 
-    private var paymentMethod: MBWayPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        context = Dummy.context
-        paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
-        style = FormComponentStyle()
-        try super.setUpWithError()
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        paymentMethod = nil
-        try super.tearDownWithError()
-    }
+    private var paymentMethod: MBWayPaymentMethod! = MBWayPaymentMethod(type: .mbWay, name: "test_name")
+    private var context: AdyenContext! = Dummy.context
+    private var style = FormComponentStyle()
 
     func testUIConfiguration() {
         // Footer

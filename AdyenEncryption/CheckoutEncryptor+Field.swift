@@ -9,7 +9,7 @@ import Foundation
 extension CheckoutEncryptor {
 
     /// A field that ``CheckoutEncryptor/encrypt(field:value:publicKey:)`` can encrypt.
-    public struct Field: Hashable {
+    public struct Field: Hashable, Sendable {
 
         /// The key of the value in the encrypted payload.
         internal let key: String

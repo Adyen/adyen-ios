@@ -15,7 +15,6 @@ import PassKit
 
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
-    // swiftlint:disable line_length
     
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
@@ -77,7 +76,7 @@ internal enum ConfigurationConstants {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
-    static var shippingMethods: [PKShippingMethod] = {
+    static var shippingMethods: [PKShippingMethod] {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))
         shippingByCar.identifier = "car"
         shippingByCar.detail = "Tomorrow"
@@ -87,14 +86,14 @@ internal enum ConfigurationConstants {
         shippingByPlane.detail = "Today"
         
         return [shippingByCar, shippingByPlane]
-    }()
+    }
     
-    static var current = DemoAppSettings.loadConfiguration() {
-        didSet { DemoAppSettings.saveConfiguration(current) }
+    static var current: DemoAppSettings {
+        get { DemoAppSettings.loadConfiguration() }
+        set { DemoAppSettings.saveConfiguration(newValue) }
     }
 
     // swiftlint:enable explicit_acl
-    // swiftlint:enable line_length
 }
 
 internal enum CardInstallmentOptionsMode: String, Codable, CaseIterable, Hashable {
@@ -237,30 +236,34 @@ internal struct DemoAppSettings: Codable {
         )
     }
     
-    internal static let defaultConfiguration = DemoAppSettings(
-        countryCode: "NL",
-        value: 17408,
-        currencyCode: "EUR",
-        merchantAccount: ConfigurationConstants.merchantAccount,
-        cardSettings: defaultCardSettings,
-        dropInSettings: defaultDropInSettings,
-        threeDSConfigurationSettings: threeDSConfigurationSettings,
-        applePaySettings: defaultApplePaySettings,
-        analyticsSettings: defaultAnalyticsSettings,
-        themeSettings: defaultThemeSettings
-    )
+    internal static var defaultConfiguration: DemoAppSettings {
+        DemoAppSettings(
+            countryCode: "NL",
+            value: 17408,
+            currencyCode: "EUR",
+            merchantAccount: ConfigurationConstants.merchantAccount,
+            cardSettings: defaultCardSettings,
+            dropInSettings: defaultDropInSettings,
+            threeDSConfigurationSettings: threeDSConfigurationSettings,
+            applePaySettings: defaultApplePaySettings,
+            analyticsSettings: defaultAnalyticsSettings,
+            themeSettings: defaultThemeSettings
+        )
+    }
 
-    internal static let defaultCardSettings = CardSettings(
-        showCardholderName: false,
-        showStorePaymentMethod: true,
-        showSecurityCodeForStoredCard: true,
-        showSecurityCode: true,
-        billingAddress: .none,
-        socialSecurityNumberVisibility: .auto,
-        koreanAuthenticationVisibility: .auto,
-        enableInstallments: false,
-        showsInstallmentAmount: false
-    )
+    internal static var defaultCardSettings: CardSettings {
+        CardSettings(
+            showCardholderName: false,
+            showStorePaymentMethod: true,
+            showSecurityCodeForStoredCard: true,
+            showSecurityCode: true,
+            billingAddress: .none,
+            socialSecurityNumberVisibility: .auto,
+            koreanAuthenticationVisibility: .auto,
+            enableInstallments: false,
+            showsInstallmentAmount: false
+        )
+    }
 
     internal static let defaultDropInSettings = DropInSettings(
         showRemovePaymentMethodButton: false,
@@ -320,6 +323,7 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
+    @MainActor
     internal var cardConfiguration: CardConfiguration {
         CardConfiguration()
             .showCardholderName(cardSettings.showCardholderName)
@@ -332,6 +336,7 @@ internal struct DemoAppSettings: Codable {
             .billingAddressMode(cardSettings.billingAddress.billingAddressMode)
     }
 
+    @MainActor
     internal var dropInConfiguration: DropInConfiguration {
         var dropInConfiguration = DropInConfiguration()
             .hideStoredPaymentMethods(dropInSettings.hideStoredPaymentMethods)
@@ -340,10 +345,12 @@ internal struct DemoAppSettings: Codable {
         return dropInConfiguration
     }
 
+    @MainActor
     internal var addressCallbacks: AddressCallbacks? {
         cardSettings.billingAddress.addressCallbacks
     }
 
+    @MainActor
     internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
         var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
         authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
@@ -355,6 +362,7 @@ internal struct DemoAppSettings: Codable {
         )
     }
 
+    @MainActor
     internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {
         try ApplePayConfiguration(paymentRequest: request)
             .allowOnboarding(applePaySettings.allowOnboarding)
@@ -389,6 +397,7 @@ private extension BillingAddressModeDemoSetting {
         }
     }
 
+    @MainActor
     var addressCallbacks: AddressCallbacks? {
         switch self {
         case .lookup:

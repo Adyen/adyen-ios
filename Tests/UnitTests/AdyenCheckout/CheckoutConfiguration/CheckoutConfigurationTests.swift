@@ -12,6 +12,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class CheckoutConfigurationTests: XCTestCase {
     
     var context: AdyenContext!

@@ -18,7 +18,7 @@ public protocol AnyCardPaymentMethod: PaymentMethod {
 }
 
 /// Indicates the Card funding source.
-public enum CardFundingSource: String, Codable {
+public enum CardFundingSource: String, Codable, Sendable {
     
     /// Indicates that the card is a debit card.
     case debit

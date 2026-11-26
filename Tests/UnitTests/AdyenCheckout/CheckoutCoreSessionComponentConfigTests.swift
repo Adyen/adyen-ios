@@ -16,17 +16,16 @@ import XCTest
 final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
 
     private var paymentMethods: PaymentMethods!
-    private var configuration: CheckoutConfiguration!
+    private var configuration = CheckoutConfiguration(
+        apiContext: Dummy.apiContext,
+        analyticsApiContext: nil,
+        analyticsConfiguration: .init()
+    )
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         let paymentMethodsDictionary: [String: Any] = ["paymentMethods": [creditCardDictionary, achDirectDebit]]
-        paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        configuration = CheckoutConfiguration(
-            apiContext: Dummy.apiContext,
-            analyticsApiContext: nil,
-            analyticsConfiguration: .init()
-        )
+        paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
     // MARK: - Card component configuration

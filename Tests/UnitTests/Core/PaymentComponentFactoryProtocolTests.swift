@@ -85,6 +85,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         }
     }
     
+    @MainActor
     struct MockFactory: PaymentComponentFactory {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod
@@ -116,6 +117,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let value: String
     }
 
+    @MainActor
     struct MockCallbacksFactory: PaymentComponentFactory {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod

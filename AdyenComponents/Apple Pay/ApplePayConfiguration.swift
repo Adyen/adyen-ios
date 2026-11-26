@@ -17,7 +17,7 @@ public struct ApplePayConfiguration: PaymentComponentConfiguration {
     /// Whether the component shows the Apple Pay button.
     package var showsSubmitButton: Bool = true
 
-    package var theme: CheckoutTheme = .default
+    package var theme: CheckoutTheme
 
     package var localizationParameters: LocalizationParameters?
 
@@ -42,6 +42,7 @@ public struct ApplePayConfiguration: PaymentComponentConfiguration {
     /// - Throws: ``CheckoutError`` with the ``CheckoutError/Code/invalidConfiguration`` code if the payment request is invalid:
     ///   `merchantIdentifier` is empty, the country or currency code is invalid, `paymentSummaryItems` is empty,
     ///   the grand total is negative, or a summary item has an invalid amount.
+    @MainActor
     public init(
         paymentRequest: PKPaymentRequest
     ) throws {
@@ -51,6 +52,7 @@ public struct ApplePayConfiguration: PaymentComponentConfiguration {
             throw CheckoutError(code: .invalidConfiguration, message: error.localizedDescription, underlyingError: error)
         }
 
+        self.theme = .default
         self.paymentRequest = paymentRequest
     }
 

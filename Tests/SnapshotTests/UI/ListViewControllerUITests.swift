@@ -9,6 +9,7 @@
 import SnapshotTesting
 import XCTest
 
+@MainActor
 final class ListViewControllerUITests: XCTestCase {
 
     override func run() {

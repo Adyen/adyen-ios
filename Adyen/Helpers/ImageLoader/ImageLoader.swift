@@ -6,9 +6,10 @@
 
 import UIKit
 
-package protocol ImageLoading {
+package protocol ImageLoading: Sendable {
     @discardableResult
-    func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable
+    @MainActor
+    func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> AdyenCancellable
 }
 
 package final class ImageLoader: ImageLoading {
@@ -20,7 +21,8 @@ package final class ImageLoader: ImageLoading {
     }
     
     @discardableResult
-    public func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable {
+    @MainActor
+    public func load(url: URL, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) -> AdyenCancellable {
         var urlSessionTask: URLSessionTask?
         let task = AdyenTask { urlSessionTask?.cancel() }
         
@@ -34,7 +36,7 @@ package final class ImageLoader: ImageLoading {
         return task
     }
     
-    private func handleImageResponse(data: Data?, completion: @escaping ((UIImage?) -> Void)) {
+    private func handleImageResponse(data: Data?, completion: @escaping @MainActor @Sendable (UIImage?) -> Void) {
         guard let data, let image = UIImage(data: data, scale: 1.0) else {
             DispatchQueue.main.async {
                 completion(nil)

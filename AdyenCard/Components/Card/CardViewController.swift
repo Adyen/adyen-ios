@@ -11,6 +11,7 @@ import AdyenUI
 import UIKit
 @_spi(AdyenInternal) import class AdyenUI.FormViewController
 
+@MainActor
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
     func update(storePaymentMethodFieldValue isOn: Bool)
@@ -457,6 +458,7 @@ extension CardViewController {
     }
 }
 
+@MainActor
 internal protocol CardViewControllerDelegate: AnyObject {
     
     func didSelectSubmitButton()

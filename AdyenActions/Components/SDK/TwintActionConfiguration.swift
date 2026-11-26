@@ -13,7 +13,9 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.twint)
     
-    package var theme: CheckoutTheme = .default
+    package var showsSubmitButton: Bool = false
+    
+    package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
 
@@ -33,6 +35,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
             AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
         }
         
+        self.theme = .init()
         self.callbackAppScheme = callbackAppScheme
         self.maxIssuerNumber = .max
     }

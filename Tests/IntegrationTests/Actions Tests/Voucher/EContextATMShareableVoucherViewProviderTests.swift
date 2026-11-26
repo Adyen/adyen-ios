@@ -10,6 +10,7 @@
 import UIKit
 import XCTest
 
+@MainActor
 class EContextATMShareableVoucherViewProviderTests: XCTestCase {
 
     func test_shareableView_withEContextATMActionAndCustomLocalization_shouldShowLocalizedDetails() throws {

@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// A component that can send analytics events.
+@MainActor
 package protocol TrackableComponent {
     /// Analytics flavor to determine the component / dropIn that initiates the events.
     var analyticsFlavor: AnalyticsFlavor { get }

@@ -8,13 +8,15 @@ import AVFoundation
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol CardScannerAssembling {
     func resolveCardScannerViewController(
         localizationBundle: Bundle,
-        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
+        completion: @escaping @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController?
 }
 
+@MainActor
 internal class CardScannerAssembler: CardScannerAssembling {
 
     // MARK: - Initializers
@@ -33,7 +35,7 @@ internal class CardScannerAssembler: CardScannerAssembling {
 
     internal func resolveCardScannerViewController(
         localizationBundle: Bundle,
-        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
+        completion: @escaping @MainActor @Sendable (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         guard let captureDevice else { return nil }
 

@@ -203,6 +203,7 @@ final class CheckoutProviderTests: XCTestCase {
     }
 }
 
+@MainActor
 private final class PublicKeyFetcherSpy: PublicKeyFetching {
 
     var result: Result<String, Error> = .failure(TestError())
@@ -223,6 +224,7 @@ private final class PublicKeyFetcherSpy: PublicKeyFetching {
     }
 }
 
+@MainActor
 private final class CheckoutAttemptIdProviderSpy: CheckoutAttemptIdProviding {
 
     private(set) var fetchCount = 0

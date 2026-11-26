@@ -8,9 +8,7 @@ import Foundation
 
 package enum ImageLoaderProvider {
 
-    @AdyenDependency(\.imageLoader) private static var underlyingImageLoader
-    
     package static func imageLoader() -> ImageLoading {
-        underlyingImageLoader
+        AdyenDependency(\.imageLoader).wrappedValue
     }
 }

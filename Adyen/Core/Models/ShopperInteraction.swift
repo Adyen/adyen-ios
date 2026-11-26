@@ -7,7 +7,7 @@
 import Foundation
 
 /// A type of shopper interaction during a payment.
-public enum ShopperInteraction: String, Codable {
+public enum ShopperInteraction: String, Codable, Sendable {
     
     /// Indicates the shopper is present during the payment.
     case shopperPresent = "Ecommerce"

@@ -8,11 +8,13 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol AnyBinInfoProvider: AnyObject {
     func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void)
 }
 
 /// Provide cardBrand detection based on BinLookup API.
+@MainActor
 internal final class BinInfoProvider: AnyBinInfoProvider {
 
     private enum Constants {
@@ -38,14 +40,14 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     internal init(
         apiClient: AsyncAPIClientProtocol,
         adyenContext: AdyenContext,
-        fallbackCardBrandProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
+        fallbackCardBrandProvider: AnyBinInfoProvider? = nil,
         minBinLength: Int,
         binLookupType: BinLookupRequestType,
         binLookupThrottler: Throttler = Throttler(minimumDelay: Constants.binLookupThrottlingDelay)
     ) {
         self.apiClient = apiClient
         self.adyenContext = adyenContext
-        self.fallbackCardBrandProvider = fallbackCardBrandProvider
+        self.fallbackCardBrandProvider = fallbackCardBrandProvider ?? FallbackBinInfoProvider()
         self.minBinLength = minBinLength
         self.binLookupType = binLookupType
         self.binLookupThrottler = binLookupThrottler

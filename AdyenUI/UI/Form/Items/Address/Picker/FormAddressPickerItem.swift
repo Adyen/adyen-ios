@@ -35,6 +35,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         }
     }
 
+    @MainActor
     package init(
         for addressType: AddressType,
         initialCountry: String?,
@@ -142,6 +143,7 @@ extension FormAddressPickerItem {
 
 // MARK: - Picker Presentation
 
+@MainActor
 extension FormAddressPickerItem {
 
     // swiftlint:disable function_parameter_count

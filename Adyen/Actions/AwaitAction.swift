@@ -7,7 +7,7 @@
 import Foundation
 
 /// Indicates the payment methods that has an `await` action in its flow.
-public enum AwaitPaymentMethod: String, Decodable {
+public enum AwaitPaymentMethod: String, Decodable, Sendable {
     
     /// MBWay payment method.
     case mbway
@@ -29,7 +29,7 @@ public enum AwaitPaymentMethod: String, Decodable {
 }
 
 /// Describes an action in which the SDK is waiting for user action.
-public struct AwaitAction: PaymentDataAware, Decodable {
+public struct AwaitAction: PaymentDataAware, Decodable, Sendable {
     
     /// The `paymentMethodType` for which the await action is used.
     public let paymentMethodType: AwaitPaymentMethod

@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class AddressLookupViewControllerTests: XCTestCase {
 
     // MARK: - Test Data
@@ -90,10 +91,10 @@ class AddressLookupViewControllerTests: XCTestCase {
     func testSearchDismissal_completesWithNil_whenNoPrefillAndNoAction() {
         // Given
         let completionExpectation = expectation(description: "Completion called with nil")
-        let viewModel = makeSUT(prefillAddress: nil) { address in
+        let viewModel = makeSUT(prefillAddress: nil, completionHandler: { address in
             XCTAssertNil(address)
             completionExpectation.fulfill()
-        }
+        })
 
         // When
         viewModel.handleDismissSearchTapped()
@@ -105,23 +106,26 @@ class AddressLookupViewControllerTests: XCTestCase {
     func testSearchDismissal_returnsToForm_afterUserInteraction() {
         // Given
         let completionExpectation = expectation(description: "Completion called")
-        let (viewModel, sut) = makeSUTWithViewController(prefillAddress: nil) { address in
-            XCTAssertEqual(address, PostalAddress())
-            completionExpectation.fulfill()
-        }
+        let (viewModel, sut) = makeSUTWithViewController(
+            prefillAddress: nil,
+            completionHandler: { address in
+                XCTAssertEqual(address, PostalAddress())
+                completionExpectation.fulfill()
+            }
+        )
         sut.loadViewIfNeeded()
 
         // When - User switches to manual entry then back to search
         viewModel.handleSwitchToManualEntryTapped()
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))
+        XCTAssertEqual(viewModel.interfaceState, AddressLookupViewController.InterfaceState.form(prefillAddress: nil))
 
         viewModel.handleShowSearchTapped(currentInput: PostalAddress())
-        XCTAssertEqual(viewModel.interfaceState, .search)
+        XCTAssertEqual(viewModel.interfaceState, AddressLookupViewController.InterfaceState.search)
 
         viewModel.handleDismissSearchTapped()
 
         // Then - Should return to form, not dismiss
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: PostalAddress()))
+        XCTAssertEqual(viewModel.interfaceState, AddressLookupViewController.InterfaceState.form(prefillAddress: PostalAddress()))
 
         // When - User submits
         viewModel.handleAddressInputFormCompletion(validAddress: PostalAddress())
@@ -238,10 +242,13 @@ class AddressLookupViewControllerTests: XCTestCase {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
         let completionExpectation = expectation(description: "Completion called")
 
-        let viewModel = makeSUT(prefillAddress: expectedAddress) { address in
-            XCTAssertEqual(address, expectedAddress)
-            completionExpectation.fulfill()
-        }
+        let viewModel = makeSUT(
+            prefillAddress: expectedAddress,
+            completionHandler: { address in
+                XCTAssertEqual(address, expectedAddress)
+                completionExpectation.fulfill()
+            }
+        )
 
         // When
         viewModel.handleAddressInputFormCompletion(validAddress: expectedAddress)
@@ -254,10 +261,10 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
         let completionExpectation = expectation(description: "Completion called")
 
-        let viewModel = makeSUT(prefillAddress: nil) { address in
+        let viewModel = makeSUT(prefillAddress: nil, completionHandler: { address in
             XCTAssertNil(address)
             completionExpectation.fulfill()
-        }
+        })
 
         // When
         viewModel.handleAddressInputFormCompletion(validAddress: nil)

@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
+@MainActor
 internal protocol QRCodeViewModelProtocol {
     var flowType: QRCodeFlowType { get }
     var instructionText: String { get }
@@ -19,7 +20,7 @@ internal protocol QRCodeViewModelProtocol {
     var copyInProgress: AdyenObservable<Bool> { get }
     var observedProgress: Progress? { get }
     
-    func loadLogoImage(completion: @escaping (UIImage?) -> Void)
+    func loadLogoImage(completion: @escaping @MainActor @Sendable (UIImage?) -> Void)
     func performAction(qrCodeImage: UIImage?, from: UIView)
 }
 
@@ -85,7 +86,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         action.qrCodeData
     }
     
-    internal func loadLogoImage(completion: @escaping (UIImage?) -> Void) {
+    internal func loadLogoImage(completion: @escaping @MainActor @Sendable (UIImage?) -> Void) {
         imageLoader.load(url: logoUrl, completion: completion)
     }
     
@@ -105,7 +106,8 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     private func enableCopyInProgress(for timeInterval: TimeInterval) {
         copyInProgress.wrappedValue = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) { [weak self] in
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(timeInterval))
             self?.copyInProgress.wrappedValue = false
         }
     }

@@ -10,6 +10,7 @@
 import Foundation
 import XCTest
 
+@MainActor
 class SecuredViewControllerUITests: XCTestCase {
     
     override func run() {

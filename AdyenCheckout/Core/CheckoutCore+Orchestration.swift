@@ -34,7 +34,7 @@ internal enum CheckoutCallbackSource {
         }
     }
     
-    internal func stopLoading() {
+    @MainActor internal func stopLoading() {
         paymentComponent.stopLoading()
     }
 }

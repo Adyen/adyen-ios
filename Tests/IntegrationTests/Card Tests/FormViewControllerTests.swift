@@ -10,6 +10,7 @@ import AdyenNetworking
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormViewControllerTests: XCTestCase {
     
     func test_moving_firstResponders() throws {

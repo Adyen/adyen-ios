@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// A selectable item displayed in the list.
-package class ListItem: FormItem {
+@MainActor package class ListItem: FormItem {
 
     package enum TrailingInfoType {
         case text(String)
@@ -59,7 +59,7 @@ package class ListItem: FormItem {
     package let isSelected: Bool
 
     /// The handler to invoke when the item is selected.
-    package var selectionHandler: (() -> Void)?
+    package var selectionHandler: (@MainActor () -> Void)?
 
     /// The handler to invoke when the item is deleted.
     package var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
@@ -98,7 +98,7 @@ package class ListItem: FormItem {
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         isSelected: Bool = false,
-        selectionHandler: (() -> Void)? = nil
+        selectionHandler: (@MainActor () -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -144,18 +144,18 @@ package class ListItem: FormItem {
 
     // MARK: - Private
     
-    private let listIdentifier: UUID = .init()
+    private nonisolated let listIdentifier: UUID = .init()
 }
 
 // MARK: - Hashable & Equatable
 
 extension ListItem: Hashable {
     
-    package func hash(into hasher: inout Hasher) {
+    package nonisolated func hash(into hasher: inout Hasher) {
         hasher.combine(listIdentifier)
     }
     
-    package static func == (lhs: ListItem, rhs: ListItem) -> Bool {
+    package nonisolated static func == (lhs: ListItem, rhs: ListItem) -> Bool {
         lhs.listIdentifier == rhs.listIdentifier
     }
 }

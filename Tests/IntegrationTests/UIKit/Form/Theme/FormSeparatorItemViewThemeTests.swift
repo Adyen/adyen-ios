@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class FormSeparatorItemViewThemeTests: XCTestCase {
 
     func test_formSeparatorItemView_shouldApplyThemeSeparatorColor() {

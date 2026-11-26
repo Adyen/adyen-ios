@@ -18,18 +18,20 @@ package final class FormPostalCodeItem: FormTextItem {
     internal var localizationParameters: LocalizationParameters?
 
     /// Initializes the form postal code item.
-    override public init(style: FormTextItemStyle = FormTextItemStyle()) {
+    @MainActor
+    override public init(style: FormTextItemStyle) {
         self.localizationParameters = nil
         super.init(style: style)
         setup()
     }
 
+    @MainActor
     package init(
-        style: FormTextItemStyle = FormTextItemStyle(),
+        style: FormTextItemStyle? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.localizationParameters = localizationParameters
-        super.init(style: style)
+        super.init(style: style ?? FormTextItemStyle())
         setup()
     }
 

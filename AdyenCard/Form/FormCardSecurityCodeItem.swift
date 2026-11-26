@@ -36,12 +36,13 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem, AdyenObserver 
     }
 
     /// Initializes the form security code item.
+    @MainActor
     internal init(
-        style: FormTextItemStyle = FormTextItemStyle(),
+        style: FormTextItemStyle? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.localizationParameters = localizationParameters
-        super.init(style: style)
+        super.init(style: style ?? FormTextItemStyle())
         
         title = localizedString(.cardSecurityCodeLabel, localizationParameters)
         validator = securityCodeValidator
@@ -108,7 +109,7 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem, AdyenObserver 
     }
 }
 
-extension FormItemViewBuilder {
+@MainActor extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item, theme: theme)
     }

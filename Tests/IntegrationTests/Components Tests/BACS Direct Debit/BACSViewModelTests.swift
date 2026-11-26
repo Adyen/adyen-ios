@@ -18,8 +18,8 @@ class BACSViewModelTests: XCTestCase {
     var onSubmitCallsCount: Int = 0
     var onSubmitReceivedDetails: BACSDirectDebitDetails?
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
 
         tracker = BACSDirectDebitComponentTrackerProtocolMock()
         itemsFactory = itemsFactoryMock
@@ -43,13 +43,13 @@ class BACSViewModelTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         tracker = nil
         itemsFactory = nil
         sut = nil
         onSubmitCallsCount = 0
         onSubmitReceivedDetails = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     // MARK: - Initialization

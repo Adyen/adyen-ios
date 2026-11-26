@@ -8,6 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+@MainActor
 internal protocol AnyAppleWalletPassProvider {
 
     typealias CompletionHandler = (Result<Data, Error>) -> Void
@@ -15,6 +16,7 @@ internal protocol AnyAppleWalletPassProvider {
     func provide(with passToken: String, completion: @escaping CompletionHandler)
 }
 
+@MainActor
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     AdyenContextAware {
     

@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to the Twint SDK.
-public final class TwintSDKAction: PaymentDataAware, Decodable {
+public final class TwintSDKAction: PaymentDataAware, Decodable, Sendable {
 
     /// The TwintSDK specific data.
     public let sdkData: TwintSDKData

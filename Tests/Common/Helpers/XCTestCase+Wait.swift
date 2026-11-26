@@ -9,18 +9,23 @@ import XCTest
 extension XCTestCase {
     /// Waits for a specified amount of time
     ///
+    /// Spins the current run loop in short slices until the deadline is reached,
+    /// so main-queue work keeps flowing even when called from `@MainActor` tests.
+    ///
     /// - Parameters:
     ///   - interval: the dispach time interval to wait for
     func wait(for interval: DispatchTimeInterval) {
-        let dummyExpectation = XCTestExpectation(description: "wait for some time.")
+        let deadline = Date().addingTimeInterval(interval.timeInterval)
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) {
-            dummyExpectation.fulfill()
+        while Date() < deadline {
+            if Thread.isMainThread {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.01))
+            } else {
+                Thread.sleep(forTimeInterval: 0.01)
+            }
         }
-        
-        wait(for: [dummyExpectation], timeout: 10)
     }
-    
+
     /// Waits until  a certain condition is met
     ///
     /// Instead of waiting for a specific amount of time it polls if the expecation is returning true in time intervals of 10ms until the timeout is reached.
@@ -74,5 +79,26 @@ extension XCTestCase {
             timeout: timeout,
             message: "Value of \(keyPath) (\(target[keyPath: keyPath])) should become \(String(describing: expectedValue)) within \(timeout)s [line:\(line)]"
         )
+    }
+}
+
+private extension DispatchTimeInterval {
+    /// The interval expressed in seconds.
+    /// `.never` resolves to `0` since waiting forever is not meaningful for a synchronous test helper.
+    var timeInterval: TimeInterval {
+        switch self {
+        case let .seconds(value):
+            TimeInterval(value)
+        case let .milliseconds(value):
+            TimeInterval(value) / 1000
+        case let .microseconds(value):
+            TimeInterval(value) / 1000000
+        case let .nanoseconds(value):
+            TimeInterval(value) / 1000000000
+        case .never:
+            0
+        @unknown default:
+            0
+        }
     }
 }

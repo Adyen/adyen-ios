@@ -7,13 +7,6 @@
 import Adyen
 import UIKit
 
-// MARK: - ApplicationStateProviding
-
-internal protocol ApplicationStateProviding {
-    
-    var applicationState: UIApplication.State { get }
-}
-
 private extension UIApplication.State {
     
     /// Whether or not the application is currently `.active`
@@ -26,34 +19,34 @@ private extension UIApplication.State {
     }
 }
 
-extension UIApplication: ApplicationStateProviding {}
-
 // MARK: - OpenExternalAppDetecting
 
 /// Detects if an external app was opened
-internal protocol OpenExternalAppDetecting {
+internal protocol OpenExternalAppDetecting: Sendable {
     /// Calls a completion handler indicating whether or not an external app was opened
-    func checkIfExternalAppDidOpen(_ completion: @escaping (_ didOpenExternalApp: Bool) -> Void)
+    func checkIfExternalAppDidOpen(_ completion: @escaping @MainActor @Sendable (_ didOpenExternalApp: Bool) -> Void)
 }
 
 // MARK: - OpenExternalAppDetector
 
 internal struct OpenExternalAppDetector: OpenExternalAppDetecting {
     
-    private let applicationStateProvider: ApplicationStateProviding
+    private let applicationStateProvider: @MainActor @Sendable () -> UIApplication.State
     private let detectionDelay: DispatchTimeInterval
     
     internal init(
-        applicationStateProvider: ApplicationStateProviding = UIApplication.shared,
+        applicationStateProvider: @escaping @MainActor @Sendable () -> UIApplication.State = { UIApplication.shared.applicationState },
         detectionDelay: DispatchTimeInterval = .seconds(1)
     ) {
         self.applicationStateProvider = applicationStateProvider
         self.detectionDelay = detectionDelay
     }
     
-    public func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + detectionDelay) {
-            completion(!applicationStateProvider.applicationState.isActive)
+    internal func checkIfExternalAppDidOpen(_ completion: @escaping @MainActor @Sendable (Bool) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + detectionDelay) { [applicationStateProvider] in
+            MainActor.assumeIsolated {
+                completion(!applicationStateProvider().isActive)
+            }
         }
     }
 }

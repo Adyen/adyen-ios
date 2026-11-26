@@ -35,7 +35,7 @@ public extension CheckoutError {
     ///
     /// SDK-defined codes are available as static properties.
     /// You can also create custom codes: `CheckoutError.Code(rawValue: "MyCode")`.
-    struct Code: RawRepresentable, Hashable {
+    struct Code: RawRepresentable, Hashable, Sendable {
         public let rawValue: String
 
         public init(rawValue: String) {

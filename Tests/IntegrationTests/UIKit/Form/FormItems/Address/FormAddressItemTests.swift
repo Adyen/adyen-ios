@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormAddressItemTests: XCTestCase {
     
     override func tearDown() {

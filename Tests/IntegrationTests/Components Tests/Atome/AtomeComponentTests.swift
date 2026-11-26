@@ -17,7 +17,7 @@ class AtomeComponentTests: XCTestCase {
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         context = Dummy.context
         style = FormComponentStyle()
@@ -28,11 +28,11 @@ class AtomeComponentTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         context = nil
         paymentMethod = nil
         sut = nil
-        try super.tearDownWithError()
+        try await super.tearDown()
     }
 
     func testComponent_ShouldPaymentMethodTypeBeAtome() {

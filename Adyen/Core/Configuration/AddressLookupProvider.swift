@@ -6,6 +6,7 @@
 
 import Foundation
 
+@MainActor
 package protocol AddressLookupProvider: AnyObject {
     
     /// Provides a list of ``AddressLookupResult`` based on a `searchTerm`

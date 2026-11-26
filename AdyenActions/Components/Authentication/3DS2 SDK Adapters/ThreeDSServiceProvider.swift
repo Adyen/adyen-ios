@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+@MainActor
 internal protocol ThreeDSConfigurable {
     var configuration: ThreeDSFeatureChecker? { get set }
 }
@@ -16,23 +17,24 @@ internal protocol ThreeDSFeatureChecker {
 }
 
 /// This type creates a ThreeDSServiceable implementation and consumes ThreeDSConfigurable.
+@MainActor
 internal final class ThreeDSServiceProvider: ThreeDSServiceable, ThreeDSConfigurable {
     
     /// An optional configuration that can be provided to the service provider.
     internal var configuration: ThreeDSFeatureChecker?
     
     private var service: ThreeDSServiceable?
-    private let serviceCreationHandler: (ThreeDSFeatureChecker?) -> ThreeDSServiceable
+    private let serviceCreationHandler: @MainActor (ThreeDSFeatureChecker?) -> ThreeDSServiceable
 
     internal init(
-        serviceCreationHandler: @escaping (ThreeDSFeatureChecker?) -> ThreeDSServiceable = createService
+        serviceCreationHandler: @escaping @MainActor (ThreeDSFeatureChecker?) -> ThreeDSServiceable = createService
     ) {
         self.serviceCreationHandler = serviceCreationHandler
     }
     
     internal func performFingerprint(
         parameters: FingerprintServiceParameters,
-        completionHandler: @escaping (Result<any AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
+        completionHandler: @escaping @MainActor (Result<any AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
     ) {
         self.resetTransaction()
         let service = serviceCreationHandler(configuration)
@@ -45,12 +47,14 @@ internal final class ThreeDSServiceProvider: ThreeDSServiceable, ThreeDSConfigur
     
     internal func performChallenge(
         with parameters: ChallengeParameters,
-        completionHandler: @escaping (Result<any AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
+        completionHandler: @escaping @MainActor (Result<any AnyChallengeResult, ThreeDSServiceChallengeError>) -> Void
     ) {
         // The service needs to be already created during the fingerprint step.
         // There is no way a challenge action should happen without a fingerprint action.
         guard let service = self.service else {
-            completionHandler(.failure(.transactionNotInitialized))
+            Task { @MainActor in
+                completionHandler(.failure(.transactionNotInitialized))
+            }
             return
         }
         service.performChallenge(with: parameters) { result in

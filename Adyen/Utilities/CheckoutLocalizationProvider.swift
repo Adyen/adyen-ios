@@ -13,7 +13,7 @@ import Foundation
 /// Compare against the well-known static members (e.g. `.cardNumber`) to identify which
 /// string the SDK is requesting. New keys may be added in future SDK versions — always
 /// include a `default` branch when switching over values.
-public struct CheckoutLocalizationKey: Hashable {
+public struct CheckoutLocalizationKey: Hashable, Sendable {
 
     /// The internal ``LocalizationKey`` used for SDK string resolution.
     internal let localizationKey: LocalizationKey

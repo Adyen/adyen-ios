@@ -7,6 +7,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol AppOpener {
     func openSettingsApp() async
 }

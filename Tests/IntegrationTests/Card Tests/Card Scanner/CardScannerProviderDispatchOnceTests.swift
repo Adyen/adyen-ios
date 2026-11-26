@@ -8,6 +8,7 @@
     @testable import AdyenCard
     import XCTest
 
+    @MainActor
     final class CardScannerProviderDispatchOnceTests: XCTestCase {
 
         func testCardScannerCompletesOnlyOnce() {

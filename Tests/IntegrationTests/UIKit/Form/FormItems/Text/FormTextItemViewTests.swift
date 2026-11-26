@@ -9,6 +9,7 @@ import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class FormTextItemViewTests: XCTestCase {
     
     var item: FormTextInputItem!
@@ -17,7 +18,7 @@ class FormTextItemViewTests: XCTestCase {
     var sut: FormTextItemView<FormTextInputItem>!
     var delegate: FormTextItemViewDelegateMock<FormTextInputItem, FormTextItemView<FormTextInputItem>>!
     
-    override func setUp() {
+    override func setUp() async throws {
         item = FormTextInputItem()
         validator = ValidatorMock()
         formatter = FormatterMock()
@@ -31,7 +32,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.delegate = delegate
     }
     
-    override func tearDown() {
+    override func tearDown() async throws {
         item = nil
         validator = nil
         formatter = nil

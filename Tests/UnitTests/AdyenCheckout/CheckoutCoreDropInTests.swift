@@ -17,16 +17,15 @@ import XCTest
 @MainActor
 final class CheckoutCoreDropInTests: XCTestCase {
 
-    private var configuration: CheckoutConfiguration!
+    private var configuration = CheckoutConfiguration(
+        apiContext: Dummy.apiContext,
+        analyticsApiContext: nil,
+        analyticsConfiguration: .init()
+    )
     private var paymentMethods: PaymentMethods!
 
     override func setUp() {
         super.setUp()
-        configuration = CheckoutConfiguration(
-            apiContext: Dummy.apiContext,
-            analyticsApiContext: nil,
-            analyticsConfiguration: .init()
-        )
         paymentMethods = try! AdyenCoder.decode([
             "storedPaymentMethods": [storedCreditCardDictionary],
             "paymentMethods": [creditCardDictionary, blik]

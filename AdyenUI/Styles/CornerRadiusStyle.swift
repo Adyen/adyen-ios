@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// The size of corner rounding.
-@_spi(AdyenInternal) public enum CornerRounding {
+@_spi(AdyenInternal) public enum CornerRounding: Sendable {
 
     /// No rounding.
     case none

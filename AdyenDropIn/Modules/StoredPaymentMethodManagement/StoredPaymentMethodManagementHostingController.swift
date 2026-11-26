@@ -26,7 +26,7 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     }
 
     internal let viewModel: StoredPaymentMethodManagementViewModel
-    internal var onDismissFromNavigation: (() -> Void)?
+    internal var onDismissFromNavigation: (@MainActor () -> Void)?
     private let theme: CheckoutTheme
     private var cancellables = Set<AnyCancellable>()
     private var originalNavigationState: NavigationState?

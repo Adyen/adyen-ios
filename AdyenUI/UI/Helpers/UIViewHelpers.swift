@@ -9,6 +9,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
+@MainActor
 extension AdyenScope where Base: UIView {
     
     @discardableResult

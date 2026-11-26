@@ -27,6 +27,7 @@ extension SearchViewController.InterfaceState {
     }
 }
 
+@MainActor
 class FormPickerSearchViewControllerTests: XCTestCase {
     
     override func run() {

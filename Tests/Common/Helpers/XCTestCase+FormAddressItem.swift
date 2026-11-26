@@ -10,6 +10,7 @@ import XCTest
 
 extension XCTestCase {
             
+    @MainActor
     internal func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
         let addressViewIdentifier = addressView.item.identifier?.components(separatedBy: ".").last ?? ""
         

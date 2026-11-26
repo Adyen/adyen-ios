@@ -74,7 +74,7 @@ internal final class BrowserComponent: NSObject {
 
 // MARK: - SFSafariViewControllerDelegate
 
-extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
+extension BrowserComponent {
     
     /// Called when user clicks "Cancel" button or Safari redirects to other app.
     internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
@@ -86,3 +86,9 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
         self.delegate?.didCancel()
     }
 }
+
+#if compiler(>=6.2)
+    extension BrowserComponent: @MainActor SFSafariViewControllerDelegate, @MainActor UIAdaptivePresentationControllerDelegate {}
+#else
+    extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {}
+#endif

@@ -11,6 +11,7 @@ import PassKit
 import UIKit
 import XCTest
 
+@MainActor
 class VoucherViewTests: XCTestCase {
     
     let action: VoucherAction = .boletoBancairoSantander(
@@ -168,7 +169,7 @@ class VoucherViewTests: XCTestCase {
         action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
         theme: CheckoutTheme,
-        imageLoader: ImageLoading = ImageLoaderMock()
+        imageLoader: ImageLoading? = nil
     ) -> VoucherView.Model {
         VoucherView.Model(
             action: action,
@@ -181,7 +182,7 @@ class VoucherViewTests: XCTestCase {
             codeConfirmationTitle: "Code Copied!",
             mainButtonType: mainButtonType,
             theme: theme,
-            imageLoader: imageLoader
+            imageLoader: imageLoader ?? ImageLoaderMock()
         )
     }
     

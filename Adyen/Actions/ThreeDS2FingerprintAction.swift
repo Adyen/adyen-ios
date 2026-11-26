@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which a 3D Secure device fingerprint is taken.
-public struct ThreeDS2FingerprintAction: Decodable {
+public struct ThreeDS2FingerprintAction: Decodable, Sendable {
 
     /// The 3D Secure fingerprint token.
     public let fingerprintToken: String

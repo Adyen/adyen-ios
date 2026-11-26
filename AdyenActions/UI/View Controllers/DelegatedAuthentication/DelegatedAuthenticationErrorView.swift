@@ -8,6 +8,7 @@ import Adyen
 import AdyenUI
 import UIKit
 
+@MainActor
 internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {
     func firstButtonTapped()
     func troubleshootingButtonTapped()

@@ -11,6 +11,7 @@ import AdyenUI
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol AnyVoucherShareableViewProvider: Localizable {
 
     var theme: CheckoutTheme { get set }
@@ -18,7 +19,9 @@ internal protocol AnyVoucherShareableViewProvider: Localizable {
     func provideView(with action: VoucherAction, logo: UIImage?) -> UIView
 }
 
-internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
+@MainActor
+internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider,
+    Localizable {
 
     internal var theme: CheckoutTheme
 
@@ -64,7 +67,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
     }
     
     private func createGenericView(
-        with action: GenericVoucherAction,
+        with action: AnyVoucherAction,
         fields: [ShareableVoucherView.VoucherField]
     ) -> ShareableVoucherView {
         ShareableVoucherView(

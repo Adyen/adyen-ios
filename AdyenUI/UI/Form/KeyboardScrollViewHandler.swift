@@ -11,7 +11,7 @@ import UIKit
 /// This provides a reusable way to keep scroll view content visible when the keyboard appears.
 /// To check this behavior select a small device like a iPhone(SE) and load card component, or stored card component and see the cvv input screen with the keyboard visible,
 /// you should be able to scroll to see the primary button.
-package class KeyboardScrollViewHandler: AdyenObserver {
+@MainActor package class KeyboardScrollViewHandler: AdyenObserver {
 
     private enum Constants {
         static let animationKey = "keyboardBottomInset"

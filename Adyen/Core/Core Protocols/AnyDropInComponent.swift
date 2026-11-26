@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Any DropIn Component.
+@MainActor
 package protocol AnyDropInComponent: Component {
 
     var viewController: UIViewController { get }

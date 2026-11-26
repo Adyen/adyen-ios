@@ -103,7 +103,7 @@ private extension StoredPaymentMethodManagementListView {
         let identifiersBeingRemoved: Set<String>
         let removeButtonTitle: String
         let theme: CheckoutTheme
-        let onRemove: (StoredPaymentMethodManagementItem) -> Void
+        let onRemove: @MainActor (StoredPaymentMethodManagementItem) -> Void
 
         var body: some View {
             VStack(alignment: .leading, spacing: Constants.headerSpacing) {
@@ -143,7 +143,7 @@ private extension StoredPaymentMethodManagementListView {
         let isRemoving: Bool
         let removeButtonTitle: String
         let theme: CheckoutTheme
-        let onRemove: (StoredPaymentMethodManagementItem) -> Void
+        let onRemove: @MainActor (StoredPaymentMethodManagementItem) -> Void
 
         var body: some View {
             HStack(spacing: Constants.itemSpacing) {

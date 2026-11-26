@@ -70,7 +70,7 @@ func generate(_ name: String, _ key: String, _ translation: String) -> String {
 
 func generateStruct(_ lines: [String], indent: String = indent) -> String {
     let generatedLines: [[String]] = [
-        ["@_spi(AdyenInternal)", "public struct \(structName) {", ""],
+        ["@_spi(AdyenInternal)", "public struct \(structName): Sendable {", ""],
         indentLines(lines, with: indent),
         indentLines(["", "internal let key: String", ""], with: indent),
         indentLines(generateInit(), with: indent),

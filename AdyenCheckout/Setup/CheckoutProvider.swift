@@ -10,6 +10,7 @@ import AdyenSession
 import Foundation
 
 /// Creates checkout cores with the context and callbacks for each flow.
+@MainActor
 internal class CheckoutProvider: CheckoutProviding {
 
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
@@ -144,26 +145,27 @@ internal class CheckoutProvider: CheckoutProviding {
             // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
             // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init()
             //   and internally fetch what is required for analytics.
-            async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-                with: analyticsApiClient
-            )
+            let checkoutAttemptIdTask = Task {
+                await checkoutAttemptIdProvider.fetchCheckoutAttemptId(with: analyticsApiClient)
+            }
+            defer { checkoutAttemptIdTask.cancel() }
+
+            async let browserInfo = BrowserInfo()
 
             // TODO: Improvement: Suggestion: instead of fetching the publicKey, which requires a bit of searching to understand
             // that it is being used for encryption ex: card encryption.
             // If there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup
             // and key is being used for encryption and it is mapped to the clientId.
-            async let publicKey = try await publicKeyProvider.fetchPublicKey(
+            let publicKey = try await publicKeyProvider.fetchPublicKey(
                 apiClient: apiClient,
                 clientKey: configuration.apiContext.clientKey
             )
-
-            async let browserInfo = BrowserInfo()
 
             return try await AdyenContext(
                 apiContext: configuration.apiContext,
                 amount: nil,
                 publicKey: publicKey,
-                checkoutAttemptId: checkoutAttemptId,
+                checkoutAttemptId: checkoutAttemptIdTask.value,
                 browserInfo: browserInfo,
                 analyticsAPIContext: configuration.analyticsApiContext,
                 analyticsConfiguration: configuration.analyticsConfiguration

@@ -7,6 +7,7 @@
 import UIKit
 
 /// Manages the form items and their views.
+@MainActor
 internal final class FormViewItemManager {
     
     // MARK: - Properties

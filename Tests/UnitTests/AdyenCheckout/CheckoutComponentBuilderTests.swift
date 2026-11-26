@@ -13,16 +13,16 @@
 import PassKit
 import XCTest
 
+// swiftlint:disable type_body_length
 @MainActor
 final class CheckoutComponentBuilderTests: XCTestCase {
     
-    var checkoutConfiguration: CheckoutConfiguration!
+    lazy var checkoutConfiguration: CheckoutConfiguration! = makeCheckoutConfiguration()
     var context: AdyenContext!
     
     override func setUp() {
         super.setUp()
         context = Dummy.context
-        checkoutConfiguration = makeCheckoutConfiguration()
     }
 
     override func tearDown() {
@@ -1208,6 +1208,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
     }
 }
+
+// swiftlint:enable type_body_length
 
 private final class CheckoutLocalizationProviderMock: CheckoutLocalizationProvider {
     private(set) var recordedCalls: [(locale: Locale, key: CheckoutLocalizationKey)] = []
