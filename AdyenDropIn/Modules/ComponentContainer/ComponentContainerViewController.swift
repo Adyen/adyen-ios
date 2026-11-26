@@ -101,10 +101,12 @@ internal class ComponentContainerViewController: UIViewController {
             navigationItem.searchController = searchController
             navigationItem.preferredSearchBarPlacement = componentNavigationItem.preferredSearchBarPlacement
             navigationItem.hidesSearchBarWhenScrolling = componentNavigationItem.hidesSearchBarWhenScrolling
-            if #available(iOS 26.0, *) {
-                navigationItem.searchBarPlacementAllowsToolbarIntegration =
-                    componentNavigationItem.searchBarPlacementAllowsToolbarIntegration
-            }
+            #if compiler(>=6.2)
+                if #available(iOS 26.0, *) {
+                    navigationItem.searchBarPlacementAllowsToolbarIntegration =
+                        componentNavigationItem.searchBarPlacementAllowsToolbarIntegration
+                }
+            #endif
             definesPresentationContext = true
         }
         // Adopt the component's bar appearance too, for example a solid background behind its search bar.

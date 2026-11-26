@@ -90,9 +90,11 @@ extension SearchViewController {
             // Pin the search bar below the title. From iOS 26, iPhone otherwise places it in the bottom toolbar.
             navigationItem.preferredSearchBarPlacement = .stacked
             navigationItem.hidesSearchBarWhenScrolling = false
-            if #available(iOS 26.0, *) {
-                navigationItem.searchBarPlacementAllowsToolbarIntegration = false
-            }
+            #if compiler(>=6.2)
+                if #available(iOS 26.0, *) {
+                    navigationItem.searchBarPlacementAllowsToolbarIntegration = false
+                }
+            #endif
             definesPresentationContext = true
         }
 
