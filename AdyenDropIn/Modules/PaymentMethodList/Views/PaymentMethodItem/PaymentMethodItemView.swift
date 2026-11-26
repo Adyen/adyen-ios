@@ -108,14 +108,14 @@ internal final class PaymentMethodItemView: UIView {
     // MARK: - Properties
 
     private var item: PaymentMethodItem
-    private let imageLoader: ImageLoader
+    private let imageLoader: ImageLoading
 
     /// The moment the highlight became visible, used to keep it on screen long enough to be seen.
     private var highlightedAt: TimeInterval?
 
     // MARK: - Initializers
 
-    internal init(item: PaymentMethodItem, imageLoader: ImageLoader = ImageLoader()) {
+    internal init(item: PaymentMethodItem, imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
         self.item = item
         self.imageLoader = imageLoader
         super.init(frame: .zero)
