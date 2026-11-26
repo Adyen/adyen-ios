@@ -22,6 +22,19 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("1234"))
     }
     
+    func test_isValid_whenCalledFromAnotherBrandObserver_shouldUseNewBrandLength() {
+        let observer = AdyenObservable<CardBrand?>(.masterCard)
+        let validator = CardSecurityCodeValidator(publisher: observer)
+        var results: [Bool] = []
+        _ = observer.addEventHandler { _ in
+            results.append(validator.isValid("123"))
+        }
+
+        observer.wrappedValue = .americanExpress
+
+        XCTAssertEqual(results, [false])
+    }
+
     func test_defaultLength_givenNilBrand_shouldExpectThreeDigits() {
         let observer = AdyenObservable<CardBrand?>(nil)
         let validator = CardSecurityCodeValidator(publisher: observer)
