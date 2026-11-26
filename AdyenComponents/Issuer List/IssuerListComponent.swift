@@ -161,7 +161,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
                 self?.sendSearchIssuerEvent()
             }
         }
-        return listItems(from: filteredIssuers(for: searchText))
+        return filteredIssuers(for: searchText).map { issuerItems[$0.index] }
     }
 
     private func filteredIssuers(for searchText: String) -> [(index: Int, issuer: Issuer)] {
@@ -175,39 +175,41 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
         }
     }
     
-    private func listItems(from issuers: [(index: Int, issuer: Issuer)]) -> [ListItem] {
-        issuers.map { index, issuer -> ListItem in
+    /// The list items of all issuers, in the order of the payment method's issuers.
+    /// They are created once, so that a selection updates them in place instead of reloading the list.
+    private lazy var issuerItems: [ListItem] = issuerListPaymentMethod.issuers.enumerated().map { index, issuer -> ListItem in
 
-            let logoUrl = LogoURLProvider.logoURL(
-                for: issuer,
-                localizedParameters: configuration.localizationParameters,
-                paymentMethod: issuerListPaymentMethod,
-                environment: context.apiContext.environment
-            )
-            let listItem = ListItem(
-                title: issuer.name,
-                icon: .init(url: logoUrl),
-                titleEmphasis: .primary,
-                horizontalContentInset: Layout.listItemHorizontalInset,
-                isSelected: index == selectedIssuerIndex,
-                selectionHandler: { [weak self] in
-                    self?.selectIssuer(at: index)
-                }
-            )
-            listItem.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: listItem.title
-            )
-            return listItem
-        }
+        let logoUrl = LogoURLProvider.logoURL(
+            for: issuer,
+            localizedParameters: configuration.localizationParameters,
+            paymentMethod: issuerListPaymentMethod,
+            environment: context.apiContext.environment
+        )
+        let listItem = ListItem(
+            title: issuer.name,
+            icon: .init(url: logoUrl),
+            titleEmphasis: .primary,
+            horizontalContentInset: Layout.listItemHorizontalInset,
+            selectionHandler: { [weak self] in
+                self?.selectIssuer(at: index)
+            }
+        )
+        listItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: listItem.title
+        )
+        return listItem
     }
 
     private func selectIssuer(at index: Int) {
         searchViewController.endSearch()
+        if let selectedIssuerIndex {
+            issuerItems[selectedIssuerIndex].isSelected = false
+        }
+        issuerItems[index].isSelected = true
         selectedIssuerIndex = index
         setShowsError(false)
         sendIssuerSelectedEvent(issuerListPaymentMethod.issuers[index])
-        searchViewController.reloadResults()
     }
     
     /// Shows or hides the validation error, scrolling the header into view whenever the error is shown.

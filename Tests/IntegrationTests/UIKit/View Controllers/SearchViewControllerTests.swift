@@ -259,21 +259,6 @@ class SearchViewControllerTests: XCTestCase {
         )
     }
 
-    func test_reloadResults_shouldRequestResultsForCurrentSearchText() {
-        var lookups: [String] = []
-        let viewModel = SearchViewController.ViewModel(style: DummyStyle()) { searchTerm, handler in
-            lookups.append(searchTerm)
-            handler([ListItem(title: "Result")])
-        }
-        let searchViewController = SearchViewController(viewModel: viewModel, emptyView: emptyView)
-        searchViewController.loadViewIfNeeded()
-        searchViewController.searchBar(searchViewController.searchBar, textDidChange: "term")
-
-        searchViewController.reloadResults()
-
-        XCTAssertEqual(lookups, ["", "term", "term"])
-    }
-
     func test_searchController_whenSearchIsCancelled_shouldRequestAllResults() throws {
         var lookups: [String] = []
         let searchViewController = makeNavigationBarSearchViewController { lookups.append($0) }

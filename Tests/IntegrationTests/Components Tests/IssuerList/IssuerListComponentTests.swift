@@ -68,6 +68,42 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertEqual(selectedRowIndices(in: listViewController), [2])
     }
 
+    func test_selectingIssuer_shouldKeepListSectionsAndItems() throws {
+        // Given
+        let listViewController = try presentList()
+        let sections = listViewController.sections
+
+        // When
+        selectRow(at: 1, in: listViewController)
+
+        // Then
+        XCTAssertEqual(listViewController.sections, sections)
+        XCTAssertEqual(listViewController.sections.flatMap(\.items), sections.flatMap(\.items))
+    }
+
+    func test_selectingIssuer_whenScrolledDown_shouldKeepScrollPosition() throws {
+        // Given
+        sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 30), context: context)
+        let listViewController = try presentList()
+        let tableView: UITableView = listViewController.tableView
+        scrollToBottom(of: tableView)
+        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y / 2), animated: false)
+        tableView.layoutIfNeeded()
+        let visibleIndexPaths = try XCTUnwrap(tableView.indexPathsForVisibleRows)
+        let indexPath = visibleIndexPaths[visibleIndexPaths.count / 2]
+        let contentOffset = tableView.contentOffset
+        let rowFrame = tableView.rectForRow(at: indexPath)
+
+        // When
+        listViewController.tableView(tableView, didSelectRowAt: indexPath)
+        tableView.layoutIfNeeded()
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertEqual(tableView.contentOffset.y, contentOffset.y, accuracy: 0.1)
+        XCTAssertEqual(tableView.rectForRow(at: indexPath).minY, rowFrame.minY, accuracy: 0.1)
+    }
+
     func test_selectedIssuer_shouldShowRoundedBackgroundInsetInsideFullWidthList() throws {
         // Given
         let listViewController = try presentList()
@@ -550,6 +586,19 @@ private extension IssuerListComponentTests {
 
     func isScrolledToTop(_ tableView: UITableView) -> Bool {
         abs(tableView.contentOffset.y + tableView.adjustedContentInset.top) < 1
+    }
+
+    /// Scrolls to the bottom in steps, so the table measures the rows on the way instead of estimating their heights.
+    func scrollToBottom(of tableView: UITableView) {
+        tableView.layoutIfNeeded()
+        var maximumOffset: CGFloat {
+            tableView.contentSize.height + tableView.adjustedContentInset.bottom - tableView.bounds.height
+        }
+        while tableView.contentOffset.y < maximumOffset - 1 {
+            let nextOffset = min(tableView.contentOffset.y + tableView.bounds.height / 2, maximumOffset)
+            tableView.setContentOffset(CGPoint(x: 0, y: nextOffset), animated: false)
+            tableView.layoutIfNeeded()
+        }
     }
 
     func selectedRowIndices(in listViewController: ListViewController) -> [Int] {

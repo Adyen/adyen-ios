@@ -347,11 +347,6 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
 extension SearchViewController {
 
-    /// Reloads the results for the current search text, for example after the state of the results changed.
-    package func reloadResults() {
-        viewModel.handleSearchTextDidChange(currentSearchText)
-    }
-
     /// Dismisses the keyboard and ends the active search, keeping the search text and its results.
     ///
     /// - Parameter completion: Called once the search is no longer presented,

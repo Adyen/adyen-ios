@@ -58,6 +58,41 @@ final class ListCellTests: XCTestCase {
         XCTAssertTrue(cell.accessibilityTraits.contains(.selected))
     }
 
+    func test_cell_whenDisplayedItemIsSelectedAndDeselected_shouldUpdateSelectedAppearance() throws {
+        let item = makeItem()
+        let cell = makeCell(item: item)
+        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+
+        item.isSelected = true
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.container)
+        XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertTrue(cell.accessibilityTraits.contains(.selected))
+
+        item.isSelected = false
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.background)
+        XCTAssertTrue(checkmarkImageView.isHidden)
+        XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
+    }
+
+    func test_cell_whenItemIsReplaced_shouldNotFollowSelectionOfPreviousItem() throws {
+        let previousItem = makeItem()
+        let cell = makeCell(item: previousItem)
+        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+        cell.item = makeItem()
+        cell.layoutIfNeeded()
+
+        previousItem.isSelected = true
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.background)
+        XCTAssertTrue(checkmarkImageView.isHidden)
+        XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
+    }
+
     func test_cell_whenSelectedItemHasTrailingText_shouldShowTrailingTextAndCheckmark() throws {
         let trailingText = "Trailing text"
         let cell = makeCell(

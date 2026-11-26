@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A cell in a ListViewController.
-package final class ListCell: UITableViewCell {
+package final class ListCell: UITableViewCell, AdyenObserver {
 
     override package init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,11 +82,27 @@ package final class ListCell: UITableViewCell {
             accessibilityLabel = item?.accessibilityLabel
             isAccessibilityElement = item != nil
             updateSelectedState()
+            observeSelection()
         }
     }
 
     private func updateSelectedState() {
         accessibilityMarkAsSelected(item?.isSelected == true)
+    }
+
+    private var selectionObservation: Observation?
+
+    /// Follows the selection of the item, which can change while the item is displayed.
+    private func observeSelection() {
+        if let selectionObservation {
+            remove(selectionObservation)
+        }
+        selectionObservation = item.map { item in
+            observe(item.$isSelected) { [weak self] _ in
+                self?.updateSelectedState()
+                self?.setNeedsUpdateConfiguration()
+            }
+        }
     }
     
     // MARK: - Internal
