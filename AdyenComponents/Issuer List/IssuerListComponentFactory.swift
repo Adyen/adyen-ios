@@ -25,13 +25,21 @@ package struct IssuerListComponentFactory: PaymentComponentFactory {
     ///   - context: The context object.
     ///   - configuration: The configuration for the component.
     /// - Returns: A configured issuer list component.
+    /// - Throws: A `CheckoutError` with the `paymentMethodFailure` code if the payment method has no issuers.
     package func create(
         with paymentMethod: IssuerListPaymentMethod,
         context: AdyenContext,
         configuration: IssuerListConfiguration,
         callbacks _: Never?
-    ) -> IssuerListComponent {
-        IssuerListComponent(
+    ) throws -> IssuerListComponent {
+        guard isAvailable(for: paymentMethod, configuration: configuration) else {
+            throw CheckoutError(
+                code: .paymentMethodFailure,
+                message: "Payment method \(paymentMethod.type.rawValue) has no issuers to select from."
+            )
+        }
+
+        return IssuerListComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration
@@ -42,10 +50,11 @@ package struct IssuerListComponentFactory: PaymentComponentFactory {
         IssuerListConfiguration()
     }
 
+    /// Returns `false` if the payment method has no issuers, because the payment can't be submitted without selecting one.
     package func isAvailable(
-        for _: Method,
+        for paymentMethod: Method,
         configuration _: Configuration
     ) -> Bool {
-        true
+        !paymentMethod.issuers.isEmpty
     }
 }

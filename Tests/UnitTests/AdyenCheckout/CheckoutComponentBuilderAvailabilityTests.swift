@@ -129,6 +129,27 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
         XCTAssertFalse(CheckoutComponentBuilder.isAvailable(forAnyPaymentMethod: applePay, configuration: configuration))
     }
 
+    // MARK: - Issuer list
+
+    func test_isAvailable_withIssuerListWithoutIssuers_shouldReturnFalse() throws {
+        let paymentMethod = try AdyenCoder.decode([
+            "type": "eps",
+            "name": "EPS",
+            "issuers": [[String: String]]()
+        ] as [String: Any]) as IssuerListPaymentMethod
+        let configuration = makeCheckoutConfiguration()
+
+        XCTAssertFalse(CheckoutComponentBuilder.isAvailable(forAnyPaymentMethod: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try CheckoutComponentBuilder.build(
+                forAnyPaymentMethod: paymentMethod,
+                configuration: configuration,
+                policy: .components(configuration),
+                context: context
+            )
+        )
+    }
+
     // MARK: - Configuration resolution
 
     func test_isAvailable_withMerchantConfiguration_shouldPassMerchantConfigurationToFactory() throws {

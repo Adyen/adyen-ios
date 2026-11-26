@@ -56,7 +56,7 @@ final class IssuerListComponentFactoryTests: XCTestCase {
         let paymentMethod = try makePaymentMethod()
 
         // When
-        let component = factory.create(
+        let component = try factory.create(
             with: paymentMethod,
             context: context,
             configuration: factory.defaultConfiguration(),
@@ -76,7 +76,7 @@ final class IssuerListComponentFactoryTests: XCTestCase {
         configuration.showsSubmitButton = false
 
         // When
-        let component = factory.create(
+        let component = try factory.create(
             with: paymentMethod,
             context: context,
             configuration: configuration,
@@ -116,11 +116,28 @@ final class IssuerListComponentFactoryTests: XCTestCase {
         let configuration = factory.defaultConfiguration()
 
         // When
-        let component1 = factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
-        let component2 = factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
+        let component1 = try factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
+        let component2 = try factory.create(with: paymentMethod, context: context, configuration: configuration, callbacks: nil)
 
         // Then
         XCTAssertNotIdentical(component1, component2)
+    }
+
+    func test_create_withoutIssuers_shouldThrowPaymentMethodFailure() throws {
+        // Given
+        let paymentMethod = try makePaymentMethod(issuerCount: 0)
+
+        // When / Then
+        XCTAssertThrowsError(
+            try factory.create(
+                with: paymentMethod,
+                context: context,
+                configuration: factory.defaultConfiguration(),
+                callbacks: nil
+            )
+        ) { error in
+            XCTAssertEqual((error as? CheckoutError)?.code, .paymentMethodFailure)
+        }
     }
 
     // MARK: - Availability Tests
@@ -129,8 +146,8 @@ final class IssuerListComponentFactoryTests: XCTestCase {
         XCTAssertTrue(try factory.isAvailable(for: makePaymentMethod(), configuration: factory.defaultConfiguration()))
     }
 
-    func test_isAvailable_withoutIssuers_shouldReturnTrue() throws {
-        XCTAssertTrue(try factory.isAvailable(for: makePaymentMethod(issuerCount: 0), configuration: factory.defaultConfiguration()))
+    func test_isAvailable_withoutIssuers_shouldReturnFalse() throws {
+        XCTAssertFalse(try factory.isAvailable(for: makePaymentMethod(issuerCount: 0), configuration: factory.defaultConfiguration()))
     }
 
     // MARK: - Helpers
