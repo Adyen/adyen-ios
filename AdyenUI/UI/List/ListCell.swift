@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A cell in a ListViewController.
-package final class ListCell: UITableViewCell {
+package final class ListCell: UITableViewCell, AdyenObserver {
 
     override package init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,8 +37,34 @@ package final class ListCell: UITableViewCell {
     }
 
     private func applyTheme() {
-        backgroundColor = item.map { $0.isSelected ? theme.colors.container : theme.colors.background }
         contentView.backgroundColor = .clear
+        setNeedsUpdateConfiguration()
+    }
+
+    override package func updateConfiguration(using state: UICellConfigurationState) {
+        var background = UIBackgroundConfiguration.listGroupedCell().updated(for: state)
+        if !state.isHighlighted, !state.isSelected {
+            background.backgroundColor = item?.isSelected == true ? theme.colors.container : theme.colors.background
+        }
+        background.cornerRadius = AdyenUIConstants.defaultCornerRadius
+        background.backgroundInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: rowHorizontalInset,
+            bottom: 0,
+            trailing: rowHorizontalInset
+        )
+        backgroundConfiguration = background
+    }
+
+    // MARK: - Row Inset
+
+    /// The horizontal distance between the row, including its background, and the cell edges.
+    package var rowHorizontalInset: CGFloat = 0 {
+        didSet {
+            itemViewLeadingConstraint.constant = rowHorizontalInset
+            itemViewTrailingConstraint.constant = -rowHorizontalInset
+            setNeedsUpdateConfiguration()
+        }
     }
 
     // MARK: - Item
@@ -56,19 +82,27 @@ package final class ListCell: UITableViewCell {
             accessibilityLabel = item?.accessibilityLabel
             isAccessibilityElement = item != nil
             updateSelectedState()
+            observeSelection()
         }
     }
 
     private func updateSelectedState() {
-        let isSelected = item?.isSelected == true
+        accessibilityMarkAsSelected(item?.isSelected == true)
+    }
 
-        adyen.round(
-            using: isSelected
-                ? .fixed(AdyenUIConstants.defaultCornerRadius)
-                : .none
-        )
-        clipsToBounds = isSelected
-        accessibilityMarkAsSelected(isSelected)
+    private var selectionObservation: Observation?
+
+    /// Follows the selection of the item, which can change while the item is displayed.
+    private func observeSelection() {
+        if let selectionObservation {
+            remove(selectionObservation)
+        }
+        selectionObservation = item.map { item in
+            observe(item.$isSelected) { [weak self] _ in
+                self?.updateSelectedState()
+                self?.setNeedsUpdateConfiguration()
+            }
+        }
     }
     
     // MARK: - Internal
@@ -145,6 +179,10 @@ package final class ListCell: UITableViewCell {
         
         return itemView
     }()
+
+    private lazy var itemViewLeadingConstraint = itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+
+    private lazy var itemViewTrailingConstraint = itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
     
     // MARK: - Layout
     
@@ -162,8 +200,8 @@ package final class ListCell: UITableViewCell {
     private func configureConstraints() {
         let constraints = [
             itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemViewLeadingConstraint,
+            itemViewTrailingConstraint,
             itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)

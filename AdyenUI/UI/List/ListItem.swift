@@ -56,7 +56,8 @@ package class ListItem: FormItem {
     package let horizontalContentInset: CGFloat?
 
     /// Whether the item is currently selected.
-    package let isSelected: Bool
+    /// The views displaying the item follow it, so changing it updates them in place.
+    @AdyenObservable(false) package var isSelected: Bool
 
     /// The handler to invoke when the item is selected.
     package var selectionHandler: (() -> Void)?
@@ -107,13 +108,13 @@ package class ListItem: FormItem {
         self.titleEmphasis = titleEmphasis
         self.horizontalContentInset = horizontalContentInset
         self.identifier = identifier
-        self.isSelected = isSelected
         self.accessibilityLabel = accessibilityLabel ?? [
             title,
             subtitle,
             trailingInfo?.accessibilityLabel
         ].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
+        self.isSelected = isSelected
     }
     
     package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

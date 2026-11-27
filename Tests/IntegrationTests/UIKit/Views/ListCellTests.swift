@@ -22,10 +22,9 @@ final class ListCellTests: XCTestCase {
         let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
         let titleStackView = try XCTUnwrap(titleLabel.superview)
 
-        XCTAssertEqual(cell.backgroundColor, Colors.container)
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.container)
+        XCTAssertEqual(cell.backgroundConfiguration?.cornerRadius, CGFloat(AdyenUIConstants.defaultCornerRadius))
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
-        XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
-        XCTAssertTrue(cell.clipsToBounds)
         XCTAssertNotNil(checkmarkImageView.image)
         XCTAssertFalse(checkmarkImageView.isHidden)
         XCTAssertEqual(checkmarkImageView.bounds.size, CGSize(width: 24, height: 24))
@@ -42,10 +41,8 @@ final class ListCellTests: XCTestCase {
 
         let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
 
-        XCTAssertEqual(cell.backgroundColor, Colors.background)
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.background)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
-        XCTAssertEqual(cell.layer.cornerRadius, 0)
-        XCTAssertFalse(cell.clipsToBounds)
         XCTAssertTrue(checkmarkImageView.isHidden)
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
         XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
@@ -53,13 +50,42 @@ final class ListCellTests: XCTestCase {
         cell.item = makeItem(isSelected: true)
         cell.layoutIfNeeded()
 
-        XCTAssertEqual(cell.backgroundColor, Colors.container)
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.container)
+        XCTAssertEqual(cell.backgroundConfiguration?.cornerRadius, CGFloat(AdyenUIConstants.defaultCornerRadius))
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
-        XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
-        XCTAssertTrue(cell.clipsToBounds)
         XCTAssertFalse(checkmarkImageView.isHidden)
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
         XCTAssertTrue(cell.accessibilityTraits.contains(.selected))
+    }
+
+    func test_cell_whenDisplayedItemIsSelectedAndDeselected_shouldUpdateSelectedAppearance() throws {
+        let item = makeItem()
+        let cell = makeCell(item: item)
+        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+
+        item.isSelected = true
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.container)
+        XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertTrue(cell.accessibilityTraits.contains(.selected))
+
+        item.isSelected = false
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(cell.backgroundConfiguration?.backgroundColor, Colors.background)
+        XCTAssertTrue(checkmarkImageView.isHidden)
+        XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
+    }
+
+    func test_cell_whenItemIsReplaced_shouldStopObservingPreviousItem() {
+        let previousItem = makeItem()
+        let cell = makeCell(item: previousItem)
+        XCTAssertFalse(previousItem.$isSelected.eventHandlers.isEmpty)
+
+        cell.item = makeItem()
+
+        XCTAssertTrue(previousItem.$isSelected.eventHandlers.isEmpty)
     }
 
     func test_cell_whenSelectedItemHasTrailingText_shouldShowTrailingTextAndCheckmark() throws {
@@ -106,6 +132,20 @@ final class ListCellTests: XCTestCase {
             cell.contentView.layoutMargins.left,
             accuracy: 0.1
         )
+    }
+
+    func test_cell_whenRowHorizontalInsetProvided_shouldInsetBackgroundAndContent() throws {
+        let cell = makeCell(item: makeItem(isSelected: true, horizontalContentInset: 14))
+
+        cell.rowHorizontalInset = 16
+        cell.layoutIfNeeded()
+
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let backgroundInsets = try XCTUnwrap(cell.backgroundConfiguration?.backgroundInsets)
+
+        XCTAssertEqual(backgroundInsets, NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+        XCTAssertEqual(cell.backgroundConfiguration?.cornerRadius, CGFloat(AdyenUIConstants.defaultCornerRadius))
+        XCTAssertEqual(titleLabel.convert(titleLabel.bounds, to: cell.contentView).minX, 30, accuracy: 0.1)
     }
 
     func test_cell_whenTitleEmphasisPrimary_shouldUsePrimaryColorForTitleAndCheckmark() throws {

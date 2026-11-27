@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// Displays a list item.
-package final class ListItemView: UIView, AnyFormItemView {
+package final class ListItemView: UIView, AnyFormItemView, AdyenObserver {
 
     private enum Layout {
         static let checkmarkSize = CGSize(width: 24, height: 24)
@@ -80,6 +80,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         didSet {
             updateItemData(item: item)
             applyTheme()
+            observeSelection()
         }
     }
     
@@ -99,8 +100,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         }
 
         updateTrailingView(for: item)
-        checkmarkImageView.isHidden = item?.isSelected != true
-        updateCheckmarkSpacing()
+        updateCheckmark()
         
         logoView.isHidden = item?.icon == nil
         updateIcon()
@@ -157,6 +157,23 @@ package final class ListItemView: UIView, AnyFormItemView {
             after: titleSubtitleStackView
         )
         contentStackView.setCustomSpacing(Layout.checkmarkLeadingSpacing, after: trailingView)
+    }
+
+    private func updateCheckmark() {
+        checkmarkImageView.isHidden = item?.isSelected != true
+        updateCheckmarkSpacing()
+    }
+
+    private var selectionObservation: Observation?
+
+    /// Follows the selection of the item, which can change while the item is displayed.
+    private func observeSelection() {
+        if let selectionObservation {
+            remove(selectionObservation)
+        }
+        selectionObservation = item.map { item in
+            observe(item.$isSelected) { [weak self] _ in self?.updateCheckmark() }
+        }
     }
     
     private func updateImageView() {
