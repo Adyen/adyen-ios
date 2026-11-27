@@ -26,6 +26,10 @@ package final class ListViewController: UITableViewController {
     /// Vertical spacing below each section that has no footer.
     package var sectionSpacing: CGFloat = 0
 
+    /// The horizontal distance between each row, including its background, and the table view edges.
+    /// Configure before loading the view.
+    package var rowHorizontalInset: CGFloat = 0
+
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
@@ -52,6 +56,7 @@ package final class ListViewController: UITableViewController {
             self?.dataSource.cell(for: tableView, at: indexPath)
         })
         dataSource.theme = theme
+        dataSource.rowHorizontalInset = rowHorizontalInset
         return dataSource
     }()
 

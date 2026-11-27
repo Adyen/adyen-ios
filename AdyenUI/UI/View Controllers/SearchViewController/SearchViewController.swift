@@ -23,47 +23,71 @@ package class SearchViewController: UIViewController, AdyenObserver {
         static let searchBarHorizontalInset: CGFloat = 8
         static let headerTopSpacing: CGFloat = 16
         static let headerBottomSpacing: CGFloat = 24
+        static let footerSpacing: CGFloat = 16
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
+    private var currentSearchText = ""
+    private var isEndingSearch = false
     private var emptyViewBottomConstraint: NSLayoutConstraint?
+    private var footerViewBottomConstraint: NSLayoutConstraint?
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
-    private let resultsHorizontalInset: CGFloat
+    internal let resultsHorizontalInset: CGFloat
     private let searchTextFieldToResultsSpacing: CGFloat?
 
     /// Optional view shown above the search bar (e.g. a title/description header).
     internal let headerView: UIView?
+
+    /// Optional view pinned below the results, above the keyboard (e.g. a submit button).
+    internal let footerView: UIView?
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
+    package lazy var resultsListViewController = makeResultsListViewController()
 
     /// Displays each result in its own section when enabled.
     /// Configure before loading the view.
     package var separatesResultsIntoSections = false
+
+    /// Whether the search bar is shown in the navigation bar and the header scrolls with the results.
+    internal let usesNavigationBarSearchLayout: Bool
+
+    /// Holds the header as the results' table header when ``usesNavigationBarSearchLayout`` is enabled.
+    internal lazy var scrollingHeaderView = UIView()
+
+    /// Shows the search bar in the navigation bar when ``usesNavigationBarSearchLayout`` is enabled.
+    internal lazy var searchController = makeSearchController()
 
     /// Initializes the search view controller.
     ///
     /// - Parameters:
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
+    ///   - headerView: The view shown above the search bar.
+    ///   - footerView: The view pinned below the results, above the keyboard.
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
     ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
+    ///   - usesNavigationBarSearchLayout: Shows the search bar in the navigation bar, where it stays visible while scrolling,
+    ///     and scrolls the header with the results. The navigation title is always shown inline.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,
         headerView: UIView? = nil,
+        footerView: UIView? = nil,
         resultsHorizontalInset: CGFloat = 0,
-        searchTextFieldToResultsSpacing: CGFloat? = nil
+        searchTextFieldToResultsSpacing: CGFloat? = nil,
+        usesNavigationBarSearchLayout: Bool = false
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
         self.headerView = headerView
+        self.footerView = footerView
         self.resultsHorizontalInset = resultsHorizontalInset
         self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
+        self.usesNavigationBarSearchLayout = usesNavigationBarSearchLayout
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -83,7 +107,10 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        .prominent(
+        if usesNavigationBarSearchLayout {
+            return searchController.searchBar
+        }
+        return .prominent(
             placeholder: viewModel.searchBarPlaceholder,
             theme: viewModel.theme,
             delegate: self
@@ -92,7 +119,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     override package func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = viewModel.style.backgroundColor
+        view.backgroundColor = viewModel.theme.colors.background
 
         view.addSubview(loadingView)
         
@@ -110,15 +137,22 @@ package class SearchViewController: UIViewController, AdyenObserver {
         resultsListViewController.didMove(toParent: self)
         resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        if viewModel.shouldShowSearchBar {
-            searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
-            searchBar.setContentHuggingPriority(.required, for: .vertical)
-            view.addSubview(searchBar)
+        headerView?.translatesAutoresizingMaskIntoConstraints = false
+
+        if usesNavigationBarSearchLayout {
+            setupNavigationBarSearchLayout()
+        } else {
+            if viewModel.shouldShowSearchBar {
+                searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+                searchBar.setContentHuggingPriority(.required, for: .vertical)
+                view.addSubview(searchBar)
+            }
+            headerView.map(view.addSubview)
         }
 
-        if let headerView {
-            headerView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(headerView)
+        if let footerView {
+            footerView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(footerView)
         }
         
         setupConstraints()
@@ -135,6 +169,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
         viewModel.handleViewDidLoad()
     }
     
+    override package func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutScrollingHeaderIfNeeded()
+    }
+
     override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -166,6 +205,42 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func setupConstraints() {
+        // In the navigation bar search layout, the results start at the top of the view, under the navigation bar,
+        // and the header is part of their content.
+        let (resultsTopAnchor, resultsTopSpacing) = usesNavigationBarSearchLayout
+            ? (view.topAnchor, 0)
+            : setupFixedHeaderConstraints()
+        // The empty and loading views sit below the header, wherever it is.
+        let placeholderTopAnchor = usesNavigationBarSearchLayout ? scrollingHeaderView.bottomAnchor : resultsTopAnchor
+        let placeholderTopSpacing = usesNavigationBarSearchLayout ? 0 : resultsTopSpacing
+        let (resultsBottomAnchor, resultsBottomSpacing) = setupFooterConstraints()
+        // The navigation bar search layout insets the rows inside the table instead.
+        let tableHorizontalInset = usesNavigationBarSearchLayout ? 0 : resultsHorizontalInset
+
+        NSLayoutConstraint.activate([
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: tableHorizontalInset),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -tableHorizontalInset),
+            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: resultsBottomAnchor, constant: -resultsBottomSpacing),
+            
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: placeholderTopAnchor, constant: placeholderTopSpacing),
+            
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            loadingView.topAnchor.constraint(equalTo: placeholderTopAnchor, constant: placeholderTopSpacing),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
+        ])
+        
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        emptyViewBottomConstraint?.isActive = true
+    }
+
+    /// Activates the constraints of the header and the search bar shown above the results.
+    ///
+    /// - Returns: The anchor and spacing the results should start at.
+    private func setupFixedHeaderConstraints() -> (anchor: NSLayoutYAxisAnchor, spacing: CGFloat) {
 
         let contentTopAnchor: NSLayoutYAxisAnchor
         let contentTopSpacing: CGFloat
@@ -203,31 +278,15 @@ package class SearchViewController: UIViewController, AdyenObserver {
             resultsTopSpacing = contentTopSpacing
         }
         
-        NSLayoutConstraint.activate([
-            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: resultsHorizontalInset),
-            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -resultsHorizontalInset),
-            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            emptyView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            
-            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            loadingView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
-            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
-        ])
-        
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        emptyViewBottomConstraint?.isActive = true
+        return (resultsTopAnchor, resultsTopSpacing)
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {
         
         emptyView.isHidden = true
         loadingView.stopAnimating()
-        resultsListViewController.view.isHidden = true
+        // The header is part of the results, so they stay visible to keep it on screen.
+        resultsListViewController.view.isHidden = !usesNavigationBarSearchLayout
         
         switch interfaceState {
             
@@ -237,6 +296,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
         case let .empty(searchTerm):
             emptyView.isHidden = false
             emptyView.searchTerm = searchTerm
+            if usesNavigationBarSearchLayout {
+                resultsListViewController.reload(newSections: [])
+            }
             
         case let .showingResults(results):
             let sections = separatesResultsIntoSections
@@ -248,10 +310,118 @@ package class SearchViewController: UIViewController, AdyenObserver {
         }
     }
     
-    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
+    override package var preferredContentSize: CGSize {
+        get {
+            guard resultsListViewController.isViewLoaded else { return .zero }
+            let innerSize = resultsListViewController.preferredContentSize
+            return CGSize(
+                width: innerSize.width,
+                height: .greatestFiniteMagnitude
+            )
+        }
+
+        // swiftlint:disable:next unused_setter_value
+        set { AdyenAssertion.assertionFailure(message: """
+        PreferredContentSize is overridden for this view controller.
+        getter - returns content size of scroll view.
+        setter - no implemented.
+        """) }
+    }
+    
+    internal func hideNavigationBarHairline() {
+        let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = viewModel.theme.colors.background
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+    }
+
+    @objc
+    private func dismissKeyboardTapped() {
+        searchBar.resignFirstResponder()
+    }
+}
+
+// MARK: - Results & Header
+
+extension SearchViewController {
+
+    /// Dismisses the keyboard and ends the active search, keeping the search text and its results.
+    ///
+    /// - Parameter completion: Called once the search is no longer presented,
+    ///   for example to present another view controller from the same context.
+    package func endSearch(completion: (() -> Void)? = nil) {
+        searchBar.resignFirstResponder()
+        guard usesNavigationBarSearchLayout else {
+            completion?()
+            return
+        }
+        if searchController.isActive {
+            let searchText = searchBar.text
+            isEndingSearch = true
+            searchController.isActive = false
+            isEndingSearch = false
+            searchBar.text = searchText
+        }
+        completion.map(waitUntilSearchIsDismissed)
+    }
+
+    /// Calls the completion once the search is no longer presented, checking again after each of its transitions.
+    private func waitUntilSearchIsDismissed(_ completion: @escaping () -> Void) {
+        guard searchController.presentingViewController != nil else {
+            return completion()
+        }
+        let checkAgain: () -> Void = { [weak self] in
+            self?.waitUntilSearchIsDismissed(completion)
+        }
+        guard let transitionCoordinator = searchController.transitionCoordinator else {
+            return searchController.dismiss(animated: false, completion: checkAgain)
+        }
+        transitionCoordinator.animate(alongsideTransition: nil) { _ in
+            DispatchQueue.main.async(execute: checkAgain)
+        }
+    }
+
+    /// Requests the results for the search text, unless they were already requested for it.
+    internal func updateSearchText(_ searchText: String) {
+        guard searchText != currentSearchText else { return }
+        currentSearchText = searchText
+        viewModel.handleSearchTextDidChange(searchText)
+    }
+}
+
+// MARK: - Footer & Keyboard
+
+private extension SearchViewController {
+
+    /// Activates the footer constraints, if a footer is set.
+    ///
+    /// - Returns: The anchor and spacing the results should end at.
+    func setupFooterConstraints() -> (anchor: NSLayoutYAxisAnchor, spacing: CGFloat) {
+        guard let footerView else { return (view.bottomAnchor, 0) }
+
+        let footerViewBottomConstraint = footerView.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -Layout.footerSpacing
+        )
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            footerViewBottomConstraint
+        ])
+        self.footerViewBottomConstraint = footerViewBottomConstraint
+        return (footerView.topAnchor, Layout.footerSpacing)
+    }
+
+    func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
         
         let updateConstraint: () -> Void = {
-            self.emptyViewBottomConstraint?.constant = -transition.keyboardRect.height
+            let keyboardHeight = transition.keyboardRect.height
+            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            // The footer is pinned to the safe area, which the keyboard already overlaps at the bottom.
+            let footerKeyboardOffset = max(0, keyboardHeight - self.view.safeAreaInsets.bottom)
+            self.footerViewBottomConstraint?.constant = -(Layout.footerSpacing + footerKeyboardOffset)
         }
         
         guard view.window != nil else {
@@ -271,44 +441,12 @@ package class SearchViewController: UIViewController, AdyenObserver {
             completion: nil
         )
     }
-
-    override package var preferredContentSize: CGSize {
-        get {
-            guard resultsListViewController.isViewLoaded else { return .zero }
-            let innerSize = resultsListViewController.preferredContentSize
-            return CGSize(
-                width: innerSize.width,
-                height: .greatestFiniteMagnitude
-            )
-        }
-
-        // swiftlint:disable:next unused_setter_value
-        set { AdyenAssertion.assertionFailure(message: """
-        PreferredContentSize is overridden for this view controller.
-        getter - returns content size of scroll view.
-        setter - no implemented.
-        """) }
-    }
-    
-    private func hideNavigationBarHairline() {
-        let appearance = navigationController?.navigationBar.standardAppearance.copy() ?? UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = viewModel.style.backgroundColor
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-    }
-
-    @objc
-    private func dismissKeyboardTapped() {
-        searchBar.resignFirstResponder()
-    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.handleSearchTextDidChange(searchText)
+        updateSearchText(searchText)
     }
     
     package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -321,5 +459,13 @@ extension SearchViewController: UISearchBarDelegate {
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+extension SearchViewController: UISearchResultsUpdating {
+
+    package func updateSearchResults(for searchController: UISearchController) {
+        guard !isEndingSearch else { return }
+        updateSearchText(searchController.searchBar.text ?? "")
     }
 }

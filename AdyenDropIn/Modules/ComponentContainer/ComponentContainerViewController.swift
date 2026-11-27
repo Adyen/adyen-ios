@@ -82,6 +82,8 @@ internal class ComponentContainerViewController: UIViewController {
         view.addSubview(componentViewController.view)
         componentViewController.didMove(toParent: self)
         setupLayout()
+        // The navigation bar tracks the container, so adopt the scroll view the component declares, e.g. to collapse a large title.
+        setContentScrollView(componentViewController.contentScrollView(for: .top), for: .top)
     }
         
     private func setupLayout() {
@@ -90,8 +92,26 @@ internal class ComponentContainerViewController: UIViewController {
     
     private func setupNavigationItem() {
         navigationItem.title = componentViewController.title
-        navigationItem.largeTitleDisplayMode = .always
+        let componentNavigationItem = componentViewController.navigationItem
+        // Keep the title inline when the component asks for it, otherwise show it large.
+        navigationItem.largeTitleDisplayMode = componentNavigationItem.largeTitleDisplayMode == .never ? .never : .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        // The navigation bar shows the container's item, so adopt the component's search controller.
+        if let searchController = componentNavigationItem.searchController {
+            navigationItem.searchController = searchController
+            navigationItem.preferredSearchBarPlacement = componentNavigationItem.preferredSearchBarPlacement
+            navigationItem.hidesSearchBarWhenScrolling = componentNavigationItem.hidesSearchBarWhenScrolling
+            #if compiler(>=6.2)
+                if #available(iOS 26.0, *) {
+                    navigationItem.searchBarPlacementAllowsToolbarIntegration =
+                        componentNavigationItem.searchBarPlacementAllowsToolbarIntegration
+                }
+            #endif
+            definesPresentationContext = true
+        }
+        // Adopt the component's bar appearance too, for example a solid background behind its search bar.
+        navigationItem.standardAppearance = componentNavigationItem.standardAppearance
+        navigationItem.scrollEdgeAppearance = componentNavigationItem.scrollEdgeAppearance
         if viewModel.isDropInRoot {
             navigationItem.leftBarButtonItem = cancelButtonItem
         }

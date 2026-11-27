@@ -19,6 +19,9 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     /// The theme applied to the cells this data source creates.
     var theme: CheckoutTheme { get set }
     
+    /// The horizontal distance between each row and the table view edges.
+    var rowHorizontalInset: CGFloat { get set }
+    
     /// Reloads all data.
     func reload(newSections: [ListSection], tableView: UITableView, animated: Bool)
     
@@ -42,6 +45,8 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
     internal let cellReuseIdentifier = "Cell"
     
     internal var theme: CheckoutTheme = .default
+    
+    internal var rowHorizontalInset: CGFloat = 0
     
     // MARK: - UITableViewDataSource
     
@@ -85,6 +90,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         }
         
         cell.theme = theme
+        cell.rowHorizontalInset = rowHorizontalInset
         cell.item = sections[indexPath.section].items[indexPath.row]
         
         return cell
