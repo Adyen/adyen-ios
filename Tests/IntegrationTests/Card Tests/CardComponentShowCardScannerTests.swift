@@ -29,6 +29,19 @@ struct CardComponentShowCardScannerTests {
     }
 
     @Test
+    func showCardScanner_disabled_noScannerEventsSent() {
+        let analyticsProvider = AnalyticsProviderMock()
+        let component = CardComponent(
+            paymentMethod: Self.makeCardPaymentMethod(),
+            context: Dummy.context(analyticsProvider: analyticsProvider),
+            configuration: CardConfiguration().showCardScanner(false)
+        )
+        component.viewDidLoad(viewController: component.cardViewController)
+
+        #expect(analyticsProvider.logs.allSatisfy { $0.type != .cardScanner })
+    }
+
+    @Test
     func analytics_includesShowCardScanner() throws {
         let analyticsProvider = AnalyticsProviderMock()
         let component = CardComponent(
