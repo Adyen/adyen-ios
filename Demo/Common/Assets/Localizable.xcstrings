@@ -10,16 +10,16 @@
     "Actions" : {
 
     },
-    "adyen.card.stored.title" : {
+    "adyen.card.numberItem.title" : {
       "extractionState" : "manual"
     },
-    "adyen.dropIn.stored.title" : {
+    "adyen.submitButton.formatted" : {
       "extractionState" : "manual",
       "localizations" : {
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirm %@ payment - HI"
+            "value" : "Pay %@ - HI"
           }
         }
       }

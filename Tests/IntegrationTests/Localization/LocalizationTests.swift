@@ -31,8 +31,8 @@ class LocalizationTests: XCTestCase {
 
     func testEnforcedLocalization() {
         var parameters = LocalizationParameters(enforcedLocale: "it-IT")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Conferma il pagamento di test")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verifica la Carta")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Paga test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Numero carta")
 
         XCTAssertNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)
@@ -40,13 +40,13 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(parameters.locale, "it-IT")
 
         parameters = LocalizationParameters(enforcedLocale: "ar")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "تأكيد الدفع باستخدام test")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "التحقق من بطاقتك")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "دفع test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "رقم البطاقة")
         XCTAssertEqual(parameters.locale, "ar")
 
         parameters = LocalizationParameters(enforcedLocale: "is-IS")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Staðfesta test greiðslu")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Staðfestu kortið þitt")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Greiða test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Kortanúmer")
         XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
         XCTAssertEqual(parameters.locale, "is-IS")
     }
@@ -64,8 +64,8 @@ class LocalizationTests: XCTestCase {
             enforcedLocale: "is-IS",
             bundle: Bundle(for: LocalizationTests.self)
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "TestBundle - Pay test - IS")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle - Card number - IS")
 
         // Fallback to SDK's translation for known locale
         XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
@@ -82,8 +82,8 @@ class LocalizationTests: XCTestCase {
             tableName: "EnforceLocaleTests",
             keySeparator: "-"
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - RO")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - RO")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "TestBundle - Pay test - RO")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle - Card number - RO")
 
         // Fallback to SDK's translation for known locale, ignoring custom separator
         XCTAssertEqual(localizedString(.submitButton, parameters), "Plătiți")
@@ -101,21 +101,21 @@ class LocalizationTests: XCTestCase {
         )
 
         // This string exist on Custom bundle, but SDK will first check on Main bundle
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment - HI")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test - HI")
 
         // Will not find a line on Main bundle and fallback to Custom bundle
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle - Card number - HI")
 
         // Ultimate fallback to English
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
     func test_localizedString_withNilParameters_shouldReturnSDKDefault() {
-        XCTAssertEqual(localizedString(.cardStoredTitle, nil), "Verify your card")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, nil), "Card number")
     }
 
     func test_localizedString_withFormattedKeyAndArguments_shouldFormatString() {
-        XCTAssertEqual(localizedString(.dropInStoredTitle, nil, "test"), "Confirm test payment")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, nil, "test"), "Pay test")
     }
 
     func test_localizedString_withFormattedKeyAndMissingTranslation_shouldFallbackToEnglish() {
@@ -125,7 +125,7 @@ class LocalizationTests: XCTestCase {
             keySeparator: "-"
         )
 
-        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "€1.00"), "Pay €1.00")
+        XCTAssertEqual(localizedString(.continueTo, parameters, "test"), "Continue to test")
     }
 
     func test_localizedString_withUnsupportedEnforcedLocaleAndPartialCustomCoverage_shouldMixCustomAndEnglishFallback() {
@@ -134,7 +134,7 @@ class LocalizationTests: XCTestCase {
             bundle: Bundle(for: LocalizationTests.self)
         )
 
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle - Card number - HI")
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
@@ -143,8 +143,8 @@ class LocalizationTests: XCTestCase {
     /// Default Separator
     func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHost")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Test-Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Test-Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Test-Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Test-Card number")
 
         XCTAssertNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)
@@ -155,8 +155,8 @@ class LocalizationTests: XCTestCase {
     /// Unrecognized Separator
     func testLocalizationWithCustomRecognizedTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: "*")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Test-Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Test-Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Test-Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Test-Card number")
 
         XCTAssertNil(parameters.bundle)
         XCTAssertEqual(parameters.keySeparator, "*")
@@ -167,8 +167,8 @@ class LocalizationTests: XCTestCase {
     /// Recognized Separator
     func testLocalizationWithCustomRecognizedTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Test-Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Test-Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Test-Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Test-Card number")
     }
 
     // MARK: - Custom Bundle
@@ -178,8 +178,8 @@ class LocalizationTests: XCTestCase {
             bundle: Bundle(for: LocalizationTests.self),
             tableName: "AdyenTests"
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle-Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle-Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "TestBundle-Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle-Card number")
 
         XCTAssertEqual(parameters.bundle, Bundle(for: LocalizationTests.self))
         XCTAssertNil(parameters.keySeparator)
@@ -212,8 +212,8 @@ class LocalizationTests: XCTestCase {
             tableName: "AdyenTestsCustomSeparator",
             keySeparator: "_"
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle-Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle-Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "TestBundle-Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle-Card number")
     }
     
     // MARK: - Custom Unrecognized TableName
@@ -221,22 +221,22 @@ class LocalizationTests: XCTestCase {
     /// Default Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: nil)
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     /// Unrecognized Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: "*")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     /// Recognized Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: "_")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     // MARK: - SDK bundle default TableName
@@ -244,22 +244,22 @@ class LocalizationTests: XCTestCase {
     /// Default Separator
     func testLocalizationWithDefaultTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: nil)
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     /// Unrecognized Separator
     func testLocalizationWithDefaultTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "*")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     /// Recognized Separator
     func testLocalizationWithDefaultTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "_")
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "test"), "Pay test")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Card number")
     }
     
     // MARK: - App bundle default TableName
@@ -292,7 +292,7 @@ class LocalizationTests: XCTestCase {
         )
 
         // Keys present in the merchant bundle resolve to the merchant's translations.
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "TestBundle - Card number - HI")
 
         // Keys absent from the merchant bundle fall back to the SDK's English strings.
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
@@ -324,7 +324,7 @@ class LocalizationTests: XCTestCase {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "it-IT").withProvider(provider)
 
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verifica la Carta")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Numero carta")
     }
 
     func test_localizedString_withProviderReturningEmptyString_shouldFallbackToBundleChain() {
@@ -345,9 +345,9 @@ class LocalizationTests: XCTestCase {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters().withProvider(provider)
 
-        // `.cardStoredTitle` has no public `CheckoutLocalizationKey` counterpart. The provider
+        // `.submitButton` has no public `CheckoutLocalizationKey` counterpart. The provider
         // is still consulted, returns nil for the unrecognized key, and the bundle fallback wins.
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
     func test_localizedString_withProvider_shouldPassResolvedLocale() {
@@ -377,15 +377,15 @@ class LocalizationTests: XCTestCase {
     func test_localizedString_withProviderMissingUnsupportedLocaleAndUnknownKey_shouldWarnAndFallback() {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
-        let expected = localizedString(.cardStoredTitle, LocalizationParameters(enforcedLocale: "en-US"))
+        let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "en-US"))
 
         let warnings = recordWarnings {
-            XCTAssertEqual(localizedString(.cardStoredTitle, parameters), expected)
+            XCTAssertEqual(localizedString(.submitButton, parameters), expected)
         }
 
         XCTAssertEqual(
             warnings,
-            [LocalizationWarning(localeIdentifier: "zu", key: LocalizationKey.cardStoredTitle.key, source: .provider)]
+            [LocalizationWarning(localeIdentifier: "zu", key: LocalizationKey.submitButton.key, source: .provider)]
         )
     }
 

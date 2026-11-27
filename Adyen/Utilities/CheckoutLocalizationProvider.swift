@@ -62,7 +62,6 @@ extension CheckoutLocalizationKey {
 extension CheckoutLocalizationKey {
     public static let cardNumber = CheckoutLocalizationKey(localizationKey: .cardNumberItemTitle)
     public static let cardNumberInvalid = CheckoutLocalizationKey(localizationKey: .cardNumberItemInvalid)
-    public static let cardNumberInvalidUnsupportedBrand = CheckoutLocalizationKey(localizationKey: .cardNumberItemUnsupportedBrand)
     public static let cardExpiryDate = CheckoutLocalizationKey(localizationKey: .cardExpiryItemTitle)
     public static let cardExpiryDateHint = CheckoutLocalizationKey(localizationKey: .cardExpiryDateHint)
     public static let cardExpiryDateInvalid = CheckoutLocalizationKey(localizationKey: .cardExpiryItemInvalid)
@@ -82,7 +81,6 @@ extension CheckoutLocalizationKey {
     public static let cardHolderName = CheckoutLocalizationKey(localizationKey: .cardNameItemTitle)
     public static let cardHolderNameInvalid = CheckoutLocalizationKey(localizationKey: .cardNameItemInvalid)
     public static let cardStoreDetailsLabel = CheckoutLocalizationKey(localizationKey: .cardStoreDetailsLabel)
-    public static let cardDualBrandSelectorTitle = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandTitle)
     public static let cardDualBrandSelectorDescription = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandDescription)
     public static let cardSocialSecurityNumber = CheckoutLocalizationKey(name: "cardSocialSecurityNumber")
     public static let cardSocialSecurityNumberInvalid = CheckoutLocalizationKey(name: "cardSocialSecurityNumberInvalid")
