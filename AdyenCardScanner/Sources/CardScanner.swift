@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import OSLog
 import UIKit
 
 /// Details captured from a scanned card.
@@ -21,14 +22,16 @@ public enum CardScanner {
 
     private static let cardScannerAssembler = CardScannerAssembler()
 
+    private static let logger = Logger(subsystem: "com.adyen.AdyenCardScanner", category: "CardScanner")
+
     // MARK: - Public interface
 
     /// Creates and returns a view controller that presents the card scanner interface.
     ///
     /// - Parameters:
-    ///   - localizationBundle: A bundle containing localized strings used in the scanner UI.
-    ///   - completion: A closure called when the scan completes, with either a `CardScanDetails` object
-    ///     on success or a `CardScannerError` on failure.
+    ///   - localizationBundle: A bundle containing localized strings used in the scanner UI.
+    ///   - completion: A closure called when the scan completes, with either a `CardScanDetails` object
+    ///     on success or a `CardScannerError` on failure.
     ///
     /// - Returns: A `UIViewController` that presents the card scanner, or `nil` if scanning is not available.
     public static func createCardScanner(
@@ -42,20 +45,41 @@ public enum CardScanner {
         )
     }
 
-    /// A Boolean value indicating whether card scanning is available on the current device
+    /// A Boolean value indicating whether card scanning is available on the current device.
+    ///
+    /// Scanning is unavailable when the device has no camera, or when `NSCameraUsageDescription`
+    /// is missing or empty in the app's `Info.plist`.
     public static var isAvailable: Bool {
-        cardScannerAssembler.captureDevice != nil
+        isAvailable(
+            hasCaptureDevice: cardScannerAssembler.captureDevice != nil,
+            cameraUsageDescription: cameraUsageDescription()
+        )
+    }
+
+    // MARK: - Internal
+
+    internal static func isAvailable(hasCaptureDevice: Bool, cameraUsageDescription: String?) -> Bool {
+        guard hasCaptureDevice else { return false }
+        guard let cameraUsageDescription, !cameraUsageDescription.isEmpty else {
+            logger.warning("NSCameraUsageDescription is missing or empty in Info.plist. Card scanning is unavailable.")
+            return false
+        }
+        return true
     }
 
     // MARK: - Private
 
+    private static func cameraUsageDescription() -> String? {
+        Bundle.main.object(forInfoDictionaryKey: "NSCameraUsageDescription") as? String
+    }
+
     // swiftlint:disable line_length
     private static func assertCameraUsageDescription() {
-        let cameraUsageDescription = Bundle.main.object(forInfoDictionaryKey: "NSCameraUsageDescription") as? String
-        if let cameraUsageDescription, !cameraUsageDescription.isEmpty { return }
-
-        assertionFailure(
-            "Error: NSCameraUsageDescription is missing from Info.plist. Please add a description for camera usage as required by the AdyenCardScanner SDK."
-        )
+        guard let description = cameraUsageDescription(), !description.isEmpty else {
+            assertionFailure(
+                "Error: NSCameraUsageDescription is missing from Info.plist. Please add a description for camera usage as required by the AdyenCardScanner SDK."
+            )
+            return
+        }
     }
 }
