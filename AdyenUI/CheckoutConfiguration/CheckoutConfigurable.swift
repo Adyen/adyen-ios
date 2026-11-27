@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// `CheckoutConfigurable` represents any type of configuration the SDK may require for its components,
-/// such as `CardComponentConfiguration`,  `DropInConfiguration`, `ActionComponentConfiguration`.
+/// such as `CardConfiguration`, `DropInConfiguration`, `TwintActionConfiguration`.
 public protocol CheckoutConfigurable {}
 
 /// Configuration interface for all Checkout Components.
