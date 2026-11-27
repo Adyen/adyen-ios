@@ -1,4 +1,4 @@
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-os-compatibility.yml?branch=develop)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/pr_scan.yml?branch=develop)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&id=Adyen_adyen-ios)
 

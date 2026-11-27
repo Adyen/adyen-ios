@@ -198,8 +198,7 @@ Skills live in `.agents/skills/<name>/SKILL.md`.
 ## CI/CD
 
 The project uses GitHub Actions for CI with the following key workflows:
-- **verify-os-compatibility.yml**: Runs tests on multiple iOS versions (iOS 16, 17, 18)
-- **pr_scan.yml**: Runs linting and validation on pull requests
+- **pr_scan.yml**: Runs unit and integration tests in parallel jobs plus linting and Sonar analysis, then — once those pass — OS compatibility tests on iOS 16, 17 and 18
 - **test-SPM-integration.yml**: Validates Swift Package Manager integration
 
 ## Resources
