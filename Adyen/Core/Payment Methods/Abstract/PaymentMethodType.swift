@@ -18,6 +18,14 @@ public struct PaymentMethodType: RawRepresentable, Hashable, Codable, Sendable {
         self.rawValue = rawValue
     }
 
+    /// Creates a payment method type with the given `txVariant`.
+    ///
+    /// Equivalent to ``init(rawValue:)``.
+    /// - Parameter txVariant: The `txVariant` of the payment method.
+    public init(_ txVariant: String) {
+        self.init(rawValue: txVariant)
+    }
+
     // MARK: - Coding
 
     public init(from decoder: Decoder) throws {

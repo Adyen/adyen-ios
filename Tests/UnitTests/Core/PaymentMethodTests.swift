@@ -1120,6 +1120,12 @@ class PaymentMethodTests: XCTestCase {
         }
     }
 
+    func test_paymentMethodType_withTxVariantInit_shouldEqualRawValueInit() {
+        XCTAssertEqual(PaymentMethodType("ideal"), PaymentMethodType(rawValue: "ideal"))
+        XCTAssertEqual(PaymentMethodType("ideal"), .ideal)
+        XCTAssertEqual(PaymentMethodType("some_future_method").rawValue, "some_future_method")
+    }
+
     func test_decodingPaymentMethods_withGooglePayTypes_shouldSkipBoth() throws {
         let paymentMethods: PaymentMethods = try AdyenCoder.decode([
             "paymentMethods": [

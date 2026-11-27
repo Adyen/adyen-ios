@@ -62,7 +62,7 @@
 ### Payment method type
 
 - `PaymentMethodType` is a struct instead of an enum, so Adyen can add payment method types without breaking your code. Known types are static properties, for example `PaymentMethodType.scheme`. A `switch` over a `PaymentMethodType` needs a `default` case.
-- `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(rawValue:)` instead. It keeps any raw value, including types the SDK doesn't know.
+- `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(_:)` instead, for example `PaymentMethodType("ideal")`. It keeps any `txVariant`, including types the SDK doesn't know. `PaymentMethodType(rawValue:)` does the same.
 - `PaymentMethodType(rawValue:)` no longer returns an optional.
 - A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
 - New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
