@@ -617,6 +617,81 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(genericComponent.configuration.showsSubmitButton)
     }
 
+    // MARK: - Issuer List Component Tests
+
+    func test_build_withIssuerListPaymentMethod_returnsIssuerListComponent() throws {
+        // Given
+        let paymentMethod = try createIssuerListPaymentMethod()
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        let issuerListComponent = try XCTUnwrap(component as? IssuerListComponent)
+        XCTAssertEqual(issuerListComponent.paymentMethod.type, .eps)
+        XCTAssertTrue(issuerListComponent.configuration.showsSubmitButton)
+    }
+
+    func test_build_withIssuerListAndGlobalSubmitButtonHidden_shouldHideSubmitButton() throws {
+        // Given
+        let paymentMethod = try createIssuerListPaymentMethod()
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        let issuerListComponent = try XCTUnwrap(component as? IssuerListComponent)
+        XCTAssertFalse(issuerListComponent.configuration.showsSubmitButton)
+    }
+
+    func test_build_withIssuerListAndDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
+        // Given
+        let paymentMethod = try createIssuerListPaymentMethod()
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .dropIn,
+            context: context
+        )
+
+        // Then
+        let issuerListComponent = try XCTUnwrap(component as? IssuerListComponent)
+        XCTAssertTrue(issuerListComponent.configuration.showsSubmitButton)
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToIssuerListComponent() throws {
+        // Given
+        let paymentMethod = try createIssuerListPaymentMethod()
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        let issuerListComponent = try XCTUnwrap(component as? IssuerListComponent)
+        XCTAssertEqual(issuerListComponent.configuration.theme.colors.primary, UIColor.yellow)
+    }
+
     // MARK: - Twint Component Tests
 
     func test_build_withTwintPaymentMethod_returnsTwintComponent() throws {
@@ -1106,6 +1181,14 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func createIssuerListPaymentMethod() throws -> IssuerListPaymentMethod {
+        try AdyenCoder.decode([
+            "type": "eps",
+            "name": "EPS",
+            "issuers": [["id": "issuer_1", "name": "Issuer 1"]]
+        ] as [String: Any]) as IssuerListPaymentMethod
     }
 
     private func createTwintPaymentMethod() -> TwintPaymentMethod {
