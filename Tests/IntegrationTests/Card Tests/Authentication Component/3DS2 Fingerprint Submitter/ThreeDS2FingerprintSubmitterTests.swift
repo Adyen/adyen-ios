@@ -41,7 +41,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .action(action):
-                    switch action {
+                    switch action.kind {
                     case let .redirect(redirectAction):
                         XCTAssertEqual(redirectAction, mockedRedirectAction)
                     default:
@@ -74,7 +74,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .action(action):
-                    switch action {
+                    switch action.kind {
                     case let .threeDS2(.challenge(challengeAction)):
                         XCTAssertEqual(challengeAction, mockedChallengeAction)
                     default:

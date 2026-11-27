@@ -34,8 +34,6 @@ public struct LocalizationKey {
     public static let paymentMethodsPaidMethods = LocalizationKey(key: "adyen.paymentMethods.paidMethods")
     /// Payment Methods
     public static let paymentMethodsTitle = LocalizationKey(key: "adyen.paymentMethods.title")
-    /// Yes, remove
-    public static let paymentMethodRemoveButton = LocalizationKey(key: "adyen.paymentMethod.removeButton")
     /// The payment was refused. Please try again.
     public static let paymentRefusedMessage = LocalizationKey(key: "adyen.payment.refused.message")
     /// Account Number (IBAN)
@@ -46,8 +44,6 @@ public struct LocalizationKey {
     public static let sepaNameItemTitle = LocalizationKey(key: "adyen.sepa.nameItem.title")
     /// J. Smith
     public static let sepaNameItemPlaceholder = LocalizationKey(key: "adyen.sepa.nameItem.placeholder")
-    /// By pressing the button above, you agree that the specified amount will be debited from your bank account.
-    public static let sepaConsentLabel = LocalizationKey(key: "adyen.sepa.consentLabel")
     /// Holder name invalid
     public static let sepaNameItemInvalid = LocalizationKey(key: "adyen.sepa.nameItem.invalid")
     /// Remember my card details for future payments
@@ -76,36 +72,14 @@ public struct LocalizationKey {
     public static let cardExpiryItemInvalid = LocalizationKey(key: "adyen.card.expiryItem.invalid")
     /// Month, 2 digits, Year, 2 digits
     public static let cardExpiryItemAccessibilityLabel = LocalizationKey(key: "adyen.card.expiryItem.accessibilityLabel")
-    /// Security code
-    public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
-    /// Enter security code
-    public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
-    /// Enter the security code for %@
-    public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
-    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
-    /// Verify your card
-    public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
-    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
-    /// Please enter the CVC code for %@
-    public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
-    /// Expires %@
-    public static let cardStoredExpires = LocalizationKey(key: "adyen.card.stored.expires")
-    /// %@ isn't supported
-    public static let cardNumberItemUnsupportedBrand = LocalizationKey(key: "adyen.card.numberItem.unsupportedBrand")
     /// The entered card brand isn't supported
     public static let cardNumberItemUnknownBrand = LocalizationKey(key: "adyen.card.numberItem.unknownBrand")
     /// Scan your card
     public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
-    /// Card Brand
-    public static let creditCardDualBrandTitle = LocalizationKey(key: "adyen.creditCard.dualBrand.title")
     /// You can select the card brand you prefer to pay with. This is optional.
     public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen_checkout_card_dual_brand_selector_description")
-    /// Confirm %@ payment
-    public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
-    /// Change Payment Method
-    public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
     /// Select your preferred payment option and complete the payment
     public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen_checkout_dropin_payment_method_list_description_complete_payment")
     /// Select your preferred payment option and save your details for future transactions
@@ -132,8 +106,6 @@ public struct LocalizationKey {
     public static let telephonePrefix = LocalizationKey(key: "adyen.telephonePrefix")
     /// 123–456–789
     public static let phoneNumberPlaceholder = LocalizationKey(key: "adyen.phoneNumber.placeholder")
-    /// %@ digits
-    public static let cardCvcItemPlaceholderDigits = LocalizationKey(key: "adyen.card.cvcItem.placeholder.digits")
     /// Email address
     public static let emailItemTitle = LocalizationKey(key: "adyen.emailItem.title")
     /// Email address
@@ -142,8 +114,6 @@ public struct LocalizationKey {
     public static let emailItemInvalid = LocalizationKey(key: "adyen.emailItem.invalid")
     /// More options
     public static let moreOptions = LocalizationKey(key: "adyen.moreOptions")
-    /// Total
-    public static let applePayTotal = LocalizationKey(key: "adyen.applePay.total")
     /// Enter 6 numbers
     public static let blikInvalid = LocalizationKey(key: "adyen.blik.invalid")
     /// 6-digit code
@@ -152,10 +122,6 @@ public struct LocalizationKey {
     public static let blikHelp = LocalizationKey(key: "adyen.blik.help")
     /// 123–456
     public static let blikPlaceholder = LocalizationKey(key: "adyen.blik.placeholder")
-    /// Preauthorize with %@
-    public static let preauthorizeWith = LocalizationKey(key: "adyen.preauthorizeWith")
-    /// Confirm preauthorization
-    public static let confirmPreauthorization = LocalizationKey(key: "adyen.confirmPreauthorization")
     /// Security code (optional)
     public static let cardCvcItemTitleOptional = LocalizationKey(key: "adyen.card.cvcItem.title.optional")
     /// Confirm purchase
@@ -188,12 +154,8 @@ public struct LocalizationKey {
     public static let voucherReadInstructions = LocalizationKey(key: "adyen.voucher.readInstructions")
     /// Save as image
     public static let voucherSaveImage = LocalizationKey(key: "adyen.voucher.saveImage")
-    /// Finish
-    public static let voucherFinish = LocalizationKey(key: "adyen.voucher.finish")
     /// 123.123.123-12
     public static let cardBrazilSSNPlaceholder = LocalizationKey(key: "adyen.card.brazilSSN.placeholder")
-    /// Amount
-    public static let amount = LocalizationKey(key: "adyen.amount")
     /// Entity
     public static let voucherEntity = LocalizationKey(key: "adyen.voucher.entity")
     /// Use your banking app to scan the QR code or copy the PIX code below to complete your payment.
@@ -216,8 +178,6 @@ public struct LocalizationKey {
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     /// Your delivery address
     public static let deliveryAddressPlaceholder = LocalizationKey(key: "adyen.deliveryAddress.placeholder")
-    /// Country/Region
-    public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
     /// Country/Region
     public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
     /// Invalid country/region
@@ -256,14 +216,8 @@ public struct LocalizationKey {
     public static let zipCodeFieldPlaceholder = LocalizationKey(key: "adyen.zipCodeField.placeholder")
     /// State
     public static let stateFieldTitle = LocalizationKey(key: "adyen.stateField.title")
-    /// State
-    public static let stateFieldPlaceholder = LocalizationKey(key: "adyen.stateField.placeholder")
     /// Select state
     public static let selectStateFieldPlaceholder = LocalizationKey(key: "adyen.selectStateField.placeholder")
-    /// State or province
-    public static let stateOrProvinceFieldTitle = LocalizationKey(key: "adyen.stateOrProvinceField.title")
-    /// State or province
-    public static let stateOrProvinceFieldPlaceholder = LocalizationKey(key: "adyen.stateOrProvinceField.placeholder")
     /// Select province or territory
     public static let selectStateOrProvinceFieldPlaceholder = LocalizationKey(key: "adyen.selectStateOrProvinceField.placeholder")
     /// Province or Territory
@@ -274,18 +228,12 @@ public struct LocalizationKey {
     public static let apartmentSuiteFieldTitle = LocalizationKey(key: "adyen.apartmentSuiteField.title")
     /// Apartment / Suite
     public static let apartmentSuiteFieldPlaceholder = LocalizationKey(key: "adyen.apartmentSuiteField.placeholder")
-    /// Required field, please fill it in.
-    public static let errorFeedbackEmptyField = LocalizationKey(key: "adyen.errorFeedback.emptyField")
-    /// Input format is not valid.
-    public static let errorFeedbackIncorrectFormat = LocalizationKey(key: "adyen.errorFeedback.incorrectFormat")
     /// (optional)
     public static let fieldTitleOptional = LocalizationKey(key: "adyen.field.title.optional")
     /// Generate Boleto
     public static let boletobancarioBtnLabel = LocalizationKey(key: "adyen.boletobancario.btnLabel")
     /// Send a copy to my email
     public static let boletoSendCopyToEmail = LocalizationKey(key: "adyen.boleto.sendCopyToEmail")
-    /// Personal details
-    public static let boletoPersonalDetails = LocalizationKey(key: "adyen.boleto.personalDetails")
     /// CPF/CNPJ
     public static let boletoSocialSecurityNumber = LocalizationKey(key: "adyen.boleto.socialSecurityNumber")
     /// Download PDF
@@ -294,18 +242,8 @@ public struct LocalizationKey {
     public static let giftcardCurrencyError = LocalizationKey(key: "adyen.giftcard.currencyError")
     /// This gift card has zero balance
     public static let giftcardNoBalance = LocalizationKey(key: "adyen.giftcard.noBalance")
-    /// Confirm card removal
-    public static let giftcardRemoveTitle = LocalizationKey(key: "adyen.giftcard.remove.title")
-    /// Remove added giftcards?
-    public static let giftcardRemoveMessage = LocalizationKey(key: "adyen.giftcard.remove.message")
-    /// Added giftcard
-    public static let giftcardPaymentMethodTitle = LocalizationKey(key: "adyen.giftcard.paymentMethod.title")
     /// Remaining balance will be %@
     public static let partialPaymentRemainingBalance = LocalizationKey(key: "adyen.partialPayment.remainingBalance")
-    /// Select payment method for the remaining %@
-    public static let partialPaymentPayRemainingAmount = LocalizationKey(key: "adyen.partialPayment.payRemainingAmount")
-    /// Cardholder birthdate (YYMMDD) or Corporate registration number (10 digits)
-    public static let cardTaxNumberLabel = LocalizationKey(key: "adyen.card.taxNumber.label")
     /// YYMMDD / 0123456789
     public static let cardTaxNumberPlaceholder = LocalizationKey(key: "adyen.card.taxNumber.placeholder")
     /// Invalid Cardholder birthdate or Corporate registration number
@@ -324,8 +262,6 @@ public struct LocalizationKey {
     public static let voucherShopperReference = LocalizationKey(key: "adyen.voucher.shopperReference")
     /// Alternative Reference
     public static let voucherAlternativeReference = LocalizationKey(key: "adyen.voucher.alternativeReference")
-    /// Number of installments
-    public static let cardInstallmentsNumberOfInstallments = LocalizationKey(key: "adyen.card.installments.numberOfInstallments")
     /// One time payment
     public static let cardInstallmentsOneTime = LocalizationKey(key: "adyen_checkout_card_installments_option_one_time")
     /// Payment plan
@@ -336,12 +272,6 @@ public struct LocalizationKey {
     public static let cardInstallmentsOneTimeDescription = LocalizationKey(key: "adyen_checkout_card_installments_option_one_time_description")
     /// Revolving payment
     public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen_checkout_card_installments_option_revolving")
-    /// %@x %@
-    public static let cardInstallmentsMonthsAndPrice = LocalizationKey(key: "adyen.card.installments.monthsAndPrice")
-    /// %@ months
-    public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
-    /// Method of payment
-    public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
     /// %@ Installments
     public static let cardInstallmentsRegular = LocalizationKey(key: "adyen_checkout_card_installments_option_regular")
     /// Split the total cost into monthly payments instead of paying the full amount today.
@@ -444,8 +374,6 @@ public struct LocalizationKey {
     public static let upiQrcodeTimerMessage = LocalizationKey(key: "adyen.upi.qrcode.timerMessage")
     /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
     public static let upiQrcodeInstructions = LocalizationKey(key: "adyen.upi.qrcode.instructions")
-    /// Cash App Pay
-    public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag
     public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
     /// No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.
@@ -458,8 +386,6 @@ public struct LocalizationKey {
     public static let threeds2DAFaceID = LocalizationKey(key: "adyen.threeds2.DA.faceID")
     /// Touch ID
     public static let threeds2DATouchID = LocalizationKey(key: "adyen.threeds2.DA.touchID")
-    /// Optic ID
-    public static let threeds2DAOpticID = LocalizationKey(key: "adyen.threeds2.DA.opticID")
     /// Check out faster next time with this card
     public static let threeds2DARegistrationDescription = LocalizationKey(key: "adyen.threeds2.DA.registration.description")
     /// Skip manual entry & speed up checkout
@@ -566,8 +492,6 @@ public struct LocalizationKey {
     public static let paytoPayidLabelOrgid = LocalizationKey(key: "adyen.payto.payid.label.orgid")
     /// Organization ID number
     public static let paytoPayidOrgidHint = LocalizationKey(key: "adyen.payto.payid.orgid.hint")
-    /// Bank account number
-    public static let paytoBsbLabelBankAccountNumber = LocalizationKey(key: "adyen.payto.bsb.label.bankAccountNumber")
     /// Bank state branch
     public static let paytoBsbBankStateBranchHint = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.hint")
     /// Enter the bank account number and the Bank State Branch that is connected to your account to continue
@@ -598,8 +522,6 @@ public struct LocalizationKey {
     public static let cardScannerCameraAccessDeniedAlertMessage = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.message")
     /// Open Settings
     public static let cardScannerCameraAccessDeniedAlertSettingsButtonTitle = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.settingsButton.title")
-    /// Use %@
-    public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
     /// Manage

@@ -86,7 +86,7 @@ final class ComponentManagerTests: XCTestCase {
     func test_sections_areOrderedPaidStoredRegularAndOmitEmptySections() throws {
         let paid = OrderPaymentMethod(
             lastFour: "1234",
-            type: .other("paid"),
+            type: PaymentMethodType(rawValue: "paid"),
             transactionLimit: Amount(value: 100, currencyCode: "EUR"),
             amount: Amount(value: 100, currencyCode: "EUR")
         )

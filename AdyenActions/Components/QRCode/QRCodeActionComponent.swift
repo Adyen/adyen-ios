@@ -123,7 +123,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
     
     private func startPolling(_ action: QRCodeAction) {
-        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
+        pollingComponent = pollingComponentBuilder?.handler()
         pollingComponent?.delegate = self
         pollingComponent?.handle(action)
     }
@@ -133,14 +133,14 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
     
     internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {
-        switch action.paymentMethodType {
+        switch action.qrCodePaymentMethodType {
         case .promptPay, .duitNow:
             return 90
         case .payNow:
             return 180
         case .pix:
             return 60 * 15
-        case .upiQRCode:
+        case .upiQR:
             return 60 * 5
         }
     }
@@ -162,7 +162,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
 
-        switch qrCodeAction?.paymentMethodType {
+        switch qrCodeAction?.qrCodePaymentMethodType {
         case .promptPay, .duitNow, .payNow:
             expirationText = localizedString(
                 .qrCodeTimerExpirationMessage,
@@ -175,7 +175,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
                 configuration.localizationParameters,
                 timeLeftString
             )
-        case .upiQRCode:
+        case .upiQR:
             expirationText = localizedString(
                 .upiQrcodeTimerMessage,
                 configuration.localizationParameters,
@@ -213,7 +213,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
     
     private func qrCodeInstructions(for action: QRCodeAction) -> String {
-        switch action.paymentMethodType {
+        switch action.qrCodePaymentMethodType {
         case .promptPay, .duitNow, .payNow:
             return localizedString(
                 .qrCodeInstructionMessage,
@@ -224,7 +224,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
                 .pixInstructions,
                 configuration.localizationParameters
             )
-        case .upiQRCode:
+        case .upiQR:
             return localizedString(
                 .upiQrcodeInstructions,
                 configuration.localizationParameters

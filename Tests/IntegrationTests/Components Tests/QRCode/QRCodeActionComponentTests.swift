@@ -32,21 +32,15 @@ class QRCodeActionComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
-    let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+    lazy var method = GenericPaymentMethod(type: .pix, name: "pix")
+    let action = QRCodeAction(qrCodePaymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
     func test_handle_whenPollingSucceeds_shouldCallDidProvide() {
         let expectationForDidProvide = expectation(description: "didProvide expectation")
         
         let handler = PollingHandlerMock()
-        let builder = AwaitActionHandlerProviderMock(
-            onAwaitHandler: nil,
-            onQRHandler: { type in
-                XCTAssertEqual(type, QRCodePaymentMethod.pix)
-                return handler
-            }
-        )
+        let builder = AwaitActionHandlerProviderMock(onHandler: { handler })
         
         let sut = QRCodeActionComponent(
             context: context,
@@ -90,13 +84,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let expectationForDidFail = expectation(description: "didFail expectation")
         
         let handler = PollingHandlerMock()
-        let builder = AwaitActionHandlerProviderMock(
-            onAwaitHandler: nil,
-            onQRHandler: { type in
-                XCTAssertEqual(type, QRCodePaymentMethod.pix)
-                return handler
-            }
-        )
+        let builder = AwaitActionHandlerProviderMock(onHandler: { handler })
         
         let sut = QRCodeActionComponent(
             context: context,
@@ -137,7 +125,7 @@ class QRCodeActionComponentTests: XCTestCase {
         // Given
         let expectedCode = "DummyData"
         let action = QRCodeAction(
-            paymentMethodType: .pix,
+            qrCodePaymentMethodType: .pix,
             qrCodeData: expectedCode,
             paymentData: "DummyData"
         )
@@ -176,7 +164,7 @@ class QRCodeActionComponentTests: XCTestCase {
     func test_saveAsImageButton_whenTapped_shouldSaveQRCode() throws {
         // Given
         let action = QRCodeAction(
-            paymentMethodType: .promptPay,
+            qrCodePaymentMethodType: .promptPay,
             qrCodeData: "DummyData",
             paymentData: "DummyData"
         )
@@ -212,7 +200,7 @@ class QRCodeActionComponentTests: XCTestCase {
     }
     
     func test_flowType_withPromptPayAction_shouldBeSaveCodeAsImage() {
-        let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+        let action = QRCodeAction(qrCodePaymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)
         
@@ -232,8 +220,8 @@ class QRCodeActionComponentTests: XCTestCase {
     }
     
     func test_flowType_withPixAction_shouldBeCopyCode() {
-        lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
-        let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+        lazy var method = GenericPaymentMethod(type: .pix, name: "pix")
+        let action = QRCodeAction(qrCodePaymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)
                 
@@ -254,10 +242,10 @@ class QRCodeActionComponentTests: XCTestCase {
     
     func test_timeoutDuration_forEachPaymentMethod_shouldMatchExpectedDuration() {
         let sut = QRCodeActionComponent(context: context)
-        let promptPay = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
-        let pix = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
-        let duitNow = QRCodeAction(paymentMethodType: .duitNow, qrCodeData: "DummyData", paymentData: "DummyData")
-        let payNow = QRCodeAction(paymentMethodType: .payNow, qrCodeData: "DummyData", paymentData: "DummyData")
+        let promptPay = QRCodeAction(qrCodePaymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+        let pix = QRCodeAction(qrCodePaymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+        let duitNow = QRCodeAction(qrCodePaymentMethodType: .duitNow, qrCodeData: "DummyData", paymentData: "DummyData")
+        let payNow = QRCodeAction(qrCodePaymentMethodType: .payNow, qrCodeData: "DummyData", paymentData: "DummyData")
         
         XCTAssertEqual(sut.timeoutDuration(for: promptPay), 90)
         XCTAssertEqual(sut.timeoutDuration(for: duitNow), 90)

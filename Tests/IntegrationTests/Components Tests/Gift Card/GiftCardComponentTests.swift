@@ -54,7 +54,7 @@ class GiftCardComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftCard, name: "testName", brand: "testBrand")
         context = Dummy.context
 
         sut = GiftCardComponent(
@@ -82,7 +82,7 @@ class GiftCardComponentTests: XCTestCase {
     func testGiftCardUI() {
 
         // Given
-        let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        let paymentMethod = GiftCardPaymentMethod(type: .giftCard, name: "testName", brand: "testBrand")
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(paymentMethod),
             context: context,
@@ -569,7 +569,7 @@ class GiftCardComponentTests: XCTestCase {
 
     func testPartialConfirmationPaymentMethod() {
 
-        let giftCard = GiftCardPaymentMethod(type: .giftcard, name: "Giftcard", brand: "giftcard")
+        let giftCard = GiftCardPaymentMethod(type: .giftCard, name: "Giftcard", brand: "giftcard")
 
         let paymentMethod = PartialConfirmationPaymentMethod(
             paymentMethod: giftCard,

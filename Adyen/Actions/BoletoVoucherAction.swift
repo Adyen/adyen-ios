@@ -14,30 +14,29 @@ package protocol Downloadable {
 }
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
+package final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
     
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: VoucherPaymentMethod
+    package let paymentMethodType: PaymentMethodType
 
     /// The totalAmount  amount.
-    public let totalAmount: Amount
+    package let totalAmount: Amount
 
     /// The payment reference.
-    public let reference: String
+    package let reference: String
 
     /// Expiry Date.
-    public let expiresAt: Date
+    package let expiresAt: Date
     
     /// Download URL
-    public let downloadUrl: URL
+    package let downloadUrl: URL
 
-    @_spi(AdyenInternal)
-    public let passCreationToken: String?
+    package let passCreationToken: String?
     
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         downloadUrl = try container.decode(URL.self, forKey: .downloadUrl)
@@ -64,7 +63,7 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     }
     
     internal init(
-        paymentMethodType: VoucherPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         totalAmount: Amount,
         reference: String,
         expiresAt: Date,

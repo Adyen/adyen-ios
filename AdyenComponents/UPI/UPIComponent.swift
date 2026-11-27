@@ -27,9 +27,9 @@ package final class UPIComponent: PaymentComponent,
         internal var value: String {
             switch self {
             case .upiIntent:
-                return "upi_intent"
+                return PaymentMethodType.upiIntent.rawValue
             case .upiCollect:
-                return "upi_collect"
+                return PaymentMethodType.upiCollect.rawValue
             }
         }
     }

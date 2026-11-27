@@ -169,7 +169,7 @@ struct GenericPaymentMethodViewModelTests {
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: GenericPaymentMethodRoutingMock
     ) {
-        let paymentMethodMock = PaymentMethodMock(type: .other("genericPaymentMethod"), name: paymentMethodName)
+        let paymentMethodMock = PaymentMethodMock(type: PaymentMethodType(rawValue: "genericPaymentMethod"), name: paymentMethodName)
         let paymentComponentMock = PaymentComponentMock(paymentMethod: paymentMethodMock)
         let dropInFlowManagerMock = DropInFlowManagingMock()
 

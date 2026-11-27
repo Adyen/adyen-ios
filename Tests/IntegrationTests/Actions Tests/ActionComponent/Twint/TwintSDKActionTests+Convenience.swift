@@ -38,7 +38,7 @@ import XCTest
             .init(
                 sdkData: .init(token: "token", isStored: false),
                 paymentData: "paymentData",
-                paymentMethodType: "paymentMethodType",
+                paymentMethodType: .twint,
                 type: "type"
             )
         }
@@ -58,11 +58,8 @@ import XCTest
         ) -> TwintSDKActionComponent {
         
             let pollingHandler = PollingHandlerMock()
-            let pollingBuilder = AwaitActionHandlerProviderMock { _ in
+            let pollingBuilder = AwaitActionHandlerProviderMock {
                 pollingHandler
-            } onQRHandler: { _ in
-                XCTFail("onQRHandler should not have been called")
-                return PollingHandlerMock()
             }
         
             let component = TwintSDKActionComponent(

@@ -72,8 +72,8 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         self.onCopyCode = onCopyCode
         
         self.flowType = {
-            switch action.paymentMethodType {
-            case .promptPay, .duitNow, .payNow, .upiQRCode: return .saveCodeAsImage
+            switch action.qrCodePaymentMethodType {
+            case .promptPay, .duitNow, .payNow, .upiQR: return .saveCodeAsImage
             case .pix: return .copyCode
             }
         }()

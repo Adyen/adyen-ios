@@ -29,7 +29,7 @@ internal struct AwaitComponentViewModel {
     /// - Parameter environment: The environment used to build the logo URL.
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
     internal init(
-        paymentMethodType: AwaitPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         environment: AnyAPIEnvironment,
         localizationParameters: LocalizationParameters? = nil
     ) {

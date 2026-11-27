@@ -102,7 +102,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
 
         sendHandleEvent(for: action)
         
-        switch action {
+        switch action.kind {
         case let .redirect(redirectAction):
             handle(redirectAction)
         case let .threeDS2(threeDS2Action):
@@ -285,7 +285,7 @@ extension CheckoutActionComponent: Cancellable {
 private extension Action {
     
     var analyticsType: String {
-        switch self {
+        switch kind {
         case .redirect:
             return "redirect"
         case .sdk:

@@ -550,7 +550,7 @@ final class CardComponentEventTests: XCTestCase {
 
     private var method: CardPaymentMethod {
         .init(
-            type: .card,
+            type: .scheme,
             name: "Test name",
             fundingSource: .credit,
             brands: [.visa, .americanExpress, .masterCard]

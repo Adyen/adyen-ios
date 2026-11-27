@@ -7,12 +7,12 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to the WeChat Pay SDK.
-public final class WeChatPaySDKAction: Decodable {
+package final class WeChatPaySDKAction: Decodable {
     
     /// The WeChat Pay SDK specific data.
-    public let sdkData: WeChatPaySDKData
+    package let sdkData: WeChatPaySDKData
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String
+    package let paymentData: String
     
 }

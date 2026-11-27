@@ -7,19 +7,19 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to the Twint SDK.
-public final class TwintSDKAction: PaymentDataAware, Decodable {
+package final class TwintSDKAction: PaymentDataAware, Decodable {
 
     /// The TwintSDK specific data.
-    public let sdkData: TwintSDKData
+    package let sdkData: TwintSDKData
 
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String
+    package let paymentData: String
 
     /// The payment method type
-    public let paymentMethodType: String
+    package let paymentMethodType: PaymentMethodType
 
     /// The payment method subtype
-    public let type: String
+    package let type: String
     
     internal enum CodingKeys: CodingKey {
         case sdkData
@@ -28,18 +28,18 @@ public final class TwintSDKAction: PaymentDataAware, Decodable {
         case type
     }
     
-    public init(from decoder: any Decoder) throws {
+    package init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.sdkData = try container.decode(TwintSDKData.self, forKey: .sdkData)
         self.paymentData = try container.decode(String.self, forKey: .paymentData)
-        self.paymentMethodType = try container.decode(String.self, forKey: .paymentMethodType)
+        self.paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         self.type = try container.decode(String.self, forKey: .type)
     }
     
     internal init(
         sdkData: TwintSDKData,
         paymentData: String,
-        paymentMethodType: String,
+        paymentMethodType: PaymentMethodType,
         type: String
     ) {
         self.sdkData = sdkData

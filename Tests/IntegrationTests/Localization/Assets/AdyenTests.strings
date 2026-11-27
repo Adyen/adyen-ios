@@ -12,7 +12,6 @@
 "adyen.sepa.ibanItem.invalid" = "TestBundle-Invalid account number";
 "adyen.sepa.nameItem.title" = "TestBundle-Holder Name";
 "adyen.sepa.nameItem.placeholder" = "TestBundle-J. Smith";
-"adyen.sepa.consentLabel" = "TestBundle-By pressing the button above, you agree that the specified amount will be debited from your bank account.";
 "adyen.sepa.nameItem.invalid" = "TestBundle-Holder name invalid";
 "adyen_checkout_card_store_details_label" = "TestBundle-Remember for next time";
 "adyen.card.nameItem.title" = "TestBundle-Name on card";
@@ -23,12 +22,7 @@
 "adyen.card.numberItem.invalid" = "TestBundle-Invalid card number";
 "adyen_checkout_card_expiry_date_hint" = "TestBundle-MM/YY";
 "adyen.card.expiryItem.invalid" = "TestBundle-Invalid expiration date";
-"adyen.card.cvcItem.title" = "TestBundle-CVC / CVV";
 //"adyen.card.cvcItem.placeholder" = "TestBundle-123";
-"adyen.card.stored.title" = "TestBundle-Verify your card";
-"adyen.card.stored.message" = "TestBundle-Please enter the CVC code for %@";
-"adyen.card.stored.expires" = "TestBundle-Expires %@";
-"adyen.dropIn.stored.title" = "TestBundle-Confirm %@ payment";
 "adyen.phoneNumber.title" = "TestBundle-Phone Number";
 "adyen.phoneNumber.placeholder" = "TestBundle-123 456 789";
 "adyen.phoneNumber.invalid" = "TestBundle-Invalid phone number.";

@@ -7,16 +7,16 @@
 import Foundation
 
 /// Describes an action in which a Multibanco voucher is presented to the shopper.
-public final class MultibancoVoucherAction: GenericVoucherAction {
+package final class MultibancoVoucherAction: GenericVoucherAction {
     
     /// Multibanco entity.
-    public let entity: String
+    package let entity: String
     
     /// The reference to uniquely identify a payment.
     /// This reference is used in all communication with you about the payment status.
-    public let merchantReference: String
+    package let merchantReference: String
     
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         entity = try container.decode(String.self, forKey: .entity)
         merchantReference = try container.decode(String.self, forKey: .merchantReference)

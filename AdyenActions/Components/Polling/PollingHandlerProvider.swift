@@ -15,9 +15,7 @@ internal protocol AnyPollingHandler: ActionComponent, Cancellable {
 
 internal protocol AnyPollingHandlerProvider {
 
-    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
-    
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
+    func handler() -> AnyPollingHandler
 }
 
 @MainActor
@@ -35,21 +33,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         )
     }
 
-    internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
-        switch paymentMethodType {
-        case .mbway, .blik, .upicollect, .upiIntent, .twint, .payTo:
-            return createPollingComponent()
-        }
-    }
-    
-    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
-        switch qrPaymentMethodType {
-        case .pix, .promptPay, .duitNow, .payNow, .upiQRCode:
-            return createPollingComponent()
-        }
-    }
-
-    private func createPollingComponent() -> AnyPollingHandler {
+    internal func handler() -> AnyPollingHandler {
         PollingComponent(
             context: context,
             apiClient: apiClient

@@ -406,7 +406,7 @@ struct PaymentMethodListRouterTests {
     }
 
     private func makePaymentComponentMock() -> PresentablePaymentComponentMock {
-        let paymentMethodMock = PaymentMethodMock(type: .card, name: "Visa")
+        let paymentMethodMock = PaymentMethodMock(type: .scheme, name: "Visa")
         let viewControllerMock = UIViewController()
         return PresentablePaymentComponentMock(
             paymentMethod: paymentMethodMock,

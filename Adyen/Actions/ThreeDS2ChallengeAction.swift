@@ -7,16 +7,16 @@
 import Foundation
 
 /// Describes an action in which a 3D Secure challenge is presented to the user.
-public struct ThreeDS2ChallengeAction: Decodable {
+package struct ThreeDS2ChallengeAction: Decodable {
 
     /// The 3D Secure challenge token.
-    public let challengeToken: String
+    package let challengeToken: String
 
     /// The 3D Secure authorization token.
-    public let authorisationToken: String?
+    package let authorisationToken: String?
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String?
+    package let paymentData: String?
     
     /// Initializes a 3D Secure challenge action.
     ///
@@ -24,7 +24,7 @@ public struct ThreeDS2ChallengeAction: Decodable {
     ///   - token: The 3D Secure challenge token.
     ///   - authorisationToken: The 3D Secure authorization token.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public init(challengeToken: String, authorisationToken: String? = nil, paymentData: String?) {
+    package init(challengeToken: String, authorisationToken: String? = nil, paymentData: String?) {
         self.authorisationToken = authorisationToken
         self.challengeToken = challengeToken
         self.paymentData = paymentData

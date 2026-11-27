@@ -7,10 +7,10 @@
 import Foundation
 
 /// Describes any voucher action object.
-public protocol AnyVoucherAction {
+package protocol AnyVoucherAction {
     
     /// The `paymentMethodType` for which the voucher is presented.
-    var paymentMethodType: VoucherPaymentMethod { get }
+    var paymentMethodType: PaymentMethodType { get }
 
     /// The Apple wallet pass token.
     var passCreationToken: String? { get }

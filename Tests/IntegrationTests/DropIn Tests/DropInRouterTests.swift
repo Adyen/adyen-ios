@@ -336,7 +336,7 @@ struct DropInRouterTests {
     }
 
     private func makePaymentComponent() -> PaymentComponentMock {
-        PaymentComponentMock(paymentMethod: PaymentMethodMock(type: .other("genericPaymentMethod"), name: "Generic"))
+        PaymentComponentMock(paymentMethod: PaymentMethodMock(type: PaymentMethodType(rawValue: "genericPaymentMethod"), name: "Generic"))
     }
 
     /// The window is returned alongside the presenter, as the presentation only holds while the window does.

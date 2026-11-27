@@ -15,7 +15,7 @@ package struct IssuerListConfiguration: PaymentComponentConfiguration {
     /// (iDEAL, EPS, Dotpay and others), so this value is not tied to a specific `PaymentMethodType`.
     /// It is only used as a fallback key when no explicit per-payment-method-type configuration
     /// has been registered.
-    package var componentType: CheckoutComponentType = .payment(.other(""))
+    package var componentType: CheckoutComponentType = .payment(PaymentMethodType(rawValue: ""))
 
     package var showsSubmitButton: Bool = true
 

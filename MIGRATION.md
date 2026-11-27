@@ -30,6 +30,22 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Actions
+
+- `Action` is a struct instead of an enum, so Adyen can add action types without breaking your code. Decode it from the `action` object of the `/payments` response and pass it to `handle(action:)` as before. You can no longer switch over its cases. To check what kind of action it is, use its `type` property.
+- The types that describe each kind of action are no longer public: `RedirectAction`, `ThreeDS2Action`, `ThreeDS2FingerprintAction`, `ThreeDS2ChallengeAction`, `SDKAction`, `WeChatPaySDKAction`, `WeChatPaySDKData`, `TwintSDKAction`, `TwintSDKData`, `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `VoucherAction`, `AnyVoucherAction`, `GenericVoucherAction`, `BoletoVoucherAction`, `DokuVoucherAction`, `EContextStoresVoucherAction`, `EContextATMVoucherAction`, `OXXOVoucherAction` and `MultibancoVoucherAction`.
+- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. Use the matching `PaymentMethodType` static properties instead. Most property names stay the same. These differ:
+
+| Before | After |
+|---|---|
+| `AwaitPaymentMethod.mbway` | `PaymentMethodType.mbWay` |
+| `AwaitPaymentMethod.upicollect` | `PaymentMethodType.upiCollect` |
+| `VoucherPaymentMethod.boletoBancairoSantander` | `PaymentMethodType.boletoBancarioSantander` |
+| `DocumentPaymentMethod.bacs` | `PaymentMethodType.bacsDirectDebit` |
+| `QRCodePaymentMethod.upiQRCode` | `PaymentMethodType.upiQR` |
+
+- Await actions are decoded for any payment method. Before, an await action for a payment method that was not listed in `AwaitPaymentMethod` failed to decode.
+
 ### Await action screen
 
 - The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
@@ -41,6 +57,25 @@
   - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
   - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
   - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
+### Payment method type
+
+- `PaymentMethodType` is a struct instead of an enum, so Adyen can add payment method types without breaking your code. Known types are static properties, for example `PaymentMethodType.scheme`. A `switch` over a `PaymentMethodType` needs a `default` case.
+- `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(_:)` instead, for example `PaymentMethodType("ideal")`. It keeps any `txVariant`, including types the SDK doesn't know. `PaymentMethodType(rawValue:)` does the same.
+- `PaymentMethodType(rawValue:)` no longer returns an optional.
+- A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
+- New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
+- `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
+- `PaymentMethodType.card` is removed. Cards use `PaymentMethodType.scheme`. A payment method with type `card` is no longer handled as a card payment method.
+- Some properties are renamed:
+
+| Before | After |
+|---|---|
+| `PaymentMethodType.giftcard` | `PaymentMethodType.giftCard` |
+| `PaymentMethodType.onlineBankingPoland` | `PaymentMethodType.onlineBankingPL` |
+| `PaymentMethodType.upiQr` | `PaymentMethodType.upiQR` |
+
+- The SDK doesn't support the following payment method types and leaves them out of the payment methods list, so they are no longer public: `bcmcMobileQR`, `weChatMiniProgram`, `weChatQR`, `weChatPayWeb`, `googlePay`, `afterpay`, `androidPay` and `amazonPay`. To check for one of them, compare the raw value, for example `type.rawValue == "wechatpayQR"`.
 
 ### Colors
 
@@ -55,6 +90,52 @@
 ### Card expiry date hint
 
 - The card expiry date field now shows a hint below the field that reads "Front of card in MM/YY format" in English. Its localization key was renamed from `adyen.card.expiryItem.placeholder` to `adyen_checkout_card_expiry_date_hint`. If you override this string in your own strings table, rename your override to keep the custom text. Overrides through `CheckoutLocalizationKey.cardExpiryDateHint` keep working.
+
+### Removed localization keys
+
+- `CheckoutLocalizationKey.cardNumberInvalidUnsupportedBrand` and `CheckoutLocalizationKey.cardDualBrandSelectorTitle` are removed. The SDK did not request these strings, so a value returned for them from a `CheckoutLocalizationProvider` had no effect.
+- The following localization keys are no longer used by the SDK and are removed from the English strings, together with their `LocalizationKey` constants. Overrides for them in your own strings table have no effect and can be deleted:
+  - `adyen.paymentMethod.removeButton` (`paymentMethodRemoveButton`)
+  - `adyen.sepa.consentLabel` (`sepaConsentLabel`)
+  - `adyen.card.cvcItem.title` (`cardCvcItemTitle`), replaced by `adyen_checkout_card_security_code_label`
+  - `adyen.card.cvcItem.placeholder.digits` (`cardCvcItemPlaceholderDigits`)
+  - `adyen.card.securityCode.title` (`cardSecurityCodeTitle`)
+  - `adyen.card.securityCode.description` (`cardSecurityCodeDescription`)
+  - `adyen.card.stored.title` (`cardStoredTitle`)
+  - `adyen.card.stored.message` (`cardStoredMessage`)
+  - `adyen.card.stored.expires` (`cardStoredExpires`)
+  - `adyen.card.numberItem.unsupportedBrand` (`cardNumberItemUnsupportedBrand`)
+  - `adyen.creditCard.dualBrand.title` (`creditCardDualBrandTitle`)
+  - `adyen.card.taxNumber.label` (`cardTaxNumberLabel`)
+  - `adyen.card.installments.numberOfInstallments` (`cardInstallmentsNumberOfInstallments`)
+  - `adyen.card.installments.monthsAndPrice` (`cardInstallmentsMonthsAndPrice`)
+  - `adyen.card.installments.months` (`cardInstallmentsMonths`)
+  - `adyen.card.installments.plan` (`cardInstallmentsPlan`)
+  - `adyen.card.installments.oneTime`, replaced by `adyen_checkout_card_installments_option_one_time`
+  - `adyen.card.installments.title`, replaced by `adyen_checkout_card_installments_title`
+  - `adyen.card.installments.revolving`, replaced by `adyen_checkout_card_installments_option_revolving`
+  - `adyen.dropIn.stored.title` (`dropInStoredTitle`)
+  - `adyen.dropIn.preselected.openAll.title` (`dropInPreselectedOpenAllTitle`)
+  - `adyen.preselectedPaymentMethod.subtitle` (`preselectedPaymentMethodSubtitle`)
+  - `adyen.applePay.total` (`applePayTotal`)
+  - `adyen.preauthorizeWith` (`preauthorizeWith`)
+  - `adyen.confirmPreauthorization` (`confirmPreauthorization`)
+  - `adyen.voucher.finish` (`voucherFinish`)
+  - `adyen.amount` (`amount`)
+  - `adyen.countryField.title` (`countryFieldTitle`)
+  - `adyen.stateField.placeholder` (`stateFieldPlaceholder`)
+  - `adyen.stateOrProvinceField.title` (`stateOrProvinceFieldTitle`)
+  - `adyen.stateOrProvinceField.placeholder` (`stateOrProvinceFieldPlaceholder`)
+  - `adyen.errorFeedback.emptyField` (`errorFeedbackEmptyField`)
+  - `adyen.errorFeedback.incorrectFormat` (`errorFeedbackIncorrectFormat`)
+  - `adyen.boleto.personalDetails` (`boletoPersonalDetails`)
+  - `adyen.giftcard.remove.title` (`giftcardRemoveTitle`)
+  - `adyen.giftcard.remove.message` (`giftcardRemoveMessage`)
+  - `adyen.giftcard.paymentMethod.title` (`giftcardPaymentMethodTitle`)
+  - `adyen.partialPayment.payRemainingAmount` (`partialPaymentPayRemainingAmount`)
+  - `adyen.cashAppPay.title` (`cashAppPayTitle`)
+  - `adyen.threeds2.DA.opticID` (`threeds2DAOpticID`)
+  - `adyen.payto.bsb.label.bankAccountNumber` (`paytoBsbLabelBankAccountNumber`)
 
 ### Encryption
 
