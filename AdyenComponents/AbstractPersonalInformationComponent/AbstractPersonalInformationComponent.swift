@@ -277,11 +277,8 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
     // MARK: - ViewControllerDelegate
 
-    package func viewWillAppear(viewController: UIViewController) {
-        populateFields()
-    }
-    
     package func viewDidLoad(viewController: UIViewController) {
+        populateFields()
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
