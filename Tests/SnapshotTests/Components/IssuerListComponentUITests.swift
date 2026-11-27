@@ -29,51 +29,55 @@ final class IssuerListComponentUITests: XCTestCase {
         }
     }
     
-    func testStartStopLoading() throws {
+    func test_initialState() {
         let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
-        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
-        let listViewController = searchViewController.resultsListViewController
-        
+
         setupRootViewController(sut.viewController)
-        
-        let item = try XCTUnwrap(listViewController.sections.first?.items.first)
-        
-        var cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
-        XCTAssertFalse(cell.showsActivityIndicator)
-        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
+
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
-    
-        // start loading
-        item.startLoading()
-        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
-        XCTAssertTrue(cell.showsActivityIndicator)
-        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
-        assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
-        
-        // stop loading
-        sut.stopLoading()
-        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
-        XCTAssertFalse(cell.showsActivityIndicator)
-        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
-        
-        // start loading again
-        item.startLoading()
-        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
-        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
-        XCTAssertTrue(cell.showsActivityIndicator)
-        
-        // stop loading on item -> should stop loading on list
-        item.stopLoading()
-        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
-        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
-        XCTAssertFalse(cell.showsActivityIndicator)
-        
     }
-    
-    private static func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {
-        tableView.visibleCells.first { cell in
-            (cell as? ListCell).map { $0.item == item } ?? false
-        } as? ListCell
+
+    func test_selectedState() throws {
+        let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        setupRootViewController(sut.viewController)
+
+        try selectRow(at: 0, in: sut)
+
+        wait(for: .aMoment)
+        assertViewControllerImage(matching: sut.viewController, named: "selected")
+    }
+
+    func test_submitWithoutSelection_shouldShowError() throws {
+        let sut = try IssuerListComponent(paymentMethod: makePaymentMethod(issuerCount: 11), context: context)
+        setupRootViewController(sut.viewController)
+
+        sut.performSubmit()
+
+        wait(for: .aMoment)
+        assertViewControllerImage(matching: sut.viewController, named: "error_with_search")
+    }
+
+    func test_submitWithSelection_shouldShowLoading() throws {
+        let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        setupRootViewController(sut.viewController)
+        try selectRow(at: 1, in: sut)
+
+        sut.performSubmit()
+
+        wait(for: .aMoment)
+        assertViewControllerImage(matching: sut.viewController, named: "loading")
+    }
+
+    private func selectRow(at index: Int, in sut: IssuerListComponent) throws {
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let items = searchViewController.resultsListViewController.sections.flatMap(\.items)
+        let item = try XCTUnwrap(items.indices.contains(index) ? items[index] : nil)
+        item.selectionHandler?()
+    }
+
+    private func makePaymentMethod(issuerCount: Int) throws -> IssuerListPaymentMethod {
+        let issuers = (1...issuerCount).map { ["id": "issuer_\($0)", "name": "Test Issuer \($0)"] }
+        return try AdyenCoder.decode(["type": "ideal", "name": "iDEAL", "issuers": issuers] as [String: Any])
     }
 }
