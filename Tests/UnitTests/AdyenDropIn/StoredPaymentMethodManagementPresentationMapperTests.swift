@@ -12,10 +12,6 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
 
     func test_sections_groupsConcreteStoredCardModelsBeforeOtherMethods() throws {
         let schemeCard = try decode(storedCreditCardDictionary, as: StoredCardPaymentMethod.self)
-        var cardTypeDictionary = storedCreditCardDictionary
-        cardTypeDictionary["type"] = "card"
-        cardTypeDictionary["id"] = "card-type-id"
-        let cardTypeCard = try decode(cardTypeDictionary, as: StoredCardPaymentMethod.self)
         let bcmc = try decode(storedBcmcDictionary, as: StoredBCMCPaymentMethod.self)
         let schemeGeneric = try decode(
             [
@@ -37,10 +33,10 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
             as: StoredPayPalPaymentMethod.self
         )
 
-        let sections = makeSections(from: [payPal, schemeCard, cardTypeCard, bcmc, schemeGeneric])
+        let sections = makeSections(from: [payPal, schemeCard, bcmc, schemeGeneric])
 
         XCTAssertEqual(sections.map(\.kind), [.cards, .other])
-        XCTAssertEqual(sections[0].items.map(\.paymentMethod.identifier), [schemeCard.identifier, cardTypeCard.identifier, bcmc.identifier])
+        XCTAssertEqual(sections[0].items.map(\.paymentMethod.identifier), [schemeCard.identifier, bcmc.identifier])
         XCTAssertEqual(sections[1].items.map(\.paymentMethod.identifier), [payPal.identifier, schemeGeneric.identifier])
     }
 

@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes any voucher action object.
-public protocol AnyVoucherAction {
+package protocol AnyVoucherAction {
     
     /// The `paymentMethodType` for which the voucher is presented.
     var paymentMethodType: PaymentMethodType { get }

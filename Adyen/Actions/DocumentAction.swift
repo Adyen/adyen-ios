@@ -7,13 +7,13 @@
 import Foundation
 
 /// Describes an action in which shoppers can view and download the document after payment.
-public struct DocumentAction: Decodable, Downloadable {
+package struct DocumentAction: Decodable, Downloadable {
     
     /// URL of the downloadable mandate.
-    public let downloadUrl: URL
+    package let downloadUrl: URL
     
     /// Payment method type string.
-    public let paymentMethodType: PaymentMethodType
+    package let paymentMethodType: PaymentMethodType
     
     private enum CodingKeys: String, CodingKey {
         case downloadUrl = "url"

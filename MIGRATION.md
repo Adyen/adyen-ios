@@ -30,9 +30,11 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
-### Action payment method types
+### Actions
 
-- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. The `paymentMethodType` property of `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `AnyVoucherAction` and the voucher action classes is now a `PaymentMethodType`. Compare it with the `PaymentMethodType` static properties or use its `rawValue`. Most property names stay the same. These differ:
+- `Action` is a struct instead of an enum, so Adyen can add action types without breaking your code. Decode it from the `action` object of the `/payments` response and pass it to `handle(action:)` as before. You can no longer switch over its cases. To check what kind of action it is, use its `type` property.
+- The types that describe each kind of action are no longer public: `RedirectAction`, `ThreeDS2Action`, `ThreeDS2FingerprintAction`, `ThreeDS2ChallengeAction`, `SDKAction`, `WeChatPaySDKAction`, `WeChatPaySDKData`, `TwintSDKAction`, `TwintSDKData`, `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `VoucherAction`, `AnyVoucherAction`, `GenericVoucherAction`, `BoletoVoucherAction`, `DokuVoucherAction`, `EContextStoresVoucherAction`, `EContextATMVoucherAction`, `OXXOVoucherAction` and `MultibancoVoucherAction`.
+- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. Use the matching `PaymentMethodType` static properties instead. Most property names stay the same. These differ:
 
 | Before | After |
 |---|---|
@@ -42,9 +44,6 @@
 | `DocumentPaymentMethod.bacs` | `PaymentMethodType.bacsDirectDebit` |
 | `QRCodePaymentMethod.upiQRCode` | `PaymentMethodType.upiQR` |
 
-- `TwintSDKAction.paymentMethodType` is a `PaymentMethodType` instead of a `String`.
-- The `AwaitAction` and `RedirectableAwaitAction` initializers take a `PaymentMethodType`.
-- `VoucherAction.boletoBancairoSantander` is renamed to `VoucherAction.boletoBancarioSantander`.
 - Await actions are decoded for any payment method. Before, an await action for a payment method that was not listed in `AwaitPaymentMethod` failed to decode.
 
 ### Await action screen
@@ -67,6 +66,7 @@
 - A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
 - New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
 - `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
+- `PaymentMethodType.card` is removed. Cards use `PaymentMethodType.scheme`. A payment method with type `card` is no longer handled as a card payment method.
 - Some properties are renamed:
 
 | Before | After |

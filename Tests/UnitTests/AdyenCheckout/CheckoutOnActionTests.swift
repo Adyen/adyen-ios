@@ -35,7 +35,7 @@ final class CheckoutOnActionTests: XCTestCase {
         let actionHandler = ActionHandlingComponentMock()
         var receivedRedirect = false
         actionHandler.onAction = { action in
-            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            guard case .redirect = action.kind else { return XCTFail("Expected a redirect action") }
             receivedRedirect = true
         }
         core?.actionHandlingComponent = actionHandler
@@ -54,7 +54,7 @@ final class CheckoutOnActionTests: XCTestCase {
         let actionHandler = ActionHandlingComponentMock()
         var receivedRedirect = false
         actionHandler.onAction = { action in
-            guard case .redirect = action else { return XCTFail("Expected a redirect action") }
+            guard case .redirect = action.kind else { return XCTFail("Expected a redirect action") }
             receivedRedirect = true
         }
         core?.actionHandlingComponent = actionHandler

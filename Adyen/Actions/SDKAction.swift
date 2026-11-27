@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to an SDK.
-public enum SDKAction: Decodable {
+package enum SDKAction: Decodable {
     
     /// Indicates a WeChat Pay SDK action.
     case weChatPay(WeChatPaySDKAction)
@@ -15,7 +15,7 @@ public enum SDKAction: Decodable {
     /// Indicates a Twint SDK action.
     case twint(TwintSDKAction)
 
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(SDKType.self, forKey: CodingKeys.type)
         

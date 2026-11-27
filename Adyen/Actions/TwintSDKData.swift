@@ -7,20 +7,20 @@
 import Foundation
 
 /// Describes the data required by the Twint SDK to complete the payment.
-public struct TwintSDKData: Decodable {
+package struct TwintSDKData: Decodable {
 
     /// SDK token.
-    public let token: String
+    package let token: String
 
     /// Determines if the Twint payment is tokenized.
-    public let isStored: Bool
+    package let isStored: Bool
 
     private enum CodingKeys: String, CodingKey {
         case token
         case isStored
     }
     
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         token = try container.decode(String.self, forKey: .token)
 

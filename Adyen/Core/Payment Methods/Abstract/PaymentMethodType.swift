@@ -39,7 +39,6 @@ public struct PaymentMethodType: RawRepresentable, Hashable, Codable, Sendable {
 
     // MARK: - Supported types
 
-    public static let card = PaymentMethodType(rawValue: "card")
     public static let scheme = PaymentMethodType(rawValue: "scheme")
     public static let ideal = PaymentMethodType(rawValue: "ideal")
     public static let entercash = PaymentMethodType(rawValue: "entercash")
@@ -134,7 +133,6 @@ extension PaymentMethodType {
     /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
     package var name: String {
         switch self {
-        case .card: return "card payment"
         case .entercash: return "enter-cash"
         case .eps: return "EPS"
         case .onlineBankingPL: return "online banking \(localized(country: "PL"))"

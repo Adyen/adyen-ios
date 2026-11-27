@@ -7,14 +7,14 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to a URL.
-public struct RedirectAction: Decodable {
+package struct RedirectAction: Decodable {
     
     /// Defines the type of redirect flow utilized by the `RedirectAction` object.
-    public enum RedirectType: String, Decodable {
+    package enum RedirectType: String, Decodable {
         case redirect
         case nativeRedirect
 
-        public init(from decoder: Decoder) throws {
+        package init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             let type = try container.decode(String.self)
             self = RedirectType(rawValue: type) ?? .redirect
@@ -22,15 +22,15 @@ public struct RedirectAction: Decodable {
     }
 
     /// The URL to which to redirect the user.
-    public let url: URL
+    package let url: URL
 
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String?
+    package let paymentData: String?
 
     package let type: RedirectType
 
     /// Native redirect data.
-    public let nativeRedirectData: String?
+    package let nativeRedirectData: String?
     
     package let paymentMethodType: String?
     
@@ -42,7 +42,7 @@ public struct RedirectAction: Decodable {
     ///   - type: The redirect flow  used by the action. Defaults to `redirect`.
     ///   - nativeRedirectData: Native redirect data. Defaults to `nil`.
     ///   - paymentMethodType: The type of the payment method.
-    public init(
+    package init(
         url: URL,
         paymentData: String?,
         type: RedirectType = .redirect,

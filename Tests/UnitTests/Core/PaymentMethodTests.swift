@@ -1138,6 +1138,17 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular.map(\.type), [.payPal])
     }
 
+    func test_decodingPaymentMethods_withCardType_shouldDecodeAsGenericPaymentMethod() throws {
+        let paymentMethods: PaymentMethods = try AdyenCoder.decode([
+            "paymentMethods": [
+                ["type": "card", "name": "Card"]
+            ]
+        ] as [String: Any])
+
+        XCTAssertEqual(paymentMethods.regular.count, 1)
+        XCTAssertTrue(paymentMethods.regular[0] is GenericPaymentMethod)
+    }
+
     func test_paymentMethodTypeName_withUnknownType_shouldReplaceUnderscores() {
         XCTAssertEqual(PaymentMethodType(rawValue: "klarna_paynow").name, "klarna paynow")
         XCTAssertEqual(PaymentMethodType.boletoBancario.name, "boleto bancario")
