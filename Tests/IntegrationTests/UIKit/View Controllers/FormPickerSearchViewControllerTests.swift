@@ -37,7 +37,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func test_picker_whenOptionSelected_shouldInvokeSelectionHandlerWithSelectedOption() throws {
+    func test_picker_whenOptionSelected_shouldInvokeSelectionHandlerWithSelectedOption() {
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
@@ -58,7 +58,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
         
-        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerSearchViewController
         guard case let .showingResults(results) = searchViewController.viewModel.interfaceState else {
             XCTFail("SearchViewController has wrong state \(searchViewController.viewModel.interfaceState)")
             return
@@ -69,7 +69,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
     
-    func test_search_withMatchingTerm_shouldReturnMatchingResults() throws {
+    func test_search_withMatchingTerm_shouldReturnMatchingResults() {
         
         // Given
         
@@ -83,7 +83,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         pickerSearchViewController.loadViewIfNeeded()
         
-        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerSearchViewController
         
         let searchTerms: [String] = [
             "Title",
@@ -107,7 +107,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func test_search_withNonMatchingTerm_shouldShowEmptyState() throws {
+    func test_search_withNonMatchingTerm_shouldShowEmptyState() {
         
         // Given
         
@@ -121,7 +121,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         pickerSearchViewController.loadViewIfNeeded()
         
-        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
+        let searchViewController: SearchViewController = pickerSearchViewController
         
         let searchTerms: [String] = [
             "Titles",
@@ -450,7 +450,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertEqual(firstCellFrame.minY - headerView.frame.maxY, 24, accuracy: 0.5)
     }
 
-    func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
+    func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() {
         let pickerViewController = FormPickerSearchViewController<FormPickerElement>(
             configuration: .init(title: "Installments", isSearchEnabled: false),
             options: []
@@ -460,9 +460,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
         setupRootViewController(pickerViewController)
 
-        let searchViewController = try XCTUnwrap(
-            pickerViewController.viewControllers.first as? SearchViewController
-        )
+        let searchViewController: SearchViewController = pickerViewController
 
         XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
         XCTAssertFalse(searchViewController.emptyView.isHidden)
@@ -624,11 +622,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
 
-        return try XCTUnwrap(
-            pickerSearchViewController.viewControllers.first as? SearchViewController,
-            file: file,
-            line: line
-        )
+        return pickerSearchViewController
     }
 
     private func makeOptions() -> [FormPickerElement] {

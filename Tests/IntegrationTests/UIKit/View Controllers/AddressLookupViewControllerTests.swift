@@ -41,7 +41,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         // Then
-        XCTAssertNotNil(sut.viewControllers.first as? AddressInputFormViewController)
+        XCTAssertNotNil(sut.activeViewController as? AddressInputFormViewController)
     }
 
     func testViewControllerBinding_showsSearch_whenInterfaceStateChangesToSearch() {
@@ -62,7 +62,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         // Then
         wait(for: [lookupExpectation], timeout: 10)
-        XCTAssertNotNil(sut.viewControllers.first as? AddressLookupSearchViewController)
+        XCTAssertNotNil(sut.activeViewController as? AddressLookupSearchViewController)
     }
 
     func testViewControllerBinding_showsForm_whenSwitchingToManualEntry() {
@@ -82,7 +82,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertEqual(
             viewModel.interfaceState, .form(prefillAddress: results.first?.postalAddress)
         )
-        XCTAssertNotNil(sut.viewControllers.first as? AddressInputFormViewController)
+        XCTAssertNotNil(sut.activeViewController as? AddressInputFormViewController)
     }
 
     // MARK: - Search Dismissal Tests
@@ -285,6 +285,7 @@ extension AddressLookupViewControllerTests {
             initialCountry: "NL",
             prefillAddress: prefillAddress,
             lookupProvider: provider,
+            secondaryScreenPresenter: PresenterMock(present: { _, _ in }, dismiss: { _ in }),
             completionHandler: completionHandler
         )
     }

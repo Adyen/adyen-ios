@@ -13,7 +13,7 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-package class AbstractPersonalInformationComponent: PaymentComponent {
+package class AbstractPersonalInformationComponent: SecondaryScreenPresentingComponent {
 
     package typealias Configuration = PersonalInformationConfiguration
 
@@ -29,6 +29,10 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
+    )
+
+    package private(set) lazy var presenter = RoutablePresenter(
+        default: ModalSecondaryScreenPresenter { [weak self] in self?.viewController }
     )
 
     package let type: PaymentComponentType = .regular
@@ -169,7 +173,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
             initialCountry: initialCountry,
             identifier: identifier,
             style: configuration.style,
-            presenter: self,
+            presenter: presenter,
             addressViewModelBuilder: addressViewModelBuilder(),
             addressType: .billing
         )
@@ -188,7 +192,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
             initialCountry: initialCountry,
             identifier: identifier,
             style: configuration.style,
-            presenter: self,
+            presenter: presenter,
             addressViewModelBuilder: addressViewModelBuilder(),
             addressType: .delivery
         )
@@ -206,7 +210,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
             identifier: identifier,
             phoneExtensions: phoneExtensions(),
             style: configuration.style.textField,
-            presenter: .init(self)
+            presenter: presenter
         )
         injector.localizationParameters = configuration.localizationParameters
         return injector
@@ -269,26 +273,12 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
     }
 }
 
-extension AbstractPersonalInformationComponent: ViewControllerPresenter {
-    
-    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        self.viewController.presentViewController(viewController, animated: animated)
-    }
-    
-    package func dismissViewController(animated: Bool) {
-        self.viewController.dismissViewController(animated: animated)
-    }
-}
-
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
     // MARK: - ViewControllerDelegate
 
-    package func viewWillAppear(viewController: UIViewController) {
-        populateFields()
-    }
-    
     package func viewDidLoad(viewController: UIViewController) {
+        populateFields()
         sendInitialAnalytics()
         sendDidLoadEvent()
     }

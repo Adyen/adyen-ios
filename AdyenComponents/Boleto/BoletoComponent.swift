@@ -184,8 +184,10 @@ extension BoletoComponent: TrackableComponent {}
 
 extension BoletoComponent: ViewControllerDelegate {
     
-    package func viewWillAppear(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         prefillFields(for: formComponent)
+        sendInitialAnalytics()
+        sendDidLoadEvent()
     }
 }
 

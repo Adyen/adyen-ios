@@ -49,7 +49,7 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
         item.selectionHandler = { [weak self] in
             
             let topPresenter = self?.item.presenter
-            
+            weak var pickerScreen: UIViewController?
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
                 configuration: item.configuration,
@@ -57,8 +57,10 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
             ) { [weak topPresenter, weak self] selectedItem in
                 self?.item.value = selectedItem
                 self?.updateSelection()
-                topPresenter?.dismissViewController(animated: true)
+                guard let pickerScreen else { return }
+                topPresenter?.dismissViewController(pickerScreen, animated: true)
             }
+            pickerScreen = pickerViewController
             
             item.presenter?.presentViewController(pickerViewController, animated: true)
         }

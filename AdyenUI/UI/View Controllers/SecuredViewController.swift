@@ -36,6 +36,12 @@ package final class SecuredViewController<ChildViewController: UIViewController>
         set { childViewController.title = newValue }
     }
 
+    /// The wrapped screen owns the title and the bar buttons, this wrapper only blurs.
+    /// So whoever shows it, pushed or modal, sees the wrapped screen's navigation item.
+    override public var navigationItem: UINavigationItem {
+        childViewController.navigationItem
+    }
+
     // MARK: - Initializers
 
     /// Initializes the `SecuredViewController`.

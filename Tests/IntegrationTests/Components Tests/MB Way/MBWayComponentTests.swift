@@ -115,6 +115,31 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertTrue(phoneNumber.isEmpty)
     }
 
+    func test_phoneNumber_afterReturningToForm_shouldKeepPrefilledValue() throws {
+        // Given
+        let form = try makeSUT(shopperInformation: shopperInformation)
+
+        // When
+        form.navigateAwayAndBack()
+
+        // Then
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
+        XCTAssertEqual(form.phoneNumber, expectedPhoneNumber)
+    }
+
+    func test_phoneNumber_afterReturningToForm_shouldKeepEditedValue() throws {
+        // Given
+        let form = try makeSUT(shopperInformation: shopperInformation)
+        form.enterPhoneNumber("987654321")
+        let editedValue = form.phoneNumber
+
+        // When
+        form.navigateAwayAndBack()
+
+        // Then
+        XCTAssertEqual(form.phoneNumber, editedValue)
+    }
+
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -136,6 +161,63 @@ class MBWayComponentTests: XCTestCase {
     }
 
     // MARK: - Private
+
+    private func makeSUT(shopperInformation: PrefilledShopperInformation? = nil) throws -> FormDriver {
+        let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
+        let navigationController = UINavigationController(rootViewController: sut.viewController)
+        setupRootViewController(navigationController)
+        return try FormDriver(sut: sut, navigationController: navigationController) { [weak self] condition in
+            self?.wait(until: condition, timeout: 2, retryInterval: .milliseconds(10))
+        }
+    }
+
+    @MainActor
+    private final class FormDriver {
+
+        private let sut: MBWayComponent
+        private let navigationController: UINavigationController
+        private let waitUntil: (_ condition: () -> Bool) -> Void
+        private let phoneNumberView: FormPhoneNumberItemView
+
+        init(
+            sut: MBWayComponent,
+            navigationController: UINavigationController,
+            waitUntil: @escaping (_ condition: () -> Bool) -> Void
+        ) throws {
+            self.sut = sut
+            self.navigationController = navigationController
+            self.waitUntil = waitUntil
+            self.phoneNumberView = try XCTUnwrap(sut.viewController.view.findView(by: MBWayViewIdentifier.phone))
+        }
+
+        var phoneNumber: String {
+            phoneNumberView.item.value
+        }
+
+        func enterPhoneNumber(_ phoneNumber: String) {
+            phoneNumberView.textField.text = phoneNumber
+            phoneNumberView.textField.sendActions(for: .editingChanged)
+        }
+
+        func navigateAwayAndBack() {
+            let pushedViewController = UIViewController()
+            navigationController.pushViewController(pushedViewController, animated: false)
+            waitUntil { [weak self] in
+                self?.navigationController.topViewController === pushedViewController
+            }
+            navigationController.popViewController(animated: false)
+            waitUntil { [weak self] in
+                guard let self else { return false }
+                return navigationController.topViewController === sut.viewController
+                    && sut.viewController.viewIfLoaded?.window != nil
+            }
+        }
+    }
 
     private enum MBWayViewIdentifier {
         static let phone = "AdyenComponents.MBWayComponent.phoneNumberItem"

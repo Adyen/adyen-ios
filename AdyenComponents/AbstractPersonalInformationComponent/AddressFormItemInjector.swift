@@ -47,7 +47,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         initialCountry: String,
         identifier: String,
         style: FormComponentStyle,
-        presenter: ViewControllerPresenter?,
+        presenter: ViewControllerPresenter,
         addressViewModelBuilder: AddressViewModelBuilder,
         addressType: FormAddressPickerItem.AddressType
     ) {
@@ -76,7 +76,7 @@ extension AddressFormItemInjector: ViewControllerPresenter {
         presenter?.presentViewController(viewController, animated: animated)
     }
     
-    internal func dismissViewController(animated: Bool) {
-        presenter?.dismissViewController(animated: animated)
+    internal func dismissViewController(_ viewController: UIViewController, animated: Bool) {
+        presenter?.dismissViewController(viewController, animated: animated)
     }
 }

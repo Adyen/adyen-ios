@@ -169,6 +169,44 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
+    func test_shopperDetails_afterReturningToForm_shouldKeepPrefilledValues() throws {
+        // Given
+        let prefilledInformation = Dummy.dummyFullPrefilledInformation
+        let form = try makeSUT(shopperInformation: prefilledInformation)
+
+        // When
+        form.navigateAwayAndBack()
+
+        // Then
+        let formattedSocialSecurityNumber = try BrazilSocialSecurityNumberFormatter().formattedValue(for: XCTUnwrap(prefilledInformation.socialSecurityNumber))
+        XCTAssertEqual(form.socialSecurityNumberText, formattedSocialSecurityNumber)
+        XCTAssertEqual(form.emailText, prefilledInformation.emailAddress)
+    }
+
+    func test_shopperDetails_afterReturningToForm_shouldKeepEditedValues() throws {
+        // Given
+        let form = try makeSUT(shopperInformation: Dummy.dummyFullPrefilledInformation)
+
+        // initially form contains the prefilled information
+        XCTAssertEqual(form.email, Dummy.dummyFullPrefilledInformation.emailAddress)
+        XCTAssertEqual(form.socialSecurityNumber, Dummy.dummyFullPrefilledInformation.socialSecurityNumber)
+
+        form.enableEmailCopy()
+        form.enterEmail("edited@adyen.com")
+        let editedEmail = form.email
+
+        form.enterSocialSecurityNumber("35184338578")
+        let editedSocialSecurityNumber = form.socialSecurityNumber
+
+        // When
+        form.navigateAwayAndBack()
+
+        // Then form contains the edited values.
+        XCTAssertTrue(form.isEmailCopyEnabled)
+        XCTAssertEqual(form.email, editedEmail)
+        XCTAssertEqual(form.socialSecurityNumber, editedSocialSecurityNumber)
+    }
+
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -191,6 +229,98 @@ class BoletoComponentTests: XCTestCase {
     }
 
     // MARK: - Private
+
+    private func makeSUT(
+        shopperInformation: PrefilledShopperInformation? = nil,
+        showEmailAddress: Bool = true
+    ) throws -> FormDriver {
+        let sut = BoletoComponent(
+            paymentMethod: method,
+            context: Dummy.context(analyticsProvider: AnalyticsProviderMock()),
+            configuration: Dummy.getConfiguration(with: shopperInformation, showEmailAddress: showEmailAddress)
+        )
+        let navigationController = UINavigationController(rootViewController: sut.viewController)
+        setupRootViewController(navigationController)
+        return try FormDriver(sut: sut, navigationController: navigationController) { [weak self] condition in
+            self?.wait(until: condition, timeout: 2, retryInterval: .milliseconds(10))
+        }
+    }
+
+    @MainActor
+    private final class FormDriver {
+
+        private let sut: BoletoComponent
+        private let navigationController: UINavigationController
+        private let waitUntil: (_ condition: () -> Bool) -> Void
+        private let emailSwitchItem: FormToggleItemView
+        private let emailItemView: FormTextItemView<FormTextInputItem>
+        private let socialSecurityNumberItemView: FormTextItemView<FormTextInputItem>
+
+        init(
+            sut: BoletoComponent,
+            navigationController: UINavigationController,
+            waitUntil: @escaping (_ condition: () -> Bool) -> Void
+        ) throws {
+            self.sut = sut
+            self.navigationController = navigationController
+            self.waitUntil = waitUntil
+            let view: UIView = sut.viewController.view
+            self.emailSwitchItem = try XCTUnwrap(view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView)
+            self.emailItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.emailItem))
+            self.socialSecurityNumberItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.socialSecurityNumberItem))
+        }
+
+        var isEmailCopyEnabled: Bool {
+            emailSwitchItem.item.value
+        }
+
+        var email: String {
+            emailItemView.item.value
+        }
+
+        var emailText: String? {
+            emailItemView.textField.text
+        }
+
+        var socialSecurityNumber: String {
+            socialSecurityNumberItemView.item.value
+        }
+
+        var socialSecurityNumberText: String? {
+            socialSecurityNumberItemView.textField.text
+        }
+
+        func enableEmailCopy() {
+            emailSwitchItem.accessibilityActivate()
+            waitUntil { [weak self] in
+                self?.emailSwitchItem.item.value == true
+            }
+        }
+
+        func enterEmail(_ email: String) {
+            emailItemView.textField.text = email
+            emailItemView.textField.sendActions(for: .editingChanged)
+        }
+
+        func enterSocialSecurityNumber(_ socialSecurityNumber: String) {
+            socialSecurityNumberItemView.textField.text = socialSecurityNumber
+            socialSecurityNumberItemView.textField.sendActions(for: .editingChanged)
+        }
+
+        func navigateAwayAndBack() {
+            let pushedViewController = UIViewController()
+            navigationController.pushViewController(pushedViewController, animated: false)
+            waitUntil { [weak self] in
+                self?.navigationController.topViewController === pushedViewController
+            }
+            navigationController.popViewController(animated: false)
+            waitUntil { [weak self] in
+                guard let self else { return false }
+                return navigationController.topViewController === sut.viewController
+                    && sut.viewController.viewIfLoaded?.window != nil
+            }
+        }
+    }
 
     private enum ViewIdentifier {
         static let firstNameItem = "firstNameItem"

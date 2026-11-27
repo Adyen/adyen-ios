@@ -17,8 +17,24 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Tests
 
-    @Test("Pushing an action on top hides the container without leaving it, so the component must not be cancelled.")
-    func viewDidDisappear_whenCoveredByAPushedViewController_shouldNotCallViewModelCancel() async {
+    /// The container forwards disappearance to its view model, distinguishing it from permanently leaving the screen.
+    @Test
+    func viewDidDisappear_shouldForwardToViewModel() async {
+        // Given
+        let (sut, viewModelMock, _) = await makeSUT()
+
+        // When
+        // Trigger disappearance without a pop or dismissal; the argument only indicates whether the transition is animated.
+        sut.viewDidDisappear(true)
+
+        // Then
+        // Forward the lifecycle event once with isLeavingScreen false so the view model can avoid cancelling the payment.
+        #expect(viewModelMock.viewDidDisappearCallsCount == 1)
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == false)
+    }
+
+    @Test("Pushing an action on top hides the container without leaving it, so the view model must not be notified.")
+    func viewDidDisappear_whenCoveredByAPushedViewController_shouldNotForwardToViewModel() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
         let navigationController = UINavigationController(rootViewController: sut)
@@ -31,12 +47,12 @@ struct ComponentContainerViewControllerTests {
 
         // Then
         await waitUntil { pushedViewController.viewIfLoaded?.window != nil && sut.view.window == nil }
-        #expect(viewModelMock.cancelCallsCount == 0)
+        #expect(viewModelMock.viewDidDisappearCallsCount == 0)
         withExtendedLifetime(window) {}
     }
 
     @Test
-    func viewDidDisappear_whenPoppedFromTheNavigationStack_shouldCallViewModelCancel() async {
+    func viewDidDisappear_whenPoppedFromTheNavigationStack_shouldReportLeavingScreen() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
         let navigationController = UINavigationController()
@@ -48,13 +64,13 @@ struct ComponentContainerViewControllerTests {
         navigationController.popViewController(animated: false)
 
         // Then
-        await waitUntil { viewModelMock.cancelCallsCount > 0 }
-        #expect(viewModelMock.cancelCallsCount == 1)
+        await waitUntil { viewModelMock.viewDidDisappearCallsCount > 0 }
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == true)
         withExtendedLifetime(window) {}
     }
 
-    @Test("Dismissing the sheet the container is shown in, for example by swiping it down, cancels the component.")
-    func viewDidDisappear_whenItsNavigationControllerIsDismissed_shouldCallViewModelCancel() async throws {
+    @Test("Dismissing the sheet the container is shown in, for example by swiping it down, reports leaving the screen.")
+    func viewDidDisappear_whenItsNavigationControllerIsDismissed_shouldReportLeavingScreen() async throws {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
         let navigationController = UINavigationController(rootViewController: sut)
@@ -74,8 +90,8 @@ struct ComponentContainerViewControllerTests {
         }
 
         // Then
-        await waitUntil { viewModelMock.cancelCallsCount > 0 }
-        #expect(viewModelMock.cancelCallsCount == 1)
+        await waitUntil { viewModelMock.viewDidDisappearCallsCount > 0 }
+        #expect(viewModelMock.viewDidDisappearReceivedIsLeavingScreen == true)
         withExtendedLifetime(window) {}
     }
 
@@ -284,10 +300,12 @@ struct ComponentContainerViewControllerTests {
             paymentInProgressSubject.eraseToAnyPublisher()
         }
 
-        var cancelCallsCount = 0
+        var viewDidDisappearCallsCount = 0
+        var viewDidDisappearReceivedIsLeavingScreen: Bool?
 
-        func cancel() {
-            cancelCallsCount += 1
+        func viewDidDisappear(isLeavingScreen: Bool) {
+            viewDidDisappearCallsCount += 1
+            viewDidDisappearReceivedIsLeavingScreen = isLeavingScreen
         }
 
         var cancelDropInCallsCount = 0

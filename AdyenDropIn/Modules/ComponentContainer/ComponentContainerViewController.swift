@@ -61,7 +61,7 @@ internal class ComponentContainerViewController: UIViewController {
         let isRemovedFromNavigation = navigationController?.viewControllers.contains(self) != true
         guard isRemovedFromNavigation || isBeingDismissed || navigationController?.isBeingDismissed == true else { return }
         componentViewController.resignFirstResponder()
-        viewModel.cancel()
+        viewModel.viewDidDisappear(isLeavingScreen: isLeavingScreen)
     }
     
     // MARK: - Internal
