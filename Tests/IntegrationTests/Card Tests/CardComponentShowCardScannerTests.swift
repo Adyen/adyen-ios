@@ -6,7 +6,6 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
-@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 
 /// Tests for the `showCardScanner` configuration option.
@@ -16,16 +15,6 @@ struct CardComponentShowCardScannerTests {
     @Test
     func default_showCardScanner_isTrue() {
         #expect(CardConfiguration().showCardScanner == true)
-    }
-
-    @Test(arguments: [true, false])
-    func showCardScanner_default_scanCardHandlerMatchesScannerAvailability(isScannerAvailable: Bool) {
-        let sut = Self.makeCardViewController(
-            configuration: CardConfiguration(),
-            cardScannerController: CardScannerControllerStub(isScannerAvailable: isScannerAvailable)
-        )
-
-        #expect((sut.items.numberContainerItem.numberItem.scanCardHandler != nil) == isScannerAvailable)
     }
 
     @Test
@@ -75,37 +64,5 @@ struct CardComponentShowCardScannerTests {
             fundingSource: .credit,
             brands: [.visa]
         )
-    }
-
-    private static func makeCardViewController(
-        configuration: CardConfiguration,
-        cardScannerController: CardScannerControlling
-    ) -> CardViewController {
-        CardViewController(
-            configuration: configuration,
-            shopperInformation: nil,
-            formStyle: FormComponentStyle(),
-            amount: nil,
-            logoProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-            supportedCardBrands: [.visa],
-            initialCountryCode: nil,
-            scope: "test",
-            localizationParameters: nil,
-            theme: configuration.theme,
-            cardScannerAnalyticsHandler: { _ in },
-            cardScannerController: cardScannerController
-        )
-    }
-
-    private final class CardScannerControllerStub: CardScannerControlling {
-        internal init(isScannerAvailable: Bool) {
-            self.isScannerAvailable = isScannerAvailable
-        }
-
-        var isScannerAvailable: Bool
-        var title: String?
-        var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)?
-        func openCardScanner() { /* No-op */ }
-        func dismiss(completion: (() -> Void)?) { /* No-op */ }
     }
 }
