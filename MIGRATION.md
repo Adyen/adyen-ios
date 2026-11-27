@@ -66,6 +66,7 @@
 - A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
 - New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
 - `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
+- `PaymentMethodType.card` is removed. Cards use `PaymentMethodType.scheme`. A payment method with type `card` is no longer handled as a card payment method.
 - Some properties are renamed:
 
 | Before | After |

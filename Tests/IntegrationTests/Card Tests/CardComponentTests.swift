@@ -29,7 +29,7 @@ class CardComponentTests: XCTestCase {
     
     var storedMethod: StoredCardPaymentMethod {
         .init(
-            type: .card,
+            type: .scheme,
             name: "Test name",
             identifier: "id",
             fundingSource: .credit,
@@ -1222,7 +1222,7 @@ class CardComponentTests: XCTestCase {
         ]
 
         let method = CardPaymentMethod(
-            type: .card,
+            type: .scheme,
             name: "Test name",
             fundingSource: .credit,
             brands: [.visa, .americanExpress, .masterCard]

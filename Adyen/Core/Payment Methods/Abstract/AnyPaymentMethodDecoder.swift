@@ -48,7 +48,6 @@ internal enum AnyPaymentMethodDecoder {
         .upiCollect: UnsupportedPaymentMethodDecoder(),
                                                                               
         // Supported payment methods
-        .card: CardPaymentMethodDecoder(),
         .scheme: CardPaymentMethodDecoder(),
         .entercash: IssuerListPaymentMethodDecoder(),
         .eps: IssuerListPaymentMethodDecoder(),

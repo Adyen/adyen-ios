@@ -227,7 +227,7 @@ class StoredCardSecurityCodeComponentTests: XCTestCase {
         analyticsProvider: AnyAnalyticsProvider? = nil
     ) -> StoredCardSecurityCodeComponent {
         let paymentMethod = StoredCardPaymentMethod(
-            type: .card,
+            type: .scheme,
             name: "name",
             identifier: "id",
             fundingSource: .credit,
