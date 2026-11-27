@@ -43,7 +43,7 @@ internal class CardViewController: FormViewController {
     }()
     
     private var isCardScannerAvailable: Bool {
-        cardScannerController.isScannerAvailable
+        configuration.showCardScanner && cardScannerController.isScannerAvailable
     }
     
     private var cardNumberItem: FormCardNumberItem {

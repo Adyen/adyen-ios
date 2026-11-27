@@ -63,6 +63,9 @@ public struct CardConfiguration: PaymentComponentConfiguration, AnyPersonalInfor
     
     /// Indicates whether or not to show the supported card brand logos under the card number item
     internal var showSupportedCardBrandLogos: Bool
+
+    /// Indicates whether the card scanner button is shown in the card number field. Defaults to true.
+    internal var showCardScanner: Bool
     
     // TODO: Add onFieldValidationChange closure that provides field validation
     // updates including last 4 digits, or add it here after deciding on alignment.
@@ -81,6 +84,7 @@ public struct CardConfiguration: PaymentComponentConfiguration, AnyPersonalInfor
         self.socialSecurityNumberVisibility = .auto
         self.binLookupType = .card
         self.showSupportedCardBrandLogos = true
+        self.showCardScanner = true
     }
 
     /// Throws when address lookup is enabled and the callbacks contain no `AddressCallbacks`.
@@ -134,6 +138,16 @@ extension CardConfiguration {
     public func showCardholderName(_ showCardholderName: Bool) -> Self {
         var copy = self
         copy.showCardholderName = showCardholderName
+        return copy
+    }
+    
+    /// Sets whether the card scanner button is shown in the card number field.
+    /// When disabled, the card scanner is not initialized.
+    /// - Parameter showCardScanner: Boolean value indicating if the card scanner button should be shown.
+    /// - Returns: A modified copy of the configuration.
+    public func showCardScanner(_ showCardScanner: Bool) -> Self {
+        var copy = self
+        copy.showCardScanner = showCardScanner
         return copy
     }
     
