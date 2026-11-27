@@ -26,22 +26,11 @@ extension AdyenScope where Base: UIView {
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
-    ///   - percentage: The percentage of a length of a smallest dimension.
-    package func round(corners: UIRectCorner, percentage: CGFloat) {
-        let radius = percentage * min(base.bounds.height, base.bounds.width)
-        base.adyen.round(corners: corners, radius: radius)
-    }
-    
-    /// Apply a BezierPath mask in shape of a rounded rectangular path.
-    /// - Parameters:
-    ///   - corners: The corners of a rectangle to round.
     ///   - rounding: The rounding style.
     package func round(corners: UIRectCorner, rounding: CornerRounding) {
         switch rounding {
         case let .fixed(value):
             base.adyen.round(corners: corners, radius: value)
-        case let .percent(value):
-            base.adyen.round(corners: corners, percentage: value)
         case .none:
             break
         }
@@ -52,16 +41,7 @@ extension AdyenScope where Base: UIView {
     ///   - radius: The radius of each corner oval.
     package func round(using rounding: CornerRounding) {
         base.layer.cornerCurve = .continuous
-        
-        switch rounding {
-        case let .fixed(value):
-            base.layer.cornerRadius = value
-        case let .percent(value):
-            let radius = value * min(base.bounds.height, base.bounds.width)
-            base.layer.cornerRadius = radius
-        case .none:
-            base.layer.cornerRadius = 0
-        }
+        base.layer.cornerRadius = rounding.radius
     }
     
 }
