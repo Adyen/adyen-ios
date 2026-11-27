@@ -2,19 +2,9 @@ name: Compatibility Test
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - 'release/**'
-      - 'develop'
+  # Called by pr_scan.yml once its test and quality jobs pass.
+  workflow_call:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-    
 permissions:
   contents: read
 jobs:
