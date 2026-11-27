@@ -648,7 +648,7 @@ class CardComponentTests: XCTestCase {
 //        // Given
 //        var style = FormComponentStyle(tintColor: .systemYellow)
 //        style.textField.title.color = .gray
-//        var configuration = CardComponentConfiguration()
+//        var configuration = CardConfiguration()
 //        configuration.style = style
 //        let sut = CardComponent(
 //            paymentMethod: method,
@@ -673,7 +673,7 @@ class CardComponentTests: XCTestCase {
 
     // TODO: FIX ME
 //    func testStoredCardPaymentLocalizationWithNoCVV() throws {
-//        var configuration = CardComponentConfiguration()
+//        var configuration = CardConfiguration()
 //        configuration.showSecurityCodeForStoredCard = false
 //        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 //        let sut = CardComponent(
@@ -693,7 +693,7 @@ class CardComponentTests: XCTestCase {
 //    }
 
 //    func testStoredCardPaymentWithNoCVV() throws {
-//        var configuration = CardComponentConfiguration()
+//        var configuration = CardConfiguration()
 //        configuration.showSecurityCodeForStoredCard = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
@@ -712,7 +712,7 @@ class CardComponentTests: XCTestCase {
 //    }
 
 //    func testStoredCardPaymentWithNoCVVAndNoPayment() {
-//        var configuration = CardComponentConfiguration()
+//        var configuration = CardConfiguration()
 //        configuration.showSecurityCodeForStoredCard = false
 //        let context = Dummy.context(with: nil)
 //        let sut = CardComponent(
@@ -731,7 +731,7 @@ class CardComponentTests: XCTestCase {
 //    }
 //
 //    func testOneClickPayment() {
-//        var configuration = CardComponentConfiguration()
+//        var configuration = CardConfiguration()
 //        configuration.showSecurityCodeForStoredCard = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,

@@ -26,8 +26,8 @@ import Foundation
 ///     environment: .test,
 ///     clientKey: "<client-key>"
 /// ) {
-///     CardComponentConfiguration()
-///     ApplePayComponentConfiguration()
+///     CardConfiguration()
+///     ApplePayConfiguration()
 /// }
 /// ```
 ///

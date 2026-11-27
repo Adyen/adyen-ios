@@ -67,7 +67,7 @@ public struct CardConfiguration: PaymentComponentConfiguration, AnyPersonalInfor
     // TODO: Add onFieldValidationChange closure that provides field validation
     // updates including last 4 digits, or add it here after deciding on alignment.
 
-    /// Initializes a new instance of `CardComponentConfiguration`.
+    /// Initializes a new instance of `CardConfiguration`.
     public init() {
         self.theme = .init()
         self.style = FormComponentStyle()
