@@ -253,7 +253,7 @@ class SessionTests: XCTestCase {
         let result = try await sut.performSubmit(data)
         switch result {
         case let .action(action):
-            if case let .redirect(redirect) = action {
+            if case let .redirect(redirect) = action.kind {
                 XCTAssertEqual(redirect.url, expectedAction.url)
             } else {
                 XCTFail("Expected redirect action")
@@ -687,7 +687,7 @@ class SessionTests: XCTestCase {
     }
     
     private func makeTestCardDetails() -> CardDetails {
-        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: PaymentMethodType(rawValue: "test_type"), name: "test name", brands: [.visa, .bcmc])
         let encryptedCard = CheckoutEncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
         return CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
     }

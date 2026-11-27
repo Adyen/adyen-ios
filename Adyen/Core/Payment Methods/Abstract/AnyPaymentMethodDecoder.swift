@@ -35,24 +35,24 @@ internal enum AnyPaymentMethodDecoder {
     private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
         // Unsupported payment methods
         .bcmcMobileQR: UnsupportedPaymentMethodDecoder(),
-        .weChatMiniProgram: UnsupportedPaymentMethodDecoder(),
-        .weChatQR: UnsupportedPaymentMethodDecoder(),
+        .weChatPayMiniProgram: UnsupportedPaymentMethodDecoder(),
+        .weChatPayQR: UnsupportedPaymentMethodDecoder(),
         .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
         .googlePay: UnsupportedPaymentMethodDecoder(),
+        .googlePayLegacy: UnsupportedPaymentMethodDecoder(),
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
-        .upiQr: UnsupportedPaymentMethodDecoder(),
+        .upiQR: UnsupportedPaymentMethodDecoder(),
         .upiIntent: UnsupportedPaymentMethodDecoder(),
         .upiCollect: UnsupportedPaymentMethodDecoder(),
                                                                               
         // Supported payment methods
-        .card: CardPaymentMethodDecoder(),
         .scheme: CardPaymentMethodDecoder(),
         .entercash: IssuerListPaymentMethodDecoder(),
         .eps: IssuerListPaymentMethodDecoder(),
         .dotpay: IssuerListPaymentMethodDecoder(),
-        .onlineBankingPoland: IssuerListPaymentMethodDecoder(),
+        .onlineBankingPL: IssuerListPaymentMethodDecoder(),
         .openBankingUK: IssuerListPaymentMethodDecoder(),
         .molPayEBankingFPXMY: IssuerListPaymentMethodDecoder(),
         .molPayEBankingTH: IssuerListPaymentMethodDecoder(),
@@ -70,7 +70,7 @@ internal enum AnyPaymentMethodDecoder {
         .dokuWallet: DokuPaymentMethodDecoder(),
         .dokuAlfamart: DokuPaymentMethodDecoder(),
         .dokuIndomaret: DokuPaymentMethodDecoder(),
-        .giftcard: GiftCardPaymentMethodDecoder(),
+        .giftCard: GiftCardPaymentMethodDecoder(),
         .mealVoucherSodexo: MealVoucherPaymentMethodDecoder(),
         .mealVoucherNatixis: MealVoucherPaymentMethodDecoder(),
         .mealVoucherGroupeUp: MealVoucherPaymentMethodDecoder(),
@@ -109,7 +109,7 @@ internal enum AnyPaymentMethodDecoder {
             }
 
             // Use type-specific decoder, falling back to default for unknown types
-            let paymentDecoder = type.flatMap { decoders[$0] } ?? defaultDecoder
+            let paymentDecoder = decoders[type] ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none

@@ -17,8 +17,8 @@ import Adyen
 /// For example:
 /// ```swift
 /// CardCallbacks()
-///     .onBinChange { bin in
-///         print(bin)
+///     .onBinChange { binValue in
+///         print(binValue)
 ///     }
 ///     .onBinLookup { data in
 ///         print(data.issuingCountryCode)
@@ -38,10 +38,14 @@ public struct CardCallbacks: CheckoutAdditionalCallbacks, AdvancedCheckoutAdditi
 
     /// Sets a callback for changes to the card's BIN.
     ///
+    /// The callback is invoked whenever the BIN value changes. It fires for each of the first six digits,
+    /// then sends the first eight digits once the card number is valid and has at least 16 digits.
+    /// If the number is no longer valid, it goes back to six digits. When the field is cleared, it sends an empty string.
+    ///
     /// - Parameter handler: The callback invoked when the BIN changes.
-    ///   - bin: The entered BIN prefix, up to eight digits.
+    ///   - binValue: The first six digits, or the first eight digits when the card number is valid and has at least 16 digits.
     /// - Returns: A modified copy of the callbacks.
-    public func onBinChange(_ handler: @escaping @MainActor @Sendable (_ bin: String) -> Void) -> Self {
+    public func onBinChange(_ handler: @escaping @MainActor @Sendable (_ binValue: String) -> Void) -> Self {
         var callbacks = self
         callbacks.onBinChange = handler
         return callbacks

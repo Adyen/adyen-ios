@@ -7,12 +7,12 @@
 import Foundation
 
 /// Describes an action in which an EContext ATM voucher is presented to the shopper.
-public class EContextATMVoucherAction: EContextStoresVoucherAction {
+package class EContextATMVoucherAction: EContextStoresVoucherAction {
 
     /// Collection institution number.
-    public let collectionInstitutionNumber: String
+    package let collectionInstitutionNumber: String
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         collectionInstitutionNumber = try container.decode(String.self, forKey: .collectionInstitutionNumber)
         try super.init(from: decoder)

@@ -429,7 +429,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .action(action):
-                    switch action {
+                    switch action.kind {
                     case let .redirect(resultRedirectAction):
                         XCTAssertEqual(resultRedirectAction, redirectAction)
                     default:

@@ -13,9 +13,9 @@ import XCTest
 
 class VoucherViewTests: XCTestCase {
     
-    let action: VoucherAction = .boletoBancairoSantander(
+    let action: VoucherAction = .boletoBancarioSantander(
         .init(
-            paymentMethodType: .boletoBancairoSantander,
+            paymentMethodType: .boletoBancarioSantander,
             totalAmount: .init(value: 100, currencyCode: "EUR", localeIdentifier: nil),
             reference: "reference",
             expiresAt: Date(),

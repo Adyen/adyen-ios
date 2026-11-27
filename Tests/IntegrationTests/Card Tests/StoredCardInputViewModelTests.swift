@@ -29,7 +29,7 @@ struct StoredCardInputViewModelTests {
         // Then
         #expect(analyticsProviderMock.infos.count == 1)
         let infoEvent = try #require(analyticsProviderMock.infos.first)
-        #expect(infoEvent.component == PaymentMethodType.card.rawValue)
+        #expect(infoEvent.component == PaymentMethodType.scheme.rawValue)
         #expect(infoEvent.type == .rendered)
         #expect(infoEvent.isStoredPaymentMethod == true)
         #expect(infoEvent.brand == brand.rawValue)
@@ -60,7 +60,7 @@ struct StoredCardInputViewModelTests {
         // Then
         #expect(analyticsProviderMock.errors.count == 1)
         let errorEvent = try #require(analyticsProviderMock.errors.first)
-        #expect(errorEvent.component == PaymentMethodType.card.rawValue)
+        #expect(errorEvent.component == PaymentMethodType.scheme.rawValue)
     }
 
     // MARK: - UI Text
@@ -285,7 +285,7 @@ struct StoredCardInputViewModelTests {
         localizationParameters: LocalizationParameters? = nil
     ) -> StoredCardInputViewModel {
         let storedCardPaymentMethod = StoredCardPaymentMethod(
-            type: .card,
+            type: .scheme,
             name: name,
             identifier: "test_id",
             fundingSource: .credit,

@@ -505,12 +505,12 @@ struct DropInFlowManagerTests {
     }
 
     private func makePaymentComponent() -> PaymentComponentMock {
-        PaymentComponentMock(paymentMethod: PaymentMethodMock(type: .other("genericPaymentMethod"), name: "Generic"))
+        PaymentComponentMock(paymentMethod: PaymentMethodMock(type: PaymentMethodType(rawValue: "genericPaymentMethod"), name: "Generic"))
     }
 
     private func makePaymentComponentData() -> PaymentComponentData {
         PaymentComponentData(
-            paymentMethodDetails: GenericPaymentDetails(type: .other("genericPaymentMethod")),
+            paymentMethodDetails: GenericPaymentDetails(type: PaymentMethodType(rawValue: "genericPaymentMethod")),
             order: nil
         )
     }

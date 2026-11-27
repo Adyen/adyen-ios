@@ -71,6 +71,16 @@ package enum CheckoutComponentBuilder {
                     additionalCallbacks: additionalCallbacks,
                     context: context
                 )
+            case let issuerListPaymentMethod as IssuerListPaymentMethod:
+                return try createComponent(
+                    using: IssuerListComponentFactory(),
+                    paymentMethod: issuerListPaymentMethod,
+                    configuration: configuration,
+                    policy: policy,
+                    sessionConfiguration: sessionConfiguration,
+                    additionalCallbacks: additionalCallbacks,
+                    context: context
+                )
             case let genericPaymentMethod as GenericPaymentMethod:
                 return try createComponent(
                     using: GenericPaymentComponentFactory(),
@@ -225,6 +235,12 @@ package enum CheckoutComponentBuilder {
                 return isAvailable(
                     using: ApplePayComponentFactory(),
                     paymentMethod: applePayPaymentMethod,
+                    configuration: configuration
+                )
+            case let issuerListPaymentMethod as IssuerListPaymentMethod:
+                return isAvailable(
+                    using: IssuerListComponentFactory(),
+                    paymentMethod: issuerListPaymentMethod,
                     configuration: configuration
                 )
             case let genericPaymentMethod as GenericPaymentMethod:

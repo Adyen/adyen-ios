@@ -82,8 +82,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             }
         ) {
             CardCallbacks()
-                .onBinChange { bin in
-                    print("Here is the bin \(bin)")
+                .onBinChange { binValue in
+                    print("Here is the bin \(binValue)")
                 }
                 .onBinLookup { data in
                     print("Bin lookup response \(data)")

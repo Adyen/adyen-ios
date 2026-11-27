@@ -470,7 +470,7 @@ class BCMCComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let cardPaymentMethod = CardPaymentMethod(
-            type: .card,
+            type: .bcmc,
             name: "Test name",
             fundingSource: .credit,
             brands: [.visa, .americanExpress, .masterCard]

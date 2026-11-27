@@ -30,6 +30,22 @@
 
 - `AdyenContext`, `AdyenContextAware` and `Component` are no longer public. Components are created through `Checkout` and cannot be constructed or subclassed directly, so these types are not needed in integrations.
 
+### Actions
+
+- `Action` is a struct instead of an enum, so Adyen can add action types without breaking your code. Decode it from the `action` object of the `/payments` response and pass it to `handle(action:)` as before. You can no longer switch over its cases. To check what kind of action it is, use its `type` property.
+- The types that describe each kind of action are no longer public: `RedirectAction`, `ThreeDS2Action`, `ThreeDS2FingerprintAction`, `ThreeDS2ChallengeAction`, `SDKAction`, `WeChatPaySDKAction`, `WeChatPaySDKData`, `TwintSDKAction`, `TwintSDKData`, `AwaitAction`, `RedirectableAwaitAction`, `QRCodeAction`, `DocumentAction`, `VoucherAction`, `AnyVoucherAction`, `GenericVoucherAction`, `BoletoVoucherAction`, `DokuVoucherAction`, `EContextStoresVoucherAction`, `EContextATMVoucherAction`, `OXXOVoucherAction` and `MultibancoVoucherAction`.
+- `AwaitPaymentMethod`, `QRCodePaymentMethod`, `VoucherPaymentMethod` and `DocumentPaymentMethod` are removed. Use the matching `PaymentMethodType` static properties instead. Most property names stay the same. These differ:
+
+| Before | After |
+|---|---|
+| `AwaitPaymentMethod.mbway` | `PaymentMethodType.mbWay` |
+| `AwaitPaymentMethod.upicollect` | `PaymentMethodType.upiCollect` |
+| `VoucherPaymentMethod.boletoBancairoSantander` | `PaymentMethodType.boletoBancarioSantander` |
+| `DocumentPaymentMethod.bacs` | `PaymentMethodType.bacsDirectDebit` |
+| `QRCodePaymentMethod.upiQRCode` | `PaymentMethodType.upiQR` |
+
+- Await actions are decoded for any payment method. Before, an await action for a payment method that was not listed in `AwaitPaymentMethod` failed to decode.
+
 ### Await action screen
 
 - The await action screen shows the same texts for every payment method. Override them with `CheckoutLocalizationKey.awaitTitle`, `.awaitDescription` and `.awaitStatus` in your `CheckoutLocalizationProvider`, or with the `adyen.checkout.await.title`, `adyen.checkout.await.description` and `adyen.checkout.await.status` keys in your strings file.
@@ -41,6 +57,25 @@
   - `adyen.upi.collect.confirmPayment` (`upiCollectConfirmPayment`)
   - `adyen.upi.vpaWaitingMessage` (`upiVpaWaitingMessage`)
   - `adyen.payto.await.description` (`paytoAwaitDescription`)
+
+### Payment method type
+
+- `PaymentMethodType` is a struct instead of an enum, so Adyen can add payment method types without breaking your code. Known types are static properties, for example `PaymentMethodType.scheme`. A `switch` over a `PaymentMethodType` needs a `default` case.
+- `PaymentMethodType.other(_:)` is removed. Use `PaymentMethodType(_:)` instead, for example `PaymentMethodType("ideal")`. It keeps any `txVariant`, including types the SDK doesn't know. `PaymentMethodType(rawValue:)` does the same.
+- `PaymentMethodType(rawValue:)` no longer returns an optional.
+- A `PaymentMethodType` can be created from a string literal, so `paymentMethod.type == "ideal"` and `case "ideal":` in a `switch` compile.
+- New properties are added for types returned in actions: `pix`, `promptPay`, `duitNow` and `payNow`.
+- `PaymentMethodType.boleto` is removed. Use `PaymentMethodType.boletoBancarioSantander` instead.
+- `PaymentMethodType.card` is removed. Cards use `PaymentMethodType.scheme`. A payment method with type `card` is no longer handled as a card payment method.
+- Some properties are renamed:
+
+| Before | After |
+|---|---|
+| `PaymentMethodType.giftcard` | `PaymentMethodType.giftCard` |
+| `PaymentMethodType.onlineBankingPoland` | `PaymentMethodType.onlineBankingPL` |
+| `PaymentMethodType.upiQr` | `PaymentMethodType.upiQR` |
+
+- The SDK doesn't support the following payment method types and leaves them out of the payment methods list, so they are no longer public: `bcmcMobileQR`, `weChatMiniProgram`, `weChatQR`, `weChatPayWeb`, `googlePay`, `afterpay`, `androidPay` and `amazonPay`. To check for one of them, compare the raw value, for example `type.rawValue == "wechatpayQR"`.
 
 ### Colors
 
@@ -457,6 +492,9 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 #### Callback migration
 
 - `CardComponentDelegate.didChangeBIN` -> `CardCallbacks.onBinChange(_:)`
+  The callback receives the first 6 digits of the card number and fires only when that value changes, so it is
+  silent for digits 7–15. It sends the first 8 digits once the card number is valid and has at least 16 digits,
+  goes back to 6 digits if the number is no longer valid, and sends an empty string when the field is cleared.
 - card brand detection callbacks -> `CardCallbacks.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
@@ -474,8 +512,8 @@ let callbacks = CheckoutCallbacks(
     }
 ) {
     CardCallbacks()
-        .onBinChange { bin in
-            print(bin)
+        .onBinChange { binValue in
+            print(binValue)
         }
         .onBinLookup { data in
             print(data.brands)

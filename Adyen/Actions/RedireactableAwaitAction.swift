@@ -7,16 +7,16 @@
 import Foundation
 
 /// Describes an action in which the SDK is redirecting to an url while waiting for user action.
-public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
+package struct RedirectableAwaitAction: PaymentDataAware, Decodable {
 
     /// The `paymentMethodType` for which the await action is used.
-    public let paymentMethodType: AwaitPaymentMethod
+    package let paymentMethodType: PaymentMethodType
 
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public let paymentData: String
+    package let paymentData: String
 
     /// The URL to which to redirect the user.
-    public let url: URL
+    package let url: URL
 
     /// Initializes a await action.
     ///
@@ -24,9 +24,9 @@ public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     ///   - paymentMethodType: The `paymentMethodType` for which the await action is used.
     ///   - url: The URL to which to redirect the user.
-    public init(
+    package init(
         paymentData: String,
-        paymentMethodType: AwaitPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         url: URL
     ) {
         self.paymentData = paymentData

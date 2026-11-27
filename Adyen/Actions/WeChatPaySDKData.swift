@@ -7,30 +7,30 @@
 import Foundation
 
 /// Describes the data required by the WeChat SDK to complete the payment.
-public struct WeChatPaySDKData: Decodable {
+package struct WeChatPaySDKData: Decodable {
     
     /// SDK app identifier.
-    public let appIdentifier: String
+    package let appIdentifier: String
     
     /// Partner identifier.
-    public let partnerIdentifier: String
+    package let partnerIdentifier: String
     
     /// Prepay identifier.
-    public let prepayIdentifier: String
+    package let prepayIdentifier: String
     
     /// timestamp.
-    public let timestamp: String
+    package let timestamp: String
     
     /// The package value.
-    public let package: String
+    package let package: String
     
     /// Number used once.
-    public let nonce: String
+    package let nonce: String
     
     /// The signature.
-    public let signature: String
+    package let signature: String
     
-    public init(from decoder: Decoder) throws {
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         appIdentifier = try container.decode(String.self, forKey: .appIdentifier)
         partnerIdentifier = try container.decode(String.self, forKey: .partnerIdentifier)

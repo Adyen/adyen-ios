@@ -50,7 +50,7 @@ final class ComponentManagerTests: XCTestCase {
     }
 
     func test_supportedMethods_withCheckoutBuilder_omitUnsupportedRegularMethods() throws {
-        let unsupportedMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        let unsupportedMethod = try AdyenCoder.decode(sepaDirectDebitDictionary) as SEPADirectDebitPaymentMethod
         let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let methods = PaymentMethods(regular: [unsupportedMethod, card], stored: [])
         let sut = try makeSUT(paymentMethods: methods, paymentComponentProvider: checkoutProvider())
@@ -86,7 +86,7 @@ final class ComponentManagerTests: XCTestCase {
     func test_sections_areOrderedPaidStoredRegularAndOmitEmptySections() throws {
         let paid = OrderPaymentMethod(
             lastFour: "1234",
-            type: .other("paid"),
+            type: PaymentMethodType(rawValue: "paid"),
             transactionLimit: Amount(value: 100, currencyCode: "EUR"),
             amount: Amount(value: 100, currencyCode: "EUR")
         )

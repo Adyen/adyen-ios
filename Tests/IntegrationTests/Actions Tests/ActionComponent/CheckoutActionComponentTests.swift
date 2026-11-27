@@ -359,7 +359,7 @@ class CheckoutActionComponentTests: XCTestCase {
         let event = analyticsProviderMock.logs[0]
         XCTAssertEqual(event.type, .action)
         
-        switch action {
+        switch action.kind {
         case .redirect:
             XCTAssertEqual(event.component, "redirect")
         case .sdk:

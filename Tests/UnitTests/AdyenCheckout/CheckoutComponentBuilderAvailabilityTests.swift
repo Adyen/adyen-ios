@@ -40,9 +40,14 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
             XCTUnwrap(AdyenCoder.decode(["type": "ach", "name": "ACH Direct Debit"]) as ACHDirectDebitPaymentMethod),
             XCTUnwrap(AdyenCoder.decode(["type": "directdebit_GB", "name": "BACS Direct Debit"]) as BACSDirectDebitPaymentMethod),
             ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "mc"]),
-            GenericPaymentMethod(type: .other("paypal"), name: "PayPal"),
+            GenericPaymentMethod(type: .payPal, name: "PayPal"),
             XCTUnwrap(AdyenCoder.decode(["type": "scheme", "name": "Cards", "brands": ["mc", "visa"]]) as CardPaymentMethod),
-            TwintPaymentMethod(type: .twint, name: "Twint")
+            TwintPaymentMethod(type: .twint, name: "Twint"),
+            XCTUnwrap(AdyenCoder.decode([
+                "type": "eps",
+                "name": "EPS",
+                "issuers": [["id": "issuer_1", "name": "Issuer 1"]]
+            ] as [String: Any]) as IssuerListPaymentMethod)
         ]
 
         for paymentMethod in paymentMethods {
@@ -124,6 +129,27 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
         XCTAssertFalse(CheckoutComponentBuilder.isAvailable(forAnyPaymentMethod: applePay, configuration: configuration))
     }
 
+    // MARK: - Issuer list
+
+    func test_isAvailable_withIssuerListWithoutIssuers_shouldReturnFalse() throws {
+        let paymentMethod = try AdyenCoder.decode([
+            "type": "eps",
+            "name": "EPS",
+            "issuers": [[String: String]]()
+        ] as [String: Any]) as IssuerListPaymentMethod
+        let configuration = makeCheckoutConfiguration()
+
+        XCTAssertFalse(CheckoutComponentBuilder.isAvailable(forAnyPaymentMethod: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try CheckoutComponentBuilder.build(
+                forAnyPaymentMethod: paymentMethod,
+                configuration: configuration,
+                policy: .components(configuration),
+                context: context
+            )
+        )
+    }
+
     // MARK: - Configuration resolution
 
     func test_isAvailable_withMerchantConfiguration_shouldPassMerchantConfigurationToFactory() throws {
@@ -198,7 +224,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
 
 private struct UnsupportedPaymentMethod: PaymentMethod {
     var type: PaymentMethodType {
-        .other("unsupported")
+        PaymentMethodType(rawValue: "unsupported")
     }
 
     var name: String {

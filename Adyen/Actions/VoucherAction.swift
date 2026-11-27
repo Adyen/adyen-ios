@@ -6,42 +6,8 @@
 
 import Foundation
 
-/// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Codable, CaseIterable {
-
-    /// Doku Indomaret.
-    case dokuIndomaret = "doku_indomaret"
-
-    /// Doku Alfamart.
-    case dokuAlfamart = "doku_alfamart"
-
-    /// E-Context Stores
-    case econtextStores = "econtext_stores"
-
-    /// E-Context ATM
-    case econtextATM = "econtext_atm"
-    
-    /// Boleto Bancairo Santander
-    case boletoBancairoSantander = "boletobancario_santander"
-
-    /// Boleto Bancario
-    case boletoBancario = "boletobancario"
-
-    /// Boleto Bancario Itau
-    case boletoBancarioItau = "boletobancario_itau"
-
-    /// Primeiro Pay Boleto
-    case primeiroPayBoleto = "primeiropay_boleto"
-
-    /// OXXO
-    case oxxo
-    
-    /// Multibanco
-    case multibanco
-}
-
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable {
+package enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -55,8 +21,8 @@ public enum VoucherAction: Decodable {
     /// Indicates an EContext ATM Voucher type.
     case econtextATM(EContextATMVoucherAction)
     
-    /// Indicates a Boleto Bancairo Santander Voucher type.
-    case boletoBancairoSantander(BoletoVoucherAction)
+    /// Indicates a Boleto Bancario Santander Voucher type.
+    case boletoBancarioSantander(BoletoVoucherAction)
 
     /// Indicates a Boleto Bancario Voucher type.
     case boletoBancario(BoletoVoucherAction)
@@ -73,9 +39,10 @@ public enum VoucherAction: Decodable {
     /// Indicates an Multibanco voucher type
     case multibanco(MultibancoVoucherAction)
 
-    public init(from decoder: Decoder) throws {
+    // swiftlint:disable:next cyclomatic_complexity
+    package init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        let type = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
 
         switch type {
         case .dokuIndomaret:
@@ -86,8 +53,8 @@ public enum VoucherAction: Decodable {
             self = try .econtextStores(EContextStoresVoucherAction(from: decoder))
         case .econtextATM:
             self = try .econtextATM(EContextATMVoucherAction(from: decoder))
-        case .boletoBancairoSantander:
-            self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
+        case .boletoBancarioSantander:
+            self = try .boletoBancarioSantander(BoletoVoucherAction(from: decoder))
         case .boletoBancario:
             self = try .boletoBancario(BoletoVoucherAction(from: decoder))
         case .boletoBancarioItau:
@@ -98,6 +65,12 @@ public enum VoucherAction: Decodable {
             self = try .oxxo(OXXOVoucherAction(from: decoder))
         case .multibanco:
             self = try .multibanco(MultibancoVoucherAction(from: decoder))
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .paymentMethodType,
+                in: container,
+                debugDescription: "Unknown voucher payment method type \(type.rawValue)."
+            )
         }
     }
 
@@ -107,7 +80,7 @@ public enum VoucherAction: Decodable {
 
     package var anyAction: AnyVoucherAction {
         switch self {
-        case let .boletoBancairoSantander(action):
+        case let .boletoBancarioSantander(action):
             return action
         case let .boletoBancario(action):
             return action
@@ -139,32 +112,31 @@ package protocol InstructionAwareVoucherAction {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable, AnyVoucherAction {
+package class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
-    public let paymentMethodType: VoucherPaymentMethod
+    package let paymentMethodType: PaymentMethodType
 
     /// The initial  amount.
-    public let initialAmount: Amount
+    package let initialAmount: Amount
 
     /// The totalAmount  amount.
-    public let totalAmount: Amount
+    package let totalAmount: Amount
 
     /// The payment reference.
-    public let reference: String
+    package let reference: String
 
     /// Expiry Date.
-    public let expiresAt: Date
+    package let expiresAt: Date
 
     /// Merchant Name.
-    public let merchantName: String
+    package let merchantName: String
 
-    @_spi(AdyenInternal)
-    public let passCreationToken: String?
+    package let passCreationToken: String?
 
-    public required init(from decoder: Decoder) throws {
+    package required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
+        paymentMethodType = try container.decode(PaymentMethodType.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Amount.self, forKey: .initialAmount)
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
@@ -192,7 +164,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     }
 
     internal init(
-        paymentMethodType: VoucherPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         initialAmount: Amount,
         totalAmount: Amount,
         reference: String,
