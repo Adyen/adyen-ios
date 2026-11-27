@@ -94,7 +94,7 @@
 ### Removed localization keys
 
 - `CheckoutLocalizationKey.cardNumberInvalidUnsupportedBrand` and `CheckoutLocalizationKey.cardDualBrandSelectorTitle` are removed. The SDK did not request these strings, so a value returned for them from a `CheckoutLocalizationProvider` had no effect.
-- The following localization keys are no longer used by the SDK and are removed from the English strings, together with their `LocalizationKey` constants. Overrides for them in your own strings table have no effect and can be deleted:
+- The following localization keys are no longer used by the SDK and are removed from the SDK strings in every language, together with their `LocalizationKey` constants. Overrides for them in your own strings table have no effect and can be deleted:
   - `adyen.paymentMethod.removeButton` (`paymentMethodRemoveButton`)
   - `adyen.sepa.consentLabel` (`sepaConsentLabel`)
   - `adyen.card.cvcItem.title` (`cardCvcItemTitle`), replaced by `adyen_checkout_card_security_code_label`
