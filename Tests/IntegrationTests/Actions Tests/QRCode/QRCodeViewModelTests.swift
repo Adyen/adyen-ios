@@ -197,7 +197,7 @@ class QRCodeViewModelTests: XCTestCase {
     // MARK: - Private
     
     private func makeSUT(
-        paymentMethodType: QRCodePaymentMethod = .pix,
+        paymentMethodType: QRCodePaymentMethodType = .pix,
         qrCodeData: String = "123",
         paymentData: String = "payment-data",
         imageLoader: ImageLoaderMock = ImageLoaderMock(),
@@ -206,7 +206,7 @@ class QRCodeViewModelTests: XCTestCase {
     ) -> (sut: QRCodeViewModel, imageLoader: ImageLoaderMock) {
         
         let action = QRCodeAction(
-            paymentMethodType: paymentMethodType,
+            qrCodePaymentMethodType: paymentMethodType,
             qrCodeData: qrCodeData,
             paymentData: paymentData
         )

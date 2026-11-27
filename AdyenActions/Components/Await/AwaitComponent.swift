@@ -79,7 +79,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         self.actionPresentationDelegate = actionPresentationDelegate
         self.configuration = configuration
         self.appLauncher = appLauncher
-        self.pollingHandler = pollingHandlerProvider.handler(for: flow.paymentMethodType)
+        self.pollingHandler = pollingHandlerProvider.handler()
         pollingHandler.delegate = self
     }
 
@@ -160,17 +160,5 @@ extension AwaitComponent: ActionComponentDelegate {
         from component: any ActionComponent
     ) {
         delegate?.didFail(with: error, from: self)
-    }
-}
-
-private extension AwaitComponent.Flow {
-
-    var paymentMethodType: AwaitPaymentMethod {
-        switch self {
-        case let .standard(action):
-            return action.paymentMethodType
-        case let .redirectable(action):
-            return action.paymentMethodType
-        }
     }
 }

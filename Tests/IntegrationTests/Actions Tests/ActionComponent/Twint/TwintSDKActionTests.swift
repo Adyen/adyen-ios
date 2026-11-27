@@ -66,7 +66,7 @@ import XCTest
             twintActionComponent.handle(.init(
                 sdkData: .init(token: "token", isStored: false),
                 paymentData: "paymentData",
-                paymentMethodType: "paymentMethodType",
+                paymentMethodType: .twint,
                 type: "type"
             ))
 
@@ -250,7 +250,7 @@ import XCTest
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
                 let errorEvent = analyticsProviderMock.errors[0]
-                XCTAssertEqual(errorEvent.component, "paymentMethodType")
+                XCTAssertEqual(errorEvent.component, PaymentMethodType.twint.rawValue)
                 XCTAssertEqual(errorEvent.errorType, .thirdParty)
                 XCTAssertEqual(
                     errorEvent.code,
@@ -318,7 +318,7 @@ import XCTest
             let action = TwintSDKAction(
                 sdkData: sdkData,
                 paymentData: "payment-data",
-                paymentMethodType: "payment-method",
+                paymentMethodType: .twint,
                 type: "type"
             )
             sut.handle(action)
@@ -386,7 +386,7 @@ import XCTest
             let action = TwintSDKAction(
                 sdkData: sdkData,
                 paymentData: "payment-data",
-                paymentMethodType: "payment-method",
+                paymentMethodType: .twint,
                 type: "type"
             )
             sut.handle(action)

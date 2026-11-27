@@ -19,7 +19,7 @@ class GiftCardUITests: XCTestCase {
         let partialPaymentDelegate = PartialPaymentDelegateMock()
         
         let sut = GiftCardComponent(
-            partialPaymentMethodType: .giftCard(.init(type: .giftcard, name: "Giftcard", brand: "Giftcard")),
+            partialPaymentMethodType: .giftCard(.init(type: .giftCard, name: "Giftcard", brand: "Giftcard")),
             context: Dummy.context,
             amount: .init(value: 1, currencyCode: "EUR")
         )

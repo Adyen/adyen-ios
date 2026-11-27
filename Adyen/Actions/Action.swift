@@ -64,7 +64,7 @@ public enum Action: Decodable {
     
     private static func handleQRCodeType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if (try? container.decode(QRCodePaymentMethod.self, forKey: .paymentMethodType)) != nil {
+        if (try? container.decode(QRCodePaymentMethodType.self, forKey: .paymentMethodType)) != nil {
             return try .qrCode(QRCodeAction(from: decoder))
         } else {
             return try .redirect(RedirectAction(from: decoder))
@@ -74,7 +74,7 @@ public enum Action: Decodable {
     private static func handleVoucherType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // extract bacs from others since it is not fully a voucher
-        if (try? container.decode(String.self, forKey: .paymentMethodType)) == Constant.bacsDirectDebitName {
+        if (try? container.decode(String.self, forKey: .paymentMethodType)) == PaymentMethodType.bacsDirectDebit.rawValue {
             return try .document(DocumentAction(from: decoder))
         } else {
             return try .voucher(VoucherAction(from: decoder))
@@ -94,10 +94,6 @@ public enum Action: Decodable {
         case type
         case paymentMethodType
         case redirectUrl = "url"
-    }
-    
-    private enum Constant {
-        static let bacsDirectDebitName = "directdebit_GB"
     }
     
 }

@@ -27,7 +27,7 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
     }
 
     internal init(
-        paymentMethodType: VoucherPaymentMethod,
+        paymentMethodType: PaymentMethodType,
         initialAmount: Amount,
         totalAmount: Amount,
         reference: String,

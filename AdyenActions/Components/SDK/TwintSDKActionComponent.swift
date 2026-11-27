@@ -74,7 +74,7 @@ import Foundation
                     )
                     self.handleShowError(
                         errorMessage,
-                        componentName: action.paymentMethodType
+                        componentName: action.paymentMethodType.rawValue
                     )
                     return
                 }
@@ -93,7 +93,7 @@ import Foundation
                 if let error {
                     self.handleShowError(
                         error.localizedDescription,
-                        componentName: action.paymentMethodType
+                        componentName: action.paymentMethodType.rawValue
                     )
                     return
                 }
@@ -159,7 +159,7 @@ import Foundation
         }
 
         private func startPolling(_ action: TwintSDKAction) {
-            pollingComponent = pollingComponentBuilder?.handler(for: AwaitPaymentMethod(rawValue: action.paymentMethodType) ?? .twint)
+            pollingComponent = pollingComponentBuilder?.handler()
             pollingComponent?.delegate = self
             pollingComponent?.handle(action)
         }

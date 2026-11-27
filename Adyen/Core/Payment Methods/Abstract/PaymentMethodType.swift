@@ -6,219 +6,124 @@
 
 import Foundation
 
-/// The type of a payment method
-public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
-    case card
-    case scheme
-    case ideal
-    case entercash
-    case eps
-    case dotpay
-    case onlineBankingPoland
-    case openBankingUK
-    case molPayEBankingFPXMY
-    case molPayEBankingTH
-    case molPayEBankingVN
-    case sepaDirectDebit
-    case applePay
-    case payPal
-    case bcmc
-    case bcmcMobile
-    case qiwiWallet
-    case weChatPaySDK
-    case mbWay
-    case blik
-    case dokuWallet
-    case dokuAlfamart
-    case dokuIndomaret
-    case giftcard
-    case doku
-    case econtextSevenEleven
-    case econtextStores
-    case econtextATM
-    case econtextOnline
-    case boletoBancario
-    @available(
-        *,
-        deprecated,
-        renamed: "boletoBancarioSantander",
-        message: "Use 'boletoBancarioSantander' instead. Consider 'boletoBancario' as the default payment method for Boleto Bancario."
-    )
-    case boleto
-    case boletoBancarioSantander
-    case boletoBancarioItau
-    case primeiroPayBoleto
-    case affirm
-    case oxxo
-    case bacsDirectDebit
-    case achDirectDebit
-    case multibanco
-    case atome
-    case onlineBankingCZ
-    case onlineBankingSK
-    case mealVoucherNatixis
-    case mealVoucherGroupeUp
-    case mealVoucherSodexo
-    case upi
-    case cashAppPay
-    case bizum
-    case twint
-    case payByBank
-    case payByBankAISDD
-    case payTo
-    case other(String)
-    
-    // Unsupported
-    case bcmcMobileQR
-    case weChatMiniProgram
-    case weChatQR
-    case weChatPayWeb
-    case googlePay
-    case afterpay
-    case androidPay
-    case amazonPay
-    case upiCollect
-    case upiIntent
-    case upiQr
-    
-    // swiftlint:disable cyclomatic_complexity function_body_length
-    
-    public init?(rawValue: String) {
-        switch rawValue {
-        case "card": self = .card
-        case "scheme": self = .scheme
-        case "ideal": self = .ideal
-        case "entercash": self = .entercash
-        case "eps": self = .eps
-        case "dotpay": self = .dotpay
-        case "onlineBanking_PL": self = .onlineBankingPoland
-        case "openbanking_UK": self = .openBankingUK
-        case "molpay_ebanking_fpx_MY": self = .molPayEBankingFPXMY
-        case "molpay_ebanking_TH": self = .molPayEBankingTH
-        case "molpay_ebanking_VN": self = .molPayEBankingVN
-        case "sepadirectdebit": self = .sepaDirectDebit
-        case "applepay": self = .applePay
-        case "paypal": self = .payPal
-        case "bcmc": self = .bcmc
-        case "bcmc_mobile_QR": self = .bcmcMobileQR
-        case "bcmc_mobile": self = .bcmcMobile
-        case "wechatpayMiniProgram": self = .weChatMiniProgram
-        case "wechatpayQR": self = .weChatQR
-        case "qiwiwallet": self = .qiwiWallet
-        case "wechatpayWeb": self = .weChatPayWeb
-        case "wechatpaySDK": self = .weChatPaySDK
-        case "mbway": self = .mbWay
-        case "blik": self = .blik
-        // `paywithgoogle` and `googlepay` should be blocked on iOS
-        case "paywithgoogle", "googlepay": self = .googlePay
-        case "afterpay_default": self = .afterpay
-        case "androidpay": self = .androidPay
-        case "amazonpay": self = .amazonPay
-        case "doku_wallet": self = .dokuWallet
-        case "doku_alfamart": self = .dokuAlfamart
-        case "doku_indomaret": self = .dokuIndomaret
-        case "giftcard": self = .giftcard
-        case "doku": self = .doku
-        case "econtext_seven_eleven": self = .econtextSevenEleven
-        case "econtext_stores": self = .econtextStores
-        case "econtext_atm": self = .econtextATM
-        case "econtext_online": self = .econtextOnline
-        case "boletobancario": self = .boletoBancario
-        case "boletobancario_itau": self = .boletoBancarioItau
-        case "boletobancario_santander": self = .boletoBancarioSantander
-        case "primeiropay_boleto": self = .primeiroPayBoleto
-        case "affirm": self = .affirm
-        case "oxxo": self = .oxxo
-        case "directdebit_GB": self = .bacsDirectDebit
-        case "ach": self = .achDirectDebit
-        case "multibanco": self = .multibanco
-        case "atome": self = .atome
-        case "onlineBanking_CZ": self = .onlineBankingCZ
-        case "onlineBanking_SK": self = .onlineBankingSK
-        case "mealVoucher_FR_groupeup": self = .mealVoucherGroupeUp
-        case "mealVoucher_FR_natixis": self = .mealVoucherNatixis
-        case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
-        case "upi": self = .upi
-        case "upi_collect": self = .upiCollect
-        case "upi_intent": self = .upiIntent
-        case "upi_qr": self = .upiQr
-        case "cashapp": self = .cashAppPay
-        case "bizum": self = .bizum
-        case "twint": self = .twint
-        case "paybybank": self = .payByBank
-        case "paybybank_AIS_DD": self = .payByBankAISDD
-        case "payto": self = .payTo
-        default: self = .other(rawValue)
-        }
+/// The type of a payment method, also known as `txVariant`.
+public struct PaymentMethodType: RawRepresentable, Hashable, Codable, Sendable {
+
+    /// The raw value as returned in the `/paymentMethods` response.
+    public let rawValue: String
+
+    /// Creates a payment method type with the given raw value.
+    /// - Parameter rawValue: The `txVariant` of the payment method.
+    public init(rawValue: String) {
+        self.rawValue = rawValue
     }
-    
-    public var rawValue: String {
-        switch self {
-        case .card: return "card"
-        case .scheme: return "scheme"
-        case .ideal: return "ideal"
-        case .entercash: return "entercash"
-        case .eps: return "eps"
-        case .dotpay: return "dotpay"
-        case .onlineBankingPoland: return "onlineBanking_PL"
-        case .openBankingUK: return "openbanking_UK"
-        case .molPayEBankingFPXMY: return "molpay_ebanking_fpx_MY"
-        case .molPayEBankingTH: return "molpay_ebanking_TH"
-        case .molPayEBankingVN: return "molpay_ebanking_VN"
-        case .sepaDirectDebit: return "sepadirectdebit"
-        case .applePay: return "applepay"
-        case .payPal: return "paypal"
-        case .bcmc: return "bcmc"
-        case .bcmcMobileQR: return "bcmc_mobile_QR"
-        case .bcmcMobile: return "bcmc_mobile"
-        case .weChatMiniProgram: return "wechatpayMiniProgram"
-        case .weChatQR: return "wechatpayQR"
-        case .qiwiWallet: return "qiwiwallet"
-        case .weChatPayWeb: return "wechatpayWeb"
-        case .weChatPaySDK: return "wechatpaySDK"
-        case .mbWay: return "mbway"
-        case .blik: return "blik"
-        case .googlePay: return "paywithgoogle"
-        case .afterpay: return "afterpay_default"
-        case .androidPay: return "androidpay"
-        case .amazonPay: return "amazonpay"
-        case .dokuWallet: return "doku_wallet"
-        case .dokuAlfamart: return "doku_alfamart"
-        case .dokuIndomaret: return "doku_indomaret"
-        case .giftcard: return "giftcard"
-        case .doku: return "doku"
-        case .econtextSevenEleven: return "econtext_seven_eleven"
-        case .econtextStores: return "econtext_stores"
-        case .econtextATM: return "econtext_atm"
-        case .econtextOnline: return "econtext_online"
-        case .boletoBancario: return "boletobancario"
-        case .boleto: return "boletobancario_santander"
-        case .boletoBancarioSantander: return "boletobancario_santander"
-        case .boletoBancarioItau: return "boletobancario_itau"
-        case .primeiroPayBoleto: return "primeiropay_boleto"
-        case .affirm: return "affirm"
-        case .oxxo: return "oxxo"
-        case .bacsDirectDebit: return "directdebit_GB"
-        case .achDirectDebit: return "ach"
-        case .multibanco: return "multibanco"
-        case .atome: return "atome"
-        case .onlineBankingCZ: return "onlineBanking_CZ"
-        case .onlineBankingSK: return "onlineBanking_SK"
-        case .mealVoucherGroupeUp: return "mealVoucher_FR_groupeup"
-        case .mealVoucherNatixis: return "mealVoucher_FR_natixis"
-        case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
-        case .upi: return "upi"
-        case .upiQr: return "upi_qr"
-        case .upiIntent: return "upi_intent"
-        case .upiCollect: return "upi_collect"
-        case .cashAppPay: return "cashapp"
-        case .bizum: return "bizum"
-        case .twint: return "twint"
-        case .payByBank: return "paybybank"
-        case .payByBankAISDD: return "paybybank_AIS_DD"
-        case .payTo: return "payto"
-        case let .other(value): return value
-        }
+
+    /// Creates a payment method type with the given `txVariant`.
+    ///
+    /// Equivalent to ``init(rawValue:)``.
+    /// - Parameter txVariant: The `txVariant` of the payment method.
+    public init(_ txVariant: String) {
+        self.init(rawValue: txVariant)
+    }
+
+    // MARK: - Coding
+
+    public init(from decoder: Decoder) throws {
+        rawValue = try decoder.singleValueContainer().decode(String.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
+
+    // MARK: - Supported types
+
+    public static let card = PaymentMethodType(rawValue: "card")
+    public static let scheme = PaymentMethodType(rawValue: "scheme")
+    public static let ideal = PaymentMethodType(rawValue: "ideal")
+    public static let entercash = PaymentMethodType(rawValue: "entercash")
+    public static let eps = PaymentMethodType(rawValue: "eps")
+    public static let dotpay = PaymentMethodType(rawValue: "dotpay")
+    public static let onlineBankingPL = PaymentMethodType(rawValue: "onlineBanking_PL")
+    public static let openBankingUK = PaymentMethodType(rawValue: "openbanking_UK")
+    public static let molPayEBankingFPXMY = PaymentMethodType(rawValue: "molpay_ebanking_fpx_MY")
+    public static let molPayEBankingTH = PaymentMethodType(rawValue: "molpay_ebanking_TH")
+    public static let molPayEBankingVN = PaymentMethodType(rawValue: "molpay_ebanking_VN")
+    public static let sepaDirectDebit = PaymentMethodType(rawValue: "sepadirectdebit")
+    public static let applePay = PaymentMethodType(rawValue: "applepay")
+    public static let payPal = PaymentMethodType(rawValue: "paypal")
+    public static let bcmc = PaymentMethodType(rawValue: "bcmc")
+    public static let bcmcMobile = PaymentMethodType(rawValue: "bcmc_mobile")
+    public static let qiwiWallet = PaymentMethodType(rawValue: "qiwiwallet")
+    public static let weChatPaySDK = PaymentMethodType(rawValue: "wechatpaySDK")
+    public static let mbWay = PaymentMethodType(rawValue: "mbway")
+    public static let blik = PaymentMethodType(rawValue: "blik")
+    public static let dokuWallet = PaymentMethodType(rawValue: "doku_wallet")
+    public static let dokuAlfamart = PaymentMethodType(rawValue: "doku_alfamart")
+    public static let dokuIndomaret = PaymentMethodType(rawValue: "doku_indomaret")
+    public static let giftCard = PaymentMethodType(rawValue: "giftcard")
+    public static let doku = PaymentMethodType(rawValue: "doku")
+    public static let econtextSevenEleven = PaymentMethodType(rawValue: "econtext_seven_eleven")
+    public static let econtextStores = PaymentMethodType(rawValue: "econtext_stores")
+    public static let econtextATM = PaymentMethodType(rawValue: "econtext_atm")
+    public static let econtextOnline = PaymentMethodType(rawValue: "econtext_online")
+    public static let boletoBancario = PaymentMethodType(rawValue: "boletobancario")
+    public static let boletoBancarioSantander = PaymentMethodType(rawValue: "boletobancario_santander")
+    public static let boletoBancarioItau = PaymentMethodType(rawValue: "boletobancario_itau")
+    public static let primeiroPayBoleto = PaymentMethodType(rawValue: "primeiropay_boleto")
+    public static let affirm = PaymentMethodType(rawValue: "affirm")
+    public static let oxxo = PaymentMethodType(rawValue: "oxxo")
+    public static let bacsDirectDebit = PaymentMethodType(rawValue: "directdebit_GB")
+    public static let achDirectDebit = PaymentMethodType(rawValue: "ach")
+    public static let multibanco = PaymentMethodType(rawValue: "multibanco")
+    public static let atome = PaymentMethodType(rawValue: "atome")
+    public static let onlineBankingCZ = PaymentMethodType(rawValue: "onlineBanking_CZ")
+    public static let onlineBankingSK = PaymentMethodType(rawValue: "onlineBanking_SK")
+    public static let mealVoucherNatixis = PaymentMethodType(rawValue: "mealVoucher_FR_natixis")
+    public static let mealVoucherGroupeUp = PaymentMethodType(rawValue: "mealVoucher_FR_groupeup")
+    public static let mealVoucherSodexo = PaymentMethodType(rawValue: "mealVoucher_FR_sodexo")
+    public static let upi = PaymentMethodType(rawValue: "upi")
+    public static let cashAppPay = PaymentMethodType(rawValue: "cashapp")
+    public static let bizum = PaymentMethodType(rawValue: "bizum")
+    public static let twint = PaymentMethodType(rawValue: "twint")
+    public static let payByBank = PaymentMethodType(rawValue: "paybybank")
+    public static let payByBankAISDD = PaymentMethodType(rawValue: "paybybank_AIS_DD")
+    public static let payTo = PaymentMethodType(rawValue: "payto")
+    public static let pix = PaymentMethodType(rawValue: "pix")
+    public static let promptPay = PaymentMethodType(rawValue: "promptpay")
+    public static let duitNow = PaymentMethodType(rawValue: "duitnow")
+    public static let payNow = PaymentMethodType(rawValue: "paynow")
+    public static let upiCollect = PaymentMethodType(rawValue: "upi_collect")
+    public static let upiIntent = PaymentMethodType(rawValue: "upi_intent")
+    public static let upiQR = PaymentMethodType(rawValue: "upi_qr")
+
+    // MARK: - Internal types
+
+    package static let mealVoucherFR = PaymentMethodType(rawValue: "mealVoucher_FR")
+
+    // MARK: - Unsupported types
+
+    package static let bcmcMobileQR = PaymentMethodType(rawValue: "bcmc_mobile_QR")
+    package static let weChatPayMiniProgram = PaymentMethodType(rawValue: "wechatpayMiniProgram")
+    package static let weChatPayQR = PaymentMethodType(rawValue: "wechatpayQR")
+    package static let weChatPayWeb = PaymentMethodType(rawValue: "wechatpayWeb")
+    package static let googlePay = PaymentMethodType(rawValue: "googlepay")
+    package static let googlePayLegacy = PaymentMethodType(rawValue: "paywithgoogle")
+    package static let afterpay = PaymentMethodType(rawValue: "afterpay_default")
+    package static let androidPay = PaymentMethodType(rawValue: "androidpay")
+    package static let amazonPay = PaymentMethodType(rawValue: "amazonpay")
+}
+
+extension PaymentMethodType: ExpressibleByStringLiteral {
+
+    /// Creates a payment method type with the given string literal.
+    ///
+    /// Equivalent to ``init(rawValue:)``. Allows comparing a payment method type with a string literal,
+    /// for example `paymentMethod.type == "ideal"`.
+    /// - Parameter value: The `txVariant` of the payment method.
+    public init(stringLiteral value: String) {
+        self.init(rawValue: value)
     }
 }
 
@@ -230,72 +135,48 @@ extension PaymentMethodType {
     package var name: String {
         switch self {
         case .card: return "card payment"
-        case .scheme: return "scheme"
-        case .ideal: return "ideal"
         case .entercash: return "enter-cash"
         case .eps: return "EPS"
-        case .dotpay: return "dotpay"
-        case .onlineBankingPoland: return "online banking \(localized(country: "PL"))"
+        case .onlineBankingPL: return "online banking \(localized(country: "PL"))"
         case .openBankingUK: return "open banking UK"
         case .molPayEBankingFPXMY: return "FPX online banking \(localized(country: "MY"))"
         case .molPayEBankingTH: return "online banking \(localized(country: "TH"))"
         case .molPayEBankingVN: return "online banking \(localized(country: "VN"))"
         case .sepaDirectDebit: return "sepa direct-debit"
-        case .applePay: return "applepay"
-        case .payPal: return "paypal"
-        case .bcmc: return "bcmc"
         case .bcmcMobileQR: return "bcmc mobile qr"
         case .bcmcMobile: return "bcmc mobile"
-        case .weChatMiniProgram: return "wechat pay"
-        case .weChatQR: return "wechat pay"
+        case .weChatPayMiniProgram, .weChatPayQR, .weChatPayWeb, .weChatPaySDK: return "wechat pay"
         case .qiwiWallet: return "qiwi wallet"
-        case .weChatPayWeb: return "wechat pay"
-        case .weChatPaySDK: return "wechat pay"
-        case .mbWay: return "mbway"
-        case .blik: return "blik"
-        case .googlePay: return "google pay"
+        case .googlePay, .googlePayLegacy: return "google pay"
         case .afterpay: return "afterpay"
         case .androidPay: return "android pay"
         case .amazonPay: return "amazon pay"
-        case .dokuWallet: return "doku wallet"
         case .dokuAlfamart: return "alfamart"
         case .dokuIndomaret: return "indomaret"
-        case .giftcard: return "giftcard"
-        case .doku: return "doku"
         case .econtextSevenEleven: return "econtext seven-eleven"
-        case .econtextStores: return "econtext stores"
         case .econtextATM: return "econtext ATM"
-        case .econtextOnline: return "econtext online"
         case .boletoBancario: return "boleto bancario"
-        case .boleto: return "boleto bancario santander"
         case .boletoBancarioSantander: return "boleto bancario santander"
         case .boletoBancarioItau: return "boleto bancario itau"
         case .primeiroPayBoleto: return "primeiro pay boleto"
-        case .affirm: return "affirm"
         case .oxxo: return "OXXO"
         case .bacsDirectDebit: return "BACS direct debit"
         case .achDirectDebit: return "ACH direct debit"
-        case .multibanco: return "multibanco"
-        case .atome: return "atome"
         case .onlineBankingCZ: return "online banking \(localized(country: "CZ"))"
         case .onlineBankingSK: return "online banking \(localized(country: "SK"))"
         case .mealVoucherGroupeUp: return "meal voucher groupe-up"
         case .mealVoucherNatixis: return "meal voucher natixis"
         case .mealVoucherSodexo: return "meal voucher sodexo"
         case .upi: return "UPI"
-        case .upiQr: return "UPI QR"
+        case .upiQR: return "UPI QR"
         case .upiIntent: return "UPI Intent"
         case .upiCollect: return "UPI Collect"
         case .cashAppPay: return "cash app"
-        case .bizum: return "bizum"
-        case .twint: return "twint"
         case .payByBank: return "Pay by Bank"
         case .payByBankAISDD: return "Pay By Bank Direct Debit"
-        case .payTo: return "payto"
-        case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
+        default: return rawValue.replacingOccurrences(of: "_", with: " ")
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
 }
 
 private extension PaymentMethodType {

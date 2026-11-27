@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// Indicates QR code payment methods.
-public enum QRCodePaymentMethod: String, Codable, CaseIterable {
+/// The QR code payment methods that have a dedicated QR code flow.
+package enum QRCodePaymentMethodType: String, Decodable {
 
     /// PIX
     case pix
@@ -22,19 +22,28 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
     case payNow = "paynow"
 
     /// UPI QRCode flow
-    case upiQRCode = "upi_qr"
+    case upiQR = "upi_qr"
 }
 
 /// Describes any QR code action.
 public struct QRCodeAction: PaymentDataAware, Decodable {
     
     /// The `paymentMethodType` for which the QR code is presented.
-    public let paymentMethodType: QRCodePaymentMethod
+    public var paymentMethodType: PaymentMethodType {
+        PaymentMethodType(rawValue: qrCodePaymentMethodType.rawValue)
+    }
+
+    package let qrCodePaymentMethodType: QRCodePaymentMethodType
     
     /// The QR code data to be shown/copied.
     public let qrCodeData: String
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
-    
+
+    private enum CodingKeys: String, CodingKey {
+        case qrCodePaymentMethodType = "paymentMethodType"
+        case qrCodeData
+        case paymentData
+    }
 }

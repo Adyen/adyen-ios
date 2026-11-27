@@ -429,7 +429,7 @@ class PaymentMethodTests: XCTestCase {
         )
         XCTAssertFalse(
             StoredPayPalPaymentMethod(
-                type: .other("payPalx"),
+                type: PaymentMethodType(rawValue: "payPalx"),
                 name: "payPal",
                 identifier: "XXX",
                 supportedShopperInteractions: [.shopperPresent],
@@ -1076,13 +1076,74 @@ class PaymentMethodTests: XCTestCase {
         [
             PaymentMethodType.openBankingUK: "open banking UK",
             PaymentMethodType.ideal: "ideal",
-            PaymentMethodType.onlineBankingPoland: "online banking Poland",
+            PaymentMethodType.onlineBankingPL: "online banking Poland",
             PaymentMethodType.onlineBankingCZ: "online banking Czechia",
             PaymentMethodType.onlineBankingSK: "online banking Slovakia"
         ].forEach {
             XCTAssertEqual($0.key.name, $0.value)
         }
     }
+
+    // MARK: - Payment Method Type
+
+    func test_paymentMethodType_coding_shouldPreserveRawValue() throws {
+        for rawValue in ["scheme", "giftcard", "googlepay", "paywithgoogle", "klarna_paynow"] {
+            let json = Data("\"\(rawValue)\"".utf8)
+            let decoded = try JSONDecoder().decode(PaymentMethodType.self, from: json)
+            XCTAssertEqual(decoded.rawValue, rawValue)
+            XCTAssertEqual(try JSONEncoder().encode(decoded), json)
+        }
+    }
+
+    func test_paymentMethodType_withKnownRawValue_shouldEqualStaticMember() {
+        XCTAssertEqual(PaymentMethodType(rawValue: "giftcard"), .giftCard)
+        XCTAssertEqual(PaymentMethodType(rawValue: "onlineBanking_PL"), .onlineBankingPL)
+        XCTAssertEqual(PaymentMethodType(rawValue: "upi_qr"), .upiQR)
+        XCTAssertEqual(PaymentMethodType(rawValue: "wechatpayQR"), .weChatPayQR)
+        XCTAssertEqual(PaymentMethodType(rawValue: "wechatpayMiniProgram"), .weChatPayMiniProgram)
+        XCTAssertEqual(PaymentMethodType(rawValue: "googlepay"), .googlePay)
+        XCTAssertEqual(PaymentMethodType(rawValue: "paywithgoogle"), .googlePayLegacy)
+    }
+
+    func test_paymentMethodType_withStringLiteral_shouldEqualRawValueInit() {
+        let type: PaymentMethodType = "ideal"
+        XCTAssertEqual(type, PaymentMethodType(rawValue: "ideal"))
+        XCTAssertEqual(type, .ideal)
+        XCTAssertTrue(PaymentMethodType.scheme == "scheme")
+        XCTAssertFalse(PaymentMethodType.scheme == "card")
+
+        switch PaymentMethodType.giftCard {
+        case "giftcard":
+            break
+        default:
+            XCTFail("Expected the giftcard literal to match")
+        }
+    }
+
+    func test_paymentMethodType_withTxVariantInit_shouldEqualRawValueInit() {
+        XCTAssertEqual(PaymentMethodType("ideal"), PaymentMethodType(rawValue: "ideal"))
+        XCTAssertEqual(PaymentMethodType("ideal"), .ideal)
+        XCTAssertEqual(PaymentMethodType("some_future_method").rawValue, "some_future_method")
+    }
+
+    func test_decodingPaymentMethods_withGooglePayTypes_shouldSkipBoth() throws {
+        let paymentMethods: PaymentMethods = try AdyenCoder.decode([
+            "paymentMethods": [
+                ["type": "googlepay", "name": "Google Pay"],
+                ["type": "paywithgoogle", "name": "Google Pay"],
+                payPalDictionary
+            ]
+        ] as [String: Any])
+
+        XCTAssertEqual(paymentMethods.regular.map(\.type), [.payPal])
+    }
+
+    func test_paymentMethodTypeName_withUnknownType_shouldReplaceUnderscores() {
+        XCTAssertEqual(PaymentMethodType(rawValue: "klarna_paynow").name, "klarna paynow")
+        XCTAssertEqual(PaymentMethodType.boletoBancario.name, "boleto bancario")
+        XCTAssertEqual(PaymentMethodType.googlePayLegacy.name, "google pay")
+    }
+
 }
 
 private extension PaymentMethodTests {

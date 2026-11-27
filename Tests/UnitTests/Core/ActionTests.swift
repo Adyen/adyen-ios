@@ -52,7 +52,8 @@ class ActionTests: XCTestCase {
 
         XCTAssertNotNil(qrCodeAction)
         XCTAssertEqual(qrCodeAction?.paymentData, "example_data")
-        XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.pix))
+        XCTAssertEqual(qrCodeAction?.qrCodePaymentMethodType, .pix)
+        XCTAssertEqual(qrCodeAction?.paymentMethodType, .pix)
     }
 
     func testQRCodeActionDecoding() throws {
@@ -75,7 +76,8 @@ class ActionTests: XCTestCase {
 
         XCTAssertNotNil(qrCodeAction)
         XCTAssertEqual(qrCodeAction?.paymentData, "example_data")
-        XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.promptPay))
+        XCTAssertEqual(qrCodeAction?.qrCodePaymentMethodType, .promptPay)
+        XCTAssertEqual(qrCodeAction?.paymentMethodType, .promptPay)
     }
 
     func testQRCodeToRedirectActionDecoding() throws {
@@ -101,6 +103,144 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(qrToRedirectAction?.paymentData, "example_data")
     }
     
+    func testUPIQRCodeActionDecoding() throws {
+        let json =
+            """
+            {
+                "type": "qrCode",
+                "qrCodeData": "example_data",
+                "paymentData": "example_data",
+                "paymentMethodType": "upi_qr"
+            }
+            """
+
+        let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        guard case let .qrCode(qrCodeAction) = action else {
+            return XCTFail("Expected a QR code action, got \(action)")
+        }
+        XCTAssertEqual(qrCodeAction.qrCodePaymentMethodType, .upiQR)
+        XCTAssertEqual(qrCodeAction.paymentMethodType, .upiQR)
+    }
+
+    func testQRCodeActionDecodingMapsEveryQRCodePaymentMethodType() throws {
+        let expectedTypes: [String: PaymentMethodType] = [
+            "pix": .pix,
+            "promptpay": .promptPay,
+            "duitnow": .duitNow,
+            "paynow": .payNow,
+            "upi_qr": .upiQR
+        ]
+
+        for (rawValue, expectedType) in expectedTypes {
+            let json =
+                """
+                {
+                    "type": "qrCode",
+                    "qrCodeData": "example_data",
+                    "paymentData": "example_data",
+                    "paymentMethodType": "\(rawValue)"
+                }
+                """
+
+            let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+            guard case let .qrCode(qrCodeAction) = action else {
+                return XCTFail("Expected a QR code action for \(rawValue), got \(action)")
+            }
+            XCTAssertEqual(qrCodeAction.paymentMethodType, expectedType)
+        }
+    }
+
+    func testAwaitActionDecoding() throws {
+        let json =
+            """
+            {
+                "type": "await",
+                "paymentData": "example_data",
+                "paymentMethodType": "mbway"
+            }
+            """
+
+        let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        guard case let .await(awaitAction) = action else {
+            return XCTFail("Expected an await action, got \(action)")
+        }
+        XCTAssertEqual(awaitAction.paymentData, "example_data")
+        XCTAssertEqual(awaitAction.paymentMethodType, .mbWay)
+    }
+
+    func testAwaitActionDecodingWithUnlistedPaymentMethod() throws {
+        let json =
+            """
+            {
+                "type": "await",
+                "paymentData": "example_data",
+                "paymentMethodType": "some_future_method"
+            }
+            """
+
+        let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        guard case let .await(awaitAction) = action else {
+            return XCTFail("Expected an await action, got \(action)")
+        }
+        XCTAssertEqual(awaitAction.paymentMethodType, PaymentMethodType(rawValue: "some_future_method"))
+    }
+
+    func testRedirectableAwaitActionDecoding() throws {
+        let json =
+            """
+            {
+                "type": "await",
+                "paymentData": "example_data",
+                "paymentMethodType": "upi_intent",
+                "url": "upi://pay"
+            }
+            """
+
+        let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        guard case let .redirectableAwait(awaitAction) = action else {
+            return XCTFail("Expected a redirectable await action, got \(action)")
+        }
+        XCTAssertEqual(awaitAction.paymentMethodType, .upiIntent)
+        XCTAssertEqual(awaitAction.url.absoluteString, "upi://pay")
+    }
+
+    func testDocumentActionDecoding() throws {
+        let json =
+            """
+            {
+                "type": "voucher",
+                "paymentMethodType": "directdebit_GB",
+                "url": "https://example.org/mandate.pdf"
+            }
+            """
+
+        let action = try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8)))
+
+        guard case let .document(documentAction) = action else {
+            return XCTFail("Expected a document action, got \(action)")
+        }
+        XCTAssertEqual(documentAction.paymentMethodType, .bacsDirectDebit)
+        XCTAssertEqual(documentAction.downloadUrl.absoluteString, "https://example.org/mandate.pdf")
+    }
+
+    func testVoucherActionDecodingWithUnsupportedPaymentMethod() throws {
+        let json =
+            """
+            {
+                "type": "voucher",
+                "paymentMethodType": "some_future_voucher",
+                "reference": "reference"
+            }
+            """
+
+        XCTAssertThrowsError(try JSONDecoder().decode(Action.self, from: XCTUnwrap(json.data(using: .utf8))))
+    }
+
     func test3DS2FingerprintActionDecoding() throws {
         let json =
             """

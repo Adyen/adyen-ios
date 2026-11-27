@@ -28,7 +28,7 @@ internal struct StoredPaymentMethodComponentTests {
 
         // Then
         let details = try #require(data.paymentMethod as? StoredPaymentDetails)
-        #expect(details.type == .other("type"))
+        #expect(details.type == PaymentMethodType(rawValue: "type"))
         #expect(details.storedPaymentMethodIdentifier == "id")
     }
 
@@ -171,7 +171,7 @@ internal struct StoredPaymentMethodComponentTests {
         paymentMethod: StoredPaymentMethod = StoredPaymentMethodMock(
             identifier: "id",
             supportedShopperInteractions: [.shopperPresent],
-            type: .other("type"),
+            type: PaymentMethodType(rawValue: "type"),
             name: "name"
         ),
         context: AdyenContext = Dummy.context

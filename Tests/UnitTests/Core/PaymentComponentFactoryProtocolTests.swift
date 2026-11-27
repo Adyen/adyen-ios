@@ -23,7 +23,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
     struct MockPaymentMethod: PaymentMethod {
         
         var type: PaymentMethodType {
-            .other("mock")
+            PaymentMethodType(rawValue: "mock")
         }
 
         var name: String {
@@ -202,7 +202,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         
         // Then - Verify through properties
         XCTAssertEqual(config.value, "factory_default")
-        XCTAssertEqual(paymentMethod.type, .other("mock"))
+        XCTAssertEqual(paymentMethod.type, PaymentMethodType(rawValue: "mock"))
         XCTAssertEqual(component.paymentMethod.type, paymentMethod.type)
         XCTAssertEqual(component.configValue, "factory_default")
     }

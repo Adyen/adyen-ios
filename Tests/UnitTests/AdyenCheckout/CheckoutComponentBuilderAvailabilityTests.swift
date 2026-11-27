@@ -40,7 +40,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
             XCTUnwrap(AdyenCoder.decode(["type": "ach", "name": "ACH Direct Debit"]) as ACHDirectDebitPaymentMethod),
             XCTUnwrap(AdyenCoder.decode(["type": "directdebit_GB", "name": "BACS Direct Debit"]) as BACSDirectDebitPaymentMethod),
             ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "mc"]),
-            GenericPaymentMethod(type: .other("paypal"), name: "PayPal"),
+            GenericPaymentMethod(type: .payPal, name: "PayPal"),
             XCTUnwrap(AdyenCoder.decode(["type": "scheme", "name": "Cards", "brands": ["mc", "visa"]]) as CardPaymentMethod),
             TwintPaymentMethod(type: .twint, name: "Twint"),
             XCTUnwrap(AdyenCoder.decode([
@@ -224,7 +224,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
 
 private struct UnsupportedPaymentMethod: PaymentMethod {
     var type: PaymentMethodType {
-        .other("unsupported")
+        PaymentMethodType(rawValue: "unsupported")
     }
 
     var name: String {
