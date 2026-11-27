@@ -33,8 +33,12 @@ internal class CardViewController: FormViewController {
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private let addressCallbacks: AddressCallbacks?
 
+    /// Testing seam. When provided, this controller is used instead of creating the default one.
+    private let injectedCardScannerController: CardScannerControlling?
+
     private lazy var cardScannerController: CardScannerControlling = {
-        var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
+        var controller = injectedCardScannerController
+            ?? CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
@@ -93,6 +97,7 @@ internal class CardViewController: FormViewController {
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     ///   - theme: The theme to use for styling.
+    ///   - cardScannerController: Testing seam. When provided, used instead of creating the default scanner controller.
     internal init(
         configuration: CardConfiguration,
         shopperInformation: PrefilledShopperInformation?,
@@ -105,7 +110,8 @@ internal class CardViewController: FormViewController {
         localizationParameters: LocalizationParameters?,
         theme: CheckoutTheme,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler,
-        addressCallbacks: AddressCallbacks? = nil
+        addressCallbacks: AddressCallbacks? = nil,
+        cardScannerController: CardScannerControlling? = nil
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
@@ -116,6 +122,7 @@ internal class CardViewController: FormViewController {
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
         self.addressCallbacks = addressCallbacks
+        self.injectedCardScannerController = cardScannerController
 
         self.cardLogos = supportedCardBrands
             .filter { !$0.isLogoHidden }
